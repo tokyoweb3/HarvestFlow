@@ -208,7 +208,7 @@ contract TokTokNft is ERC1155, Ownable {
         if (bonusToken[token].amount > 0) {
             revert BonusTokenAlreadySet(token);
         }
-        if (l > r) {
+        if (l < block.timestamp || l > r) {
             revert InvalidInput(l, r);
         }
 
