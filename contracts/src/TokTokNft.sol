@@ -68,6 +68,7 @@ contract TokTokNft is ERC1155, Ownable {
     error BonusTokenAlreadySet(address token);
     error BonusTokenNotSet(address token);
     error BonusTokenStartPeriodNotReached(uint256 startPeriod, uint256 currentTimestamp);
+    error CapReached(uint256 cap);
     error InvalidInput(uint256 a, uint256 b);
     error LendingAtPassed(uint256 lendingAt, uint256 currentTimestamp);
     error NotActive();
@@ -110,6 +111,9 @@ contract TokTokNft is ERC1155, Ownable {
     function mint(uint256 amount, address receiver, bytes memory data) public {
         if (block.timestamp > lendingAt) {
             revert LendingAtPassed(lendingAt, block.timestamp);
+        }
+        if (totalIssued == cap) {
+            revert CapReached(cap);
         }
 
         uint256 cappedAmount = Math.min(amount, cap - totalIssued);
