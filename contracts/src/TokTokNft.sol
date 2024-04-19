@@ -298,6 +298,13 @@ contract TokTokNft is ERC1155, Ownable {
         needPayableTokenAmount = totalNotYetClaimed - payable_token.balanceOf(address(this));
     }
 
+    /// @notice Returns the value of tokens owned by `account`.
+    /// @param account Address of the account
+    /// @return Amount of tokens owned by `account`
+    function balanceOf(address account) public view returns (uint256) {
+        return balanceOf(account, tokenOf[account]);
+    }
+
     /// @notice Transfers `value` amount of tokens from `from` to `to`.
     /// @param from Address of the sender
     /// @param to Address of the recipient
