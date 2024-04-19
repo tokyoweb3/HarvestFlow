@@ -106,7 +106,8 @@ contract TokTokNft is ERC1155, Ownable {
     /// @notice Participate in lending by paying `amount` of `payable_token` and minting `amount` of tokens.
     /// @param amount Amount of tokens to pay and to mint
     /// @param receiver Recipient of the minted tokens
-    function mint(uint256 amount, address receiver) public {
+    /// @param data Additional data used in onERC1155Received
+    function mint(uint256 amount, address receiver, bytes memory data) public {
         if (block.timestamp > lendingAt) {
             revert LendingAtPassed(lendingAt, block.timestamp);
         }
@@ -123,9 +124,16 @@ contract TokTokNft is ERC1155, Ownable {
         }
 
         totalIssued += cappedAmount;
-        _mint(receiver, userTokenId, cappedAmount, "");
+        _mint(receiver, userTokenId, cappedAmount, data);
 
         emit Minted(receiver, userTokenId, cappedAmount);
+    }
+
+    /// @notice Participate in lending by paying `amount` of `payable_token` and minting `amount` of tokens.
+    /// @param amount Amount of tokens to pay and to mint
+    /// @param receiver Recipient of the minted tokens
+    function mint(uint256 amount, address receiver) public {
+        mint(amount, receiver, "");
     }
 
     /// @notice Enables users to claim and redeem. Can be executed only by the owner.
@@ -291,7 +299,7 @@ contract TokTokNft is ERC1155, Ownable {
     /// @param to Address of the recipient
     /// @param id Unused parameter
     /// @param value Amount of tokens to transfer
-    /// @param data Additional data
+    /// @param data Additional data used in onERC1155Received
     function safeTransferFrom(address from, address to, uint256 id, uint256 value, bytes memory data) public override {
         _safeTransferFrom(from, to, tokenOf[from], value, data);
     }
@@ -301,7 +309,7 @@ contract TokTokNft is ERC1155, Ownable {
     /// @param to Address of the recipient
     /// @param ids Unused parameter
     /// @param values Array of amounts of tokens to transfer, only the first amount is used
-    /// @param data Additional data
+    /// @param data Additional data used in onERC1155Received
     function safeBatchTransferFrom(
         address from,
         address to,
@@ -317,7 +325,7 @@ contract TokTokNft is ERC1155, Ownable {
     /// @param from Address of the sender
     /// @param to Address of the recipient
     /// @param value Amount of tokens to transfer
-    /// @param data Additional data
+    /// @param data Additional data used in onERC1155Received
     function _safeTransferFrom(address from, address to, uint256 value, bytes memory data) internal {
         if (to == address(0)) {
             revert ERC1155InvalidReceiver(address(0));
