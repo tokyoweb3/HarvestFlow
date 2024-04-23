@@ -314,6 +314,15 @@ contract TokTokNft is ERC1155, Ownable {
     /// @notice Transfers `value` amount of tokens from `from` to `to`.
     /// @param from Address of the sender
     /// @param to Address of the recipient
+    /// @param value Amount of tokens to transfer
+    /// @param data Additional data used in onERC1155Received
+    function safeTransferFrom(address from, address to, uint256 value, bytes memory data) public {
+        _safeTransferFrom(from, to, tokenOf[from], value, data);
+    }
+
+    /// @notice Standard transfer function overriden for compatibility. Transfers `value` amount of tokens from `from` to `to`.
+    /// @param from Address of the sender
+    /// @param to Address of the recipient
     /// @param id Unused parameter
     /// @param value Amount of tokens to transfer
     /// @param data Additional data used in onERC1155Received
