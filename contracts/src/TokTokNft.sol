@@ -254,6 +254,7 @@ contract TokTokNft is ERC1155, Ownable {
     /// @param token Address of the bonus token to claim
     /// @param tokenId Token ID to claim bonus for
     function claimToken(address token, uint256 tokenId) public {
+        if (!_isActive) revert NotActive();
         BonusTokenSettings memory settings = bonusToken[token];
         if (block.timestamp < settings.l) {
             revert BonusTokenStartPeriodNotReached(settings.l, block.timestamp);
@@ -363,16 +364,18 @@ contract TokTokNft is ERC1155, Ownable {
         uint256 fromTokenId = tokenOf[from];
         uint256 toTokenId = tokenOf[to];
 
-        claim(fromTokenId);
-        if (toTokenId != 0) {
-            claim(toTokenId);
-        }
+        if (_isActive) {
+            claim(fromTokenId);
+            if (toTokenId != 0) {
+                claim(toTokenId);
+            }
 
-        for (uint256 i; i < bonusTokenList.length;) {
-            claimToken(bonusTokenList.unsafeMemoryAccess(i), fromTokenId);
-            claimToken(bonusTokenList.unsafeMemoryAccess(i), toTokenId);
-            unchecked {
-                ++i;
+            for (uint256 i; i < bonusTokenList.length;) {
+                claimToken(bonusTokenList.unsafeMemoryAccess(i), fromTokenId);
+                claimToken(bonusTokenList.unsafeMemoryAccess(i), toTokenId);
+                unchecked {
+                    ++i;
+                }
             }
         }
 
