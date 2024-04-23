@@ -317,7 +317,7 @@ contract TokTokNft is ERC1155, Ownable {
     /// @param value Amount of tokens to transfer
     /// @param data Additional data used in onERC1155Received
     function safeTransferFrom(address from, address to, uint256 value, bytes memory data) public {
-        _safeTransferFrom(from, to, tokenOf[from], value, data);
+        _safeTransferFrom(from, to, value, data);
     }
 
     /// @notice Standard transfer function overriden for compatibility. Transfers `value` amount of tokens from `from` to `to`.
@@ -327,7 +327,7 @@ contract TokTokNft is ERC1155, Ownable {
     /// @param value Amount of tokens to transfer
     /// @param data Additional data used in onERC1155Received
     function safeTransferFrom(address from, address to, uint256 id, uint256 value, bytes memory data) public override {
-        _safeTransferFrom(from, to, tokenOf[from], value, data);
+        _safeTransferFrom(from, to, value, data);
     }
 
     /// @notice Standard batch transfer function overriden for compatibility. Transfers `values[0]` amount of tokens from `from` to `to`.
@@ -343,7 +343,7 @@ contract TokTokNft is ERC1155, Ownable {
         uint256[] memory values,
         bytes memory data
     ) public override {
-        _safeTransferFrom(from, to, tokenOf[from], values[0], data);
+        _safeTransferFrom(from, to, values[0], data);
     }
 
     /// @dev Decrease the balance of the `tokenId` held by `from` and increase the balance of the `tokenId` held by `to`.
