@@ -299,7 +299,9 @@ contract TokTokNft is ERC1155, Ownable {
         totalClaimable = (totalClaimableScaled * 10 ** payable_token_decimals) / 1e18;
 
         totalNotYetClaimed = totalClaimable - totalClaimed;
-        needPayableTokenAmount = totalNotYetClaimed - payable_token.balanceOf(address(this));
+        uint256 balance = payable_token.balanceOf(address(this));
+        needPayableTokenAmount =
+            balance > totalNotYetClaimed ? 0 : totalNotYetClaimed - payable_token.balanceOf(address(this));
     }
 
     /// @notice Returns the value of tokens owned by `account`.
