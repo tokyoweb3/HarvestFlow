@@ -22,7 +22,8 @@ module.exports = {
       "os": require.resolve("os-browserify"),
       "url": require.resolve("url"),
       "zlib": require.resolve("browserify-zlib"),
-      "assert": require.resolve("assert/")
+      "assert": require.resolve("assert/"),
+      "fs" : false,
     },
     alias: require("./webpack.aliases"),
   },
