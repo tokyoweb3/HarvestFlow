@@ -1,8 +1,9 @@
-// Defaults
 html,
 body {
   height: 100%;
   background-color: white;
+  color:black;
+  font-family: 'Function Pro', sans-serif;
 }
 
 #app {
@@ -22,6 +23,7 @@ body {
 
 html * {
   box-sizing: border-box;
+  color: black;
 }
 
 .borderBottom {
@@ -42,4 +44,275 @@ html * {
 
 .borderAll {
   border: 2px solid black;
+}
+
+.nav-button{
+      background-color: "inherit";
+      border-radius: "0px";
+      display: flex;
+      border: "none";
+}
+
+.bg-Top1 {
+  position: relative;
+  background-color: #5277CA;
+  background-image: url('../assets/images/Top/3.png'),  url('../assets/images/Top/1.png'), url('../assets/images/Top/4.png'), url('../assets/images/Top/5.png'), url('../assets/images/Top/2.png'),;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+  height: 740px;
+  background-position: center top,  left top, right top, right top, right top,; // Adjust as needed
+  left: 142.09px, -136.9px,  1140.39px, 1166.5px, 566.39px,;
+  top: -110px, -327.2px,  -166.4px, 112px, 41.41px;
+  align-items: center;
+  
+  p {
+    color: white;
+    justify-content: center;
+  }
+
+}
+
+.price-show{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  div{
+      margin-top: 60px;
+        &:nth-child(1) {
+            border-right: 1px white solid;
+          }
+        &:nth-child(2) {
+          border-right: 1px white solid;
+        }
+        span {
+          padding: 0px 30px;
+          font-size: 56px;
+          color:white;
+        }
+
+        p {
+          padding: 2px 3px;
+          font-size: 18px;
+        }
+  }
+}
+
+.bg-Top2{
+  background-color: #e8eff5;
+  h2{font-size: 15px;}
+  div{
+    display: flex;
+    flex-direction: column;
+    border: "1px solid black"
+    }
+  .img-project{
+    background-image: url('../assets/images/Top/Top2.png');
+    background-repeat: no-repeat;
+    height: 643px;
+    width: 50%;
+  }
+
+}
+
+.bg-Top3 {
+  background-color: #e8eff5;
+  h2 {
+    font-size: 15px;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    border: "1px solid black"
+  }
+
+  .img-project {
+    background-image: url('../assets/images/Top/Top3.png');
+    background-repeat: no-repeat;
+    background-position: right;
+    height: 800px;
+    width: 960px;
+    button{
+      position: relative;
+      width: 150px;
+      padding: 10px;
+      bottom: 40px;
+    }
+  }
+
+}
+
+.bg-Top4 {
+  background-color: #e8eff5;
+
+  h2 {
+    font-size: 15px;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    border: "1px solid black"
+  }
+
+  .img-project {
+    background-image: url('../assets/images/Top/Top3.png');
+    background-repeat: no-repeat;
+    background-position: right;
+    height: 800px;
+    width: 960px;
+
+    button {
+      position: relative;
+      width: 150px;
+      padding: 10px;
+      bottom: 40px;
+    }
+  }
+
+}
+
+
+.content{
+  font-size: '15px' !important;
+  font-weight: 400;
+  line-height: 18px;
+  width: 400px;
+}
+
+.caption {
+  font-size: '15px';
+  font-weight: 500;
+  width: 400px;
+}
+
+.sub-title{
+  width: 300px;
+  font-size: "32px";
+  font-weight: "500";
+  line-height: "36px";
+
+}
+
+.container {
+  display: flex;
+  .fluid {
+      width: 100%;
+    }
+}
+
+.left-section {
+  flex: 2;
+  padding: 20px;
+}
+
+.right-section {
+  flex: 1;
+  padding: 20px;
+}
+
+
+
+.title{
+    font-family: 'Function Pro';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 58px;
+    text-align: center;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+}
+
+.footer-link-group{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    gap: 40px;
+    padding: 20px;
+    height: 10px;
+
+    a{
+      text-decoration: none;
+      color: white;
+      display: flex;
+    }
+}
+
+.footer{
+  padding:"0px 23px";
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+.asport{
+  font-size: 30px;
+  color: "#fff";
+  margin-left: "3px";
+}
+
+// .asport::after{
+//   content: '___';
+//   position: 'relative';
+//   top: -20px;
+//   left: 0;
+//   width: '100%';
+//   height: '100%';
+//   background-size: 'cover'; 
+//   z-index: 1; 
+//   background-image: url('../assets/images/Top/apasport.png');
+//   background-repeat: no-repeat;
+//   background-position: top;
+//   background-size: cover;
+// }
+
+
+.carousel-li{
+padding-top: 250px;
+padding-bottom: 90px;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 3px;
+  background-color: #888;
+  border-radius: 5px;
+}
+
+.unhovered ::-webkit-scrollbar {
+  width: 0px !important;
+}
+
+::-webkit-scrollbar-thumb:hover ::-webkit-scrollbar {
+  width: 10px !important;
+}
+
+div::-webkit-scrollbar {
+  width: 0.4em !important;
+}
+
+div::-webkit-scrollbar-track {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* RedPage.css */
+.first-page {
+  transition: opacity 1s ease-out;
+}
+
+.fade-out {
+  opacity: 0;
 }
