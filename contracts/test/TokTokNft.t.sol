@@ -10,21 +10,27 @@ import {MockERC20} from "./mocks/MockERC20.sol";
 import {ERC1155Holder} from "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {IERC2981} from "@openzeppelin/contracts/interfaces/IERC2981.sol";
+import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 
 contract TokTokNftTest is Test, ERC1155Holder {
     uint256 payable_token_supply = 100_000_000;
     TokTokNft toktok;
     string name = "TokTokNft";
     string symbol = "TOK";
-    uint256 cap = payable_token_supply / 10;
+    uint256 cap = 1000;
     ERC20 payable_token;
+    uint256 price = 1 ether;
     uint256 lendingAt = 100;
     uint256 yield = 0.1 ether;
     uint256 lending_period = 365 days;
     string uri = "https://token-cdn-domain/{id}.json";
     address owner = address(this);
+    address signerAddress;
+    uint256 signerPk;
     address[] actors;
 
     receive() external payable {}
@@ -33,24 +39,44 @@ contract TokTokNftTest is Test, ERC1155Holder {
         return actors[seed % actors.length];
     }
 
+    function _signPremint(address receiver, uint256 maxMintAmount) public view returns (bytes memory) {
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(signerPk, keccak256(abi.encodePacked(receiver, maxMintAmount)));
+        return abi.encodePacked(r, s, v);
+    }
+
     function setUp() public {
+        (signerAddress, signerPk) = makeAddrAndKey("signer");
         payable_token = new MockERC20("MockERC20", "MOCK", payable_token_supply);
-        toktok = new TokTokNft(name, symbol, cap, address(payable_token), lendingAt, yield, lending_period, uri, owner);
+        toktok = new TokTokNft(
+            name,
+            symbol,
+            cap,
+            address(payable_token),
+            price,
+            lendingAt,
+            yield,
+            lending_period,
+            uri,
+            owner,
+            signerAddress
+        );
         payable_token.approve(address(toktok), type(uint256).max);
-        payable_token.transfer(address(toktok), cap * 1e18);
+        payable_token.transfer(address(toktok), cap * price);
         vm.deal(address(toktok), 1 ether);
+        toktok.setPublicsale(true);
+        toktok.setPresale(true);
 
         uint256 totalActors = 5;
         for (uint256 i; i < totalActors; ++i) {
             address actor = makeAddr(string(abi.encodePacked(i)));
             actors.push(actor);
-            payable_token.transfer(actor, payable_token_supply / totalActors / 2);
+            payable_token.transfer(actor, (10 ** payable_token.decimals()) * payable_token_supply / totalActors / 2);
             vm.prank(actor);
             payable_token.approve(address(toktok), type(uint256).max);
         }
     }
 
-    function test_setUp_correct() public view {
+    function test_setUp_correct() public {
         assertEq(toktok.name(), name);
         assertEq(toktok.symbol(), symbol);
         assertEq(toktok.cap(), cap);
@@ -58,96 +84,309 @@ contract TokTokNftTest is Test, ERC1155Holder {
         assertEq(toktok.lendingAt(), lendingAt);
         assertEq(toktok.yield(), yield);
         assertEq(toktok.maturity(), lendingAt + lending_period);
-        assertEq(toktok.uri(0), uri);
+        assertEq(toktok.baseURI(), uri);
         assertEq(toktok.owner(), owner);
     }
 
-    function test_mint_satisfiesRequirements(uint256 seed, uint256 amount) public {
+    function test_anyWriteFunction_reverts_ifPaused() public {
+        vm.startPrank(toktok.owner());
+        toktok.pause();
+
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.publicMint(0);
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.preMint(0, 0, "");
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.setPresale(true);
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.setPublicsale(true);
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.setPresalePrice(0);
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.setPublicPrice(0);
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.setBaseURI("");
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.claim(0);
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.claimAll(new uint256[](0));
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.redeem(0);
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.redeemAll(new uint256[](0));
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.withdraw(address(0), 0, address(0));
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.addBonusToken(address(0), 0, 0, 0);
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.removeBonusToken(address(0), address(0));
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.claimToken(address(0), 0);
+        vm.expectRevert(Pausable.EnforcedPause.selector);
+        toktok.setRoyaltyAddress(address(0), 0);
+    }
+
+    function test_publicMint_satisfiesRequirements(uint256 seed, uint256 amount) public {
         address receiver = _getRandomActor(seed);
-        amount = bound(amount, 1, payable_token.balanceOf(receiver));
-        bytes memory data = "";
+        amount = bound(amount, 1, cap);
         vm.startPrank(receiver);
 
-        bool receiverShouldGetAssignedNewTokenId = toktok.tokenOf(receiver) == 0;
-        uint256 expectedTokenId =
-            receiverShouldGetAssignedNewTokenId ? toktok.currentTokenId() : toktok.tokenOf(receiver);
+        uint256 expectedTokenId = toktok.nextTokenId();
+        uint256 expectedCost = amount * price;
 
-        uint256 currentTokenIdBefore = toktok.currentTokenId();
-        uint256 totalIssuedBefore = toktok.totalIssued();
+        uint256 totalSupplyBefore = toktok.totalSupply();
         uint256 tokenReceiverBalanceBefore = toktok.balanceOf(receiver);
         uint256 payableTokenContractBalanceBefore = payable_token.balanceOf(address(toktok));
         uint256 payableTokenReceiverBalanceBefore = payable_token.balanceOf(receiver);
 
         vm.expectEmit(true, true, true, true);
-        emit TokTokNft.Minted(receiver, expectedTokenId, amount);
-        toktok.mint(amount, receiver, data);
+        emit TokTokNft.Minted(receiver, expectedTokenId, amount, expectedCost);
+        toktok.publicMint(amount);
 
         assertEq(toktok.balanceOf(receiver), tokenReceiverBalanceBefore + amount);
-        assertEq(toktok.totalIssued(), totalIssuedBefore + amount);
-        assertEq(
-            toktok.currentTokenId(), receiverShouldGetAssignedNewTokenId ? expectedTokenId + 1 : currentTokenIdBefore
-        );
-        assertEq(toktok.tokenOf(receiver), expectedTokenId);
-        assertEq(payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore + amount);
-        assertEq(payable_token.balanceOf(receiver), payableTokenReceiverBalanceBefore - amount);
+        assertEq(toktok.totalSupply(), totalSupplyBefore + amount);
+        assertEq(toktok.nextTokenId(), expectedTokenId + amount);
+        assertEq(toktok.ownerOf(expectedTokenId), receiver);
+        assertEq(toktok.ownerOf(expectedTokenId + amount / 2), receiver);
+        assertEq(toktok.ownerOf(expectedTokenId + amount - 1), receiver);
+        assertEq(payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore + expectedCost);
+        assertEq(payable_token.balanceOf(receiver), payableTokenReceiverBalanceBefore - expectedCost);
     }
 
-    function test_mint_multipleMintingReusesExistingTokenId(uint256 seed, uint256 amount) public {
-        address receiver = _getRandomActor(seed);
-        amount = bound(amount, 2, payable_token.balanceOf(receiver) / 2);
-        bytes memory data = "";
+    function test_publicMint_mintAmountExceedingCap() public {
+        uint256 maxMint = toktok.cap() - toktok.totalSupply();
+        address receiver = address(this);
         vm.startPrank(receiver);
 
-        bool receiverShouldGetAssignedNewTokenId = toktok.tokenOf(receiver) == 0;
-        uint256 expectedTokenId =
-            receiverShouldGetAssignedNewTokenId ? toktok.currentTokenId() : toktok.tokenOf(receiver);
-
-        uint256 currentTokenIdBefore = toktok.currentTokenId();
-
-        toktok.mint(amount, receiver, data);
-        toktok.mint(amount, receiver, data);
-
-        assertEq(
-            toktok.currentTokenId(), receiverShouldGetAssignedNewTokenId ? expectedTokenId + 1 : currentTokenIdBefore
-        );
-        assertEq(toktok.tokenOf(receiver), expectedTokenId);
-    }
-
-    function test_mint_mintAmountExceedingCap() public {
-        uint256 maxMint = toktok.cap() - toktok.totalIssued();
-        address receiver = address(this);
-        bytes memory data = "";
-
         uint256 tokenReceiverBalanceBefore = toktok.balanceOf(receiver);
-        uint256 expectedTokenId = toktok.tokenOf(receiver) == 0 ? toktok.currentTokenId() : toktok.tokenOf(receiver);
+        uint256 expectedTokenId = toktok.nextTokenId();
+        uint256 expectedCost = maxMint * price;
 
         vm.expectEmit(true, true, true, true);
-        emit TokTokNft.Minted(receiver, expectedTokenId, maxMint);
-        toktok.mint(maxMint + 1, receiver, data);
+        emit TokTokNft.Minted(receiver, expectedTokenId, maxMint, expectedCost);
+        toktok.publicMint(maxMint + 1);
 
         assertEq(toktok.balanceOf(receiver), tokenReceiverBalanceBefore + maxMint);
-        assertEq(toktok.totalIssued(), toktok.cap());
+        assertEq(toktok.totalSupply(), toktok.cap());
     }
 
-    function test_mint_reverts_ifLendingAtHadPassed() public {
+    function test_publicMint_reverts_ifLendingAtHadPassed() public {
         vm.warp(toktok.lendingAt() + 1);
 
         uint256 amount = 1;
         address receiver = address(this);
-        bytes memory data = "";
+        vm.startPrank(receiver);
 
         vm.expectRevert(abi.encodeWithSelector(TokTokNft.LendingAtPassed.selector, toktok.lendingAt(), block.timestamp));
-        toktok.mint(amount, receiver, data);
+        toktok.publicMint(amount);
     }
 
-    function test_mint_reverts_ifCapReached() public {
-        uint256 amount = toktok.cap() - toktok.totalIssued();
+    function test_publicMint_reverts_ifPublicsaleNotActive() public {
+        toktok.setPublicsale(false);
+
+        uint256 amount = 1;
         address receiver = address(this);
-        bytes memory data = "";
-        toktok.mint(amount, receiver, data);
+        vm.startPrank(receiver);
+
+        vm.expectRevert(TokTokNft.NotActive.selector);
+        toktok.publicMint(amount);
+    }
+
+    function test_publicMint_reverts_ifAmountZero() public {
+        uint256 amount = 0;
+        address receiver = address(this);
+        vm.startPrank(receiver);
+
+        vm.expectRevert(TokTokNft.AmountZero.selector);
+        toktok.publicMint(amount);
+    }
+
+    function test_publicMint_reverts_ifCapReached() public {
+        uint256 amount = toktok.cap() - toktok.totalSupply();
+        address receiver = address(this);
+        vm.startPrank(receiver);
+        toktok.publicMint(amount);
 
         vm.expectRevert(abi.encodeWithSelector(TokTokNft.CapReached.selector, toktok.cap()));
-        toktok.mint(1, receiver, data);
+        toktok.publicMint(1);
+    }
+
+    function test_preMint_satisfiesRequirements(uint256 seed, uint256 amount) public {
+        address receiver = _getRandomActor(seed);
+        amount = bound(amount, 1, cap);
+        bytes memory signature = _signPremint(receiver, amount);
+        vm.startPrank(receiver);
+
+        uint256 expectedTokenId = toktok.nextTokenId();
+        uint256 expectedCost = amount * price;
+
+        uint256 totalSupplyBefore = toktok.totalSupply();
+        uint256 tokenReceiverBalanceBefore = toktok.balanceOf(receiver);
+        uint256 payableTokenContractBalanceBefore = payable_token.balanceOf(address(toktok));
+        uint256 payableTokenReceiverBalanceBefore = payable_token.balanceOf(receiver);
+
+        vm.expectEmit(true, true, true, true);
+        emit TokTokNft.Minted(receiver, expectedTokenId, amount, expectedCost);
+        toktok.preMint(amount, amount, signature);
+
+        assertEq(toktok.balanceOf(receiver), tokenReceiverBalanceBefore + amount);
+        assertEq(toktok.totalSupply(), totalSupplyBefore + amount);
+        assertEq(toktok.nextTokenId(), expectedTokenId + amount);
+        assertEq(toktok.ownerOf(expectedTokenId), receiver);
+        assertEq(toktok.ownerOf(expectedTokenId + amount / 2), receiver);
+        assertEq(toktok.ownerOf(expectedTokenId + amount - 1), receiver);
+        assertEq(payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore + expectedCost);
+        assertEq(payable_token.balanceOf(receiver), payableTokenReceiverBalanceBefore - expectedCost);
+    }
+
+    function test_preMint_mintAmountExceedingCap() public {
+        uint256 maxMint = toktok.cap() - toktok.totalSupply();
+        address receiver = address(this);
+        bytes memory signature = _signPremint(receiver, maxMint + 1);
+        vm.startPrank(receiver);
+
+        uint256 tokenReceiverBalanceBefore = toktok.balanceOf(receiver);
+        uint256 expectedTokenId = toktok.nextTokenId();
+        uint256 expectedCost = maxMint * price;
+
+        vm.expectEmit(true, true, true, true);
+        emit TokTokNft.Minted(receiver, expectedTokenId, maxMint, expectedCost);
+        toktok.preMint(maxMint + 1, maxMint + 1, signature);
+
+        assertEq(toktok.balanceOf(receiver), tokenReceiverBalanceBefore + maxMint);
+        assertEq(toktok.totalSupply(), toktok.cap());
+    }
+
+    function test_preMint_reverts_ifSignedMaxMintAmountIsDifferent() public {
+        uint256 amount = 1;
+        uint256 maxMintAmount = 5;
+        address receiver = address(this);
+        bytes memory signature = _signPremint(receiver, maxMintAmount);
+        vm.startPrank(receiver);
+
+        vm.expectRevert(TokTokNft.InvalidSignature.selector);
+        toktok.preMint(amount, maxMintAmount * 2, signature);
+    }
+
+    function test_preMint_reverts_ifSignedMaxMintReceiverIsDifferent() public {
+        uint256 amount = 1;
+        uint256 maxMintAmount = 5;
+        address receiver = address(this);
+        bytes memory signature = _signPremint(address(0x1), maxMintAmount);
+        vm.startPrank(receiver);
+
+        vm.expectRevert(TokTokNft.InvalidSignature.selector);
+        toktok.preMint(amount, maxMintAmount, signature);
+    }
+
+    function test_preMint_reverts_ifSignedMaxMintSignerIsDifferent() public {
+        uint256 amount = 1;
+        uint256 maxMintAmount = 5;
+        address receiver = address(this);
+
+        (, uint256 bobPk) = makeAddrAndKey("bob");
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(bobPk, keccak256(abi.encodePacked(receiver, maxMintAmount)));
+        bytes memory signature = abi.encodePacked(r, s, v);
+
+        vm.startPrank(receiver);
+
+        vm.expectRevert(TokTokNft.InvalidSignature.selector);
+        toktok.preMint(amount, maxMintAmount, signature);
+    }
+
+    function test_preMint_reverts_ifLendingAtHadPassed() public {
+        vm.warp(toktok.lendingAt() + 1);
+
+        uint256 amount = 1;
+        address receiver = address(this);
+        bytes memory signature = _signPremint(receiver, amount);
+        vm.startPrank(receiver);
+
+        vm.expectRevert(abi.encodeWithSelector(TokTokNft.LendingAtPassed.selector, toktok.lendingAt(), block.timestamp));
+        toktok.preMint(amount, amount, signature);
+    }
+
+    function test_preMint_reverts_ifPresaleNotActive() public {
+        toktok.setPresale(false);
+
+        uint256 amount = 1;
+        address receiver = address(this);
+        bytes memory signature = _signPremint(receiver, amount);
+        vm.startPrank(receiver);
+
+        vm.expectRevert(TokTokNft.NotActive.selector);
+        toktok.preMint(amount, amount, signature);
+    }
+
+    function test_preMint_reverts_ifAmountZero() public {
+        uint256 amount = 0;
+        address receiver = address(this);
+        bytes memory signature = _signPremint(receiver, amount);
+        vm.startPrank(receiver);
+
+        vm.expectRevert(TokTokNft.AmountZero.selector);
+        toktok.preMint(amount, amount, signature);
+    }
+
+    function test_preMint_doesNotExceedMaxMintAmount() public {
+        uint256 maxMintAmount = 5;
+        uint256 amount = maxMintAmount - 1;
+        address receiver = address(this);
+        bytes memory signature = _signPremint(receiver, maxMintAmount);
+        vm.startPrank(receiver);
+        toktok.preMint(amount, maxMintAmount, signature);
+
+        uint256 tokenReceiverBalanceBefore = toktok.balanceOf(receiver);
+        toktok.preMint(maxMintAmount - amount + 1, maxMintAmount, signature);
+        assertEq(toktok.balanceOf(receiver), tokenReceiverBalanceBefore + maxMintAmount - amount);
+    }
+
+    function test_preMint_reverts_ifMaxMintAmountSpent() public {
+        uint256 maxMintAmount = 5;
+        uint256 amount = maxMintAmount;
+        address receiver = address(this);
+        bytes memory signature = _signPremint(receiver, maxMintAmount);
+        vm.startPrank(receiver);
+        toktok.preMint(amount, maxMintAmount, signature);
+
+        vm.expectRevert(abi.encodeWithSelector(TokTokNft.CapReached.selector, maxMintAmount));
+        toktok.preMint(amount, maxMintAmount, signature);
+    }
+
+    function test_setPresale_works() public {
+        vm.startPrank(toktok.owner());
+        toktok.setPresale(true);
+        assertEq(toktok.isPresale(), true);
+        toktok.setPresale(false);
+        assertEq(toktok.isPresale(), false);
+    }
+
+    function test_setPresale_reverts_ifNotOwner() public {
+        address sender = makeAddr("random");
+        vm.startPrank(sender);
+
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, sender));
+        toktok.setPresale(true);
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, sender));
+        toktok.setPresale(false);
+    }
+
+    function test_setPublicsale_works() public {
+        vm.startPrank(toktok.owner());
+        toktok.setPublicsale(true);
+        assertEq(toktok.isPublicsale(), true);
+        toktok.setPublicsale(false);
+        assertEq(toktok.isPublicsale(), false);
+    }
+
+    function test_setPublicsale_reverts_ifNotOwner() public {
+        address sender = makeAddr("random");
+        vm.startPrank(sender);
+
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, sender));
+        toktok.setPublicsale(true);
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, sender));
+        toktok.setPublicsale(false);
     }
 
     function test_activate_works() public {
@@ -164,14 +403,31 @@ contract TokTokNftTest is Test, ERC1155Holder {
         toktok.activate();
     }
 
-    function test_claim_satisfiesRequirements(uint256 seed, uint256 amount) public {
+    function test_setBaseURI_works() public {
+        string memory newBaseURI = "abc";
+        vm.startPrank(toktok.owner());
+
+        vm.expectEmit(true, true, true, true);
+        emit TokTokNft.BaseUriChanged(newBaseURI);
+        toktok.setBaseURI(newBaseURI);
+
+        assertEq(toktok.baseURI(), newBaseURI);
+    }
+
+    function test_setBaseURI_reverts_ifNotOwner() public {
+        address sender = makeAddr("random");
+        vm.startPrank(sender);
+
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, sender));
+        toktok.setBaseURI("abc");
+    }
+
+    function test_claim_satisfiesRequirements(uint256 seed) public {
         address receiver = _getRandomActor(seed);
-        amount = bound(amount, 1, payable_token.balanceOf(receiver));
-        bytes memory data = "";
         vm.startPrank(receiver);
 
-        uint256 tokenId = toktok.tokenOf(receiver) == 0 ? toktok.currentTokenId() : toktok.tokenOf(receiver);
-        toktok.mint(amount, receiver, data);
+        uint256 tokenId = toktok.nextTokenId();
+        toktok.publicMint(1);
         vm.startPrank(toktok.owner());
         toktok.activate();
         vm.startPrank(receiver);
@@ -180,7 +436,7 @@ contract TokTokNftTest is Test, ERC1155Holder {
 
         uint256 payableTokenContractBalanceBefore = payable_token.balanceOf(address(toktok));
         uint256 payableTokenReceiverBalanceBefore = payable_token.balanceOf(receiver);
-        uint256 expectedClaimAmount = amount * toktok.yield();
+        uint256 expectedClaimAmount = price * toktok.yield() / 1e18;
 
         vm.expectEmit(true, true, true, true);
         emit TokTokNft.Claimed(receiver, tokenId, expectedClaimAmount);
@@ -190,14 +446,12 @@ contract TokTokNftTest is Test, ERC1155Holder {
         assertEq(payable_token.balanceOf(receiver), payableTokenReceiverBalanceBefore + expectedClaimAmount);
     }
 
-    function test_claim_wontGiveAnythingMoreAfterMaturity(uint256 seed, uint256 amount) public {
+    function test_claim_wontGiveAnythingMoreAfterMaturity(uint256 seed) public {
         address receiver = _getRandomActor(seed);
-        amount = bound(amount, 1, payable_token.balanceOf(receiver));
-        bytes memory data = "";
         vm.startPrank(receiver);
 
-        uint256 tokenId = toktok.tokenOf(receiver) == 0 ? toktok.currentTokenId() : toktok.tokenOf(receiver);
-        toktok.mint(amount, receiver, data);
+        uint256 tokenId = toktok.nextTokenId();
+        toktok.publicMint(1);
         vm.startPrank(toktok.owner());
         toktok.activate();
         vm.startPrank(receiver);
@@ -220,12 +474,11 @@ contract TokTokNftTest is Test, ERC1155Holder {
 
     function test_claim_doesNotDoublespend(uint256 seed, uint256 amount) public {
         address receiver = _getRandomActor(seed);
-        amount = bound(amount, 1, payable_token.balanceOf(receiver));
-        bytes memory data = "";
+        amount = bound(amount, 1, payable_token.balanceOf(receiver) / price);
         vm.startPrank(receiver);
 
-        uint256 tokenId = toktok.tokenOf(receiver) == 0 ? toktok.currentTokenId() : toktok.tokenOf(receiver);
-        toktok.mint(amount, receiver, data);
+        uint256 tokenId = toktok.nextTokenId();
+        toktok.publicMint(amount);
         vm.startPrank(toktok.owner());
         toktok.activate();
         vm.startPrank(receiver);
@@ -250,41 +503,141 @@ contract TokTokNftTest is Test, ERC1155Holder {
         toktok.claim(1);
     }
 
-    function test_redeem_satisfiesRequirements(uint256 seed, uint256 amount) public {
+    function test_claimAll_satisfiesRequirements(uint256 seed) public {
+        uint256 actorsCount = bound(seed, 1, actors.length);
+        uint256 tokensForEachActor = bound(actorsCount, 1, 3);
+        vm.startPrank(toktok.owner());
+        toktok.activate();
+
+        address[] memory receivers = new address[](actorsCount);
+        uint256[] memory tokenIds = new uint256[](actorsCount * tokensForEachActor);
+        for (uint256 i; i < actorsCount; ++i) {
+            receivers[i] = _getRandomActor(i);
+            vm.startPrank(receivers[i]);
+            uint256 tokenId = toktok.nextTokenId();
+            for (uint256 j; j < tokensForEachActor; ++j) {
+                tokenIds[i * tokensForEachActor + j] = tokenId + j;
+            }
+            toktok.publicMint(tokensForEachActor);
+        }
+
+        vm.warp(toktok.maturity());
+
+        uint256 payableTokenContractBalanceBefore = payable_token.balanceOf(address(toktok));
+        uint256[] memory payableTokenReceiversBalancesBefore = new uint256[](actorsCount);
+        uint256[] memory expectedClaimAmounts = new uint256[](actorsCount);
+        uint256 totalExpectedClaimAmount;
+        for (uint256 i; i < actorsCount; ++i) {
+            payableTokenReceiversBalancesBefore[i] = payable_token.balanceOf(receivers[i]);
+            expectedClaimAmounts[i] = (price * toktok.yield() / 1e18) * tokensForEachActor;
+            totalExpectedClaimAmount += expectedClaimAmounts[i];
+        }
+
+        for (uint256 i; i < actorsCount * tokensForEachActor; ++i) {
+            vm.expectEmit(true, true, true, true);
+            emit TokTokNft.Claimed(
+                receivers[i / tokensForEachActor],
+                tokenIds[i],
+                expectedClaimAmounts[i / tokensForEachActor] / tokensForEachActor
+            );
+        }
+        toktok.claimAll(tokenIds);
+
+        for (uint256 i; i < actorsCount; ++i) {
+            assertEq(
+                payable_token.balanceOf(receivers[i]), payableTokenReceiversBalancesBefore[i] + expectedClaimAmounts[i]
+            );
+        }
+        assertEq(payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore - totalExpectedClaimAmount);
+    }
+
+    function test_redeem_satisfiesRequirements(uint256 seed) public {
         address receiver = _getRandomActor(seed);
-        amount = bound(amount, 1, payable_token.balanceOf(receiver));
-        bytes memory data = "";
         vm.startPrank(receiver);
 
-        uint256 tokenId = toktok.tokenOf(receiver) == 0 ? toktok.currentTokenId() : toktok.tokenOf(receiver);
-
-        toktok.mint(amount, receiver, data);
+        uint256 tokenId = toktok.nextTokenId();
+        toktok.publicMint(1);
         vm.startPrank(toktok.owner());
         toktok.activate();
         vm.startPrank(receiver);
 
         vm.warp(toktok.maturity());
 
-        uint256 totalIssuedBefore = toktok.totalIssued();
+        uint256 totalSupplyBefore = toktok.totalSupply();
         uint256 payableTokenContractBalanceBefore = payable_token.balanceOf(address(toktok));
         uint256 payableTokenReceiverBalanceBefore = payable_token.balanceOf(receiver);
-        uint256 expectedClaimAmount = amount * toktok.yield();
+        uint256 expectedClaimAmount = price * toktok.yield() / 1e18;
 
         vm.expectEmit(true, true, true, true);
-        emit TokTokNft.Redeemed(receiver, tokenId, amount);
+        emit TokTokNft.Redeemed(receiver, tokenId, price);
         toktok.redeem(tokenId);
 
         assertEq(
-            payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore - expectedClaimAmount - amount
+            payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore - expectedClaimAmount - price
         );
-        assertEq(payable_token.balanceOf(receiver), payableTokenReceiverBalanceBefore + expectedClaimAmount + amount);
-        assertEq(toktok.balanceOf(receiver), 0);
-        assertEq(toktok.totalIssued(), totalIssuedBefore);
+        assertEq(payable_token.balanceOf(receiver), payableTokenReceiverBalanceBefore + expectedClaimAmount + price);
+        assertEq(toktok.totalSupply(), totalSupplyBefore);
+    }
+
+    function test_redeemAll_satisfiesRequirements(uint256 seed) public {
+        uint256 actorsCount = bound(seed, 1, actors.length);
+        uint256 tokensForEachActor = bound(actorsCount, 1, 3);
+        vm.startPrank(toktok.owner());
+        toktok.activate();
+
+        address[] memory receivers = new address[](actorsCount);
+        uint256[] memory tokenIds = new uint256[](actorsCount * tokensForEachActor);
+        for (uint256 i; i < actorsCount; ++i) {
+            receivers[i] = _getRandomActor(i);
+            vm.startPrank(receivers[i]);
+            uint256 tokenId = toktok.nextTokenId();
+            for (uint256 j; j < tokensForEachActor; ++j) {
+                tokenIds[i * tokensForEachActor + j] = tokenId + j;
+            }
+            toktok.publicMint(tokensForEachActor);
+        }
+
+        vm.warp(toktok.maturity());
+
+        uint256 payableTokenContractBalanceBefore = payable_token.balanceOf(address(toktok));
+        uint256[] memory payableTokenReceiversBalancesBefore = new uint256[](actorsCount);
+        uint256[] memory expectedClaimAmounts = new uint256[](actorsCount);
+        uint256 totalExpectedClaimAmount;
+        for (uint256 i; i < actorsCount; ++i) {
+            payableTokenReceiversBalancesBefore[i] = payable_token.balanceOf(receivers[i]);
+            expectedClaimAmounts[i] = ((price * toktok.yield() / 1e18) + price) * tokensForEachActor;
+            totalExpectedClaimAmount += expectedClaimAmounts[i];
+        }
+
+        for (uint256 i; i < actorsCount * tokensForEachActor; ++i) {
+            vm.expectEmit(true, true, true, true);
+            emit TokTokNft.Redeemed(receivers[i / tokensForEachActor], tokenIds[i], price);
+        }
+        toktok.redeemAll(tokenIds);
+
+        for (uint256 i; i < actorsCount; ++i) {
+            assertEq(
+                payable_token.balanceOf(receivers[i]), payableTokenReceiversBalancesBefore[i] + expectedClaimAmounts[i]
+            );
+        }
+        assertEq(payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore - totalExpectedClaimAmount);
     }
 
     function test_redeem_reverts_ifNotActive() public {
         vm.expectRevert(TokTokNft.NotActive.selector);
         toktok.redeem(1);
+    }
+
+    function test_redeem_reverts_ifAlreadyRedeemed() public {
+        vm.prank(toktok.owner());
+        toktok.activate();
+
+        uint256 tokenId = toktok.nextTokenId();
+        toktok.publicMint(1);
+        vm.warp(toktok.maturity());
+        toktok.redeem(tokenId);
+        vm.expectRevert(abi.encodeWithSelector(TokTokNft.AlreadyRedeemed.selector, tokenId));
+        toktok.redeem(tokenId);
     }
 
     function test_withdraw_satisfiesRequirementsForERC20() public {
@@ -428,17 +781,16 @@ contract TokTokNftTest is Test, ERC1155Holder {
     }
 
     function test_claimToken_satisfiesRequirements() public {
-        uint256 amount = 100;
         // add a second participant to check for proper token ownership proportion
         address secondActor = _getRandomActor(1);
         vm.prank(secondActor);
-        toktok.mint(amount * 3, secondActor);
+        toktok.publicMint(3);
 
         address receiver = toktok.owner();
         vm.startPrank(receiver);
         payable_token.approve(address(toktok), type(uint256).max);
-        toktok.mint(amount, receiver);
-        uint256 tokenId = toktok.tokenOf(receiver);
+        uint256 tokenId = toktok.nextTokenId();
+        toktok.publicMint(1);
         toktok.activate();
 
         uint256 bonusTokenAmount = 100 ether;
@@ -466,8 +818,8 @@ contract TokTokNftTest is Test, ERC1155Holder {
         address receiver = toktok.owner();
         vm.startPrank(receiver);
         payable_token.approve(address(toktok), type(uint256).max);
-        toktok.mint(amount, receiver);
-        uint256 tokenId = toktok.tokenOf(receiver);
+        uint256 tokenId = toktok.nextTokenId();
+        toktok.publicMint(amount);
         toktok.activate();
 
         uint256 bonusTokenAmount = 100 ether;
@@ -509,17 +861,38 @@ contract TokTokNftTest is Test, ERC1155Holder {
         toktok.claimToken(address(bonusToken), 1);
     }
 
+    function test_pause_reverts_ifNotOwner() public {
+        address sender = makeAddr("random");
+        vm.startPrank(sender);
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, sender));
+        toktok.pause();
+    }
+
+    function test_unpause_reverts_ifNotOwner() public {
+        address sender = makeAddr("random");
+        vm.startPrank(sender);
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, sender));
+        toktok.unpause();
+    }
+
+    function test_setRoyaltyAddress_reverts_ifNotOwner() public {
+        address sender = makeAddr("random");
+        vm.startPrank(sender);
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, sender));
+        toktok.setRoyaltyAddress(address(0), 0);
+    }
+
     function test_calcRemainBalance_satisfiesRequirements() public {
         address receiver = _getRandomActor(1);
         uint256 amount2 = 1;
         vm.startPrank(receiver);
-        toktok.mint(amount2, receiver);
+        toktok.publicMint(amount2);
 
         receiver = _getRandomActor(2);
         uint256 amount = 1;
         vm.startPrank(receiver);
-        toktok.mint(amount, receiver);
-        uint256 tokenId = toktok.tokenOf(receiver);
+        uint256 tokenId = toktok.nextTokenId();
+        toktok.publicMint(amount);
 
         vm.startPrank(toktok.owner());
         toktok.activate();
@@ -540,7 +913,8 @@ contract TokTokNftTest is Test, ERC1155Holder {
         toktok.claim(tokenId);
         uint256 claimedAmount = payable_token.balanceOf(receiver) - balanceBefore;
 
-        uint256 expectedTotalClaimable = (amount + amount2) * yield * ((lending_period / 2) * 1e18 / 365 days) / 1e18;
+        uint256 expectedTotalClaimable =
+            (amount + amount2) * price * yield * ((lending_period / 2) * 1e18 / 365 days) / 1e18;
         uint256 expectedTotalNotYetClaimed = expectedTotalClaimable - claimedAmount;
         uint256 expectedNeedPayableTokenAmount = payable_token.balanceOf(address(toktok)) > expectedTotalNotYetClaimed
             ? 0
@@ -551,35 +925,8 @@ contract TokTokNftTest is Test, ERC1155Holder {
         assertEq(needPayableTokenAmount, expectedNeedPayableTokenAmount);
     }
 
-    function test_safeTransferFrom_satisfiesRequirements(uint256 seed, uint256 mintAmount, uint256 transferAmount)
-        public
-    {
-        address sender = address(this);
-        address receiver = _getRandomActor(seed);
-        mintAmount = bound(mintAmount, 1, Math.min(payable_token.balanceOf(sender), cap - 1));
-        transferAmount = bound(transferAmount, 1, mintAmount);
-        vm.startPrank(sender);
-        toktok.mint(mintAmount, sender);
-
-        if (seed % 2 == 0) {
-            vm.startPrank(receiver);
-            toktok.mint(1, receiver);
-            vm.startPrank(sender);
-        }
-
-        uint256 totalIssuedBefore = toktok.totalIssued();
-        uint256 senderBalanceBefore = toktok.balanceOf(sender);
-        uint256 receiverBalanceBefore = toktok.balanceOf(receiver);
-        uint256 fromTokenId = toktok.tokenOf(sender);
-        uint256 toTokenId = toktok.tokenOf(receiver) == 0 ? toktok.currentTokenId() : toktok.tokenOf(receiver);
-
-        vm.expectEmit(true, true, true, true);
-        emit TokTokNft.Transfer(sender, receiver, fromTokenId, toTokenId, transferAmount);
-        toktok.safeTransferFrom(sender, receiver, transferAmount, "");
-
-        assertEq(toktok.balanceOf(sender), senderBalanceBefore - transferAmount);
-        assertEq(toktok.balanceOf(receiver), receiverBalanceBefore + transferAmount);
-        assertEq(toktok.tokenOf(receiver), toTokenId);
-        assertEq(toktok.totalIssued(), totalIssuedBefore);
+    function test_supportsInterface_satisfiesRequirements() public {
+        assertEq(toktok.supportsInterface(type(IERC721).interfaceId), true);
+        assertEq(toktok.supportsInterface(type(IERC2981).interfaceId), true);
     }
 }

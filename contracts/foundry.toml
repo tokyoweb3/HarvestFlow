@@ -1,9 +1,10 @@
 [profile.default]
 src = "src"
 out = "out"
-libs = ["lib"]
+libs = ["node_modules", "lib"]
 remappings = [
-    '@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/'
+    '@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/',
+    'erc721a/=node_modules/erc721a/'
 ]
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
