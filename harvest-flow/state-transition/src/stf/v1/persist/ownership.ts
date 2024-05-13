@@ -2,7 +2,7 @@ import {SQLUpdate} from "@paima/node-sdk/db";
 import {IInsertMintParams, insertMint} from "@harvest-flow/db";
 
 
-export function persistMint(
+export function persistMintOwnership(
   chainId: string,
   contractAddress: string,
   tokenId: string,

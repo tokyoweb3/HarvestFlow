@@ -57,12 +57,12 @@ async function getDetailedNftContract(contractAddress: string): Promise<GetDetai
     }
 }
 
-async function getNftHistory(contractAddress: string): Promise<GetNftHistoryResponse | FailedResult> {
+async function getNftHistoryForUser(userAddress: string): Promise<GetNftHistoryResponse | FailedResult> {
     const errorFxn = buildEndpointErrorFxn('getNftHistory');
     let response: Response;
 
     try {
-        const query = backendQueryGetNftHistory(contractAddress);
+        const query = backendQueryGetNftHistory(userAddress);
         response = await fetch(query);
     } catch (err) {
         return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
@@ -118,7 +118,7 @@ async function getClaimable(nftAddress: string, tokenId: string): Promise<GetCla
 export const queryEndpoints = {
     getAllNfts,
     getDetailedNftContract,
-    getNftHistory,
+    getNftHistoryForUser,
     getUserNfts,
     getClaimable
 }

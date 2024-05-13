@@ -1,7 +1,8 @@
 import {SQLUpdate} from "@paima/node-sdk/db";
 import {persistContractActivation, updateMintedAmount} from "./persist/contract";
 import {ContractActivatedInput, NftMintedInput} from "./types";
-import {persistMint} from "./persist/ownership";
+import {persistMintOwnership} from "./persist/ownership";
+import {saveMintTransaction} from "./persist/history";
 
 const contractAddress = process.env.TOKTOK_NFT_CONTRACT_ADDRESS!;
 const chainId = process.env.CHAIN_ID!;
@@ -20,7 +21,8 @@ export const nftMinted = async (
 ): Promise<SQLUpdate[]> => {
     console.log(`NFT ${input.tokenId} minted for contract ${contractAddress} on chain ${chainId} for ${input.receiver} with amount ${input.amount}`);
 
-    const persistOwnerShip = persistMint(chainId, contractAddress, input.tokenId, input.receiver, input.amount);
+    const persistOwnerShip = persistMintOwnership(chainId, contractAddress, input.tokenId, input.receiver, input.amount);
     const persistUpdateMintedAmount = updateMintedAmount(chainId, contractAddress, input.amount);
-    return [persistOwnerShip, persistUpdateMintedAmount];
+    const persistTransaction = saveMintTransaction(chainId, contractAddress, input.tokenId, input.receiver, input.amount);
+    return [persistOwnerShip, persistUpdateMintedAmount, persistTransaction];
 }

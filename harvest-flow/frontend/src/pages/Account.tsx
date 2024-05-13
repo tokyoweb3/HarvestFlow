@@ -1,20 +1,18 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import Layout from "@src/layouts/Layout";
 import {Box} from "@mui/material";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import TabPanel from "@src/components/TabPanel";
+import NftHistory from "@src/components/NftHistory";
+import MainController from "@src/MainController";
+import {AppContext} from "@src/main";
 
 const Account: React.FC = () => {
+    const mainController: MainController = useContext(AppContext);
 
-    const [activeTab, setActiveTab] = React.useState(0);
-
-    function a11yProps(index: number) {
-        return {
-            id: `vertical-tab-${index}`,
-            'aria-controls': `vertical-tabpanel-${index}`,
-        };
-    }
+    useEffect(() => {
+        if(!mainController.isWalletConnected()){
+            mainController.enforceWalletConnected();
+        }
+    },[]);
 
     return (
         <Layout>
@@ -24,24 +22,19 @@ const Account: React.FC = () => {
             <Box
                 sx={{ flexGrow: 1, display: 'flex'}}
             >
-                <Tabs
-                    orientation="vertical"
-                    variant="scrollable"
-                    value={activeTab}
-                    onChange={(event, newValue) => setActiveTab(newValue)}
-                    sx={{ borderRight: 1, borderColor: 'black' }}
-                >
-                    <Tab label="Dashboard" {...a11yProps(0)} />
-                    <Tab label="Project History" {...a11yProps(1)} />
-                    <Tab label="Update" {...a11yProps(2)} />
-                    <Tab label="Your NFT" {...a11yProps(3)} />
-                    <Tab label="Upcoming Projects" {...a11yProps(4)} />
-                </Tabs>
-                <TabPanel value={activeTab} index={0}> Dashboard </TabPanel>
-                <TabPanel value={activeTab} index={1}> Project History </TabPanel>
-                <TabPanel value={activeTab} index={2}> Update </TabPanel>
-                <TabPanel value={activeTab} index={3}> Your NFT </TabPanel>
-                <TabPanel value={activeTab} index={4}> Upcoming Projects </TabPanel>
+                {
+                    mainController.userAddress ?
+                    (
+                        <NftHistory />
+                    )
+                    :
+                    (
+                        <div>
+                            <div>Connect Wallet to view your account</div>
+                        </div>
+                    )
+                }
+
 
             </Box>
         </Layout>

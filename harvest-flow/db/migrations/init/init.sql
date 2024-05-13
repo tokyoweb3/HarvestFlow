@@ -34,6 +34,15 @@ CREATE TABLE ownerships (
    PRIMARY KEY (chain_id, contract_address, token_id)
 );
 
+CREATE TABLE transaction_history (
+   type VARCHAR(10) NOT NULL,
+   chain_id TEXT NOT NULL,
+   contract_address TEXT NOT NULL,
+   token_id TEXT NOT NULL,
+   amount BIGINT NOT NULL,
+   timestamp timestamp NOT NULL,
+   PRIMARY KEY (chain_id, contract_address, token_id, timestamp)
+);
 
 -- Fill up with the initial contract data
 INSERT INTO contracts (name, symbol, chain_id, address, supply_cap, minted_amount, lease_start, lease_end, min_yield, accepted_token, price, metadata_base_url, activated) VALUES
