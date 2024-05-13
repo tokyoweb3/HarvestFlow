@@ -255,7 +255,7 @@
 				"parameters": [
 					{
 						"in": "query",
-						"name": "contractAddress",
+						"name": "userAddress",
 						"required": true,
 						"schema": {
 							"type": "string"

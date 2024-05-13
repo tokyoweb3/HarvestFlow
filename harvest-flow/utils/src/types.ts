@@ -37,11 +37,13 @@ export interface NftHistory {
     history: NftHistoryEvent[];
 }
 
-type NftHistoryEventType =  'contract_created' | 'purchase' | 'activate' | 'claim' | 'remove_principal' | 'withdraw' | 'deposit';
+export type NftHistoryEventType =  'contract_created' | 'purchase' | 'activate' | 'claim' | 'remove_principal' | 'withdraw' | 'deposit';
 export type NftHistoryEvent = {
-    timestamp: number;
     eventType: NftHistoryEventType;
+    price?: string;
+    projectName?: string;
     transactionHash: string;
+    timestamp: number;
 }
 
 export interface UserNftOwnership {

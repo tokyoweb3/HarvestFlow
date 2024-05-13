@@ -18,10 +18,10 @@ export function backendQueryGetDetailedNftContract(contractAddress: string): str
     return buildBackendQuery(endpoint, options);
 }
 
-export function backendQueryGetNftHistory(contractAddress: string): string {
+export function backendQueryGetNftHistory(userAddress: string): string {
     const endpoint = 'nft_history';
     const options : QueryOptions = {
-        contractAddress,
+        userAddress,
     }
 
     return buildBackendQuery(endpoint, options);
