@@ -25,12 +25,14 @@ INSERT INTO ownerships (
     contract_address,
     token_id,
     amount,
-    timestamp
+    timestamp,
+    tx_hash
  )  VALUES (
     :type!,
     LOWER(:chainId!),
     LOWER(:contract_address!),
     :token_id!,
     :amount!,
-    :timestamp!
+    :timestamp!,
+    :tx_hash!
  );

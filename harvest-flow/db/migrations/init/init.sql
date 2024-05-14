@@ -41,6 +41,7 @@ CREATE TABLE transaction_history (
    token_id TEXT NOT NULL,
    amount BIGINT NOT NULL,
    timestamp timestamp NOT NULL,
+   tx_hash TEXT NOT NULL,
    PRIMARY KEY (chain_id, contract_address, token_id, timestamp)
 );
 

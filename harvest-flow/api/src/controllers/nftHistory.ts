@@ -10,21 +10,17 @@ export class NftHistoryController extends Controller {
     public async get(@Query() userAddress: string): Promise<NftHistory> {
         const pool = requirePool();
 
-        console.log(`Getting history for user: ${userAddress}`);
-
         const userProjectHistoryRes = await getHistoryForUser.run(
             {  owner_address: userAddress.toLowerCase() },
             pool
         );
-
-        console.log(userProjectHistoryRes);
 
         const events: NftHistoryEvent[] = userProjectHistoryRes.map((history) => {
             return {
                 eventType: ToNftHistoryEventType(history.type),
                 price: history.amount,
                 projectName: history.name,
-                transactionHash: "0x1234567890abcdef1234567890abcdef12345678",
+                transactionHash: history.tx_hash,
                 timestamp: Date.parse(history.timestamp.toISOString())
             }
         })

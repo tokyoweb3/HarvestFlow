@@ -26,12 +26,18 @@ export const nftMinted = async (
 
     // get timestamp from blockheight
     const provider = new ethers.JsonRpcProvider(ENV.CHAIN_URI);
-    const block = (await provider.getBlock(blockHeight))!;
+    const block = (await provider.getBlock(blockHeight,true))!;
     const timestamp = new Date(block.timestamp * 1000);
 
+    // get transaction hash based on from and to values
+    const mintingTransaction = block.prefetchedTransactions
+        .find(transaction => transaction.from === input.receiver && transaction.to === contractAddress);
+
+    const transactionHash = mintingTransaction?.hash ?? '0x0';
 
     const persistOwnerShip = persistMintOwnership(chainId, contractAddress, input.tokenId, input.receiver, input.amount);
     const persistUpdateMintedAmount = updateMintedAmount(chainId, contractAddress, input.amount);
-    const persistTransaction = saveMintTransaction(chainId, contractAddress, input.tokenId, input.amount, timestamp);
+    const persistTransaction = saveMintTransaction(chainId, contractAddress, input.tokenId, input.amount, timestamp, transactionHash);
     return [persistOwnerShip, persistUpdateMintedAmount, persistTransaction];
+
 }

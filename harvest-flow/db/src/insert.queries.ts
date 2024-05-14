@@ -53,6 +53,7 @@ export interface ISaveTransactionParams {
   contract_address: string;
   timestamp: DateOrString;
   token_id: string;
+  tx_hash: string;
   type: string;
 }
 
@@ -65,7 +66,7 @@ export interface ISaveTransactionQuery {
   result: ISaveTransactionResult;
 }
 
-const saveTransactionIR: any = {"usedParamSet":{"type":true,"chainId":true,"contract_address":true,"token_id":true,"amount":true,"timestamp":true},"params":[{"name":"type","required":true,"transform":{"type":"scalar"},"locs":[{"a":137,"b":142}]},{"name":"chainId","required":true,"transform":{"type":"scalar"},"locs":[{"a":155,"b":163}]},{"name":"contract_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":177,"b":194}]},{"name":"token_id","required":true,"transform":{"type":"scalar"},"locs":[{"a":202,"b":211}]},{"name":"amount","required":true,"transform":{"type":"scalar"},"locs":[{"a":218,"b":225}]},{"name":"timestamp","required":true,"transform":{"type":"scalar"},"locs":[{"a":232,"b":242}]}],"statement":"INSERT INTO transaction_history (\n    type,\n    chain_id,\n    contract_address,\n    token_id,\n    amount,\n    timestamp\n )  VALUES (\n    :type!,\n    LOWER(:chainId!),\n    LOWER(:contract_address!),\n    :token_id!,\n    :amount!,\n    :timestamp!\n )"};
+const saveTransactionIR: any = {"usedParamSet":{"type":true,"chainId":true,"contract_address":true,"token_id":true,"amount":true,"timestamp":true,"tx_hash":true},"params":[{"name":"type","required":true,"transform":{"type":"scalar"},"locs":[{"a":150,"b":155}]},{"name":"chainId","required":true,"transform":{"type":"scalar"},"locs":[{"a":168,"b":176}]},{"name":"contract_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":190,"b":207}]},{"name":"token_id","required":true,"transform":{"type":"scalar"},"locs":[{"a":215,"b":224}]},{"name":"amount","required":true,"transform":{"type":"scalar"},"locs":[{"a":231,"b":238}]},{"name":"timestamp","required":true,"transform":{"type":"scalar"},"locs":[{"a":245,"b":255}]},{"name":"tx_hash","required":true,"transform":{"type":"scalar"},"locs":[{"a":262,"b":270}]}],"statement":"INSERT INTO transaction_history (\n    type,\n    chain_id,\n    contract_address,\n    token_id,\n    amount,\n    timestamp,\n    tx_hash\n )  VALUES (\n    :type!,\n    LOWER(:chainId!),\n    LOWER(:contract_address!),\n    :token_id!,\n    :amount!,\n    :timestamp!,\n    :tx_hash!\n )"};
 
 /**
  * Query generated from SQL:
@@ -76,14 +77,16 @@ const saveTransactionIR: any = {"usedParamSet":{"type":true,"chainId":true,"cont
  *     contract_address,
  *     token_id,
  *     amount,
- *     timestamp
+ *     timestamp,
+ *     tx_hash
  *  )  VALUES (
  *     :type!,
  *     LOWER(:chainId!),
  *     LOWER(:contract_address!),
  *     :token_id!,
  *     :amount!,
- *     :timestamp!
+ *     :timestamp!,
+ *     :tx_hash!
  *  )
  * ```
  */

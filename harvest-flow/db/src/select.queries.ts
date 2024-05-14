@@ -57,6 +57,7 @@ export interface IGetHistoryForNftResult {
   contract_address: string;
   timestamp: Date;
   token_id: string;
+  tx_hash: string;
   type: string;
 }
 
@@ -90,6 +91,7 @@ export interface IGetHistoryForUserResult {
   contract_address: string;
   name: string;
   timestamp: Date;
+  tx_hash: string;
   type: string;
 }
 
@@ -99,12 +101,17 @@ export interface IGetHistoryForUserQuery {
   result: IGetHistoryForUserResult;
 }
 
-const getHistoryForUserIR: any = {"usedParamSet":{"owner_address":true},"params":[{"name":"owner_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":554,"b":567}]}],"statement":"SELECT transaction_history.contract_address, transaction_history.type, transaction_history.amount, transaction_history.timestamp, contracts.name\nFROM transaction_history\n    INNER JOIN ownerships ON transaction_history.chain_id = ownerships.chain_id AND transaction_history.contract_address = ownerships.contract_address AND transaction_history.token_id = ownerships.token_id\n    INNER JOIN contracts ON transaction_history.chain_id = contracts.chain_id AND transaction_history.contract_address = contracts.address\nWHERE ownerships.owner_address = LOWER(:owner_address)"};
+const getHistoryForUserIR: any = {"usedParamSet":{"owner_address":true},"params":[{"name":"owner_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":618,"b":631}]}],"statement":"SELECT transaction_history.contract_address,\n       transaction_history.type,\n       transaction_history.amount,\n       transaction_history.timestamp,\n       transaction_history.tx_hash,\n       contracts.name\nFROM transaction_history\n    INNER JOIN ownerships ON transaction_history.chain_id = ownerships.chain_id AND transaction_history.contract_address = ownerships.contract_address AND transaction_history.token_id = ownerships.token_id\n    INNER JOIN contracts ON transaction_history.chain_id = contracts.chain_id AND transaction_history.contract_address = contracts.address\nWHERE ownerships.owner_address = LOWER(:owner_address)"};
 
 /**
  * Query generated from SQL:
  * ```
- * SELECT transaction_history.contract_address, transaction_history.type, transaction_history.amount, transaction_history.timestamp, contracts.name
+ * SELECT transaction_history.contract_address,
+ *        transaction_history.type,
+ *        transaction_history.amount,
+ *        transaction_history.timestamp,
+ *        transaction_history.tx_hash,
+ *        contracts.name
  * FROM transaction_history
  *     INNER JOIN ownerships ON transaction_history.chain_id = ownerships.chain_id AND transaction_history.contract_address = ownerships.contract_address AND transaction_history.token_id = ownerships.token_id
  *     INNER JOIN contracts ON transaction_history.chain_id = contracts.chain_id AND transaction_history.contract_address = contracts.address
