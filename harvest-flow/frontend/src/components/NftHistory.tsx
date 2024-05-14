@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import MainController from "@src/MainController";
 import {AppContext} from "@src/main";
 import {NftHistoryEvent} from "@harvest-flow/utils";
+import {formatTimestampForHistoryTable} from "@src/utils";
 
 const NftHistory = () => {
     const mainController: MainController = useContext(AppContext);
@@ -46,7 +47,7 @@ const NftHistory = () => {
                             <TableCell align="right">{row.price}</TableCell>
                             <TableCell>{row.projectName}</TableCell>
                             <TableCell>{row.transactionHash}</TableCell>
-                            <TableCell>{row.timestamp}</TableCell>
+                            <TableCell>{formatTimestampForHistoryTable(row.timestamp)}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

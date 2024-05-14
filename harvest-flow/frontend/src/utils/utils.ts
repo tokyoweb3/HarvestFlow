@@ -27,6 +27,30 @@ export function formatTime(time: number): string {
     return `${String(days)} d ${String(hours).padStart(2, '0')} hrs ${String(minutes).padStart(2, '0')} mins ${String(seconds).padStart(2, '0')} secs`;
 }
 
+export function formatTimestampForHistoryTable(timestamp: number): string {
+    const date = new Date(timestamp); // Convert epoch to milliseconds
+
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = months[date.getMonth()];
+
+    const day = date.getDate();
+    const daySuffix = (day: number): string => {
+        if (day > 3 && day < 21) return "th"; // Covers 11th to 20th
+        switch (day % 10) {
+            case 1: return "st";
+            case 2: return "nd";
+            case 3: return "rd";
+            default: return "th";
+        }
+    };
+
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    return `${month}.${day}${daySuffix(day)} ${hours}:${minutes}:${seconds}`;
+}
+
 export function calculateTotalRewards(
     nftDetails: NftContractDetails,
     amountToBuy: number

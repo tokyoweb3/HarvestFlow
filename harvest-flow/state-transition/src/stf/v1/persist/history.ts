@@ -6,8 +6,8 @@ export function saveMintTransaction(
     chainId: string,
     contractAddress: string,
     tokenId: string,
-    owner: string,
     amount: number,
+    timestamp: Date
 ): SQLUpdate {
     const persistTransactionParams: ISaveTransactionParams = {
         type: "mint",
@@ -15,7 +15,7 @@ export function saveMintTransaction(
         chainId: chainId,
         contract_address: contractAddress,
         token_id: tokenId,
-        timestamp: new Date(), // TODO get from blockheight
+        timestamp: timestamp,
     };
 
     return [saveTransaction, persistTransactionParams];

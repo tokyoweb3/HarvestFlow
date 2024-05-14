@@ -26,7 +26,7 @@ export default async function (
         case PARSER_KEYS.contractActivated:
             return contractActivated(expanded);
         case PARSER_KEYS.nftMinted:
-            return nftMinted(expanded);
+            return nftMinted(expanded, blockHeight);
         default:
             return [];
     }
