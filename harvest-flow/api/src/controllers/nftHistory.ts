@@ -1,8 +1,7 @@
 import {Get, Query, Route} from "tsoa";
 import {Controller} from "@tsoa/runtime";
 import {NftHistory, NftHistoryEvent, NftHistoryEventType} from "@harvest-flow/utils";
-import {getContract, requirePool} from "@harvest-flow/db";
-import {getHistoryForUser} from "@harvest-flow/db/build/select.queries";
+import {getHistoryForUser, requirePool} from "@harvest-flow/db";
 
 
 @Route('nft_history')

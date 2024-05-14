@@ -1,5 +1,6 @@
-import {ISaveTransactionParams, saveTransaction} from "@harvest-flow/db/build/insert.queries";
+
 import {SQLUpdate} from "@paima/node-sdk/db";
+import {ISaveTransactionParams, saveTransaction} from "@harvest-flow/db";
 
 export function saveMintTransaction(
     chainId: string,
