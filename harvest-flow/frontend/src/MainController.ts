@@ -138,7 +138,14 @@ class MainController {
 
   async getNftHistoryForUser(): Promise<NftHistory> {
     const response = await Paima.default.getNftHistoryForUser(this.userAddress!);
-    console.debug("Get Nft History response: ", response);
+    if (!response.success) {
+      throw new Error((response as FailedResult).errorMessage);
+    }
+    return {address: response.address, history: response.history};
+  }
+
+  async getProjectHistory(contractAddress : string): Promise<NftHistory> {
+    const response = await Paima.default.getHistoryForProject(contractAddress);
     if (!response.success) {
       throw new Error((response as FailedResult).errorMessage);
     }

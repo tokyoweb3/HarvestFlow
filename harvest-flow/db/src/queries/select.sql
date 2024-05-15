@@ -3,10 +3,10 @@ SELECT *
 FROM contracts
 WHERE contracts.chain_id = :chain_id AND contracts.address = LOWER(:address);
 
-/* @name getHistoryForNft */
+/* @name getHistoryForContract */
 SELECT *
 FROM transaction_history
-WHERE transaction_history.chain_id = LOWER(:chain_id) AND transaction_history.contract_address = LOWER(:contract_address) AND transaction_history.token_id = :token_id;
+WHERE transaction_history.chain_id = LOWER(:chain_id) AND transaction_history.contract_address = LOWER(:contract_address);
 
 /* @name getHistoryForUser */
 SELECT transaction_history.contract_address,

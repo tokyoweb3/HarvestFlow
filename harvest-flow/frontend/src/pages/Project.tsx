@@ -6,6 +6,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@src/components/TabPanel";
 import {AppContext} from "@src/main";
+import NftHistory from "@src/components/NftHistory";
 
 
 
@@ -41,7 +42,9 @@ const Project: React.FC = () => {
                     <Tab label="Q&A" />
                 </Tabs>
                 <TabPanel value={activeTab} index={0}> Overview </TabPanel>
-                <TabPanel value={activeTab} index={1}> Reports </TabPanel>
+                <TabPanel value={activeTab} index={1}>
+                    <NftHistory contractAddress={mainController.getContractAddress()} />
+                </TabPanel>
                 <TabPanel value={activeTab} index={2}> Q&A </TabPanel>
             </Box>
         </Layout>

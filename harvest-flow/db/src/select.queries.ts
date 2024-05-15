@@ -43,15 +43,14 @@ const getContractIR: any = {"usedParamSet":{"chain_id":true,"address":true},"par
 export const getContract = new PreparedQuery<IGetContractParams,IGetContractResult>(getContractIR);
 
 
-/** 'GetHistoryForNft' parameters type */
-export interface IGetHistoryForNftParams {
+/** 'GetHistoryForContract' parameters type */
+export interface IGetHistoryForContractParams {
   chain_id?: string | null | void;
   contract_address?: string | null | void;
-  token_id?: string | null | void;
 }
 
-/** 'GetHistoryForNft' return type */
-export interface IGetHistoryForNftResult {
+/** 'GetHistoryForContract' return type */
+export interface IGetHistoryForContractResult {
   amount: string;
   chain_id: string;
   contract_address: string;
@@ -61,23 +60,23 @@ export interface IGetHistoryForNftResult {
   type: string;
 }
 
-/** 'GetHistoryForNft' query type */
-export interface IGetHistoryForNftQuery {
-  params: IGetHistoryForNftParams;
-  result: IGetHistoryForNftResult;
+/** 'GetHistoryForContract' query type */
+export interface IGetHistoryForContractQuery {
+  params: IGetHistoryForContractParams;
+  result: IGetHistoryForContractResult;
 }
 
-const getHistoryForNftIR: any = {"usedParamSet":{"chain_id":true,"contract_address":true,"token_id":true},"params":[{"name":"chain_id","required":false,"transform":{"type":"scalar"},"locs":[{"a":77,"b":85}]},{"name":"contract_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":137,"b":153}]},{"name":"token_id","required":false,"transform":{"type":"scalar"},"locs":[{"a":191,"b":199}]}],"statement":"SELECT *\nFROM transaction_history\nWHERE transaction_history.chain_id = LOWER(:chain_id) AND transaction_history.contract_address = LOWER(:contract_address) AND transaction_history.token_id = :token_id"};
+const getHistoryForContractIR: any = {"usedParamSet":{"chain_id":true,"contract_address":true},"params":[{"name":"chain_id","required":false,"transform":{"type":"scalar"},"locs":[{"a":77,"b":85}]},{"name":"contract_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":137,"b":153}]}],"statement":"SELECT *\nFROM transaction_history\nWHERE transaction_history.chain_id = LOWER(:chain_id) AND transaction_history.contract_address = LOWER(:contract_address)"};
 
 /**
  * Query generated from SQL:
  * ```
  * SELECT *
  * FROM transaction_history
- * WHERE transaction_history.chain_id = LOWER(:chain_id) AND transaction_history.contract_address = LOWER(:contract_address) AND transaction_history.token_id = :token_id
+ * WHERE transaction_history.chain_id = LOWER(:chain_id) AND transaction_history.contract_address = LOWER(:contract_address)
  * ```
  */
-export const getHistoryForNft = new PreparedQuery<IGetHistoryForNftParams,IGetHistoryForNftResult>(getHistoryForNftIR);
+export const getHistoryForContract = new PreparedQuery<IGetHistoryForContractParams,IGetHistoryForContractResult>(getHistoryForContractIR);
 
 
 /** 'GetHistoryForUser' parameters type */

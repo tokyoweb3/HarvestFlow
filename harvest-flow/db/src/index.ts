@@ -16,13 +16,13 @@ export {
 export {
     getContract,
     getHistoryForUser,
-    getHistoryForNft,
+    getHistoryForContract,
     IGetContractParams,
     IGetContractResult,
     IGetHistoryForUserParams,
     IGetHistoryForUserResult,
-    IGetHistoryForNftParams,
-    IGetHistoryForNftResult,
+    IGetHistoryForContractParams,
+    IGetHistoryForContractResult,
 } from './select.queries.js';
 
 export {

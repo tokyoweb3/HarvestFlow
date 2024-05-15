@@ -37,7 +37,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "NftHistoryEvent": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"transactionHash":{"dataType":"string","required":true},"eventType":{"ref":"NftHistoryEventType","required":true},"timestamp":{"dataType":"double","required":true}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"timestamp":{"dataType":"double","required":true},"transactionHash":{"dataType":"string","required":true},"projectName":{"dataType":"string"},"price":{"dataType":"string"},"eventType":{"ref":"NftHistoryEventType","required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "NftHistory": {
@@ -126,11 +126,11 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/nft_history',
+        app.get('/nft_history/user',
             ...(fetchMiddlewares<RequestHandler>(NftHistoryController)),
-            ...(fetchMiddlewares<RequestHandler>(NftHistoryController.prototype.get)),
+            ...(fetchMiddlewares<RequestHandler>(NftHistoryController.prototype.getUserHistory)),
 
-            function NftHistoryController_get(request: any, response: any, next: any) {
+            function NftHistoryController_getUserHistory(request: any, response: any, next: any) {
             const args = {
                     userAddress: {"in":"query","name":"userAddress","required":true,"dataType":"string"},
             };
@@ -144,7 +144,32 @@ export function RegisterRoutes(app: Router) {
                 const controller = new NftHistoryController();
 
 
-              const promise = controller.get.apply(controller, validatedArgs as any);
+              const promise = controller.getUserHistory.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/nft_history/project',
+            ...(fetchMiddlewares<RequestHandler>(NftHistoryController)),
+            ...(fetchMiddlewares<RequestHandler>(NftHistoryController.prototype.getProjectHistory)),
+
+            function NftHistoryController_getProjectHistory(request: any, response: any, next: any) {
+            const args = {
+                    contractAddress: {"in":"query","name":"contractAddress","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new NftHistoryController();
+
+
+              const promise = controller.getProjectHistory.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

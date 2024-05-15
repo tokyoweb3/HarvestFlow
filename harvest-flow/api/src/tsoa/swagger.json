@@ -45,21 +45,27 @@
 			},
 			"NftHistoryEvent": {
 				"properties": {
+					"timestamp": {
+						"type": "number",
+						"format": "double"
+					},
 					"transactionHash": {
+						"type": "string"
+					},
+					"projectName": {
+						"type": "string"
+					},
+					"price": {
 						"type": "string"
 					},
 					"eventType": {
 						"$ref": "#/components/schemas/NftHistoryEventType"
-					},
-					"timestamp": {
-						"type": "number",
-						"format": "double"
 					}
 				},
 				"required": [
+					"timestamp",
 					"transactionHash",
-					"eventType",
-					"timestamp"
+					"eventType"
 				],
 				"type": "object"
 			},
@@ -236,9 +242,9 @@
 				]
 			}
 		},
-		"/nft_history": {
+		"/nft_history/user": {
 			"get": {
-				"operationId": "Get",
+				"operationId": "GetUserHistory",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -256,6 +262,34 @@
 					{
 						"in": "query",
 						"name": "userAddress",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/nft_history/project": {
+			"get": {
+				"operationId": "GetProjectHistory",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NftHistory"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "contractAddress",
 						"required": true,
 						"schema": {
 							"type": "string"

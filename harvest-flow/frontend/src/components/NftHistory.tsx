@@ -6,17 +6,30 @@ import {NftHistoryEvent} from "@harvest-flow/utils";
 import {formatTimestampForHistoryTable, middleEllipsis} from "@src/utils";
 import {CHAIN_EXPLORER_URI} from "@src/utils/constants";
 
-const NftHistory = () => {
+interface NftHistoryProps {
+    contractAddress? : string;
+}
+
+const NftHistory : React.FC<NftHistoryProps> = ({contractAddress}) => {
+    const isProjectHistory = contractAddress !== undefined;
     const mainController: MainController = useContext(AppContext);
 
     const [nftHistory, setNftHistory] = React.useState<NftHistoryEvent[]>([]);
 
     useEffect(() => {
-        mainController.getNftHistoryForUser().then((response) => {
-            if(response.history) {
-                setNftHistory(response.history);
-            }
-        });
+        if(isProjectHistory) {
+            mainController.getProjectHistory(contractAddress).then((response) => {
+                if (response.history) {
+                    setNftHistory(response.history);
+                }
+            });
+        } else {
+            mainController.getNftHistoryForUser().then((response) => {
+                if (response.history) {
+                    setNftHistory(response.history);
+                }
+            });
+        }
     },[]);
 
     return (
@@ -34,7 +47,7 @@ const NftHistory = () => {
                     <TableRow>
                         <TableCell>Type</TableCell>
                         <TableCell align="right">Price</TableCell>
-                        <TableCell>Project</TableCell>
+                        {!isProjectHistory && (<TableCell>Project</TableCell>)}
                         <TableCell>Tx</TableCell>
                         <TableCell>Time</TableCell>
                     </TableRow>
@@ -46,7 +59,7 @@ const NftHistory = () => {
                                 {row.eventType}
                             </TableCell>
                             <TableCell align="right">{row.price}</TableCell>
-                            <TableCell>{row.projectName}</TableCell>
+                            {!isProjectHistory && (<TableCell>{row.projectName}</TableCell>)}
                             <TableCell><a href={`${CHAIN_EXPLORER_URI}/tx/${row.transactionHash}`}>{middleEllipsis(row.transactionHash)}</a></TableCell>
                             <TableCell>{formatTimestampForHistoryTable(row.timestamp)}</TableCell>
                         </TableRow>

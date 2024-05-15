@@ -3,6 +3,7 @@ declare const endpoints: {
     getAllNfts: (notEnded: boolean) => Promise<import("./types").GetAllNftContractsResponse | import("@paima/sdk/mw-core").FailedResult>;
     getDetailedNftContract: (contractAddress: string) => Promise<import("@paima/sdk/mw-core").FailedResult | import("./types").GetDetailedNftContractResponse>;
     getNftHistoryForUser: (userAddress: string) => Promise<import("@paima/sdk/mw-core").FailedResult | import("./types").GetNftHistoryResponse>;
+    getHistoryForProject: (contractAddress: string) => Promise<import("@paima/sdk/mw-core").FailedResult | import("./types").GetNftHistoryResponse>;
     getUserNfts: (userAddress: string) => Promise<import("@paima/sdk/mw-core").FailedResult | import("./types").GetUserNftsResponse>;
     getClaimable: (nftAddress: string, tokenId: string) => Promise<import("@paima/sdk/mw-core").FailedResult | import("./types").GetClaimableResponse>;
     exportLogs: () => string;
