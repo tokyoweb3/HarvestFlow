@@ -16,7 +16,7 @@ SELECT transaction_history.contract_address,
        transaction_history.tx_hash,
        contracts.name
 FROM transaction_history
-    INNER JOIN ownerships ON transaction_history.chain_id = ownerships.chain_id AND transaction_history.contract_address = ownerships.contract_address AND transaction_history.token_id = ownerships.token_id
+    INNER JOIN tokens ON transaction_history.chain_id = tokens.chain_id AND transaction_history.contract_address = tokens.contract_address AND transaction_history.token_id = tokens.token_id
     INNER JOIN contracts ON transaction_history.chain_id = contracts.chain_id AND transaction_history.contract_address = contracts.address
-WHERE ownerships.owner_address = LOWER(:owner_address);
+WHERE tokens.owner_address = LOWER(:owner_address);
 

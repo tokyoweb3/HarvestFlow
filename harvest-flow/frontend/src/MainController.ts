@@ -69,13 +69,13 @@ class MainController {
     }
   }
 
-  async buyNft(amountToBuy : number, price: number){
+  async buyNft(amountToBuy : number, price: bigint){
     if(!this.isWalletConnected()){
       this.callback(null, null, "Wallet not connected");
       return;
     }
 
-    const amountToPay = amountToBuy * price;
+    const amountToPay = amountToBuy * Number(ethers.utils.formatEther(price));
     // get approval for the contract
     this.callback("Approving payment", null, null);
     const paymentTokenContract = new Contract(
@@ -101,7 +101,7 @@ class MainController {
       this.callback("Buying NFT", null, null);
       try {
         //TODO: show some info about the NFT
-        await this.lendingContract.mint(amountToBuy, this.userAddress);
+        await this.lendingContract.publicMint(amountToBuy);
         this.callback(null, "NFT bought successfully", null);
       } catch (e) {
         console.error("Error buying NFT: ", e);

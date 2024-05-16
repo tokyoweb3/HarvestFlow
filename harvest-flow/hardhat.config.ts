@@ -13,7 +13,14 @@ dotenv.config({ path: './../.env.testnet', processEnv: testnet });
 dotenv.config({ path: './../.env.mainnet', processEnv: mainnet });
 
 const config: HardhatUserConfig = {
-  solidity: '0.8.20',
+  solidity:{
+    version: '0.8.20',
+    settings: {
+      optimizer: {
+        enabled: true,
+      },
+    },
+  },
   paths: {
     sources: './contracts/evm/solidity',
     tests: './contracts/evm/test',
@@ -33,6 +40,7 @@ const config: HardhatUserConfig = {
     testnet: {
       url: testnet.CHAIN_URI ?? '',
       accounts: testnet.DEPLOYER_PRIVATE_KEY == null ? [] : [testnet.DEPLOYER_PRIVATE_KEY],
+      allowUnlimitedContractSize: true,
     },
     production: {
       url: mainnet.CHAIN_URI ?? '',
@@ -49,6 +57,7 @@ const config: HardhatUserConfig = {
     clear: true,
     flat: false,
   },
+
 };
 
 export default config;

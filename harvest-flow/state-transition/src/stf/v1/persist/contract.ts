@@ -17,7 +17,7 @@ export function persistContractActivation(
 export function updateMintedAmount(
     chainId: string,
     contractAddress: string,
-    amount: number
+    amount: bigint
 ): SQLUpdate {
   const addMintedAmountParams : IAddMintedAmountParams = {
     amount : amount,

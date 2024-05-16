@@ -2,6 +2,7 @@
 // eg. `0X97819177AF742660E6D8612F5E7882E538C7D9C9` will become `0x9781917..D9C9`
 import {NftContractDetails} from "@harvest-flow/utils";
 import { YEAR_IN_S} from "@src/utils/constants";
+import {ethers} from "ethers";
 
 export function middleEllipsis(address: string, length: number = 15) {
     const splitter = '...'
@@ -56,6 +57,6 @@ export function calculateTotalRewards(
     amountToBuy: number
 ): number {
     const timeLeft = nftDetails.leaseEnd - Date.now();
-    const totalRewards = (amountToBuy * Number.parseInt(nftDetails.price)) * (nftDetails.minYield/1e18) * (timeLeft / YEAR_IN_S / 1000);
+    const totalRewards = (amountToBuy * Number(ethers.utils.formatEther(nftDetails.price) )) * Number(ethers.utils.formatEther(nftDetails.minYield)) * timeLeft / YEAR_IN_S / 1000;
     return totalRewards;
 }

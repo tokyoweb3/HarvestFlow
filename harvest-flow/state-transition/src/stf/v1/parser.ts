@@ -34,6 +34,7 @@ function manualParse(input: string): undefined | ManualParsedSubmittedInput {
 
     const manuallyParsedPrefixes: string[] = [
         PARSER_PREFIXES[PARSER_KEYS.nftMinted],
+        PARSER_PREFIXES[PARSER_KEYS.claimed],
     ];
     if (!manuallyParsedPrefixes.includes(parts[0])) return;
 
@@ -48,6 +49,7 @@ function manualParse(input: string): undefined | ManualParsedSubmittedInput {
         }
 
     } catch (e) {
+        console.log(e, 'Manual parsing error');
         return;
     }
 }
@@ -76,11 +78,13 @@ export function isInvalid(input: ParsedSubmittedInput): input is InvalidInput {
 function parseMinted(jsonData: any): NftMintedInput | undefined {
     if (
         !Object.hasOwn(jsonData, 'receiver') ||
-        !Object.hasOwn(jsonData, 'tokenId') ||
+        !Object.hasOwn(jsonData, 'startTokenId') ||
         !Object.hasOwn(jsonData, 'amount') ||
+        !Object.hasOwn(jsonData, 'cost') ||
         typeof jsonData.receiver !== 'string' ||
-        typeof jsonData.tokenId !== 'string' ||
-        typeof jsonData.amount !== 'string'
+        typeof jsonData.startTokenId !== 'string' ||
+        typeof jsonData.amount !== 'string' ||
+        typeof jsonData.cost !== 'string'
     ) {
         return;
     }
@@ -88,8 +92,9 @@ function parseMinted(jsonData: any): NftMintedInput | undefined {
     return {
         input: PARSER_KEYS.nftMinted,
         receiver: jsonData.receiver,
-        tokenId: jsonData.tokenId,
-        amount: Number(jsonData.amount),
+        startTokenId: BigInt(jsonData.startTokenId),
+        amount: BigInt(jsonData.amount),
+        cost: BigInt(jsonData.cost),
     };
 }
 
@@ -108,8 +113,8 @@ function parseClaimed(jsonData: any): ClaimedInput | undefined {
     return {
         input: PARSER_KEYS.claimed,
         receiver: jsonData.receiver,
-        tokenId: jsonData.tokenId,
-        amount: Number(jsonData.amount),
+        tokenId: BigInt(jsonData.tokenId),
+        amount: BigInt(jsonData.amount),
     };
 }
 

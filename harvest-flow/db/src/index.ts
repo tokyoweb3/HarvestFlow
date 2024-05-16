@@ -5,10 +5,10 @@ export type { Pool };
 
 
 export {
-    insertMint,
+    insertToken,
     saveTransaction,
-    IInsertMintParams,
-    IInsertMintResult,
+    IInsertTokenParams,
+    IInsertTokenResult,
     ISaveTransactionParams,
     ISaveTransactionResult,
 } from './insert.queries.js';

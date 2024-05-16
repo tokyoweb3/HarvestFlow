@@ -7,6 +7,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import {NftContractDetails} from "@harvest-flow/utils";
 import {calculateTotalRewards, formatTime} from "@src/utils";
+import {ethers} from "ethers";
 
 interface AmountInputProps {
     amount : number;
@@ -89,7 +90,7 @@ const BuyPanel : React.FC<BuyPanelProps> = (
             console.error("Wallet is not connected");
         }
 
-        mainController.buyNft(amountToBuy, Number.parseInt(nftDetails.price)).then(() => {
+        mainController.buyNft(amountToBuy, nftDetails.price).then(() => {
             mainController.getDetailedNftContract(nftContractAddress).then((details) => {
                 setNftDetails(details);
             });
@@ -111,7 +112,7 @@ const BuyPanel : React.FC<BuyPanelProps> = (
             <Container>
                 <Stack alignItems={"center"} direction="column">
                     <Container sx={{width:"50%", margin:"10px"}}>
-                        {nftDetails && (<ProgressBar total={nftDetails.supplyCap} progress={nftDetails.mintedAmount}/>)}
+                        {nftDetails && (<ProgressBar total={Number(nftDetails.supplyCap)} progress={Number(nftDetails.mintedAmount)}/>)}
                     </Container>
                     <Stack direction={"column"} alignItems={"center"} >
                         {/*TODO: from where this value comes from */}
@@ -120,7 +121,7 @@ const BuyPanel : React.FC<BuyPanelProps> = (
                         <Stack direction={"row"} spacing={"4px"} >
                             <div> { !nftDetails ?
                                 "----"
-                                : (Number.parseInt(nftDetails.price) * amountToBuy).toString()
+                                : Number(ethers.utils.formatEther(nftDetails.price)) * amountToBuy
 
                             }</div>
                             <div>DAI</div>
@@ -141,8 +142,8 @@ const BuyPanel : React.FC<BuyPanelProps> = (
                     </Stack>
                     <Divider orientation="vertical" variant="inset" flexItem sx={{width: "2px"}}/>
                     <Stack direction={"column"} alignItems="start">
-                        <span>{nftDetails ? nftDetails.minYield / 1e16 : "-"} %</span>
-                        <span>{nftDetails ? nftDetails.price : "----"} DAI</span>
+                        <span>{nftDetails ? Number(ethers.utils.formatEther(nftDetails.minYield)) * 100 : "-"} %</span>
+                        <span>{nftDetails ? ethers.utils.formatEther(nftDetails.price) : "----"} DAI</span>
                         {/*TODO: actual values*/}
                         <span>April, 2027</span>
                         <span> 24 month </span>

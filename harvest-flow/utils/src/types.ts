@@ -16,16 +16,15 @@ export interface NftContractDetails {
     chainId: string; // caip-2 format
     address: string; // address on chain
 
-    supplyCap: number
-    mintedAmount: number; // <= supplyCap
+    supplyCap: bigint
+    mintedAmount: bigint; // <= supplyCap
 
     leaseStart: number;
     leaseEnd: number;
-    minYield: number; // min fixed interest rate
+    minYield: bigint; // min fixed interest rate scaled by 1e18
 
     accepted_token: string; // Dai only for now
-    price: string;
-    poolBalance: string; // funds remaining in the contract to pay holders
+    price: bigint; // price to purchase the NFT
 
     metadata: any; // cached data from IPFS
 
@@ -37,10 +36,17 @@ export interface NftHistory {
     history: NftHistoryEvent[];
 }
 
-export type NftHistoryEventType =  'contract_created' | 'purchase' | 'activate' | 'claim' | 'remove_principal' | 'withdraw' | 'deposit';
+export enum NftHistoryEventType {
+    CONTRACT_CREATED = 'contract_created',
+    MINT = 'mint',
+    ACTIVATE = 'activate',
+    CLAIM = 'claim',
+    REDEEM = 'redeem',
+}
+
 export type NftHistoryEvent = {
     eventType: NftHistoryEventType;
-    price?: string;
+    price?: bigint;
     projectName?: string;
     transactionHash: string;
     timestamp: number;

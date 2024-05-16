@@ -19,7 +19,7 @@ export class NftHistoryController extends Controller {
         const events: NftHistoryEvent[] = userProjectHistoryRes.map((history) => {
             return {
                 eventType: ToNftHistoryEventType(history.type),
-                price: history.amount,
+                price: history.amount ?? undefined,
                 projectName: history.name,
                 transactionHash: history.tx_hash,
                 timestamp: Date.parse(history.timestamp.toISOString())
@@ -38,15 +38,15 @@ export class NftHistoryController extends Controller {
     public async getProjectHistory(@Query() contractAddress: string): Promise<NftHistory> {
         const pool = requirePool();
 
-        const userProjectHistoryRes = await getHistoryForContract.run(
+        const projectHistoryRes = await getHistoryForContract.run(
             { contract_address: contractAddress.toLowerCase(), chain_id: chainId },
             pool
         );
 
-        const events: NftHistoryEvent[] = userProjectHistoryRes.map((history) => {
+        const events: NftHistoryEvent[] = projectHistoryRes.map((history) => {
             return {
                 eventType: ToNftHistoryEventType(history.type),
-                price: history.amount,
+                price: history.amount ?? undefined,
                 transactionHash: history.tx_hash,
                 timestamp: Date.parse(history.timestamp.toISOString())
             }
@@ -64,19 +64,15 @@ export class NftHistoryController extends Controller {
 function ToNftHistoryEventType(eventType: string): NftHistoryEventType {
     switch(eventType) {
         case 'contract_created':
-            return 'contract_created';
+            return NftHistoryEventType.CONTRACT_CREATED;
         case 'mint':
-            return 'purchase';
+            return NftHistoryEventType.MINT;
         case 'activate':
-            return 'activate';
+            return NftHistoryEventType.ACTIVATE;
         case 'claim':
-            return 'claim';
-        case 'remove_principal':
-            return 'remove_principal';
-        case 'withdraw':
-            return 'withdraw';
-        case 'deposit':
-            return 'deposit';
+            return NftHistoryEventType.CLAIM;
+        case 'redeem':
+            return NftHistoryEventType.REDEEM;
         default:
             throw new Error(`Unknown event type: ${eventType}`);
     }

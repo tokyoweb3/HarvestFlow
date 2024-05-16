@@ -1,18 +1,16 @@
 /*
- @name insertMint
+ @name insertToken
  */
-INSERT INTO ownerships (
+INSERT INTO tokens (
     chain_id,
     contract_address,
     token_id,
-    owner_address,
-    amount
+    owner_address
 ) VALUES (
     LOWER(:chainId!),
     LOWER(:contract_address!),
     :token_id!,
-    LOWER(:owner_address!),
-    :amount!
+    LOWER(:owner_address!)
 );
 
 /*

@@ -1,4 +1,4 @@
 export default [
-    "function mint(uint256,address) public",
+    "function publicMint(uint256) public",
     "function claim(uint256) public"
 ]

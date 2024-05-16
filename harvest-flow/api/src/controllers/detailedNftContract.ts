@@ -29,11 +29,10 @@ export class DetailedNftContractController extends Controller {
                 mintedAmount: getContractDataResult[0].minted_amount,
                 leaseStart:  Date.parse(getContractDataResult[0].lease_start.toISOString()),
                 leaseEnd:  Date.parse(getContractDataResult[0].lease_end.toISOString()),
-                minYield: Number(getContractDataResult[0].min_yield),
+                minYield: getContractDataResult[0].min_yield,
                 accepted_token: getContractDataResult[0].accepted_token,
                 price: getContractDataResult[0].price,
-                poolBalance: '0', // TODO: get pool balance
-                metadata: getContractDataResult[0].metadata_base_url ? getContractDataResult[0].metadata_base_url : undefined,
+                metadata: getContractDataResult[0].metadata_base_url,
                 activated: getContractDataResult[0].activated,
             };
         } else {

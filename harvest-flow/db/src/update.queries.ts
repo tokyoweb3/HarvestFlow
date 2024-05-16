@@ -31,7 +31,7 @@ export const activateContract = new PreparedQuery<IActivateContractParams,IActiv
 
 /** 'AddMintedAmount' parameters type */
 export interface IAddMintedAmountParams {
-  amount: number;
+  amount: bigint;
   chainId: string;
   contractAddress?: string | null | void;
 }

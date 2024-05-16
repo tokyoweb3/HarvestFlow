@@ -1,21 +1,19 @@
 import {SQLUpdate} from "@paima/node-sdk/db";
-import {IInsertMintParams, insertMint} from "@harvest-flow/db";
+import {IInsertTokenParams, insertToken} from "@harvest-flow/db";
 
 
-export function persistMintOwnership(
+export function persistTokenOwnership(
   chainId: string,
   contractAddress: string,
-  tokenId: string,
+  tokenId: bigint,
   owner: string,
-  amount: number,
 ): SQLUpdate {
-  const persistMintParams: IInsertMintParams = {
-      amount: amount,
+  const persistTokenOwnershipParams: IInsertTokenParams = {
       chainId: chainId,
       contract_address: contractAddress,
       owner_address: owner,
       token_id: tokenId,
   };
 
-  return [insertMint, persistMintParams];
+  return [insertToken, persistTokenOwnershipParams];
 }

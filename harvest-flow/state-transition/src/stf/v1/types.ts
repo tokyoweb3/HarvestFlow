@@ -24,13 +24,14 @@ export interface ContractActivatedInput {
 export interface NftMintedInput {
     input : 'minted'
     receiver : string
-    tokenId : string
-    amount : number
+    startTokenId : bigint
+    amount : bigint
+    cost : bigint
 }
 
 export interface ClaimedInput {
     input : 'claimed'
     receiver : string
-    tokenId : string
-    amount : number
+    tokenId : bigint
+    amount : bigint
 }

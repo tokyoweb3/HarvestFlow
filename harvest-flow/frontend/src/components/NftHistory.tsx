@@ -5,6 +5,7 @@ import {AppContext} from "@src/main";
 import {NftHistoryEvent} from "@harvest-flow/utils";
 import {formatTimestampForHistoryTable, middleEllipsis} from "@src/utils";
 import {CHAIN_EXPLORER_URI} from "@src/utils/constants";
+import {ethers} from "ethers";
 
 interface NftHistoryProps {
     contractAddress? : string;
@@ -58,7 +59,7 @@ const NftHistory : React.FC<NftHistoryProps> = ({contractAddress}) => {
                             <TableCell component="th" scope="row" >
                                 {row.eventType}
                             </TableCell>
-                            <TableCell align="right">{row.price}</TableCell>
+                            <TableCell align="right">{ethers.utils.formatEther(row.price)}</TableCell>
                             {!isProjectHistory && (<TableCell>{row.projectName}</TableCell>)}
                             <TableCell><a href={`${CHAIN_EXPLORER_URI}/tx/${row.transactionHash}`}>{middleEllipsis(row.transactionHash)}</a></TableCell>
                             <TableCell>{formatTimestampForHistoryTable(row.timestamp)}</TableCell>

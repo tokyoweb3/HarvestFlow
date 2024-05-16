@@ -3,56 +3,51 @@ import { PreparedQuery } from '@pgtyped/runtime';
 
 export type DateOrString = Date | string;
 
-export type NumberOrString = number | string;
-
-/** 'InsertMint' parameters type */
-export interface IInsertMintParams {
-  amount: number;
+/** 'InsertToken' parameters type */
+export interface IInsertTokenParams {
   chainId: string;
   contract_address: string;
   owner_address: string;
-  token_id: string;
+  token_id: bigint;
 }
 
-/** 'InsertMint' return type */
-export type IInsertMintResult = void;
+/** 'InsertToken' return type */
+export type IInsertTokenResult = void;
 
-/** 'InsertMint' query type */
-export interface IInsertMintQuery {
-  params: IInsertMintParams;
-  result: IInsertMintResult;
+/** 'InsertToken' query type */
+export interface IInsertTokenQuery {
+  params: IInsertTokenParams;
+  result: IInsertTokenResult;
 }
 
-const insertMintIR: any = {"usedParamSet":{"chainId":true,"contract_address":true,"token_id":true,"owner_address":true,"amount":true},"params":[{"name":"chainId","required":true,"transform":{"type":"scalar"},"locs":[{"a":126,"b":134}]},{"name":"contract_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":148,"b":165}]},{"name":"token_id","required":true,"transform":{"type":"scalar"},"locs":[{"a":173,"b":182}]},{"name":"owner_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":195,"b":209}]},{"name":"amount","required":true,"transform":{"type":"scalar"},"locs":[{"a":217,"b":224}]}],"statement":"INSERT INTO ownerships (\n    chain_id,\n    contract_address,\n    token_id,\n    owner_address,\n    amount\n) VALUES (\n    LOWER(:chainId!),\n    LOWER(:contract_address!),\n    :token_id!,\n    LOWER(:owner_address!),\n    :amount!\n)"};
+const insertTokenIR: any = {"usedParamSet":{"chainId":true,"contract_address":true,"token_id":true,"owner_address":true},"params":[{"name":"chainId","required":true,"transform":{"type":"scalar"},"locs":[{"a":110,"b":118}]},{"name":"contract_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":132,"b":149}]},{"name":"token_id","required":true,"transform":{"type":"scalar"},"locs":[{"a":157,"b":166}]},{"name":"owner_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":179,"b":193}]}],"statement":"INSERT INTO tokens (\n    chain_id,\n    contract_address,\n    token_id,\n    owner_address\n) VALUES (\n    LOWER(:chainId!),\n    LOWER(:contract_address!),\n    :token_id!,\n    LOWER(:owner_address!)\n)"};
 
 /**
  * Query generated from SQL:
  * ```
- * INSERT INTO ownerships (
+ * INSERT INTO tokens (
  *     chain_id,
  *     contract_address,
  *     token_id,
- *     owner_address,
- *     amount
+ *     owner_address
  * ) VALUES (
  *     LOWER(:chainId!),
  *     LOWER(:contract_address!),
  *     :token_id!,
- *     LOWER(:owner_address!),
- *     :amount!
+ *     LOWER(:owner_address!)
  * )
  * ```
  */
-export const insertMint = new PreparedQuery<IInsertMintParams,IInsertMintResult>(insertMintIR);
+export const insertToken = new PreparedQuery<IInsertTokenParams,IInsertTokenResult>(insertTokenIR);
 
 
 /** 'SaveTransaction' parameters type */
 export interface ISaveTransactionParams {
-  amount: NumberOrString;
+  amount: bigint;
   chainId: string;
   contract_address: string;
   timestamp: DateOrString;
-  token_id: string;
+  token_id: bigint;
   tx_hash: string;
   type: string;
 }

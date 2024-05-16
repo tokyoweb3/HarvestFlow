@@ -16,11 +16,11 @@ export interface IGetContractResult {
   lease_end: Date;
   lease_start: Date;
   metadata_base_url: string | null;
-  min_yield: string;
-  minted_amount: number;
+  min_yield: bigint;
+  minted_amount: bigint;
   name: string;
-  price: string;
-  supply_cap: number;
+  price: bigint;
+  supply_cap: bigint;
   symbol: string;
 }
 
@@ -51,11 +51,11 @@ export interface IGetHistoryForContractParams {
 
 /** 'GetHistoryForContract' return type */
 export interface IGetHistoryForContractResult {
-  amount: string;
+  amount: bigint | null;
   chain_id: string;
   contract_address: string;
   timestamp: Date;
-  token_id: string;
+  token_id: bigint;
   tx_hash: string;
   type: string;
 }
@@ -86,7 +86,7 @@ export interface IGetHistoryForUserParams {
 
 /** 'GetHistoryForUser' return type */
 export interface IGetHistoryForUserResult {
-  amount: string;
+  amount: bigint | null;
   contract_address: string;
   name: string;
   timestamp: Date;
@@ -100,7 +100,7 @@ export interface IGetHistoryForUserQuery {
   result: IGetHistoryForUserResult;
 }
 
-const getHistoryForUserIR: any = {"usedParamSet":{"owner_address":true},"params":[{"name":"owner_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":618,"b":631}]}],"statement":"SELECT transaction_history.contract_address,\n       transaction_history.type,\n       transaction_history.amount,\n       transaction_history.timestamp,\n       transaction_history.tx_hash,\n       contracts.name\nFROM transaction_history\n    INNER JOIN ownerships ON transaction_history.chain_id = ownerships.chain_id AND transaction_history.contract_address = ownerships.contract_address AND transaction_history.token_id = ownerships.token_id\n    INNER JOIN contracts ON transaction_history.chain_id = contracts.chain_id AND transaction_history.contract_address = contracts.address\nWHERE ownerships.owner_address = LOWER(:owner_address)"};
+const getHistoryForUserIR: any = {"usedParamSet":{"owner_address":true},"params":[{"name":"owner_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":598,"b":611}]}],"statement":"SELECT transaction_history.contract_address,\n       transaction_history.type,\n       transaction_history.amount,\n       transaction_history.timestamp,\n       transaction_history.tx_hash,\n       contracts.name\nFROM transaction_history\n    INNER JOIN tokens ON transaction_history.chain_id = tokens.chain_id AND transaction_history.contract_address = tokens.contract_address AND transaction_history.token_id = tokens.token_id\n    INNER JOIN contracts ON transaction_history.chain_id = contracts.chain_id AND transaction_history.contract_address = contracts.address\nWHERE tokens.owner_address = LOWER(:owner_address)"};
 
 /**
  * Query generated from SQL:
@@ -112,9 +112,9 @@ const getHistoryForUserIR: any = {"usedParamSet":{"owner_address":true},"params"
  *        transaction_history.tx_hash,
  *        contracts.name
  * FROM transaction_history
- *     INNER JOIN ownerships ON transaction_history.chain_id = ownerships.chain_id AND transaction_history.contract_address = ownerships.contract_address AND transaction_history.token_id = ownerships.token_id
+ *     INNER JOIN tokens ON transaction_history.chain_id = tokens.chain_id AND transaction_history.contract_address = tokens.contract_address AND transaction_history.token_id = tokens.token_id
  *     INNER JOIN contracts ON transaction_history.chain_id = contracts.chain_id AND transaction_history.contract_address = contracts.address
- * WHERE ownerships.owner_address = LOWER(:owner_address)
+ * WHERE tokens.owner_address = LOWER(:owner_address)
  * ```
  */
 export const getHistoryForUser = new PreparedQuery<IGetHistoryForUserParams,IGetHistoryForUserResult>(getHistoryForUserIR);
