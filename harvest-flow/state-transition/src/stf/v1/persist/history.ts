@@ -1,7 +1,8 @@
 import {SQLUpdate} from "@paima/node-sdk/db";
 import {ISaveTransactionParams, saveTransaction} from "@harvest-flow/db";
 
-export function saveMintTransaction(
+export function saveEventToHistory(
+    eventType: "mint" | "claim",
     chainId: string,
     contractAddress: string,
     tokenId: string,
@@ -10,7 +11,7 @@ export function saveMintTransaction(
     txHash: string
 ): SQLUpdate {
     const persistTransactionParams: ISaveTransactionParams = {
-        type: "mint",
+        type: eventType,
         amount: amount, // TODO Price
         chainId: chainId,
         contract_address: contractAddress,

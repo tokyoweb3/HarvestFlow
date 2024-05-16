@@ -1,8 +1,8 @@
 import {SQLUpdate} from "@paima/node-sdk/db";
 import {persistContractActivation, updateMintedAmount} from "./persist/contract";
-import {ContractActivatedInput, NftMintedInput} from "./types";
+import {ClaimedInput, ContractActivatedInput, NftMintedInput} from "./types";
 import {persistMintOwnership} from "./persist/ownership";
-import {saveMintTransaction} from "./persist/history";
+import {saveEventToHistory} from "./persist/history";
 import {ethers} from "ethers";
 import {ENV} from "@paima/sdk/utils";
 
@@ -37,7 +37,30 @@ export const nftMinted = async (
 
     const persistOwnerShip = persistMintOwnership(chainId, contractAddress, input.tokenId, input.receiver, input.amount);
     const persistUpdateMintedAmount = updateMintedAmount(chainId, contractAddress, input.amount);
-    const persistTransaction = saveMintTransaction(chainId, contractAddress, input.tokenId, input.amount, timestamp, transactionHash);
+    const persistTransaction = saveEventToHistory("mint",chainId, contractAddress, input.tokenId, input.amount, timestamp, transactionHash);
     return [persistOwnerShip, persistUpdateMintedAmount, persistTransaction];
 
+}
+
+export const interestClaimed = async (
+    input : ClaimedInput,
+    blockHeight: number
+): Promise<SQLUpdate[]> => {
+    console.log(`Interest claimed for NFT ${input.tokenId} on chain ${chainId} for ${input.receiver} with amount ${input.amount}`);
+
+    // get timestamp from blockheight
+    const provider = new ethers.JsonRpcProvider(ENV.CHAIN_URI);
+    const block = (await provider.getBlock(blockHeight,true))!;
+    const timestamp = new Date(block.timestamp * 1000);
+
+
+    // TODO: replace with new Paima feature
+    // get transaction hash based on from and to values
+    const mintingTransaction = block.prefetchedTransactions
+        .find(transaction => transaction.from === input.receiver && transaction.to === contractAddress);
+
+    const transactionHash = mintingTransaction?.hash ?? '0x0';
+
+    const persistTransaction = saveEventToHistory("claim",chainId, contractAddress, input.tokenId, input.amount, timestamp, transactionHash);
+    return [persistTransaction];
 }

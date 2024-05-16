@@ -171,6 +171,31 @@ class MainController {
     return {yield: response.yield, principal: response.principal};
   }
 
+  async claimInterest(contractAddress: string, tokenIds: number[]) {
+    if(!this.isWalletConnected()){
+      this.callback(null, null, "Wallet not connected");
+      return;
+    }
+
+    if(tokenIds.length === 0){
+        this.callback(null, null, "No token to claim interest");
+        return;
+    }
+
+    this.callback("Claiming interest", null, null);
+    try {
+      // TODO: change to claim all
+      await this.lendingContract.claim(tokenIds[0], {
+        gasLimit: 100000,
+      });
+      this.callback(null, "Interest claimed successfully", null);
+    } catch (e) {
+      console.error("Error claiming interest: ", e);
+      this.callback(null, null, "Error claiming interest");
+      return;
+    }
+  }
+
 }
 
 export default MainController;

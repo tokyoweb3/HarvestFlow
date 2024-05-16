@@ -8,6 +8,12 @@ const Dashboard: React.FC = () => {
     const mainController: MainController = useContext(AppContext);
     const [userDetails, setUserDetails] = React.useState<UserDetails>(null);
 
+    const claimYield = async () => {
+        for(let prop in userDetails.ownedNfts) {
+            await mainController.claimInterest(prop, userDetails.ownedNfts[prop])
+        }
+    }
+
     useEffect(() => {
         mainController.getUserDetails().then((details) => {
             setUserDetails(details);
@@ -65,7 +71,9 @@ const Dashboard: React.FC = () => {
                     <Box textAlign="center">
                         <Typography variant="body1">Claimable Yield: {userDetails?.claimableYield ?? "--"} DAI</Typography>
                         <Typography variant="body1">Claimable Principle: {userDetails?.claimablePrincipal ?? "----"} DAI</Typography>
-                        <Button variant="contained" color="primary" sx={{ marginTop: 2 }}>
+                        <Button variant="contained" color="primary" sx={{ marginTop: 2 }}
+                              onClick = {() => claimYield()}
+                        >
                             HARVEST
                         </Button>
                     </Box>

@@ -1,7 +1,8 @@
 import type { ParserRecord } from '@paima/sdk/concise';
 import { PaimaParser } from '@paima/sdk/concise';
 import {
-    ContractActivatedInput, InvalidInput, ManualParsedSubmittedInput,
+    ClaimedInput,
+    ContractActivatedInput, InvalidInput, ManualParsedSubmittedInput, NftMintedInput,
     ParsedSubmittedInput, ParsedSubmittedInputRaw,
 } from './types';
 import {PARSER_KEYS, PARSER_PREFIXES} from "./constants";
@@ -39,25 +40,13 @@ function manualParse(input: string): undefined | ManualParsedSubmittedInput {
     try {
         const parsed = JSON.parse(parts[1]);
 
-        if (parts[0] === PARSER_PREFIXES[PARSER_KEYS.nftMinted]) {
-            if (
-                !Object.hasOwn(parsed, 'receiver') ||
-                !Object.hasOwn(parsed, 'tokenId') ||
-                !Object.hasOwn(parsed, 'amount') ||
-                typeof parsed.receiver !== 'string' ||
-                typeof parsed.tokenId !== 'string' ||
-                typeof parsed.amount !== 'string'
-            ) {
-                return;
-            }
+        switch (parts[0]) {
+            case PARSER_PREFIXES[PARSER_KEYS.nftMinted]: return parseMinted(parsed);
+            case PARSER_PREFIXES[PARSER_KEYS.claimed]: return parseClaimed(parsed);
 
-            return {
-                input: PARSER_KEYS.nftMinted,
-                receiver: parsed.receiver,
-                tokenId: parsed.tokenId,
-                amount: Number(parsed.amount),
-            };
+            default: return;
         }
+
     } catch (e) {
         return;
     }
@@ -81,6 +70,47 @@ function parse(input: string): ParsedSubmittedInput {
 
 export function isInvalid(input: ParsedSubmittedInput): input is InvalidInput {
     return (input as InvalidInput).input == 'invalidString';
+}
+
+
+function parseMinted(jsonData: any): NftMintedInput | undefined {
+    if (
+        !Object.hasOwn(jsonData, 'receiver') ||
+        !Object.hasOwn(jsonData, 'tokenId') ||
+        !Object.hasOwn(jsonData, 'amount') ||
+        typeof jsonData.receiver !== 'string' ||
+        typeof jsonData.tokenId !== 'string' ||
+        typeof jsonData.amount !== 'string'
+    ) {
+        return;
+    }
+
+    return {
+        input: PARSER_KEYS.nftMinted,
+        receiver: jsonData.receiver,
+        tokenId: jsonData.tokenId,
+        amount: Number(jsonData.amount),
+    };
+}
+
+function parseClaimed(jsonData: any): ClaimedInput | undefined {
+    if (
+        !Object.hasOwn(jsonData, 'receiver') ||
+        !Object.hasOwn(jsonData, 'tokenId') ||
+        !Object.hasOwn(jsonData, 'amount') ||
+        typeof jsonData.receiver !== 'string' ||
+        typeof jsonData.tokenId !== 'string' ||
+        typeof jsonData.amount !== 'string'
+    ) {
+        return;
+    }
+
+    return {
+        input: PARSER_KEYS.claimed,
+        receiver: jsonData.receiver,
+        tokenId: jsonData.tokenId,
+        amount: Number(jsonData.amount),
+    };
 }
 
 export default parse;

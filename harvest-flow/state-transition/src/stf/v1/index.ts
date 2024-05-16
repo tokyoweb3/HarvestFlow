@@ -4,7 +4,7 @@ import type Prando from '@paima/sdk/prando';
 import type { SubmittedChainData } from '@paima/sdk/utils';
 import parse, {isInvalid} from "./parser";
 import {PARSER_KEYS} from "./constants";
-import {contractActivated, nftMinted} from "./transition";
+import {contractActivated, interestClaimed, nftMinted} from "./transition";
 
 export default async function (
     inputData: SubmittedChainData,
@@ -27,6 +27,8 @@ export default async function (
             return contractActivated(expanded);
         case PARSER_KEYS.nftMinted:
             return nftMinted(expanded, blockHeight);
+        case PARSER_KEYS.claimed:
+            return interestClaimed(expanded, blockHeight);
         default:
             return [];
     }
