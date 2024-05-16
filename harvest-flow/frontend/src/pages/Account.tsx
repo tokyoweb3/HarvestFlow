@@ -4,6 +4,7 @@ import {Box} from "@mui/material";
 import NftHistory from "@src/components/NftHistory";
 import MainController from "@src/MainController";
 import {AppContext} from "@src/main";
+import Dashboard from "@src/components/Dashboard";
 
 const Account: React.FC = () => {
     const mainController: MainController = useContext(AppContext);
@@ -19,6 +20,7 @@ const Account: React.FC = () => {
             <div className={"borderBottom"}>
                 Every Friday is Harvest Time! Harvest now and get a <strong>+10% Bonus!</strong>
             </div>
+            <Dashboard />
             <Box
                 sx={{ flexGrow: 1, display: 'flex'}}
             >
