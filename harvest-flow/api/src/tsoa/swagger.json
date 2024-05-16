@@ -19,14 +19,49 @@
 				"type": "object",
 				"description": "Construct a type with a set of properties K of type T"
 			},
-			"UserNftOwnership": {
+			"UserDetails": {
 				"properties": {
 					"ownedNfts": {
 						"$ref": "#/components/schemas/Record_string.number-Array_"
+					},
+					"points": {
+						"type": "number",
+						"format": "double"
+					},
+					"rank": {
+						"type": "number",
+						"format": "double"
+					},
+					"lendingAmount": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalYield": {
+						"type": "number",
+						"format": "double"
+					},
+					"apr": {
+						"type": "number",
+						"format": "double"
+					},
+					"claimableYield": {
+						"type": "number",
+						"format": "double"
+					},
+					"claimablePrincipal": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
-					"ownedNfts"
+					"ownedNfts",
+					"points",
+					"rank",
+					"lendingAmount",
+					"totalYield",
+					"apr",
+					"claimableYield",
+					"claimablePrincipal"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -214,7 +249,7 @@
 		"contact": {}
 	},
 	"paths": {
-		"/user_nfts": {
+		"/user_details": {
 			"get": {
 				"operationId": "Get",
 				"responses": {
@@ -223,7 +258,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/UserNftOwnership"
+									"$ref": "#/components/schemas/UserDetails"
 								}
 							}
 						}

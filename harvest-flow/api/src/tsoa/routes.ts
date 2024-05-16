@@ -3,7 +3,7 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse, fetchMiddlewares } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { UserNftsController } from './../controllers/userNfts';
+import { UserDetailsController } from './../controllers/userDetails';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { NftHistoryController } from './../controllers/nftHistory';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -22,10 +22,17 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"array","array":{"dataType":"double"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "UserNftOwnership": {
+    "UserDetails": {
         "dataType": "refObject",
         "properties": {
             "ownedNfts": {"ref":"Record_string.number-Array_","required":true},
+            "points": {"dataType":"double","required":true},
+            "rank": {"dataType":"double","required":true},
+            "lendingAmount": {"dataType":"double","required":true},
+            "totalYield": {"dataType":"double","required":true},
+            "apr": {"dataType":"double","required":true},
+            "claimableYield": {"dataType":"double","required":true},
+            "claimablePrincipal": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },
@@ -101,11 +108,11 @@ export function RegisterRoutes(app: Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
-        app.get('/user_nfts',
-            ...(fetchMiddlewares<RequestHandler>(UserNftsController)),
-            ...(fetchMiddlewares<RequestHandler>(UserNftsController.prototype.get)),
+        app.get('/user_details',
+            ...(fetchMiddlewares<RequestHandler>(UserDetailsController)),
+            ...(fetchMiddlewares<RequestHandler>(UserDetailsController.prototype.get)),
 
-            function UserNftsController_get(request: any, response: any, next: any) {
+            function UserDetailsController_get(request: any, response: any, next: any) {
             const args = {
                     userAddress: {"in":"query","name":"userAddress","required":true,"dataType":"string"},
             };
@@ -116,7 +123,7 @@ export function RegisterRoutes(app: Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new UserNftsController();
+                const controller = new UserDetailsController();
 
 
               const promise = controller.get.apply(controller, validatedArgs as any);

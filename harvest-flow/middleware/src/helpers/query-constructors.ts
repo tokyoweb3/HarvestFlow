@@ -36,8 +36,8 @@ export function backendQueryGetNftHistoryForProject(contractAddress: string): st
     return buildBackendQuery(endpoint, options);
 }
 
-export function backendQueryGetUserNfts(userAddress: string): string {
-    const endpoint = 'user_nfts';
+export function backendQueryGetUserDetails(userAddress: string): string {
+    const endpoint = 'user_details';
     const options : QueryOptions = {
         userAddress,
     }

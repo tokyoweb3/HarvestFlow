@@ -1,19 +1,19 @@
 import type { FailedResult } from '@paima/sdk/mw-core';
 import { PaimaMiddlewareErrorCode } from '@paima/sdk/mw-core';
-import {ClaimableYield, NftContract, NftContractDetails, NftHistory, UserNftOwnership} from "@harvest-flow/utils";
+import {ClaimableYield, NftContract, NftContractDetails, NftHistory, UserDetails} from "@harvest-flow/utils";
 import {
     backendQueryGetAllNfts,
     backendQueryGetClaimable,
     backendQueryGetDetailedNftContract,
     backendQueryGetNftHistoryForProject,
     backendQueryGetNftHistoryForUser,
-    backendQueryGetUserNfts
+    backendQueryGetUserDetails
 } from "../helpers/query-constructors";
 import {
     GetAllNftContractsResponse, GetClaimableResponse,
     GetDetailedNftContractResponse,
     GetNftHistoryResponse,
-    GetUserNftsResponse
+    GetUserDetailsResponse
 } from "../types";
 import {buildEndpointErrorFxn, MiddlewareErrorCode} from "../errors";
 
@@ -100,20 +100,20 @@ async function getHistoryForProject(contractAddress: string): Promise<GetNftHist
 
 }
 
-async function getUserNfts(userAddress: string): Promise<GetUserNftsResponse | FailedResult> {
-    const errorFxn = buildEndpointErrorFxn('getUserNfts');
+async function getUserDetails(userAddress: string): Promise<GetUserDetailsResponse | FailedResult> {
+    const errorFxn = buildEndpointErrorFxn('getUserDetails');
     let response: Response;
 
     try {
-        const query = backendQueryGetUserNfts(userAddress);
+        const query = backendQueryGetUserDetails(userAddress);
         response = await fetch(query);
     } catch (err) {
         return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
     }
 
     try {
-        const userNfts = (await response.json()) as UserNftOwnership;
-        return {success: true, ownedNfts: userNfts.ownedNfts};
+        const userDetails = (await response.json()) as UserDetails;
+        return {success: true, data: userDetails};
     } catch (err) {
         return errorFxn(PaimaMiddlewareErrorCode.INVALID_RESPONSE_FROM_BACKEND, err);
     }
@@ -143,6 +143,6 @@ export const queryEndpoints = {
     getDetailedNftContract,
     getNftHistoryForUser,
     getHistoryForProject,
-    getUserNfts,
+    getUserDetails,
     getClaimable
 }

@@ -46,8 +46,15 @@ export type NftHistoryEvent = {
     timestamp: number;
 }
 
-export interface UserNftOwnership {
+export interface UserDetails {
     ownedNfts: Record<string, number[]>;
+    points: number;
+    rank: number;
+    lendingAmount: number;
+    totalYield: number;
+    apr: number;
+    claimableYield: number;
+    claimablePrincipal: number;
 }
 
 export interface ClaimableYield {
