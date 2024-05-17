@@ -35,12 +35,15 @@ export {
     activateContract,
     addMintedAmount,
     addClaimedAmountToToken,
+    setTokenRedeemed,
     IActivateContractParams,
     IActivateContractResult,
     IAddMintedAmountParams,
     IAddMintedAmountResult,
     IAddClaimedAmountToTokenParams,
     IAddClaimedAmountToTokenResult,
+    ISetTokenRedeemedParams,
+    ISetTokenRedeemedResult,
 } from './update.queries.js';
 
 

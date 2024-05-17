@@ -88,3 +88,32 @@ const addClaimedAmountToTokenIR: any = {"usedParamSet":{"amount":true,"contractA
 export const addClaimedAmountToToken = new PreparedQuery<IAddClaimedAmountToTokenParams,IAddClaimedAmountToTokenResult>(addClaimedAmountToTokenIR);
 
 
+/** 'SetTokenRedeemed' parameters type */
+export interface ISetTokenRedeemedParams {
+  chainId: string;
+  contractAddress?: string | null | void;
+  tokenId: bigint;
+}
+
+/** 'SetTokenRedeemed' return type */
+export type ISetTokenRedeemedResult = void;
+
+/** 'SetTokenRedeemed' query type */
+export interface ISetTokenRedeemedQuery {
+  params: ISetTokenRedeemedParams;
+  result: ISetTokenRedeemedResult;
+}
+
+const setTokenRedeemedIR: any = {"usedParamSet":{"contractAddress":true,"chainId":true,"tokenId":true},"params":[{"name":"contractAddress","required":false,"transform":{"type":"scalar"},"locs":[{"a":72,"b":87}]},{"name":"chainId","required":true,"transform":{"type":"scalar"},"locs":[{"a":112,"b":120}]},{"name":"tokenId","required":true,"transform":{"type":"scalar"},"locs":[{"a":144,"b":152}]}],"statement":"UPDATE tokens\nSET redeemed = TRUE\nWHERE tokens.contract_address = LOWER(:contractAddress) AND tokens.chain_id = :chainId! AND tokens.token_id = :tokenId!"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * UPDATE tokens
+ * SET redeemed = TRUE
+ * WHERE tokens.contract_address = LOWER(:contractAddress) AND tokens.chain_id = :chainId! AND tokens.token_id = :tokenId!
+ * ```
+ */
+export const setTokenRedeemed = new PreparedQuery<ISetTokenRedeemedParams,ISetTokenRedeemedResult>(setTokenRedeemedIR);
+
+

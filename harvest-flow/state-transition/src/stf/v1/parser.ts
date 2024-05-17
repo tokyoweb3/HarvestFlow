@@ -3,7 +3,7 @@ import { PaimaParser } from '@paima/sdk/concise';
 import {
     ClaimedInput,
     ContractActivatedInput, InvalidInput, ManualParsedSubmittedInput, NftMintedInput,
-    ParsedSubmittedInput, ParsedSubmittedInputRaw,
+    ParsedSubmittedInput, ParsedSubmittedInputRaw, RedeemedInput,
 } from './types';
 import {PARSER_KEYS, PARSER_PREFIXES} from "./constants";
 import type { ValuesType } from 'utility-types';
@@ -35,6 +35,7 @@ function manualParse(input: string): undefined | ManualParsedSubmittedInput {
     const manuallyParsedPrefixes: string[] = [
         PARSER_PREFIXES[PARSER_KEYS.nftMinted],
         PARSER_PREFIXES[PARSER_KEYS.claimed],
+        PARSER_PREFIXES[PARSER_KEYS.redeemed],
     ];
     if (!manuallyParsedPrefixes.includes(parts[0])) return;
 
@@ -44,6 +45,7 @@ function manualParse(input: string): undefined | ManualParsedSubmittedInput {
         switch (parts[0]) {
             case PARSER_PREFIXES[PARSER_KEYS.nftMinted]: return parseMinted(parsed);
             case PARSER_PREFIXES[PARSER_KEYS.claimed]: return parseClaimed(parsed);
+            case PARSER_PREFIXES[PARSER_KEYS.redeemed]: return parseRedeemed(parsed);
 
             default: return;
         }
@@ -112,6 +114,26 @@ function parseClaimed(jsonData: any): ClaimedInput | undefined {
 
     return {
         input: PARSER_KEYS.claimed,
+        receiver: jsonData.receiver,
+        tokenId: BigInt(jsonData.tokenId),
+        amount: BigInt(jsonData.amount),
+    };
+}
+
+function parseRedeemed(jsonData: any): RedeemedInput | undefined {
+    if (
+        !Object.hasOwn(jsonData, 'receiver') ||
+        !Object.hasOwn(jsonData, 'tokenId') ||
+        !Object.hasOwn(jsonData, 'amount') ||
+        typeof jsonData.receiver !== 'string' ||
+        typeof jsonData.tokenId !== 'string' ||
+        typeof jsonData.amount !== 'string'
+    ) {
+        return;
+    }
+
+    return {
+        input: PARSER_KEYS.redeemed,
         receiver: jsonData.receiver,
         tokenId: BigInt(jsonData.tokenId),
         amount: BigInt(jsonData.amount),

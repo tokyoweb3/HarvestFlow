@@ -3,7 +3,8 @@ import {
     addClaimedAmountToToken,
     IAddClaimedAmountToTokenParams,
     IInsertTokenParams,
-    insertToken
+    insertToken, ISetTokenRedeemedParams,
+    setTokenRedeemed,
 } from "@harvest-flow/db";
 
 
@@ -37,4 +38,18 @@ export function updateClaimedYieldAmount(
   };
 
   return [addClaimedAmountToToken, updateClaimedYieldParams];
+}
+
+export function updateTokenRedeemed(
+  chainId: string,
+  contractAddress: string,
+  tokenId: bigint,
+): SQLUpdate {
+  const setTokenRedeemedParams: ISetTokenRedeemedParams = {
+      chainId: chainId,
+      contractAddress: contractAddress,
+      tokenId: tokenId,
+  };
+
+  return [setTokenRedeemed, setTokenRedeemedParams];
 }

@@ -4,7 +4,7 @@ import {ClaimedInput, ContractActivatedInput, NftMintedInput} from "./types";
 import {saveEventToHistory} from "./persist/history";
 import {ethers} from "ethers";
 import {ENV} from "@paima/sdk/utils";
-import {persistTokenOwnership, updateClaimedYieldAmount} from "./persist/tokens";
+import {persistTokenOwnership, updateClaimedYieldAmount, updateTokenRedeemed} from "./persist/tokens";
 import {NftHistoryEventType} from "@harvest-flow/utils";
 
 const contractAddress = process.env.TOKTOK_NFT_CONTRACT_ADDRESS!;
@@ -78,4 +78,26 @@ export const interestClaimed = async (
     const updateClaimedYield = updateClaimedYieldAmount(chainId, contractAddress, input.tokenId, input.amount);
 
     return [persistTransaction, updateClaimedYield];
+}
+
+export const principalRedeemed = async (
+    input : ClaimedInput,
+    blockHeight: number
+): Promise<SQLUpdate[]> => {
+    console.log(`Principal redeemed for NFT ${input.tokenId} on chain ${chainId} for ${input.receiver} with amount ${input.amount}`);
+
+    // get timestamp from blockheight
+    const provider = new ethers.JsonRpcProvider(ENV.CHAIN_URI);
+    const block = (await provider.getBlock(blockHeight, true))!;
+    const timestamp = new Date(block.timestamp * 1000);
+
+    const redeemTransaction = block.prefetchedTransactions
+        .find(transaction => transaction.from === input.receiver && transaction.to === contractAddress);
+
+    const transactionHash = redeemTransaction?.hash ?? '0x0';
+
+    return [
+        saveEventToHistory(NftHistoryEventType.REDEEM, chainId, contractAddress, input.tokenId, input.amount, timestamp, transactionHash),
+        updateTokenRedeemed(chainId, contractAddress, input.tokenId)
+    ];
 }

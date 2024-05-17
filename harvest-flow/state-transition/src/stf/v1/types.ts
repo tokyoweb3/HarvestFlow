@@ -6,12 +6,13 @@ export type ParsedSubmittedInputRaw =
 export type ManualParsedSubmittedInput =
     | NftMintedInput
     | ClaimedInput
+    | RedeemedInput
 
 export type ParsedSubmittedInput =
     | InvalidInput
     | ContractActivatedInput
-    | NftMintedInput
-    | ClaimedInput
+    | ManualParsedSubmittedInput
+
 
 
 export interface InvalidInput {
@@ -31,6 +32,13 @@ export interface NftMintedInput {
 
 export interface ClaimedInput {
     input : 'claimed'
+    receiver : string
+    tokenId : bigint
+    amount : bigint
+}
+
+export interface RedeemedInput {
+    input : 'redeemed'
     receiver : string
     tokenId : bigint
     amount : bigint
