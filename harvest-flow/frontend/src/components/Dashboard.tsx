@@ -3,15 +3,21 @@ import { Box, Card, CardContent, Typography, Button, Grid, } from '@mui/material
 import {AppContext} from "@src/main";
 import MainController from "@src/MainController";
 import {UserDetails} from "@harvest-flow/utils";
+import {
+    getClaimablePrincipleForUser,
+    getClaimableYieldForUser,
+    getTotalEquity,
+    getTotalLendingAmount,
+    getTotalYieldForUser
+} from "@src/utils";
+import {ethers} from "ethers";
 
 const Dashboard: React.FC = () => {
     const mainController: MainController = useContext(AppContext);
     const [userDetails, setUserDetails] = React.useState<UserDetails>(null);
 
     const claimYield = async () => {
-        for(let prop in userDetails.ownedNfts) {
-            await mainController.claimInterest(prop, userDetails.ownedNfts[prop])
-        }
+        // TODO: Implement yield claiming
     }
 
     useEffect(() => {
@@ -33,12 +39,12 @@ const Dashboard: React.FC = () => {
                                 <Grid item xs={4} textAlign="center">
                                     <Typography variant="body1">TOTAL EQUITY</Typography>
                                     <Typography variant="h3" color="primary">
-                                        ${userDetails ? (userDetails.lendingAmount + userDetails.claimableYield + userDetails.claimablePrincipal) : '---'}
+                                        ${userDetails ? getTotalEquity(userDetails.ownedNfts) : '---'}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={4} textAlign="center">
                                     <Typography variant="body1">Your APR</Typography>
-                                    <Typography variant="body1">{userDetails?.apr ?? "--"} % </Typography>
+                                    <Typography variant="body1">{userDetails?.ownedNfts.length > 0 ? Number(ethers.utils.formatEther(userDetails.ownedNfts[0].lendingData.yield))*100 : "--" } % </Typography>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -46,11 +52,11 @@ const Dashboard: React.FC = () => {
                             <Grid container spacing={2} justifyContent="space-between">
                                 <Grid item xs={6} textAlign="center">
                                     <Typography variant="body1">Lending</Typography>
-                                    <Typography variant="h6">{userDetails?.lendingAmount ?? "----"} DAI</Typography>
+                                    <Typography variant="h6">{userDetails ? getTotalLendingAmount(userDetails.ownedNfts) : "----"} DAI</Typography>
                                 </Grid>
                                 <Grid item xs={6} textAlign="center">
                                     <Typography variant="body1">Total Yield</Typography>
-                                    <Typography variant="h6">{userDetails?.totalYield ?? "----"} DAI</Typography>
+                                    <Typography variant="h6">{userDetails ? getTotalYieldForUser(userDetails.ownedNfts) : "----"} DAI</Typography>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -69,8 +75,8 @@ const Dashboard: React.FC = () => {
                 </CardContent>
                 <CardContent sx={{ flex: 1, borderLeft: '1px solid #e0e0e0', backgroundColor: '#f5f5f5' }}>
                     <Box textAlign="center">
-                        <Typography variant="body1">Claimable Yield: {userDetails?.claimableYield ?? "--"} DAI</Typography>
-                        <Typography variant="body1">Claimable Principle: {userDetails?.claimablePrincipal ?? "----"} DAI</Typography>
+                        <Typography variant="body1">Claimable Yield: {userDetails ? getClaimableYieldForUser(userDetails.ownedNfts) : "--" } DAI</Typography>
+                        <Typography variant="body1">Claimable Principle: {userDetails ? getClaimablePrincipleForUser(userDetails.ownedNfts) : "----"} DAI</Typography>
                         <Button variant="contained" color="primary" sx={{ marginTop: 2 }}
                               onClick = {() => claimYield()}
                         >

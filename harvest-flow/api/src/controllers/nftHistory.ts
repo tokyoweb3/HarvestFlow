@@ -19,7 +19,7 @@ export class NftHistoryController extends Controller {
         const events: NftHistoryEvent[] = userProjectHistoryRes.map((history) => {
             return {
                 eventType: ToNftHistoryEventType(history.type),
-                price: history.amount ?? undefined,
+                price: history.amount?.toString() ?? undefined,
                 projectName: history.name,
                 transactionHash: history.tx_hash,
                 timestamp: Date.parse(history.timestamp.toISOString())
@@ -46,7 +46,7 @@ export class NftHistoryController extends Controller {
         const events: NftHistoryEvent[] = projectHistoryRes.map((history) => {
             return {
                 eventType: ToNftHistoryEventType(history.type),
-                price: history.amount ?? undefined,
+                price: history.amount?.toString() ?? undefined,
                 transactionHash: history.tx_hash,
                 timestamp: Date.parse(history.timestamp.toISOString())
             }

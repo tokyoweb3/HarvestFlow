@@ -1,6 +1,6 @@
 import * as Paima from "./paima/middleware.js";
 import {FailedResult, LoginInfo} from "@paima/sdk/mw-core";
-import {ClaimableYield, NftContract, NftContractDetails, NftHistory, UserDetails} from "@harvest-flow/utils";
+import {NftContract, NftContractDetails, NftHistory, UserDetails} from "@harvest-flow/utils";
 import {Web3Provider} from "@ethersproject/providers";
 import {Contract, ethers} from "ethers";
 import TokTokNftAbi from "./abi/TokTokNft";
@@ -160,15 +160,6 @@ class MainController {
         throw new Error((response as FailedResult).errorMessage);
       }
       return response.data;
-  }
-
-  async getClaimable(contractAddress: string, tokenId : string): Promise<ClaimableYield> {
-    const response = await Paima.default.getClaimable(contractAddress, tokenId);
-    console.debug("Get Claimable response: ", response);
-    if (!response.success) {
-      throw new Error((response as FailedResult).errorMessage);
-    }
-    return {yield: response.yield, principal: response.principal};
   }
 
   async claimInterest(contractAddress: string, tokenIds: number[]) {

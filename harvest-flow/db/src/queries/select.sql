@@ -20,3 +20,32 @@ FROM transaction_history
     INNER JOIN contracts ON transaction_history.chain_id = contracts.chain_id AND transaction_history.contract_address = contracts.address
 WHERE tokens.owner_address = LOWER(:owner_address);
 
+/* @name getTokenDetails */
+SELECT tokens.yield_claimed,
+       tokens.redeemed,
+       contracts.name,
+       contracts.lease_start,
+       contracts.lease_end,
+       contracts.min_yield,
+       contracts.price,
+       contracts.metadata_base_url
+FROM tokens
+   INNER JOIN contracts ON tokens.chain_id = contracts.chain_id AND tokens.contract_address = contracts.address
+WHERE tokens.chain_id = :chain_id AND tokens.contract_address = LOWER(:contract_address) AND tokens.token_id = :token_id;
+
+/* @name getUserTokens */
+SELECT tokens.chain_id,
+       tokens.contract_address,
+       tokens.token_id,
+       tokens.yield_claimed,
+       tokens.redeemed,
+       contracts.name,
+       contracts.lease_start,
+       contracts.lease_end,
+       contracts.min_yield,
+       contracts.price,
+       contracts.metadata_base_url
+FROM tokens
+    INNER JOIN contracts ON tokens.chain_id = contracts.chain_id AND tokens.contract_address = contracts.address
+WHERE tokens.owner_address = LOWER(:owner_address);
+

@@ -1,16 +1,15 @@
 import type { FailedResult } from '@paima/sdk/mw-core';
 import { PaimaMiddlewareErrorCode } from '@paima/sdk/mw-core';
-import {ClaimableYield, NftContract, NftContractDetails, NftHistory, UserDetails} from "@harvest-flow/utils";
+import {NftContract, NftContractDetails, NftHistory, UserDetails} from "@harvest-flow/utils";
 import {
     backendQueryGetAllNfts,
-    backendQueryGetClaimable,
     backendQueryGetDetailedNftContract,
     backendQueryGetNftHistoryForProject,
     backendQueryGetNftHistoryForUser,
     backendQueryGetUserDetails
 } from "../helpers/query-constructors";
 import {
-    GetAllNftContractsResponse, GetClaimableResponse,
+    GetAllNftContractsResponse,
     GetDetailedNftContractResponse,
     GetNftHistoryResponse,
     GetUserDetailsResponse
@@ -119,24 +118,6 @@ async function getUserDetails(userAddress: string): Promise<GetUserDetailsRespon
     }
 }
 
-async function getClaimable(nftAddress: string, tokenId: string): Promise<GetClaimableResponse | FailedResult> {
-    const errorFxn = buildEndpointErrorFxn('getClaimable');
-    let response: Response;
-
-    try {
-        const query = backendQueryGetClaimable(nftAddress, tokenId);
-        response = await fetch(query);
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
-    }
-
-    try {
-        const claimableYield = (await response.json()) as ClaimableYield;
-        return {success: true, yield: claimableYield.yield, principal: claimableYield.principal};
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.INVALID_RESPONSE_FROM_BACKEND, err);
-    }
-}
 
 export const queryEndpoints = {
     getAllNfts,
@@ -144,5 +125,4 @@ export const queryEndpoints = {
     getNftHistoryForUser,
     getHistoryForProject,
     getUserDetails,
-    getClaimable
 }

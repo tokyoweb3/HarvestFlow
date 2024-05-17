@@ -16,15 +16,15 @@ export interface NftContractDetails {
     chainId: string; // caip-2 format
     address: string; // address on chain
 
-    supplyCap: bigint
-    mintedAmount: bigint; // <= supplyCap
+    supplyCap: string; // max mintedAmount
+    mintedAmount: string; // <= supplyCap
 
     leaseStart: number;
     leaseEnd: number;
-    minYield: bigint; // min fixed interest rate scaled by 1e18
+    minYield: string; // min fixed interest rate scaled by 1e18
 
     accepted_token: string; // Dai only for now
-    price: bigint; // price to purchase the NFT
+    price: string; // price to purchase the NFT
 
     metadata: any; // cached data from IPFS
 
@@ -46,26 +46,34 @@ export enum NftHistoryEventType {
 
 export type NftHistoryEvent = {
     eventType: NftHistoryEventType;
-    price?: bigint;
+    price?: string;
     projectName?: string;
     transactionHash: string;
     timestamp: number;
 }
 
 export interface UserDetails {
-    ownedNfts: Record<string, number[]>;
     points: number;
     rank: number;
-    lendingAmount: number;
-    totalYield: number;
-    apr: number;
-    claimableYield: number;
-    claimablePrincipal: number;
+    ownedNfts: NftDetails[];
 }
 
-export interface ClaimableYield {
-    yield: string;
-    principal: string;
+export interface NftDetails {
+    tokenId: string;
+    contractAddress: string;
+    projectName: string;
+    lendingData: {
+        principle: string;
+        lendingStart: number;
+        lendingEnd: number;
+        yield: string;
+        claimedYield: string;
+        isRedeemed: boolean;
+    };
+    metadata: {
+        image: string;
+    }
+
 }
 
 

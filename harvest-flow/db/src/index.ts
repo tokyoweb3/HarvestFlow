@@ -17,12 +17,18 @@ export {
     getContract,
     getHistoryForUser,
     getHistoryForContract,
+    getTokenDetails,
+    getUserTokens,
     IGetContractParams,
     IGetContractResult,
     IGetHistoryForUserParams,
     IGetHistoryForUserResult,
     IGetHistoryForContractParams,
     IGetHistoryForContractResult,
+    IGetTokenDetailsParams,
+    IGetTokenDetailsResult,
+    IGetUserTokensParams,
+    IGetUserTokensResult,
 } from './select.queries.js';
 
 export {

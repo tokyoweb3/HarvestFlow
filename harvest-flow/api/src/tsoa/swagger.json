@@ -7,23 +7,74 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"Record_string.number-Array_": {
-				"properties": {},
-				"additionalProperties": {
-					"items": {
-						"type": "number",
-						"format": "double"
+			"NftDetails": {
+				"properties": {
+					"tokenId": {
+						"type": "string"
 					},
-					"type": "array"
+					"contractAddress": {
+						"type": "string"
+					},
+					"projectName": {
+						"type": "string"
+					},
+					"lendingData": {
+						"properties": {
+							"isRedeemed": {
+								"type": "boolean"
+							},
+							"claimedYield": {
+								"type": "string"
+							},
+							"yield": {
+								"type": "string"
+							},
+							"lendingEnd": {
+								"type": "number",
+								"format": "double"
+							},
+							"lendingStart": {
+								"type": "number",
+								"format": "double"
+							},
+							"principle": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"isRedeemed",
+							"claimedYield",
+							"yield",
+							"lendingEnd",
+							"lendingStart",
+							"principle"
+						],
+						"type": "object"
+					},
+					"metadata": {
+						"properties": {
+							"image": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"image"
+						],
+						"type": "object"
+					}
 				},
+				"required": [
+					"tokenId",
+					"contractAddress",
+					"projectName",
+					"lendingData",
+					"metadata"
+				],
 				"type": "object",
-				"description": "Construct a type with a set of properties K of type T"
+				"additionalProperties": false
 			},
 			"UserDetails": {
 				"properties": {
-					"ownedNfts": {
-						"$ref": "#/components/schemas/Record_string.number-Array_"
-					},
 					"points": {
 						"type": "number",
 						"format": "double"
@@ -32,51 +83,30 @@
 						"type": "number",
 						"format": "double"
 					},
-					"lendingAmount": {
-						"type": "number",
-						"format": "double"
-					},
-					"totalYield": {
-						"type": "number",
-						"format": "double"
-					},
-					"apr": {
-						"type": "number",
-						"format": "double"
-					},
-					"claimableYield": {
-						"type": "number",
-						"format": "double"
-					},
-					"claimablePrincipal": {
-						"type": "number",
-						"format": "double"
+					"ownedNfts": {
+						"items": {
+							"$ref": "#/components/schemas/NftDetails"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
-					"ownedNfts",
 					"points",
 					"rank",
-					"lendingAmount",
-					"totalYield",
-					"apr",
-					"claimableYield",
-					"claimablePrincipal"
+					"ownedNfts"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
 			"NftHistoryEventType": {
-				"type": "string",
 				"enum": [
 					"contract_created",
-					"purchase",
+					"mint",
 					"activate",
 					"claim",
-					"remove_principal",
-					"withdraw",
-					"deposit"
-				]
+					"redeem"
+				],
+				"type": "string"
 			},
 			"NftHistoryEvent": {
 				"properties": {
@@ -154,16 +184,12 @@
 						"format": "double"
 					},
 					"minYield": {
-						"type": "number",
-						"format": "double"
+						"type": "string"
 					},
 					"accepted_token": {
 						"type": "string"
 					},
 					"price": {
-						"type": "string"
-					},
-					"poolBalance": {
 						"type": "string"
 					},
 					"metadata": {},
@@ -183,25 +209,8 @@
 					"minYield",
 					"accepted_token",
 					"price",
-					"poolBalance",
 					"metadata",
 					"activated"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ClaimableYield": {
-				"properties": {
-					"yield": {
-						"type": "string"
-					},
-					"principal": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"yield",
-					"principal"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -333,6 +342,42 @@
 				]
 			}
 		},
+		"/nft": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NftDetails"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "contractAddress",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "tokenId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/nft_details": {
 			"get": {
 				"operationId": "Get",
@@ -358,42 +403,6 @@
 					{
 						"in": "query",
 						"name": "contractAddress",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/claimable": {
-			"get": {
-				"operationId": "Get",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ClaimableYield"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "nftAddress",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "query",
-						"name": "tokenId",
 						"required": true,
 						"schema": {
 							"type": "string"

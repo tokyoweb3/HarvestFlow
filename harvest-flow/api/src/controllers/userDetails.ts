@@ -1,6 +1,10 @@
 import {Get, Query, Route} from "tsoa";
 import {Controller} from "@tsoa/runtime";
 import {UserDetails} from "@harvest-flow/utils";
+import {
+    getUserTokens,
+    requirePool
+} from "@harvest-flow/db";
 
 
 
@@ -8,20 +12,41 @@ import {UserDetails} from "@harvest-flow/utils";
 export class UserDetailsController extends Controller {
     @Get()
     public async get(@Query() userAddress: string): Promise<UserDetails> {
+        const pool = requirePool();
+
+        const getTokenDetailsResult = await getUserTokens.run(
+            { owner_address: userAddress.toLowerCase()},
+            pool
+        );
+
+        // TODO: Implement
+        const userPoints = 100;
+        const userRank = 15;
 
 
-        const userDetails: UserDetails = {
-            ownedNfts:  {'0x1234567890abcdef1234567890abcdef12345678': [1, 2, 3],},
-            points: 100,
-            rank: 15,
-            lendingAmount: 4000,
-            totalYield: 50,
-            apr: 0.08,
-            claimableYield: 40,
-            claimablePrincipal: 4000,
+        return {
+            points: userPoints,
+            rank: userRank,
+            ownedNfts: getTokenDetailsResult.map((tokenDetails) => {
+                return {
+                    tokenId: tokenDetails.token_id.toString(),
+                    contractAddress: tokenDetails.contract_address,
+                    projectName: tokenDetails.name,
+                    lendingData: {
+                        principle: tokenDetails.price.toString(),
+                        lendingStart: Date.parse(tokenDetails.lease_start.toISOString()),
+                        lendingEnd: Date.parse(tokenDetails.lease_end.toISOString()),
+                        yield: tokenDetails.min_yield.toString(),
+                        claimedYield: tokenDetails.yield_claimed.toString(),
+                        isRedeemed: tokenDetails.redeemed
+                    },
+                    metadata: {
+                        image: tokenDetails.metadata_base_url + `/${tokenDetails.token_id}`,  //TODO fix this
+                    }
+
+                };
+            })
         }
 
-        return userDetails;
     }
 }
-

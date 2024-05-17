@@ -90,7 +90,7 @@ const BuyPanel : React.FC<BuyPanelProps> = (
             console.error("Wallet is not connected");
         }
 
-        mainController.buyNft(amountToBuy, nftDetails.price).then(() => {
+        mainController.buyNft(amountToBuy, BigInt(nftDetails.price)).then(() => {
             mainController.getDetailedNftContract(nftContractAddress).then((details) => {
                 setNftDetails(details);
             });
