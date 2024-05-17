@@ -58,3 +58,33 @@ const addMintedAmountIR: any = {"usedParamSet":{"amount":true,"contractAddress":
 export const addMintedAmount = new PreparedQuery<IAddMintedAmountParams,IAddMintedAmountResult>(addMintedAmountIR);
 
 
+/** 'AddClaimedAmountToToken' parameters type */
+export interface IAddClaimedAmountToTokenParams {
+  amount: bigint;
+  chainId: string;
+  contractAddress?: string | null | void;
+  tokenId: bigint;
+}
+
+/** 'AddClaimedAmountToToken' return type */
+export type IAddClaimedAmountToTokenResult = void;
+
+/** 'AddClaimedAmountToToken' query type */
+export interface IAddClaimedAmountToTokenQuery {
+  params: IAddClaimedAmountToTokenParams;
+  result: IAddClaimedAmountToTokenResult;
+}
+
+const addClaimedAmountToTokenIR: any = {"usedParamSet":{"amount":true,"contractAddress":true,"chainId":true,"tokenId":true},"params":[{"name":"amount","required":true,"transform":{"type":"scalar"},"locs":[{"a":50,"b":57}]},{"name":"contractAddress","required":false,"transform":{"type":"scalar"},"locs":[{"a":97,"b":112}]},{"name":"chainId","required":true,"transform":{"type":"scalar"},"locs":[{"a":137,"b":145}]},{"name":"tokenId","required":true,"transform":{"type":"scalar"},"locs":[{"a":169,"b":177}]}],"statement":"UPDATE tokens\nSET yield_claimed = yield_claimed + :amount!\nWHERE tokens.contract_address = LOWER(:contractAddress) AND tokens.chain_id = :chainId! AND tokens.token_id = :tokenId!"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * UPDATE tokens
+ * SET yield_claimed = yield_claimed + :amount!
+ * WHERE tokens.contract_address = LOWER(:contractAddress) AND tokens.chain_id = :chainId! AND tokens.token_id = :tokenId!
+ * ```
+ */
+export const addClaimedAmountToToken = new PreparedQuery<IAddClaimedAmountToTokenParams,IAddClaimedAmountToTokenResult>(addClaimedAmountToTokenIR);
+
+

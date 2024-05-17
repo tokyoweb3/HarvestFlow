@@ -34,10 +34,13 @@ export {
 export {
     activateContract,
     addMintedAmount,
+    addClaimedAmountToToken,
     IActivateContractParams,
     IActivateContractResult,
     IAddMintedAmountParams,
     IAddMintedAmountResult,
+    IAddClaimedAmountToTokenParams,
+    IAddClaimedAmountToTokenResult,
 } from './update.queries.js';
 
 

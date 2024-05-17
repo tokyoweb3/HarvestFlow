@@ -4,7 +4,7 @@ import {ClaimedInput, ContractActivatedInput, NftMintedInput} from "./types";
 import {saveEventToHistory} from "./persist/history";
 import {ethers} from "ethers";
 import {ENV} from "@paima/sdk/utils";
-import {persistTokenOwnership} from "./persist/ownership";
+import {persistTokenOwnership, updateClaimedYieldAmount} from "./persist/tokens";
 import {NftHistoryEventType} from "@harvest-flow/utils";
 
 const contractAddress = process.env.TOKTOK_NFT_CONTRACT_ADDRESS!;
@@ -75,5 +75,7 @@ export const interestClaimed = async (
     const transactionHash = claimTransaction?.hash ?? '0x0';
 
     const persistTransaction = saveEventToHistory(NftHistoryEventType.CLAIM,chainId, contractAddress, input.tokenId, input.amount, timestamp, transactionHash);
-    return [persistTransaction];
+    const updateClaimedYield = updateClaimedYieldAmount(chainId, contractAddress, input.tokenId, input.amount);
+
+    return [persistTransaction, updateClaimedYield];
 }

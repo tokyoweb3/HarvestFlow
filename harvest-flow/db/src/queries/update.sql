@@ -12,3 +12,11 @@ WHERE contracts.address = LOWER(:contractAddress) AND contracts.chain_id = :chai
 UPDATE contracts
 SET minted_amount = minted_amount + :amount!
 WHERE contracts.address = LOWER(:contractAddress) AND contracts.chain_id = :chainId!;
+
+/*
+ @name addClaimedAmountToToken
+ */
+
+UPDATE tokens
+SET yield_claimed = yield_claimed + :amount!
+WHERE tokens.contract_address = LOWER(:contractAddress) AND tokens.chain_id = :chainId! AND tokens.token_id = :tokenId!;
