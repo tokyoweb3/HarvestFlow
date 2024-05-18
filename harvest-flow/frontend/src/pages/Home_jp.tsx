@@ -1,27 +1,27 @@
 import React, { useState } from "react";
+import CountUp from "react-countup";
 
 import Layout from "@src/layouts/Layout";
 import PartnerCard from "@src/components/PartnerCard";
+import FaqAccordion from "@src/components/FaqAccordion";
 
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
-import { Box, Typography } from "@mui/material";
+import { Box, Hidden, Typography } from "@mui/material";
+import { useMediaQuery, useTheme } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import SvgIcon, { SvgIconProps } from "@mui/material/SvgIcon";
+import Modal from "@mui/material/Modal";
 
+import SvgIcon, { SvgIconProps } from "@mui/material/SvgIcon";
 import XIcon from "@mui/icons-material/X";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import Top2 from "@assets/images/Top/Top2.png";
 import Top3 from "@assets/images/Top/Top3.png";
 import Top4 from "@assets/images/Top/Top4.png";
 import logo from "@assets/images/Top/6.png";
-import HowToBg2 from "@assets/images/Top/How -IT-works.png";
+import HowToBg2 from "@assets/images/Top/howTowork.png";
 import Partner1 from "@assets/images/Top/partner.png";
 import apasport_logo from "@assets/images/Top/apasport.png";
 import bgImg from "@assets/images/Top/bg.png";
@@ -35,12 +35,11 @@ const DiscordIcon: React.FC<SvgIconProps> = (props) => (
   </SvgIcon>
 );
 
-const Home_JP: React.FC = () => {
-  const [expanded, setExpanded] = useState(false);
+const Home: React.FC = () => {
+  const [current, setCurrent] = useState(0);
 
-  const handleAccordionChange = () => {
-    setExpanded(!expanded);
-  };
+  const theme = useTheme();
+  const isMediumUp = useMediaQuery(theme.breakpoints.up("md"));
 
   const Item = styled(Paper)(({ theme }) => ({
     textAlign: "center",
@@ -50,9 +49,27 @@ const Home_JP: React.FC = () => {
     height: "100%",
   }));
 
+  const style = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
+
   return (
+    // <div>
     <Layout>
       <div className="bg-Top1">
+        {!isMediumUp && (
+          <button style={{ width: "100%", padding: "17px 0px" }}>
+            connect wallet
+          </button>
+        )}
         <img src={logo} style={{ marginTop: "100px" }} />
         <h1
           style={{
@@ -63,44 +80,41 @@ const Home_JP: React.FC = () => {
         >
           Harvest Flow
         </h1>
-        <p
-          style={{
-            fontSize: "26px",
-            lineHeight: "36px",
-            padding: "0px 250px",
-          }}
-        >
-          Helping the world bear fruit with the help of the latest technology
+        <p className="top-content">
+          Helping the world bear fruit with the help of latest technology
           Investment Platform for a New Era
         </p>
-        <p style={{ fontSize: "20px" }}>
+        <p className="top-mention">
           &quot;Feel, think, and grow the world with your investments.&quot;
         </p>
         <div className="price-show">
           <div>
             <p>Total Value Loaned</p>
-            <span>$1,234</span>
+            <span>
+              $<CountUp end={123456} />
+            </span>
           </div>
           <div>
             <p>Repaid</p>
-            <span>$12,345</span>
+            <span>
+              $<CountUp end={1234} />
+            </span>
           </div>
           <div>
             <p>Holders</p>
-            <span>$1,234</span>
+            <span>
+              $<CountUp end={12345} />
+            </span>
           </div>
         </div>
       </div>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container>
-          <Grid md={12}>
+          <Grid item xs={12}>
             <Item>
               <h2
-                style={{
-                  fontSize: "15px",
-                  fontWeight: "400",
-                  lineHeight: "18px",
-                }}
+                className="semi-title"
+                style={isMediumUp ? { marginBottom: "0px" } : {}}
               >
                 OUR PROJECT
               </h2>
@@ -108,12 +122,12 @@ const Home_JP: React.FC = () => {
           </Grid>
           <Grid item md={6} sx={{ maxHeight: "800px" }}>
             <Item>
-              <img src={Top2} style={{ width: "100%" }} />
+              <img src={Top2} style={{ height: "100%" }} />
             </Item>
           </Grid>
-          <Grid container md sx={{ maxHeight: "800px" }}>
-            <Grid item md={8}>
-              <Grid item md>
+          <Grid container item md sx={{ maxHeight: "800px" }}>
+            <Grid item md={8} xs={12}>
+              <Grid item md xs={12}>
                 <Item
                   style={{
                     display: "flex",
@@ -122,29 +136,22 @@ const Home_JP: React.FC = () => {
                     // justifyContent: "center",
                   }}
                 >
-                  <h1
-                    className="sub-title"
-                    style={{ padding: "80px 0px 5px 0px" }}
-                  >
-                    TUK TUK harvest flow future project
+                  <h1 className="sub-title" style={{ marginTop: "90px" }}>
+                    Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
                   </h1>
                   <span
-                    className="content"
-                    style={{ padding: "0px 0px 10px 30px" }}
+                    className="semi-content"
+                    style={{ marginBottom: "20px" }}
                   >
-                    Harvest
                     Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
-                    Harvest
                     Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
-                    Harvest
                     Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
-                    Harvest
                     Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
-                    Harvest
+                    Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
                     Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
                   </span>
                   <Grid container>
-                    <Grid item md={4}>
+                    <Grid item xs={4}>
                       <Item>
                         <p
                           style={{
@@ -154,10 +161,12 @@ const Home_JP: React.FC = () => {
                         >
                           APY
                         </p>
-                        <p style={{ fontSize: "24px" }}>8%</p>
+                        <p style={{ fontSize: "1.5rem", padding: "2.25rem" }}>
+                          8%
+                        </p>
                       </Item>
                     </Grid>
-                    <Grid item md={4}>
+                    <Grid item xs={4}>
                       <Item>
                         <p
                           style={{
@@ -167,10 +176,12 @@ const Home_JP: React.FC = () => {
                         >
                           STATUS
                         </p>
-                        <p style={{ fontSize: "24px" }}>OPEN</p>
+                        <p style={{ fontSize: "1.5rem", padding: "2.25rem" }}>
+                          OPEN
+                        </p>
                       </Item>
                     </Grid>
-                    <Grid item md={4}>
+                    <Grid item xs={4}>
                       <Item>
                         <p
                           style={{
@@ -180,11 +191,13 @@ const Home_JP: React.FC = () => {
                         >
                           ASSET TYPE
                         </p>
-                        <p style={{ fontSize: "24px" }}>VEHICLE</p>
+                        <p style={{ fontSize: "1.5rem", padding: "2.25rem" }}>
+                          VEHICLE
+                        </p>
                       </Item>
                     </Grid>
                   </Grid>
-                  <p style={{ padding: "1rem" }}>VIEW MODE</p>
+                  <p style={{ padding: "2rem" }}>VIEW MORE</p>
                 </Item>
               </Grid>
             </Grid>
@@ -196,524 +209,642 @@ const Home_JP: React.FC = () => {
                   justifyContent: "center",
                 }}
               >
-                <p>coming soon</p>
+                {isMediumUp && <p>coming soon</p>}
               </Item>
             </Grid>
           </Grid>
         </Grid>
       </Box>
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container>
-          <Grid item md>
-            <Item sx={{ overflowY: "scroll", maxHeight: "800px" }}>
-              <h2
-                style={{
-                  fontSize: "15px",
-                  fontWeight: "400",
-                  lineHeight: "18px",
-                }}
-              >
-                ABOUT HARVEST FLOW
-              </h2>
-              <hr style={{ paddingBottom: "120px" }} />
-              <h1
-                style={{
-                  fontSize: "32px",
-                  fontWeight: "500",
-                  lineHeight: "36px",
-                }}
-              >
-                An investment experience that transforms society with emotion.
-              </h1>
-              <p
-                style={{
-                  fontSize: "15px",
-                  fontWeight: 400,
-                  lineHeight: "18px",
-                  padding: "10px",
-                }}
-              >
-                Flowのビジョンは、世界中の「実り」を投資家と共に収穫し、その「流れ」を通じて経済的・社会的な成長を促進することです。私たちは、投資家が自らの行動が実世界でポジティブな変化を生むことを実感できるように、感動と透明性を核とした新時代の投資の形を提案します。
-              </p>
-            </Item>
-          </Grid>
-          <Grid item md="auto" sx={{ maxHeight: "800px" }}>
-            <Item>
-              <div style={{ position: "relative", overflow: "hidden" }}>
-                <img src={Top3} style={{ width: "100%" }}></img>
+        <Grid container direction={isMediumUp ? "row-reverse" : "column"}>
+          <Grid item xs={12} md="auto">
+            <Item
+              sx={
+                isMediumUp
+                  ? { overflow: "hidden", maxHeight: "800px" }
+                  : { height: "270px" }
+              }
+            >
+              <div style={{ position: "relative" }}>
+                <img src={Top3} style={{ width: "100%" }} />
                 <img
                   src={about1}
-                  style={{ position: "absolute", bottom: "0px", left: "0px" }}
+                  style={
+                    isMediumUp
+                      ? { position: "absolute", bottom: "0px", left: "0px" }
+                      : {
+                          position: "absolute",
+                          bottom: "0px",
+                          left: "0px",
+                          width: "50%",
+                        }
+                  }
                 />
                 <img
                   src={about2}
-                  style={{ position: "absolute", top: "0px", right: "0px" }}
+                  style={
+                    isMediumUp
+                      ? { position: "absolute", top: "0px", right: "0px" }
+                      : {
+                          position: "absolute",
+                          top: "0px",
+                          right: "0px",
+                          width: "50%",
+                        }
+                  }
                 />
+
                 <h2
-                  style={{
-                    position: "absolute",
-                    top: "40%",
-                    left: "35%",
-                    alignContent: "center",
-                    fontSize: "40px",
-                    width: "35%",
-                    zIndex: 1,
-                    color: "white",
-                    letterSpacing: "30px",
-                  }}
+                  style={
+                    isMediumUp
+                      ? {
+                          position: "absolute",
+                          top: "40%",
+                          left: "30%",
+                          alignContent: "center",
+                          fontSize: "40px",
+                          width: "35%",
+                          zIndex: 1,
+                          color: "white",
+                          letterSpacing: "30px",
+                        }
+                      : {
+                          position: "absolute",
+                          top: "25%",
+                          left: "20%",
+                          alignContent: "center",
+                          fontSize: "40px",
+                          width: "35%",
+                          zIndex: 1,
+                          color: "white",
+                          letterSpacing: "30px",
+                        }
+                  }
                 >
-                  ABOUT HARVEST FOLLOW
+                  ABOUT HARVEST FLOW
                 </h2>
-                <Button
-                  variant="contained"
-                  style={{
-                    position: "absolute",
-                    top: "85%",
-                    right: "10%",
-                    padding: "5px 20px",
-                    width: "auto",
-                    zIndex: 1,
-                    backgroundColor: "white",
-                    color: "black",
-                  }}
-                >
-                  PLAY MOVIE
-                </Button>
+
+                {isMediumUp ? (
+                  <Button
+                    variant="contained"
+                    style={{
+                      position: "absolute",
+                      top: "85%",
+                      right: "10%",
+                      padding: "17px 22px 18px 22px",
+                      width: "auto",
+                      zIndex: 1,
+                      backgroundColor: "white",
+                      borderRadius: "0px",
+                      color: "black",
+                    }}
+                  >
+                    PLAY MOVIE
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    style={{
+                      position: "absolute",
+                      bottom: "-30px",
+                      left: "30vw",
+                      padding: "17px 22px 18px 22px",
+                      width: "auto",
+                      zIndex: 10,
+                      backgroundColor: "white",
+                      borderRadius: "0px",
+                      color: "black",
+                    }}
+                  >
+                    PLAY MOVIE
+                  </Button>
+                )}
               </div>
+            </Item>
+          </Grid>
+          <Grid item xs={12} md>
+            <Item sx={{ overflowY: "scroll", maxHeight: "800px" }}>
+              <h2 className="semi-title">ABOUT HARVEST FLOW</h2>
+              <h2
+                className="section-tilte"
+                style={isMediumUp ? { paddingTop: "150px" } : {}}
+              >
+                Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+              </h2>
+
+              <p className="semi-content">
+                Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+              </p>
             </Item>
           </Grid>
         </Grid>
       </Box>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container>
-          <Grid item md={6} sx={{ maxHeight: "600px" }}>
-            <Item sx={{ maxHeight: "600px" }}>
-              <div style={{ position: "relative", overflow: "hidden" }}>
+          <Grid item md={6} xs={12} sx={{ maxHeight: "800px" }}>
+            <Item>
+              <div
+                style={
+                  isMediumUp
+                    ? { position: "relative", overflow: "hidden" }
+                    : { position: "relative", overflow: "hidden" }
+                }
+              >
                 <img
                   src={bgImg}
                   style={{
-                    width: "1000px",
-                    height: "600px",
+                    height: "800px",
                     backgroundSize: "cover",
                   }}
-                ></img>
-                <h2
+                />
+
+                <div
                   style={{
                     position: "absolute",
-                    top: "40%",
-                    left: "25%",
+                    top: "10%",
+                    left: "0%",
                     alignContent: "center",
                     fontSize: "40px",
-                    width: "35%",
                     zIndex: 1,
                     color: "white",
-                    letterSpacing: "30px",
                   }}
                 >
-                  FEATURE
-                </h2>
+                  {isMediumUp ? (
+                    ""
+                  ) : (
+                    <Grid sx={{ gap: "40px", padding: "20px" }}>
+                      <Grid
+                        container
+                        style={{
+                          backgroundColor: "white",
+                          marginBottom: "10px",
+                          padding: "20px",
+                        }}
+                      >
+                        <h1 className="section-title">
+                          Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                        </h1>
+                        <Grid item md={6} xs={12}>
+                          <p className="semi-content">
+                            Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                          </p>
+                          <img
+                            src={Top4}
+                            style={{
+                              width: "50%",
+                            }}
+                          />
+                          <p className="semi-content">
+                            Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                            Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                            Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                            Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                            Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                          </p>
+                        </Grid>
+                      </Grid>
+                      <Grid
+                        container
+                        style={{ backgroundColor: "white", padding: "20px" }}
+                      >
+                        <h1 className="section-title">
+                          Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                        </h1>
+                        <p className="semi-content">
+                          Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                          Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                          Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                          Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                          Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                        </p>
+                      </Grid>
+                    </Grid>
+                  )}
+                </div>
               </div>
             </Item>
           </Grid>
+          {isMediumUp ? (
+            <Grid item md={6}>
+              <Item sx={{ overflowY: "scroll", maxHeight: "800px" }}>
+                <h2 className="semi-title">FEATURES</h2>
+                <Grid container>
+                  <Grid item md={6}>
+                    <div>
+                      <h1 className="section-title">
+                        Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                      </h1>
+                      <span className="semi-content">
+                        Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                        Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                        Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                        Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                        Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                      </span>
+                    </div>
+                  </Grid>
+                  {isMediumUp ? (
+                    <Grid item md={6}>
+                      <img src={Top4} style={{ width: "70%" }} />
+                    </Grid>
+                  ) : (
+                    ""
+                  )}
+                </Grid>
+                <h1 className="section-title">
+                  Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                </h1>
+                <p className="semi-content">
+                  Harvest
+                  Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。Harvest
+                  Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                  Harvest
+                  Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。
+                </p>
+              </Item>
+            </Grid>
+          ) : (
+            ""
+          )}
+        </Grid>
+      </Box>
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container>
           <Grid item md={6}>
-            <Item sx={{ overflowY: "scroll", maxHeight: "600px" }}>
-              <h2
-                style={{
-                  fontSize: "15px",
-                  fontWeight: "400",
-                  lineHeight: "18px",
-                }}
-              >
-                FEATURES
-              </h2>
-              <hr style={{ paddingBottom: "120px" }} />
-              <Grid container>
-                <Grid item md={6}>
-                  <h1
-                    style={{
-                      margin: "0px",
-                      fontSize: "32px",
-                      fontWeight: "500",
-                      lineHeight: "36px",
-                      padding: "0px 20px 20px 20px",
-                    }}
-                  >
-                    Harvest Flowは、投資家に対して
-                    単なる金銭的なリターンを超えた 価値を提供します。
-                  </h1>
-                  <p
-                    style={{
-                      fontSize: "15px",
-                      fontWeight: 400,
-                      lineHeight: "18px",
-                      paddingLeft: "20px",
-                    }}
-                  >
-                    Harvest
-                    Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。それは、全世界の可能性を収穫（Harvest）し、資金が流れる（Flow）ことで社会的、経済的な変化を生み出す新しい形の投資体験です。
-                  </p>
-                </Grid>
-                <Grid item md={6}>
-                  <img src={Top4} style={{ width: "70%" }} />
-                </Grid>
-              </Grid>
+            <Item sx={{ overflowY: "scroll", maxHeight: "710px" }}>
+              <h2 className="semi-title">FAQ</h2>
               <h1
-                style={{
-                  fontSize: "32px",
-                  fontWeight: "500",
-                  lineHeight: "36px",
-                  padding: "0px 20px 20px 20px",
-                }}
+                style={
+                  isMediumUp
+                    ? {
+                        fontSize: "32px !important",
+                        fontWeight: "500",
+                        lineHeight: "36px",
+                      }
+                    : {
+                        fontSize: "18px",
+                      }
+                }
               >
-                Harvest Flowは、投資家に対して 単なる金銭的なリターンを超えた
-                価値を提供します。
+                An investment experience that transforms society with emotion.
               </h1>
-              <p
-                style={{
-                  fontSize: "15px",
-                  fontWeight: 400,
-                  lineHeight: "18px",
-                  padding: "20px",
-                }}
-              >
-                Harvest
-                Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。それは、全世界の可能性を収穫（Harvest）し、資金が流れる（Flow）ことで社会的、経済的な変化を生み出す新しい形の投資体験です。
-                このプラットフォームを通じて、投資家は心を揺さぶる事業や個々のストーリーに触れ、その資金が具体的に社会にどのような良い影響をもたらしているかをリアルタイムで確認することができます。IoTやNFTなどの最新技術を活用し、投資の流れとその成果を透明にすることで、安心感と共に投資の透明性を実現します。
-                Harvest
-                Flowは、安定したリターンを求める暗号資産投資家から、社会的意義を重視する投資家まで、さまざまなニーズに応えることができます。現実世界の事業への投資を通じて、低リスクで確実な収益を実現し、手軽な操作で大きな達成感と社会への貢献を体験することができます。
-                Harvest
-                Flowのビジョンは、世界中の「実り」を投資家と共に収穫し、その「流れ」を通じて経済的・社会的な成長を促進することです。私たちは、投資家が自らの行動が実世界でポジティブな変化を生むことを実感できるように、感動と透明性を核とした新時代の投資の形を提案します。
-              </p>
+              <FaqAccordion
+                acc={[
+                  {
+                    title: "Harvest Flowでは、投資家が投資先の事業やエン?",
+                    content:
+                      "Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストHarvest Flowでは、投資家が投資先の事業やエンドユーザーのスト",
+                  },
+                  {
+                    title: "Harvest Flowでは、投資家が投資先の事業やエン?",
+                    content:
+                      "Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストHarvest Flowでは、投資家が投資先の事業やエンドユーザーのスト",
+                  },
+                  {
+                    title: "Harvest Flowでは、投資家が投資先の事業やエン?",
+                    content:
+                      "Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストHarvest Flowでは、投資家が投資先の事業やエンドユーザーのスト",
+                  },
+                  {
+                    title: "Harvest Flowでは、投資家が投資先の事業やエン?",
+                    content:
+                      "Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストHarvest Flowでは、投資家が投資先の事業やエンドユーザーのスト",
+                  },
+                  {
+                    title: "Harvest Flowでは、投資家が投資先の事業やエン?",
+                    content:
+                      "Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストHarvest Flowでは、投資家が投資先の事業やエンドユーザーのスト",
+                  },
+                  {
+                    title: "Harvest Flowでは、投資家が投資先の事業やエン?",
+                    content:
+                      "Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストHarvest Flowでは、投資家が投資先の事業やエンドユーザーのスト",
+                  },
+                  {
+                    title: "Harvest Flowでは、投資家が投資先の事業やエン?",
+                    content:
+                      "Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストHarvest Flowでは、投資家が投資先の事業やエンドユーザーのスト",
+                  },
+                  {
+                    title: "Harvest Flowでは、投資家が投資先の事業やエン?",
+                    content:
+                      "Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストHarvest Flowでは、投資家が投資先の事業やエンドユーザーのスト",
+                  },
+                ]}
+              />
+            </Item>
+          </Grid>
+          <Grid item md={6} style={{ overflow: "hidden", maxHeight: "800px" }}>
+            <Item>
+              <div style={{ position: "relative", overflow: "hidden" }}>
+                {!isMediumUp ? (
+                  ""
+                ) : (
+                  <>
+                    <img src={bg2Img} style={{ width: "100%" }}></img>
+                    <h2
+                      style={{
+                        position: "absolute",
+                        top: "40%",
+                        left: "35%",
+                        alignContent: "center",
+                        fontSize: "40px",
+                        width: "35%",
+                        zIndex: 1,
+                        color: "white",
+                        letterSpacing: "30px",
+                      }}
+                    >
+                      FAQ
+                    </h2>
+                    <Button
+                      variant="contained"
+                      style={{
+                        position: "absolute",
+                        top: "85%",
+                        right: "10%",
+                        padding: "17px 22px 18px 22px",
+                        width: "auto",
+                        zIndex: 1,
+                        backgroundColor: "white",
+                        borderRadius: "0px",
+                        color: "black",
+                      }}
+                    >
+                      VIEW MORE
+                    </Button>
+                  </>
+                )}
+              </div>
             </Item>
           </Grid>
         </Grid>
       </Box>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container>
-          <Grid item md={6}>
-            <Item sx={{ overflowY: "scroll", maxHeight: "600px" }}>
-              <h2
-                style={{
-                  fontSize: "15px",
-                  fontWeight: "400",
-                  lineHeight: "18px",
-                }}
-              >
-                FAQ
-              </h2>
-              <hr style={{ paddingBottom: "120px" }} />
-
-              <h1
-                style={{
-                  fontSize: "32px",
-                  fontWeight: "500",
-                  lineHeight: "36px",
-                }}
-              >
-                Harvest Flowではどのような投資スキームが提供されていますか？
-              </h1>
-              <Grid container style={{ borderTop: "1px solid #000" }}>
-                <Grid item md={2}>
-                  <Item>
-                    <p>Q1</p>
-                  </Item>
-                </Grid>
-                <Grid item md>
-                  <Accordion
-                    style={{ backgroundColor: "inherit" }}
-                    // expanded={expanded}
-                    // onChange={handleAccordionChange}
-                  >
-                    <AccordionSummary
-                      id="panel-header"
-                      aria-controls="panel-content"
-                      expandIcon={<ExpandMoreIcon />}
-                    >
-                      Harvest Flowは、投資家に対して
-                      単なる金銭的なリターンを超えた 価値を提供します。
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      Harvest
-                      Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。それは、全世界の可能性を収穫（Harvest）し、資金が流れる（Flow）ことで社会的、経済的な変化を生み出す新しい形の投資体験です。
-                      このプラットフォームを通じて、投資家は心を揺さぶる事業や個々のストーリーに触れ、その資金が具体的に社会にどのような良い影響をもたらしているかをリアルタイムで確認することができます。IoTやNFTなどの最新技術を活用し、投資の流れとその成果を透明にすることで、安心感と共に投資の透明性を実現します。
-                      Harvest
-                      Flowは、安定したリターンを求める暗号資産投資家から、社会的意義を重視する投資家まで、さまざまなニーズに応えることができます。現実世界の事業への投資を通じて、低リスクで確実な収益を実現し、手軽な操作で大きな達成感と社会への貢献を体験することができます。
-                      Harvest
-                      Flowのビジョンは、世界中の「実り」を投資家と共に収穫し、その「流れ」を通じて経済的・社会的な成長を促進することです。私たちは、投資家が自らの行動が実世界でポジティブな変化を生むことを実感できるように、感動と透明性を核とした新時代の投資の形を提案します。
-                    </AccordionDetails>
-                  </Accordion>
-                </Grid>
-              </Grid>
-              <Grid container style={{ borderTop: "1px solid #000" }}>
-                <Grid item md={2}>
-                  <Item>
-                    <p>Q2</p>
-                  </Item>
-                </Grid>
-                <Grid item md>
-                  <Accordion
-                    style={{ backgroundColor: "inherit" }}
-                    // expanded={expanded}
-                    // onChange={handleAccordionChange}
-                  >
-                    <AccordionSummary
-                      id="panel-header"
-                      aria-controls="panel-content"
-                      expandIcon={<ExpandMoreIcon />}
-                    >
-                      Harvest
-                      Flowではどのような投資スキームが提供されていますか？
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      Harvest
-                      Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。それは、全世界の可能性を収穫（Harvest）し、資金が流れる（Flow）ことで社会的、経済的な変化を生み出す新しい形の投資体験です。
-                      このプラットフォームを通じて、投資家は心を揺さぶる事業や個々のストーリーに触れ、その資金が具体的に社会にどのような良い影響をもたらしているかをリアルタイムで確認することができます。IoTやNFTなどの最新技術を活用し、投資の流れとその成果を透明にすることで、安心感と共に投資の透明性を実現します。
-                      Harvest
-                      Flowは、安定したリターンを求める暗号資産投資家から、社会的意義を重視する投資家まで、さまざまなニーズに応えることができます。現実世界の事業への投資を通じて、低リスクで確実な収益を実現し、手軽な操作で大きな達成感と社会への貢献を体験することができます。
-                      Harvest
-                      Flowのビジョンは、世界中の「実り」を投資家と共に収穫し、その「流れ」を通じて経済的・社会的な成長を促進することです。私たちは、投資家が自らの行動が実世界でポジティブな変化を生むことを実感できるように、感動と透明性を核とした新時代の投資の形を提案します。
-                    </AccordionDetails>
-                  </Accordion>
-                </Grid>
-              </Grid>
-              <Grid container style={{ borderTop: "1px solid #000" }}>
-                <Grid item md={2}>
-                  <Item>
-                    <p>Q3</p>
-                  </Item>
-                </Grid>
-                <Grid item md>
-                  <Accordion
-                    style={{ backgroundColor: "inherit" }}
-                    // expanded={expanded}
-                    // onChange={handleAccordionChange}
-                  >
-                    <AccordionSummary
-                      id="panel-header"
-                      aria-controls="panel-content"
-                      expandIcon={<ExpandMoreIcon />}
-                    >
-                      Harvest
-                      Flowではどのような投資スキームが提供されていますか？
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      Harvest
-                      Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。それは、全世界の可能性を収穫（Harvest）し、資金が流れる（Flow）ことで社会的、経済的な変化を生み出す新しい形の投資体験です。
-                      このプラットフォームを通じて、投資家は心を揺さぶる事業や個々のストーリーに触れ、その資金が具体的に社会にどのような良い影響をもたらしているかをリアルタイムで確認することができます。IoTやNFTなどの最新技術を活用し、投資の流れとその成果を透明にすることで、安心感と共に投資の透明性を実現します。
-                      Harvest
-                      Flowは、安定したリターンを求める暗号資産投資家から、社会的意義を重視する投資家まで、さまざまなニーズに応えることができます。現実世界の事業への投資を通じて、低リスクで確実な収益を実現し、手軽な操作で大きな達成感と社会への貢献を体験することができます。
-                      Harvest
-                      Flowのビジョンは、世界中の「実り」を投資家と共に収穫し、その「流れ」を通じて経済的・社会的な成長を促進することです。私たちは、投資家が自らの行動が実世界でポジティブな変化を生むことを実感できるように、感動と透明性を核とした新時代の投資の形を提案します。
-                    </AccordionDetails>
-                  </Accordion>
-                </Grid>
-              </Grid>
-              <Grid container style={{ borderTop: "1px solid #000" }}>
-                <Grid item md={2}>
-                  <Item>
-                    <p>Q4</p>
-                  </Item>
-                </Grid>
-                <Grid item md>
-                  <Accordion
-                    style={{ backgroundColor: "inherit" }}
-                    // expanded={expanded}
-                    // onChange={handleAccordionChange}
-                  >
-                    <AccordionSummary
-                      id="panel-header"
-                      aria-controls="panel-content"
-                      expandIcon={<ExpandMoreIcon />}
-                    >
-                      Harvest
-                      Flowではどのような投資スキームが提供されていますか？
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      Harvest
-                      Flowは、投資家に対して単なる金銭的なリターンを超えた価値を提供します。それは、全世界の可能性を収穫（Harvest）し、資金が流れる（Flow）ことで社会的、経済的な変化を生み出す新しい形の投資体験です。
-                      このプラットフォームを通じて、投資家は心を揺さぶる事業や個々のストーリーに触れ、その資金が具体的に社会にどのような良い影響をもたらしているかをリアルタイムで確認することができます。IoTやNFTなどの最新技術を活用し、投資の流れとその成果を透明にすることで、安心感と共に投資の透明性を実現します。
-                      Harvest
-                      Flowは、安定したリターンを求める暗号資産投資家から、社会的意義を重視する投資家まで、さまざまなニーズに応えることができます。現実世界の事業への投資を通じて、低リスクで確実な収益を実現し、手軽な操作で大きな達成感と社会への貢献を体験することができます。
-                      Harvest
-                      Flowのビジョンは、世界中の「実り」を投資家と共に収穫し、その「流れ」を通じて経済的・社会的な成長を促進することです。私たちは、投資家が自らの行動が実世界でポジティブな変化を生むことを実感できるように、感動と透明性を核とした新時代の投資の形を提案します。
-                    </AccordionDetails>
-                  </Accordion>
-                </Grid>
-              </Grid>
-            </Item>
-          </Grid>
-          <Grid item md={6} style={{ overflow: "hidden", maxHeight: "600px" }}>
-            <Item>
-              <div style={{ position: "relative", overflow: "hidden" }}>
-                <img src={bg2Img} style={{ width: "100%" }}></img>
-                <h2
-                  style={{
-                    position: "absolute",
-                    top: "40%",
-                    left: "35%",
-                    alignContent: "center",
-                    fontSize: "40px",
-                    width: "35%",
-                    zIndex: 1,
-                    color: "white",
-                    letterSpacing: "30px",
-                  }}
-                >
-                  FAQ
-                </h2>
+          <Grid item md={4} xs={12}>
+            <Item
+              sx={
+                isMediumUp
+                  ? { overflowY: "scroll", height: "600px" }
+                  : { height: "300px" }
+              }
+            >
+              {isMediumUp ? (
+                ""
+              ) : (
                 <Button
                   variant="contained"
                   style={{
-                    position: "absolute",
-                    top: "85%",
-                    right: "10%",
-                    padding: "5px 20px",
+                    marginTop: "20px",
+                    padding: "17px 22px 18px 22px",
                     width: "auto",
                     zIndex: 1,
                     backgroundColor: "white",
+                    borderRadius: "0px",
                     color: "black",
                   }}
                 >
+                  {" "}
                   VIEW MORE
                 </Button>
+              )}
+
+              <h1
+                style={
+                  isMediumUp
+                    ? {
+                        fontSize: "32px",
+                        fontWeight: "500",
+                        lineHeight: "36px",
+                        padding: "200px 60px 100px 60px",
+                        wordSpacing: "20px",
+                        letterSpacing: "8px",
+                      }
+                    : {
+                        fontSize: "32px",
+                        fontWeight: "500",
+                        lineHeight: "36px",
+                        padding: "100px 60px 50px 60px",
+                        wordSpacing: "20px",
+                        letterSpacing: "8px",
+                      }
+                }
+              >
+                HOW IT WORKS
+              </h1>
+              {!isMediumUp ? (
+                ""
+              ) : (
+                <p className="semi-content">
+                  Harvest
+                  Flowでは、投資家が投資先の事業やエンドユーザーのストーリーに触れることができます。例えば、投資先の事業オーナーやエンドユーザーへのインタビュー動画を視聴することで、投資が実際にどのような人々の役に立っているのかを知ることができます。また、投資家はNFTを通じて、Harvest
+                  Flowでは、投資家が投資先の事業やエンドユーザーのストーリーに触れることができます。例えば、投資先の事業オーナーやエンドユーザーへのインタビュー動画を視聴することで、投資が実際にどのような人々の役に立っているのかを知ることができます。また、投資家はNFTを通じて、
+                </p>
+              )}
+            </Item>
+          </Grid>
+          <Grid item md xs={12}>
+            <Item
+              style={
+                isMediumUp
+                  ? {
+                      maxHeight: "800px",
+                      overflow: "hidden",
+                      position: "relative",
+                    }
+                  : {
+                      maxHeight: "660px",
+                    }
+              }
+            >
+              <div className="outer-wrapper">
+                <div className="wrapper">
+                  <div className="slide">
+                    <img
+                      src={HowToBg2}
+                      style={{
+                        position: "absolute",
+                        left: "0px",
+                        top: "0px",
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+              {isMediumUp ? (
+                ""
+              ) : (
+                <p className="semi-content">
+                  Harvest
+                  Flowでは、投資家が投資先の事業やエンドユーザーのストーリーに触れることができます。例えば、投資先の事業オーナーやエンドユーザーへのインタビュー動画を視聴することで、投資が実際にどのような人々の役に立っているのかを知ることができます。また、投資家はNFTを通じて、Harvest
+                </p>
+              )}
+            </Item>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container style={{ position: "relative" }}>
+          <Grid item md={12} xs>
+            <Item style={{ zIndex: 10 }}>
+              <h1
+                style={
+                  isMediumUp
+                    ? {
+                        fontSize: "32px",
+                        fontWeight: "500",
+                        lineHeight: "36px",
+                        alignContent: "center",
+                        padding: "60px 60px 60px 60px",
+                        wordSpacing: "20px",
+                        letterSpacing: "8px",
+                        marginBottom: "300px",
+                      }
+                    : {
+                        fontSize: "32px",
+                        fontWeight: "500",
+                        lineHeight: "36px",
+                        alignContent: "center",
+                        padding: "90px 60px 600px 60px",
+                        wordSpacing: "20px",
+                        letterSpacing: "8px",
+                        marginBottom: "350px",
+                      }
+                }
+              >
+                PARTNER
+              </h1>
+              <div style={{ paddingBottom: 80 }}>
+                {current && current === 1 ? (
+                  <PartnerCard
+                    bottom={isMediumUp ? "-200px" : "-100px"}
+                    img={Partner1}
+                    job_title="1FINANCIE fOUNDER"
+                    title="HIRONAO"
+                    content="Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストーリーに触れることができます。例えば、投資先の事業オーナーやエンドユーザーへのインタビュー動画を視聴することで、投資が実際にどのような人々の役に立っているのかを知ることができます。また、投資家はNFTを通じて、Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストーリーに触れることができます。例えば、投資先の事業オーナーやエンドユーザーへのインタビュー動画を視聴することで、投資が実際にどのような人々の役に立っているのかを知ることができます。また、投資家はNFTを通じて、"
+                  />
+                ) : current === 2 ? (
+                  <PartnerCard
+                    bottom={isMediumUp ? "-200px" : "-100px"}
+                    img={Partner1}
+                    job_title="fOUNDER"
+                    title="HIRONAO KUNIMITSU"
+                    content="Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストーリーに触れることができます。例えば、投資先の事業オーナーやエンドユーザーへのインタビュー動画を視聴することで、投資が実際にどのような人々の役に立っているのかを知ることができます。また、投資家はNFTを通じて、Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストーリーに触れることができます。例えば、投資先の事業オーナーやエンドユーザーへのインタビュー動画を視聴することで、投資が実際にどのような人々の役に立っているのかを知ることができます。また、投資家はNFTを通じて、"
+                  />
+                ) : (
+                  <PartnerCard
+                    bottom={isMediumUp ? "-200px" : "-100px"}
+                    img={Top4}
+                    job_title="3FINANCIE fOUNDER"
+                    title="HIRONAO KUNIMITSU"
+                    content="Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストーリーに触れることができます。例えば、投資先の事業オーナーやエンドユーザーへのインタビュー動画を視聴することで、投資が実際にどのような人々の役に立っているのかを知ることができます。また、投資家はNFTを通じて、Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストーリーに触れることができます。例えば、投資先の事業オーナーやエンドユーザーへのインタビュー動画を視聴することで、投資が実際にどのような人々の役に立っているのかを知ることができます。また、投資家はNFTを通じて、"
+                  />
+                )}
               </div>
             </Item>
           </Grid>
         </Grid>
-      </Box>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container>
-          <Grid item md sx={{ maxHeight: "800px" }}>
-            <Item sx={{ maxHeight: "800px" }}>
-              <h1
-                style={{
-                  fontSize: "32px",
-                  fontWeight: "500",
-                  lineHeight: "36px",
-                  padding: "120px 60px 120px 60px",
-                  wordSpacing: "20px",
-                  letterSpacing: "8px",
-                }}
-              >
-                HOW IT WORKS
-              </h1>
-              <p
-                style={{
-                  fontSize: "15px",
-                  fontWeight: 400,
-                  lineHeight: "18px",
-                  padding: "0 40px",
-                }}
-              >
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et doloremagna.Lorem ipsum
-                dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna.sed do eiusmod
-                tempor incididunt ut labore et dolore magna.
-              </p>
-            </Item>
-          </Grid>
-          <Grid item md="auto">
-            <Item style={{ maxHeight: "800px" }}>
-              <img src={HowToBg2} style={{ width: "100%" }} />
-            </Item>
-          </Grid>
-        </Grid>
-      </Box>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container style={{ justifyContent: "center" }}>
-          <Grid md={12}>
-            <Item>
-              <h1
-                style={{
-                  fontSize: "32px",
-                  fontWeight: "500",
-                  lineHeight: "36px",
-                  padding: "60px 60px 60px 60px",
-                  wordSpacing: "20px",
-                  letterSpacing: "8px",
-                  marginBottom: "300px",
-                }}
-              >
-                PARTNER
-              </h1>
-              <PartnerCard
-                top="4150px"
-                img={Partner1}
-                job_title="FINANCIE fOUNDER"
-                title="HIRONAO KUNIMITSU"
-                content="Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストーリーに触れることができます。例えば、投資先の事業オーナーやエンドユーザーへのインタビュー動画を視聴することで、投資が実際にどのような人々の役に立っているのかを知ることができます。また、投資家はNFTを通じて、自分が社会貢献に参加していることを実感できます。投資家は、投資を通じて獲得したポイントを、社会貢献度の指標として確認することができ、社会を良い方向に変えていることを体験できます。"
-              />
-              <PartnerCard
-                top="4150px"
-                img={Partner1}
-                job_title="FINANCIE fOUNDER"
-                title="HIRONAO KUNIMITSU"
-                content="Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストーリーに触れることができます。例えば、投資先の事業オーナーやエンドユーザーへのインタビュー動画を視聴することで、投資が実際にどのような人々の役に立っているのかを知ることができます。また、投資家はNFTを通じて、自分が社会貢献に参加していることを実感できます。投資家は、投資を通じて獲得したポイントを、社会貢献度の指標として確認することができ、社会を良い方向に変えていることを体験できます。"
-              />
-              <PartnerCard
-                top="4150px"
-                img={Partner1}
-                job_title="FINANCIE fOUNDER"
-                title="HIRONAO KUNIMITSU"
-                content="Harvest Flowでは、投資家が投資先の事業やエンドユーザーのストーリーに触れることができます。例えば、投資先の事業オーナーやエンドユーザーへのインタビュー動画を視聴することで、投資が実際にどのような人々の役に立っているのかを知ることができます。また、投資家はNFTを通じて、自分が社会貢献に参加していることを実感できます。投資家は、投資を通じて獲得したポイントを、社会貢献度の指標として確認することができ、社会を良い方向に変えていることを体験できます。"
-              />
-            </Item>
-          </Grid>
-        </Grid>
-      </Box>
-      <div className="bg-Top1">
-        <div className="carousel-li">
-          <input type="radio" className="carousel" name="carousel" />
-          <input type="radio" className="carousel" name="carousel" />
-          <input type="radio" className="carousel" name="carousel" />
-        </div>
-        <Typography
-          sx={{
-            paddingBottom: "40px",
-            fontWeight: "500",
-            fontSize: "40px",
-            lineHeight: "64px",
-            letterSpacing: "20px",
-          }}
-        >
-          JOIN OUR COMMUNITY
-        </Typography>
-        <div>
-          <IconButton color="primary">
-            <XIcon color="primary" />
-          </IconButton>
-          <IconButton sx={{ color: "green[500]" }}>
-            <DiscordIcon color="primary" />
-          </IconButton>
-        </div>
-        <p style={{ fontSize: "20px", lineHeight: "24px" }}>
-          &quot;Feel, think, and grow the world with your investments.&quot;
-        </p>
-        <img
-          src={apasport_logo}
-          style={{ paddingTop: "25px", marginLeft: "180px" }}
-        ></img>
-        <p style={{ marginTop: "0px" }}>
-          Produced by{" "}
-          <span className="asport" style={{ color: "white" }}>
-            &nbsp;APSORT
-          </span>
-        </p>
-
-        <hr />
-        <div className="footer">
-          <div className="footer-link-group">
-            <a className="#">CONTACT</a>
-            <a className="#">LEGAL</a>
-            <a className="#">TERM OF USE</a>
-            <a className="#">PRIVACY POLICY</a>
+        <div className="footer-bg">
+          <div className="carousel-li">
+            <input
+              type="radio"
+              className="carousel"
+              name="carousel"
+              onClick={() => setCurrent(1)}
+            />
+            <input
+              type="radio"
+              className="carousel"
+              name="carousel"
+              onClick={() => setCurrent(2)}
+            />
+            <input
+              type="radio"
+              className="carousel"
+              name="carousel"
+              onClick={() => setCurrent(3)}
+            />
           </div>
-          <p>Copyright © Apasport all rights reserved. &nbsp;</p>
+          <Typography
+            sx={
+              isMediumUp
+                ? {
+                    fontWeight: "500",
+                    fontSize: "40px",
+                    lineHeight: "64px",
+                    letterSpacing: "20px",
+                    paddingTop: "240px",
+                    paddingBottom: "20px",
+                  }
+                : {
+                    fontWeight: "500",
+                    fontSize: "22px",
+                    lineHeight: "64px",
+                    letterSpacing: "20px",
+                    paddingTop: "130px",
+                    paddingBottom: "10px",
+                  }
+            }
+          >
+            JOIN OUR COMMUNITY
+          </Typography>
+          <div style={{ paddingBottom: "30px" }}>
+            <IconButton color="primary">
+              <XIcon color="primary" />
+            </IconButton>
+            <IconButton sx={{ color: "green[500]" }}>
+              <DiscordIcon color="primary" />
+            </IconButton>
+          </div>
+          <p style={{ fontSize: "20px", lineHeight: "24px" }}>
+            &quot;Feel, think, and grow the world with your investments.&quot;
+          </p>
+          <div style={{ marginTop: "120px", borderBottom: "1px solid #fff" }}>
+            <img
+              src={apasport_logo}
+              style={{ paddingTop: "25px", marginLeft: "180px" }}
+            ></img>
+            <p>
+              Produced by{" "}
+              <a
+                className="asport"
+                href="https://apasport.xyz/"
+                style={{
+                  color: "white",
+                  cursor: "pointer",
+                  textDecoration: "none",
+                }}
+              >
+                &nbsp;APSORT
+              </a>
+            </p>
+          </div>
+          <div className="footer">
+            <div className="footer-link-group">
+              <a className="#">CONTACT</a>
+              <a className="#">LEGAL</a>
+              <a className="#">TERM OF USE</a>
+              <a className="#">PRIVACY POLICY</a>
+            </div>
+            <p>Copyright © Apasport all rights reserved. &nbsp;</p>
+          </div>
         </div>
-      </div>
+      </Box>
+      {/* </div> */}
     </Layout>
   );
 };
 
-export default Home_JP;
+export default Home;

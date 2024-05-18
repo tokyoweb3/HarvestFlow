@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { Box, Container, Icon, Stack } from "@mui/material";
 import Logo from "@src/components/Logo";
 
+import { Grid, useMediaQuery, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
-
 import SvgIcon, { SvgIconProps } from "@mui/material/SvgIcon";
 import XIcon from "@mui/icons-material/X";
 import MenuIcon from "@mui/icons-material/Menu";
 import ConnectWalletButton from "@src/components/ConnectWalletButton";
+import logo from "@assets/images/Top/6.png";
+import hamburg from "@assets/images/Top/hamburg.png";
 
 const DiscordIcon: React.FC<SvgIconProps> = (props) => (
   <SvgIcon {...props} viewBox="0 0 24 24" sx={{ color: "#5865F2" }}>
@@ -18,8 +20,26 @@ const DiscordIcon: React.FC<SvgIconProps> = (props) => (
 );
 
 const Header: React.FC = () => {
-  const [langstatus, setLangstatus] = useState("Japanese");
+  const theme = useTheme();
   const navigation = useNavigate();
+  const isMediumUp = useMediaQuery(theme.breakpoints.up("md"));
+
+  const [langstatus, setLangstatus] = useState("Japanese");
+  const [open, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleOutsideClick = (event: any) => {
+    if (event.target.id === "myModal") {
+      setIsModalOpen(false);
+    }
+  };
 
   const handleClick = () => {
     if (location.pathname.includes("jp")) {
@@ -30,91 +50,182 @@ const Header: React.FC = () => {
       setLangstatus("English");
     }
   };
+
+  const handleOpen = () => {
+    setIsModalOpen(true);
+  };
+
   useEffect(() => {
     setLangstatus("Japanese");
   }, [langstatus]);
 
   return (
-    <Box
-      sx={{
-        color: "#000",
-        height: "60px",
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        border: "none",
-      }}
-    >
-      <Box sx={{ padding: "8px 16px" }}>
-        <Logo />
-      </Box>
+    <>
       <Box
         sx={{
-          color: "gray",
+          color: "#000",
+          height: "60px",
           display: "flex",
           flexDirection: "row",
-          fontcolor: "#000",
-          borderLeft: "1px solid gray",
-          borderRight: "1px solid gray",
+          justifyContent: "space-between",
+          border: "none",
         }}
       >
-        <Button
-          sx={{
-            backgroundColor: "inherit",
-            borderRadius: "0px",
-            flex: "1",
-            border: "none",
-            borderRight: "1px solid gray",
-          }}
-        >
-          <XIcon />
-        </Button>
-        <Button
-          sx={{
-            backgroundColor: "inherit",
-            borderRadius: "0px",
-            flex: "1",
-            border: "none",
-            borderRight: "1px solid gray",
-          }}
-        >
-          <DiscordIcon />
-        </Button>
+        <Box sx={{ padding: "8px 16px" }}>
+          <Logo />
+        </Box>
 
-        <Button
+        <Box
           sx={{
-            backgroundColor: "inherit",
-            borderRadius: "0px",
-            padding: "0px 30px",
+            color: "gray",
+            display: "flex",
+            flexDirection: "row",
+            fontcolor: "#000",
+            borderLeft: "1px solid gray",
             borderRight: "1px solid gray",
           }}
         >
-          <ConnectWalletButton />
-        </Button>
-        <Button
-          sx={{
-            backgroundColor: "inherit",
-            borderRadius: "0px",
-            border: "none",
-            borderRight: "1px solid gray",
-          }}
-          onClick={handleClick}
-        >
-          <span>{langstatus}</span>
-        </Button>
+          {isMediumUp && (
+            <>
+              <Button
+                sx={{
+                  backgroundColor: "inherit",
+                  borderRadius: "0px",
+                  flex: "1",
+                  border: "none",
+                  borderRight: "1px solid gray",
+                }}
+              >
+                <XIcon />
+              </Button>
+              <Button
+                sx={{
+                  backgroundColor: "inherit",
+                  borderRadius: "0px",
+                  flex: "1",
+                  border: "none",
+                  borderRight: "1px solid gray",
+                }}
+              >
+                <DiscordIcon />
+              </Button>
 
-        <Button
-          sx={{
-            backgroundColor: "inherit",
-            borderRadius: "0px",
-            border: "none",
-            flex: "1",
-          }}
-        >
-          <MenuIcon />
-        </Button>
+              <Button
+                sx={{
+                  backgroundColor: "inherit",
+                  borderRadius: "0px",
+                  padding: "0px 30px",
+                  borderRight: "1px solid gray",
+                }}
+              >
+                <ConnectWalletButton />
+              </Button>
+              <Button
+                sx={{
+                  backgroundColor: "inherit",
+                  borderRadius: "0px",
+                  border: "none",
+                  borderRight: "1px solid gray",
+                }}
+                onClick={handleClick}
+              >
+                <span>{langstatus}</span>
+              </Button>
+            </>
+          )}
+
+          <Button
+            sx={{
+              backgroundColor: "inherit",
+              borderRadius: "0px",
+              border: "none",
+              flex: "1",
+            }}
+            onClick={openModal}
+          >
+            <MenuIcon />
+          </Button>
+        </Box>
       </Box>
-    </Box>
+
+      {open ? (
+        <div id="myModal" className="modal" onClick={handleOutsideClick}>
+          <div className="modal-content">
+            <span className="close" onClick={closeModal}>
+              &times;
+            </span>
+            <img src={logo} style={{ marginTop: "100px" }} />
+            {/* <img
+              src={hamburg}
+              style={{
+                position: "absolute",
+                width: "100%",
+                top: "0px",
+                left: "0px",
+              }}
+            /> */}
+            <Grid gap={20}>
+              <Grid xs={6}>
+                <p
+                  style={{
+                    fontSize: "35px",
+                    letterSpacing: "10px",
+                    margin: "30px 0px",
+                    zIndex: "100",
+                  }}
+                >
+                  Harvest Flow
+                </p>
+              </Grid>
+              <Grid xs={6}>
+                <Button
+                  sx={{
+                    backgroundColor: "inherit",
+                    borderRadius: "0px",
+                    border: "none",
+                  }}
+                >
+                  <XIcon />
+                </Button>
+              </Grid>
+              <Grid xs={6}>
+                <Button
+                  sx={{
+                    backgroundColor: "inherit",
+                    borderRadius: "0px",
+                    border: "none",
+                  }}
+                >
+                  <DiscordIcon />
+                </Button>
+              </Grid>
+
+              <Button
+                sx={{
+                  backgroundColor: "inherit",
+                  borderRadius: "0px",
+                  padding: "0px 30px",
+                }}
+              >
+                <ConnectWalletButton />
+              </Button>
+              <Button
+                sx={{
+                  backgroundColor: "inherit",
+                  borderRadius: "0px",
+                  border: "none",
+                }}
+                onClick={handleClick}
+              >
+                <span>{langstatus}</span>
+              </Button>
+            </Grid>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+    </>
   );
 };
 

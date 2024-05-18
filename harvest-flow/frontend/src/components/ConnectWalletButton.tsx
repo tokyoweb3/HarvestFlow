@@ -5,6 +5,7 @@ import MainController from "@src/MainController";
 import { WalletMode } from "@paima/providers";
 import { middleEllipsis } from "@src/utils";
 import { LoginInfo } from "@paima/sdk/mw-core";
+import { Typography } from "@mui/material";
 
 const ConnectWalletButton: React.FC = () => {
   const mainController: MainController = useContext(AppContext);
@@ -22,7 +23,7 @@ const ConnectWalletButton: React.FC = () => {
       {mainController.isWalletConnected() ? (
         <div> {middleEllipsis(userAddress)}</div>
       ) : (
-        <button
+        <div
           onClick={() => {
             mainController.connectWallet(loginInfo).then((result) => {
               setUserAddress(result);
@@ -33,10 +34,10 @@ const ConnectWalletButton: React.FC = () => {
             border: "none",
           }}
         >
-          <p style={{ fontSize: "15px", fontWeight: "500px" }}>
+          <Typography style={{ fontSize: "15px", fontWeight: "500px" }}>
             Connect&nbsp;Wallet
-          </p>
-        </button>
+          </Typography>
+        </div>
       )}
     </div>
   );
