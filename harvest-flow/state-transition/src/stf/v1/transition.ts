@@ -1,6 +1,6 @@
 import {SQLUpdate} from "@paima/node-sdk/db";
 import {persistContractActivation, updateMintedAmount} from "./persist/contract";
-import {ClaimedInput, ContractActivatedInput, NftMintedInput} from "./types";
+import {ClaimedInput, ContractActivatedInput, NftMintedInput, RedeemedInput} from "./types";
 import {saveEventToHistory} from "./persist/history";
 import {ethers} from "ethers";
 import {ENV} from "@paima/sdk/utils";
@@ -81,7 +81,7 @@ export const interestClaimed = async (
 }
 
 export const principalRedeemed = async (
-    input : ClaimedInput,
+    input : RedeemedInput,
     blockHeight: number
 ): Promise<SQLUpdate[]> => {
     console.log(`Principal redeemed for NFT ${input.tokenId} on chain ${chainId} for ${input.receiver} with amount ${input.amount}`);
