@@ -3,6 +3,7 @@ pragma solidity ^0.8.20;
 
 import "forge-std/Test.sol";
 
+import {NftFactory} from "../src/NftFactory.sol";
 import {TokTokNft} from "../src/TokTokNft.sol";
 
 import {MockERC20} from "./mocks/MockERC20.sol";
@@ -47,7 +48,10 @@ contract TokTokNftTest is Test, ERC1155Holder {
     function setUp() public {
         (signerAddress, signerPk) = makeAddrAndKey("signer");
         payable_token = new MockERC20("MockERC20", "MOCK", payable_token_supply);
-        toktok = new TokTokNft(
+
+        address nftImpl = address(new TokTokNft());
+        NftFactory factory = new NftFactory(nftImpl);
+        TokTokNft.InitializationParams memory params = TokTokNft.InitializationParams(
             name,
             symbol,
             cap,
@@ -60,6 +64,8 @@ contract TokTokNftTest is Test, ERC1155Holder {
             owner,
             signerAddress
         );
+        toktok = TokTokNft(factory.deploy(params));
+
         payable_token.approve(address(toktok), type(uint256).max);
         payable_token.transfer(address(toktok), cap * price);
         vm.deal(address(toktok), 1 ether);

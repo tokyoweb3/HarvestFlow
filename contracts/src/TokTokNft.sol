@@ -3,14 +3,14 @@ pragma solidity ^0.8.20;
 
 import {Arrays} from "@openzeppelin/contracts/utils/Arrays.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import {ERC2981} from "@openzeppelin/contracts/token/common/ERC2981.sol";
+import {ERC2981Upgradeable} from "@openzeppelin/contracts-upgradeable/token/common/ERC2981Upgradeable.sol";
+import {ERC721AUpgradeable} from "erc721a-upgradeable/contracts/ERC721AUpgradeable.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
-import {ERC721A} from "erc721a/contracts/ERC721A.sol";
+import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 
-contract TokTokNft is ERC721A, ERC2981, Ownable, Pausable {
+contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable, PausableUpgradeable {
     using Arrays for address[];
     using Arrays for uint256[];
     using ECDSA for bytes32;
@@ -19,6 +19,31 @@ contract TokTokNft is ERC721A, ERC2981, Ownable, Pausable {
         uint256 amount;
         uint256 l;
         uint256 r;
+    }
+
+    struct InitializationParams {
+        /// @param name Name of the ERC1155
+        string name;
+        /// @param symbol Symbol of the ERC1155
+        string symbol;
+        /// @param cap Total cap of tokens to be issued
+        uint256 cap;
+        /// @param payable_token Address of the token used for payments
+        address payable_token;
+        /// @param price Price of one token
+        uint256 price;
+        /// @param lendingAt Start time of the lending agreement (when claims can begin)
+        uint256 lendingAt;
+        /// @param yield Minimum fixed interest rate scaled to the 1e18
+        uint256 yield;
+        /// @param lending_period Duration of the lending agreement
+        uint256 lending_period;
+        /// @param baseURI Base URI for the token
+        string baseURI;
+        /// @param owner Owner of the contract
+        address owner;
+        /// @param signerAddress Address of the signer for presale signatures
+        address signerAddress;
     }
 
     uint256 constant year = 365 days;
@@ -55,13 +80,13 @@ contract TokTokNft is ERC721A, ERC2981, Ownable, Pausable {
     /// @notice Price of token in the public sale phase
     uint256 public publicPrice;
     /// @notice Address of the signer for presale signatures
-    address public immutable signerAddress;
+    address public signerAddress;
     /// @notice Mapping of the amount of tokens minted by the user during the presale phase
     mapping(address user => uint256 minted) public whitelistUserMintedCount;
     /// @notice Is claiming enabled
     bool internal _isActive;
     /// @notice Decimals of the `payable_token`
-    uint256 internal immutable payable_token_decimals;
+    uint256 internal payable_token_decimals;
 
     event Activated();
     event BaseUriChanged(string newBaseURI);
@@ -86,42 +111,39 @@ contract TokTokNft is ERC721A, ERC2981, Ownable, Pausable {
     error NotMaturedYet(uint256 maturity, uint256 currentTimestamp);
     error SaleOngoing();
 
-    /// @notice Initialize the contract
-    /// @param name_ Name of the ERC1155
-    /// @param symbol_ Symbol of the ERC1155
-    /// @param cap_ Total cap of tokens to be issued
-    /// @param payable_token_ Address of the token used for payments
-    /// @param price_ Price of one token
-    /// @param lendingAt_ Start time of the lending agreement (when claims can begin)
-    /// @param yield_ Minimum fixed interest rate scaled to the 1e18
-    /// @param lending_period_ Duration of the lending agreement
-    /// @param baseURI_ Base URI for the token
-    /// @param owner_ Owner of the contract
-    /// @param signerAddress_ Address of the signer for presale signatures
-    constructor(
-        string memory name_,
-        string memory symbol_,
-        uint256 cap_,
-        address payable_token_,
-        uint256 price_,
-        uint256 lendingAt_,
-        uint256 yield_,
-        uint256 lending_period_,
-        string memory baseURI_,
-        address owner_,
-        address signerAddress_
-    ) ERC721A(name_, symbol_) Ownable(owner_) {
-        cap = cap_;
-        payable_token = ERC20(payable_token_);
-        lendingAt = lendingAt_;
-        yield = yield_;
-        presalePrice = price_;
-        publicPrice = price_;
-        signerAddress = signerAddress_;
-        baseURI = baseURI_;
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
 
-        maturity = lendingAt_ + lending_period_;
-        payable_token_decimals = ERC20(payable_token_).decimals();
+    /// @notice Initialize the contract
+    /// @param params.name Name of the ERC1155
+    /// @param params.symbol Symbol of the ERC1155
+    /// @param params.cap Total cap of tokens to be issued
+    /// @param params.payable_token Address of the token used for payments
+    /// @param params.price Price of one token
+    /// @param params.lendingAt Start time of the lending agreement (when claims can begin)
+    /// @param params.yield Minimum params.fixed interest rate scaled to the 1e18
+    /// @param params.lending_period Duration of the lending agreement
+    /// @param params.baseURI Base URI for the token
+    /// @param params.owner Owner of the contract
+    /// @param params.signerAddress Address of the signer for presale signatures
+    function initialize(InitializationParams memory params) public initializerERC721A initializer {
+        __ERC721A_init(params.name, params.symbol);
+        __Ownable_init(params.owner);
+        __Pausable_init();
+
+        cap = params.cap;
+        payable_token = ERC20(params.payable_token);
+        lendingAt = params.lendingAt;
+        yield = params.yield;
+        presalePrice = params.price;
+        publicPrice = params.price;
+        signerAddress = params.signerAddress;
+        baseURI = params.baseURI;
+
+        maturity = params.lendingAt + params.lending_period;
+        payable_token_decimals = ERC20(params.payable_token).decimals();
     }
 
     /// @notice Mint `mintAmount` of tokens during active public sale phase by paying `mintAmount * publicPrice` of `payable_token`.
@@ -451,8 +473,14 @@ contract TokTokNft is ERC721A, ERC2981, Ownable, Pausable {
         needPayableTokenAmount = balance > totalNotYetClaimed ? 0 : totalNotYetClaimed - balance;
     }
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721A, ERC2981) returns (bool) {
-        return ERC721A.supportsInterface(interfaceId) || ERC2981.supportsInterface(interfaceId);
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(ERC721AUpgradeable, ERC2981Upgradeable)
+        returns (bool)
+    {
+        return ERC721AUpgradeable.supportsInterface(interfaceId) || ERC2981Upgradeable.supportsInterface(interfaceId);
     }
 
     /// @notice Check that `mintAmount` is not zero and mint cap has not been reached.

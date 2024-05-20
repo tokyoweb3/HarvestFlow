@@ -4,7 +4,8 @@ out = "out"
 libs = ["node_modules", "lib"]
 remappings = [
     '@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/',
-    'erc721a/=node_modules/erc721a/'
+    '@openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/',
+    'erc721a-upgradeable/=node_modules/erc721a-upgradeable/'
 ]
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
