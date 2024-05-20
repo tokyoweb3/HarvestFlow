@@ -624,6 +624,7 @@ contract TokTokNftTest is Test, ERC1155Holder {
     }
 
     function test_redeem_reverts_ifNotActive() public {
+        vm.warp(toktok.maturity());
         vm.expectRevert(TokTokNft.NotActive.selector);
         toktok.redeem(1);
     }

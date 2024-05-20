@@ -83,6 +83,7 @@ contract TokTokNft is ERC721A, ERC2981, Ownable, Pausable {
     error InvalidSignature();
     error LendingAtPassed(uint256 lendingAt, uint256 currentTimestamp);
     error NotActive();
+    error NotMaturedYet(uint256 maturity, uint256 currentTimestamp);
     error SaleOngoing();
 
     /// @notice Initialize the contract
@@ -280,6 +281,9 @@ contract TokTokNft is ERC721A, ERC2981, Ownable, Pausable {
         if (redeemed[tokenId]) {
             revert AlreadyRedeemed(tokenId);
         }
+        if (block.timestamp < maturity) {
+            revert NotMaturedYet(maturity, block.timestamp);
+        }
         claim(tokenId);
 
         address owner = ownerOf(tokenId);
@@ -293,6 +297,9 @@ contract TokTokNft is ERC721A, ERC2981, Ownable, Pausable {
     /// @param tokenIds Array of token IDs to claim interest and redeem principal for
     /// @dev Only callable when the contract is active (checked in `claim` function call)
     function redeemAll(uint256[] memory tokenIds) public whenNotPaused {
+        if (block.timestamp < maturity) {
+            revert NotMaturedYet(maturity, block.timestamp);
+        }
         claimAll(tokenIds);
 
         uint256 claimablePrincipalCurrentOwner;
