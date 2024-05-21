@@ -72,4 +72,27 @@ FROM
 WHERE
     user_address = LOWER(:user_address);
 
+/* @name getActiveTokensByUsersAndContract */
+SELECT
+    t.owner_address,
+    c.price,
+    c.lease_start,
+    c.lease_end,
+    ARRAY_AGG(t.token_id) AS token_ids
+FROM
+    tokens t
+        JOIN
+    contracts c
+    ON
+        t.chain_id = c.chain_id AND
+        t.contract_address = c.address
+WHERE
+    t.redeemed = false
+GROUP BY
+    t.owner_address,
+    c.price,
+    c.lease_start,
+    c.lease_end;
+
+
 

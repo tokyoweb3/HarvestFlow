@@ -3,6 +3,8 @@ import { PreparedQuery } from '@pgtyped/runtime';
 
 export type NumberOrString = number | string;
 
+export type bigintArray = (bigint)[];
+
 /** 'GetContract' parameters type */
 export interface IGetContractParams {
   address?: string | null | void;
@@ -289,5 +291,53 @@ const getUserRankWithPointsIR: any = {"usedParamSet":{"user_address":true},"para
  * ```
  */
 export const getUserRankWithPoints = new PreparedQuery<IGetUserRankWithPointsParams,IGetUserRankWithPointsResult>(getUserRankWithPointsIR);
+
+
+/** 'GetActiveTokensByUsersAndContract' parameters type */
+export type IGetActiveTokensByUsersAndContractParams = void;
+
+/** 'GetActiveTokensByUsersAndContract' return type */
+export interface IGetActiveTokensByUsersAndContractResult {
+  lease_end: Date;
+  lease_start: Date;
+  owner_address: string;
+  price: string;
+  token_ids: bigintArray | null;
+}
+
+/** 'GetActiveTokensByUsersAndContract' query type */
+export interface IGetActiveTokensByUsersAndContractQuery {
+  params: IGetActiveTokensByUsersAndContractParams;
+  result: IGetActiveTokensByUsersAndContractResult;
+}
+
+const getActiveTokensByUsersAndContractIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT\n    t.owner_address,\n    c.price,\n    c.lease_start,\n    c.lease_end,\n    ARRAY_AGG(t.token_id) AS token_ids\nFROM\n    tokens t\n        JOIN\n    contracts c\n    ON\n        t.chain_id = c.chain_id AND\n        t.contract_address = c.address\nWHERE\n    t.redeemed = false\nGROUP BY\n    t.owner_address,\n    c.price,\n    c.lease_start,\n    c.lease_end"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT
+ *     t.owner_address,
+ *     c.price,
+ *     c.lease_start,
+ *     c.lease_end,
+ *     ARRAY_AGG(t.token_id) AS token_ids
+ * FROM
+ *     tokens t
+ *         JOIN
+ *     contracts c
+ *     ON
+ *         t.chain_id = c.chain_id AND
+ *         t.contract_address = c.address
+ * WHERE
+ *     t.redeemed = false
+ * GROUP BY
+ *     t.owner_address,
+ *     c.price,
+ *     c.lease_start,
+ *     c.lease_end
+ * ```
+ */
+export const getActiveTokensByUsersAndContract = new PreparedQuery<IGetActiveTokensByUsersAndContractParams,IGetActiveTokensByUsersAndContractResult>(getActiveTokensByUsersAndContractIR);
 
 
