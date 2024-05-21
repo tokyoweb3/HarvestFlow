@@ -3,6 +3,8 @@ import { PreparedQuery } from '@pgtyped/runtime';
 
 export type DateOrString = Date | string;
 
+export type NumberOrString = number | string;
+
 /** 'InsertToken' parameters type */
 export interface IInsertTokenParams {
   chainId: string;
@@ -86,5 +88,34 @@ const saveTransactionIR: any = {"usedParamSet":{"type":true,"chainId":true,"cont
  * ```
  */
 export const saveTransaction = new PreparedQuery<ISaveTransactionParams,ISaveTransactionResult>(saveTransactionIR);
+
+
+/** 'AddPoints' parameters type */
+export interface IAddPointsParams {
+  amount: NumberOrString;
+  user_address: string;
+}
+
+/** 'AddPoints' return type */
+export type IAddPointsResult = void;
+
+/** 'AddPoints' query type */
+export interface IAddPointsQuery {
+  params: IAddPointsParams;
+  result: IAddPointsResult;
+}
+
+const addPointsIR: any = {"usedParamSet":{"user_address":true,"amount":true},"params":[{"name":"user_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":57,"b":70}]},{"name":"amount","required":true,"transform":{"type":"scalar"},"locs":[{"a":74,"b":81},{"a":155,"b":162}]}],"statement":"INSERT INTO points (user_address, balance)\nVALUES (LOWER(:user_address!), :amount!)\nON CONFLICT (user_address)\n   DO UPDATE SET balance = points.balance + :amount!"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * INSERT INTO points (user_address, balance)
+ * VALUES (LOWER(:user_address!), :amount!)
+ * ON CONFLICT (user_address)
+ *    DO UPDATE SET balance = points.balance + :amount!
+ * ```
+ */
+export const addPoints = new PreparedQuery<IAddPointsParams,IAddPointsResult>(addPointsIR);
 
 

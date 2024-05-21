@@ -6,6 +6,9 @@ import {ethers} from "ethers";
 import {ENV} from "@paima/sdk/utils";
 import {persistTokenOwnership, updateClaimedYieldAmount, updateTokenRedeemed} from "./persist/tokens";
 import {NftHistoryEventType} from "@harvest-flow/utils";
+import {addUserPoints} from "./persist/points";
+import {Pool} from "pg";
+import {getContract} from "@harvest-flow/db";
 
 const contractAddress = process.env.TOKTOK_NFT_CONTRACT_ADDRESS!;
 const chainId = process.env.CHAIN_ID!;
@@ -21,7 +24,8 @@ export const contractActivated = async (
 
 export const nftMinted = async (
     input : NftMintedInput,
-    blockHeight: number
+    blockHeight: number,
+    dbConn: Pool
 ): Promise<SQLUpdate[]> => {
     console.log(`NFT from ${input.startTokenId} to ${input.startTokenId + input.amount} minted for contract ${contractAddress} on chain ${chainId} for ${input.receiver} with cost ${input.cost}`);
 
@@ -50,8 +54,18 @@ export const nftMinted = async (
         const persistTransaction = saveEventToHistory(NftHistoryEventType.MINT,chainId, contractAddress, tokenId, pricePerToken, timestamp, transactionHash);
         persistMintEvents.push(persistTransaction);
     }
+
     const persistUpdateMintedAmount = updateMintedAmount(chainId, contractAddress, input.amount);
-    return persistOwnerShips.concat([persistUpdateMintedAmount], persistMintEvents);
+
+    const pointsForMinting = Number(ethers.formatEther(BigInt(await getNftPrice(contractAddress, dbConn)) * input.amount)) * 0.5;
+    const addPointsForMinting = addUserPoints(input.receiver, pointsForMinting);
+
+    return [
+        persistUpdateMintedAmount,
+        ...persistOwnerShips,
+        ...persistMintEvents,
+        addPointsForMinting
+    ];
 
 }
 
@@ -100,4 +114,17 @@ export const principalRedeemed = async (
         saveEventToHistory(NftHistoryEventType.REDEEM, chainId, contractAddress, input.tokenId, input.amount, timestamp, transactionHash),
         updateTokenRedeemed(chainId, contractAddress, input.tokenId)
     ];
+}
+
+async function getNftPrice(contractAddress : string, dbConn: Pool)  {
+    const getContractDataResult = await getContract.run(
+        {  address: contractAddress.toLowerCase(), chain_id: chainId, },
+        dbConn
+    );
+
+    if(getContractDataResult.length !== 0) {
+        return getContractDataResult[0].price;
+    } else {
+        throw new Error(`Contract not found: ${contractAddress}`);
+    }
 }

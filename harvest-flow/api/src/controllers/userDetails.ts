@@ -3,6 +3,7 @@ import {Controller} from "@tsoa/runtime";
 import {UserDetails} from "@harvest-flow/utils";
 import {
     getUserTokens,
+    getUserRankWithPoints,
     requirePool
 } from "@harvest-flow/db";
 
@@ -19,10 +20,13 @@ export class UserDetailsController extends Controller {
             pool
         );
 
-        // TODO: Implement
-        const userPoints = 100;
-        const userRank = 15;
+        const getUserRankWithPointsResult = await getUserRankWithPoints.run(
+            { user_address: userAddress.toLowerCase()},
+            pool
+        );
 
+        const userPoints = Number(getUserRankWithPointsResult[0].balance) ?? 0;
+        const userRank = Number(getUserRankWithPointsResult[0].rank) ?? 0;
 
         return {
             points: userPoints,
