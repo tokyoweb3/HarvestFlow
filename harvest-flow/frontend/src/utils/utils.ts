@@ -66,10 +66,10 @@ function getTotalYieldForNft(nft: NftDetails): number {
     const annualYield = (BigInt(nft.lendingData.principle) * BigInt(nft.lendingData.yield)) / BigInt(1e18);
 
     // Proportion of time interval from the beginning of lending period until now to a year, scaled to the 1e18
-    const proportionOfIntervalTotalScaled = (Math.min(Date.now(), nft.lendingData.lendingEnd) - nft.lendingData.lendingStart) * 1e18 / YEAR_IN_S;
+    const proportionOfIntervalTotalScaled = (Math.min(Date.now(), nft.lendingData.lendingEnd) - nft.lendingData.lendingStart)/1000/ YEAR_IN_S;
 
     // Scale the claimable interest to the payable token's decimals and subtract already claimed amount
-    return Number(ethers.utils.formatEther(annualYield * BigInt(proportionOfIntervalTotalScaled)));
+    return Number(ethers.utils.formatEther(annualYield)) * proportionOfIntervalTotalScaled;
 }
 
 function getClaimableYieldForNft(nft: NftDetails): number {

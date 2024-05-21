@@ -11,6 +11,7 @@ import {
     getTotalYieldForUser
 } from "@src/utils";
 import {ethers} from "ethers";
+import {NUMBER_OF_DECIMAL_PLACES} from "@src/utils/constants";
 
 const Dashboard: React.FC = () => {
     const mainController: MainController = useContext(AppContext);
@@ -39,7 +40,7 @@ const Dashboard: React.FC = () => {
                                 <Grid item xs={4} textAlign="center">
                                     <Typography variant="body1">TOTAL EQUITY</Typography>
                                     <Typography variant="h3" color="primary">
-                                        ${userDetails ? getTotalEquity(userDetails.ownedNfts) : '---'}
+                                        ${userDetails ? getTotalEquity(userDetails.ownedNfts).toFixed(NUMBER_OF_DECIMAL_PLACES) : '---'}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={4} textAlign="center">
@@ -56,7 +57,7 @@ const Dashboard: React.FC = () => {
                                 </Grid>
                                 <Grid item xs={6} textAlign="center">
                                     <Typography variant="body1">Total Yield</Typography>
-                                    <Typography variant="h6">{userDetails ? getTotalYieldForUser(userDetails.ownedNfts) : "----"} DAI</Typography>
+                                    <Typography variant="h6">{userDetails ? getTotalYieldForUser(userDetails.ownedNfts).toFixed(NUMBER_OF_DECIMAL_PLACES) : "----"} DAI</Typography>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -75,7 +76,7 @@ const Dashboard: React.FC = () => {
                 </CardContent>
                 <CardContent sx={{ flex: 1, borderLeft: '1px solid #e0e0e0', backgroundColor: '#f5f5f5' }}>
                     <Box textAlign="center">
-                        <Typography variant="body1">Claimable Yield: {userDetails ? getClaimableYieldForUser(userDetails.ownedNfts) : "--" } DAI</Typography>
+                        <Typography variant="body1">Claimable Yield: {userDetails ? getClaimableYieldForUser(userDetails.ownedNfts).toFixed(NUMBER_OF_DECIMAL_PLACES) : "--" } DAI</Typography>
                         <Typography variant="body1">Claimable Principle: {userDetails ? getClaimablePrincipleForUser(userDetails.ownedNfts) : "----"} DAI</Typography>
                         <Button variant="contained" color="primary" sx={{ marginTop: 2 }}
                               onClick = {() => claimYield()}

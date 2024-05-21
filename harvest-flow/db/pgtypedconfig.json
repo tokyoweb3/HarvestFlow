@@ -18,7 +18,6 @@
     "ssl": false
   },
   "typesOverrides": {
-    "uint256": "bigint",
-    "numeric": "bigint"
+    "uint256": "bigint"
   }
 }

@@ -1,6 +1,8 @@
 /** Types generated for queries found in "src/queries/select.sql" */
 import { PreparedQuery } from '@pgtyped/runtime';
 
+export type NumberOrString = number | string;
+
 /** 'GetContract' parameters type */
 export interface IGetContractParams {
   address?: string | null | void;
@@ -16,11 +18,11 @@ export interface IGetContractResult {
   lease_end: Date;
   lease_start: Date;
   metadata_base_url: string | null;
-  min_yield: bigint;
-  minted_amount: bigint;
+  min_yield: string;
+  minted_amount: string;
   name: string;
-  price: bigint;
-  supply_cap: bigint;
+  price: string;
+  supply_cap: string;
   symbol: string;
 }
 
@@ -51,11 +53,11 @@ export interface IGetHistoryForContractParams {
 
 /** 'GetHistoryForContract' return type */
 export interface IGetHistoryForContractResult {
-  amount: bigint | null;
+  amount: string | null;
   chain_id: string;
   contract_address: string;
   timestamp: Date;
-  token_id: bigint;
+  token_id: string;
   tx_hash: string;
   type: string;
 }
@@ -86,7 +88,7 @@ export interface IGetHistoryForUserParams {
 
 /** 'GetHistoryForUser' return type */
 export interface IGetHistoryForUserResult {
-  amount: bigint | null;
+  amount: string | null;
   contract_address: string;
   name: string;
   timestamp: Date;
@@ -124,7 +126,7 @@ export const getHistoryForUser = new PreparedQuery<IGetHistoryForUserParams,IGet
 export interface IGetTokenDetailsParams {
   chain_id?: string | null | void;
   contract_address?: string | null | void;
-  token_id?: bigint | null | void;
+  token_id?: NumberOrString | null | void;
 }
 
 /** 'GetTokenDetails' return type */
@@ -132,11 +134,11 @@ export interface IGetTokenDetailsResult {
   lease_end: Date;
   lease_start: Date;
   metadata_base_url: string | null;
-  min_yield: bigint;
+  min_yield: string;
   name: string;
-  price: bigint;
+  price: string;
   redeemed: boolean;
-  yield_claimed: bigint;
+  yield_claimed: string;
 }
 
 /** 'GetTokenDetails' query type */
@@ -178,12 +180,12 @@ export interface IGetUserTokensResult {
   lease_end: Date;
   lease_start: Date;
   metadata_base_url: string | null;
-  min_yield: bigint;
+  min_yield: string;
   name: string;
-  price: bigint;
+  price: string;
   redeemed: boolean;
-  token_id: bigint;
-  yield_claimed: bigint;
+  token_id: string;
+  yield_claimed: string;
 }
 
 /** 'GetUserTokens' query type */

@@ -1,6 +1,8 @@
 /** Types generated for queries found in "src/queries/update.sql" */
 import { PreparedQuery } from '@pgtyped/runtime';
 
+export type NumberOrString = number | string;
+
 /** 'ActivateContract' parameters type */
 export interface IActivateContractParams {
   chainId: string;
@@ -31,7 +33,7 @@ export const activateContract = new PreparedQuery<IActivateContractParams,IActiv
 
 /** 'AddMintedAmount' parameters type */
 export interface IAddMintedAmountParams {
-  amount: bigint;
+  amount: NumberOrString;
   chainId: string;
   contractAddress?: string | null | void;
 }
@@ -60,10 +62,10 @@ export const addMintedAmount = new PreparedQuery<IAddMintedAmountParams,IAddMint
 
 /** 'AddClaimedAmountToToken' parameters type */
 export interface IAddClaimedAmountToTokenParams {
-  amount: bigint;
+  amount: NumberOrString;
   chainId: string;
   contractAddress?: string | null | void;
-  tokenId: bigint;
+  tokenId: NumberOrString;
 }
 
 /** 'AddClaimedAmountToToken' return type */
@@ -92,7 +94,7 @@ export const addClaimedAmountToToken = new PreparedQuery<IAddClaimedAmountToToke
 export interface ISetTokenRedeemedParams {
   chainId: string;
   contractAddress?: string | null | void;
-  tokenId: bigint;
+  tokenId: NumberOrString;
 }
 
 /** 'SetTokenRedeemed' return type */

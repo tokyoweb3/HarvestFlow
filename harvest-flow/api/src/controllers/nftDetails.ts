@@ -12,7 +12,7 @@ export class ClaimableController extends Controller {
         const pool = requirePool();
 
         const getTokenDetailsResult = await getTokenDetails.run(
-            { chain_id: chainId, contract_address: contractAddress.toLowerCase(), token_id: BigInt(tokenId)},
+            { chain_id: chainId, contract_address: contractAddress.toLowerCase(), token_id: tokenId},
             pool
         );
 
@@ -22,11 +22,11 @@ export class ClaimableController extends Controller {
                 contractAddress: contractAddress,
                 projectName: getTokenDetailsResult[0].name,
                 lendingData: {
-                    principle: getTokenDetailsResult[0].price.toString(),
+                    principle: getTokenDetailsResult[0].price,
                     lendingStart: Date.parse(getTokenDetailsResult[0].lease_start.toISOString()),
                     lendingEnd: Date.parse(getTokenDetailsResult[0].lease_end.toISOString()),
-                    yield: getTokenDetailsResult[0].min_yield.toString(),
-                    claimedYield: getTokenDetailsResult[0].yield_claimed.toString(),
+                    yield: getTokenDetailsResult[0].min_yield,
+                    claimedYield: getTokenDetailsResult[0].yield_claimed,
                     isRedeemed: getTokenDetailsResult[0].redeemed
                 },
                 metadata: {

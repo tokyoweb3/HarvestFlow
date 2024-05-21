@@ -29,15 +29,15 @@ export class UserDetailsController extends Controller {
             rank: userRank,
             ownedNfts: getTokenDetailsResult.map((tokenDetails) => {
                 return {
-                    tokenId: tokenDetails.token_id.toString(),
+                    tokenId: tokenDetails.token_id,
                     contractAddress: tokenDetails.contract_address,
                     projectName: tokenDetails.name,
                     lendingData: {
-                        principle: tokenDetails.price.toString(),
+                        principle: tokenDetails.price,
                         lendingStart: Date.parse(tokenDetails.lease_start.toISOString()),
                         lendingEnd: Date.parse(tokenDetails.lease_end.toISOString()),
-                        yield: tokenDetails.min_yield.toString(),
-                        claimedYield: tokenDetails.yield_claimed.toString(),
+                        yield: tokenDetails.min_yield,
+                        claimedYield: tokenDetails.yield_claimed,
                         isRedeemed: tokenDetails.redeemed
                     },
                     metadata: {

@@ -20,7 +20,7 @@ export function updateMintedAmount(
     amount: bigint
 ): SQLUpdate {
   const addMintedAmountParams : IAddMintedAmountParams = {
-    amount : amount,
+    amount : amount.toString(),
     chainId: chainId,
     contractAddress: contractAddress,
   }

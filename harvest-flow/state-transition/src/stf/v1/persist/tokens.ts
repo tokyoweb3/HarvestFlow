@@ -33,8 +33,8 @@ export function updateClaimedYieldAmount(
   const updateClaimedYieldParams: IAddClaimedAmountToTokenParams = {
       chainId: chainId,
       contractAddress: contractAddress,
-      tokenId: tokenId,
-      amount: claimedYieldAmount,
+      tokenId: tokenId.toString(),
+      amount: claimedYieldAmount.toString(),
   };
 
   return [addClaimedAmountToToken, updateClaimedYieldParams];
@@ -48,7 +48,7 @@ export function updateTokenRedeemed(
   const setTokenRedeemedParams: ISetTokenRedeemedParams = {
       chainId: chainId,
       contractAddress: contractAddress,
-      tokenId: tokenId,
+      tokenId: tokenId.toString(),
   };
 
   return [setTokenRedeemed, setTokenRedeemedParams];
