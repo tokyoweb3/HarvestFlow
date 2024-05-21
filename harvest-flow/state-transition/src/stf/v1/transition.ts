@@ -1,6 +1,6 @@
-import {SQLUpdate} from "@paima/node-sdk/db";
+import {SQLUpdate, createScheduledData} from "@paima/node-sdk/db";
 import {persistContractActivation, updateMintedAmount} from "./persist/contract";
-import {ClaimedInput, ContractActivatedInput, NftMintedInput, RedeemedInput} from "./types";
+import {CalcPointsInput, ClaimedInput, ContractActivatedInput, NftMintedInput, RedeemedInput} from "./types";
 import {saveEventToHistory} from "./persist/history";
 import {ethers} from "ethers";
 import {ENV} from "@paima/sdk/utils";
@@ -9,6 +9,7 @@ import {NftHistoryEventType} from "@harvest-flow/utils";
 import {addUserPoints} from "./persist/points";
 import {Pool} from "pg";
 import {getContract} from "@harvest-flow/db";
+import {PARSER_KEYS, SECONDS_IN_DAY} from "./constants";
 
 const contractAddress = process.env.TOKTOK_NFT_CONTRACT_ADDRESS!;
 const chainId = process.env.CHAIN_ID!;
@@ -116,6 +117,23 @@ export const principalRedeemed = async (
     ];
 }
 
+export const calculateDailyPoints = async (
+    input : CalcPointsInput,
+    dbConn: Pool
+): Promise<SQLUpdate[]> => {
+    console.log(`Calculating points`);
+    const calculationReferenceTimestamp = new Date();
+
+    const persistNextCalculation = createScheduledData(
+        `${PARSER_KEYS.calcPoints}|${calculationReferenceTimestamp.getTime()}`,
+        await getNextMidnightBlockHeight(calculationReferenceTimestamp)
+    );
+
+    return [
+        persistNextCalculation
+    ];
+}
+
 async function getNftPrice(contractAddress : string, dbConn: Pool)  {
     const getContractDataResult = await getContract.run(
         {  address: contractAddress.toLowerCase(), chain_id: chainId, },
@@ -127,4 +145,26 @@ async function getNftPrice(contractAddress : string, dbConn: Pool)  {
     } else {
         throw new Error(`Contract not found: ${contractAddress}`);
     }
+}
+
+async function getNextMidnightBlockHeight  (
+    currentReferenceTimestamp: Date,
+): Promise<number> {
+    const provider = new ethers.JsonRpcProvider(ENV.CHAIN_URI);
+
+    const currentBlockNumber = await provider.getBlockNumber();
+    const currentBlockTimestamp = (await provider.getBlock(currentBlockNumber))!.timestamp;
+
+    // next execution will be next day at midnight
+    const currentDate = new Date(currentReferenceTimestamp.getTime());
+    currentDate.setHours(0,0,0,0);
+    currentDate.setDate(currentDate.getDate() + 1);
+
+    const nextExecutionTimestamp = currentDate.getTime() / 1000;
+    const remainingTime = nextExecutionTimestamp - currentBlockTimestamp;
+    const remainingBlocks = (remainingTime / ENV.BLOCK_TIME) >> 0;
+    // FIXME: just for testing
+    //return  currentBlockNumber + remainingBlocks;
+    return currentBlockNumber + 30; // Run it every minute
+
 }

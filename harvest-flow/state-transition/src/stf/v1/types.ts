@@ -1,6 +1,7 @@
 export type ParsedSubmittedInputRaw =
     | InvalidInput
     | ContractActivatedInput
+    | CalcPointsInput
 
 
 export type ManualParsedSubmittedInput =
@@ -9,8 +10,7 @@ export type ManualParsedSubmittedInput =
     | RedeemedInput
 
 export type ParsedSubmittedInput =
-    | InvalidInput
-    | ContractActivatedInput
+    | ParsedSubmittedInputRaw
     | ManualParsedSubmittedInput
 
 
@@ -20,6 +20,11 @@ export interface InvalidInput {
 }
 export interface ContractActivatedInput {
     input : 'activated'
+}
+
+export interface CalcPointsInput {
+    input : 'calcPoints'
+    lastCalculationTimestamp : number
 }
 
 export interface NftMintedInput {

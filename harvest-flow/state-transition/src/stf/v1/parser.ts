@@ -1,6 +1,7 @@
 import type { ParserRecord } from '@paima/sdk/concise';
 import { PaimaParser } from '@paima/sdk/concise';
 import {
+    CalcPointsInput,
     ClaimedInput,
     ContractActivatedInput, InvalidInput, ManualParsedSubmittedInput, NftMintedInput,
     ParsedSubmittedInput, ParsedSubmittedInputRaw, RedeemedInput,
@@ -14,16 +15,21 @@ function pref(key: ValuesType<typeof PARSER_KEYS>): string {
 
 const myGrammar = `
 ${pref(PARSER_KEYS.contractActivated)}
+${pref(PARSER_KEYS.calcPoints)}lastCalculationTimestamp
 `;
 
 const contractActivated: ParserRecord<ContractActivatedInput> = {}
+
+const calcPoints: ParserRecord<CalcPointsInput> = {
+    lastCalculationTimestamp: PaimaParser.NumberParser(),
+};
 
 
 const parserCommands: Partial<
     Record<ValuesType<typeof PARSER_KEYS>, ParserRecord<ParsedSubmittedInputRaw>>
 > = {
     [PARSER_KEYS.contractActivated]: contractActivated,
-
+    [PARSER_KEYS.calcPoints]: calcPoints,
 };
 
 
