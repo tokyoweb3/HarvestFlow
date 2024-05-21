@@ -1,66 +1,45 @@
-## Foundry
+## HarvestFlow contracts
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+Implemented with [Foundry](https://book.getfoundry.sh/).
 
-Foundry consists of:
+### Usage
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
+Install dependencies with:
 
 ```shell
-$ forge build
+npm i
 ```
 
-### Test
+Create `.env` file from `.env.example` and fill with values.
+
+### Deployment
+
+Deploy to an EVM chain of your choice based on `RPC_URL` provided in `.env`.
+
+This will also verify the contract on Etherscan-like explorer with `ETHERSCAN_API_KEY` provided in `.env.`. If verifying on non Etherscan-like explorer, refer to [Verification Options](https://book.getfoundry.sh/reference/forge/forge-script#verification-options) and update the deployment script accordingly.
 
 ```shell
-$ forge test
+npm run deploy
 ```
 
-### Format
+### Run local chain and deploy to it
 
 ```shell
-$ forge fmt
+anvil
 ```
 
-### Gas Snapshots
-
 ```shell
-$ forge snapshot
+npm run deploy:local
 ```
 
-### Anvil
+### Run tests
 
 ```shell
-$ anvil
+npm run test
 ```
 
-### Deploy
+### Run formatter
 
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+npm run format
 ```
