@@ -38,7 +38,7 @@ contract NftFactory {
         return nftClone;
     }
 
-    /// @notice Claim all NFTs from the given addresses and token IDs.
+    /// @notice Claim all NFTs from the given addresses and token IDs. If an NFT is past maturity, redeem it.
     /// @param nfts Array of NFT addresses
     /// @param tokenIds Array of token IDs (one for each NFT address)
     function claimAll(address[] memory nfts, uint256[] memory tokenIds) public {
