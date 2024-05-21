@@ -24,6 +24,7 @@ export {
     getUserTokens,
     getUserPoints,
     getUserRankWithPoints,
+    getActiveTokensByUsersAndContract,
     IGetContractParams,
     IGetContractResult,
     IGetHistoryForUserParams,
@@ -38,6 +39,8 @@ export {
     IGetUserPointsResult,
     IGetUserRankWithPointsParams,
     IGetUserRankWithPointsResult,
+    IGetActiveTokensByUsersAndContractParams,
+    IGetActiveTokensByUsersAndContractResult,
 } from './select.queries.js';
 
 export {

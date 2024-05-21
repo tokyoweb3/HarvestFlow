@@ -67,7 +67,7 @@ const Dashboard: React.FC = () => {
                                     <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center' }}>
                                         POINT
                                     </Typography>
-                                    <Typography variant="h4">{userDetails?.points ?? "----"} pt</Typography>
+                                    <Typography variant="h4">{userDetails?.points.toFixed(NUMBER_OF_DECIMAL_PLACES) ?? "----"} pt</Typography>
                                 </Box>
                                 <Typography variant="h6" align="center">Rank: {userDetails?.rank ?? "-"}</Typography>
                             </Box>

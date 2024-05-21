@@ -8,8 +8,8 @@ import {persistTokenOwnership, updateClaimedYieldAmount, updateTokenRedeemed} fr
 import {NftHistoryEventType} from "@harvest-flow/utils";
 import {addUserPoints} from "./persist/points";
 import {Pool} from "pg";
-import {getContract} from "@harvest-flow/db";
-import {PARSER_KEYS, SECONDS_IN_DAY} from "./constants";
+import {getActiveTokensByUsersAndContract, getContract} from "@harvest-flow/db";
+import {PARSER_KEYS} from "./constants";
 
 const contractAddress = process.env.TOKTOK_NFT_CONTRACT_ADDRESS!;
 const chainId = process.env.CHAIN_ID!;
@@ -129,8 +129,12 @@ export const calculateDailyPoints = async (
         await getNextMidnightBlockHeight(calculationReferenceTimestamp)
     );
 
+    const pointsByUsers = await getDailyPointsByUsers(new Date(input.lastCalculationTimestamp), calculationReferenceTimestamp, dbConn);
+    const persistUsersPoints = [...pointsByUsers].map(([user, points]) => addUserPoints(user, points));
+
     return [
-        persistNextCalculation
+        persistNextCalculation,
+        ...persistUsersPoints
     ];
 }
 
@@ -163,8 +167,37 @@ async function getNextMidnightBlockHeight  (
     const nextExecutionTimestamp = currentDate.getTime() / 1000;
     const remainingTime = nextExecutionTimestamp - currentBlockTimestamp;
     const remainingBlocks = (remainingTime / ENV.BLOCK_TIME) >> 0;
-    // FIXME: just for testing
-    //return  currentBlockNumber + remainingBlocks;
-    return currentBlockNumber + 30; // Run it every minute
 
+    return  currentBlockNumber + remainingBlocks;
+
+}
+
+async function getDailyPointsByUsers(lastCalculationTimestamp: Date, currentReferenceTimestamp : Date, dbConn: Pool): Promise<Map<string,number>> {
+    const usersPoints = new Map<string,number>();
+
+    const getTokensByUsersAndContractResult = await getActiveTokensByUsersAndContract.run(
+        void { },
+        dbConn
+    );
+
+    for (const token of getTokensByUsersAndContractResult) {
+        const lendingPeriod = token.lease_end.getTime() - token.lease_start.getTime();
+        const pointsForHold = Number(ethers.formatEther(token.price)) * 0.5;
+        const currentPeriodStart = Math.max(token.lease_start.getTime(), lastCalculationTimestamp.getTime());
+        const currentPeriodEnd = Math.min(token.lease_end.getTime(), currentReferenceTimestamp.getTime());
+        let currentPeriod = currentPeriodEnd - currentPeriodStart;
+        if (currentPeriod < 0) {
+            currentPeriod = 0;
+        }
+
+        const points = (token.token_ids?.length ?? 0) * pointsForHold * currentPeriod / lendingPeriod;
+
+        if (usersPoints.has(token.owner_address)) {
+            usersPoints.set(token.owner_address, usersPoints.get(token.owner_address)! + points);
+        } else {
+            usersPoints.set(token.owner_address, points);
+        }
+    }
+
+    return usersPoints;
 }
