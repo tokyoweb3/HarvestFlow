@@ -218,3 +218,76 @@ const getUserTokensIR: any = {"usedParamSet":{"owner_address":true},"params":[{"
 export const getUserTokens = new PreparedQuery<IGetUserTokensParams,IGetUserTokensResult>(getUserTokensIR);
 
 
+/** 'GetUserPoints' parameters type */
+export interface IGetUserPointsParams {
+  user_address?: string | null | void;
+}
+
+/** 'GetUserPoints' return type */
+export interface IGetUserPointsResult {
+  balance: string;
+}
+
+/** 'GetUserPoints' query type */
+export interface IGetUserPointsQuery {
+  params: IGetUserPointsParams;
+  result: IGetUserPointsResult;
+}
+
+const getUserPointsIR: any = {"usedParamSet":{"user_address":true},"params":[{"name":"user_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":54,"b":66}]}],"statement":"SELECT balance\nFROM points\nWHERE user_address = LOWER(:user_address)"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT balance
+ * FROM points
+ * WHERE user_address = LOWER(:user_address)
+ * ```
+ */
+export const getUserPoints = new PreparedQuery<IGetUserPointsParams,IGetUserPointsResult>(getUserPointsIR);
+
+
+/** 'GetUserRankWithPoints' parameters type */
+export interface IGetUserRankWithPointsParams {
+  user_address?: string | null | void;
+}
+
+/** 'GetUserRankWithPoints' return type */
+export interface IGetUserRankWithPointsResult {
+  balance: string;
+  rank: string | null;
+  user_address: string;
+}
+
+/** 'GetUserRankWithPoints' query type */
+export interface IGetUserRankWithPointsQuery {
+  params: IGetUserRankWithPointsParams;
+  result: IGetUserRankWithPointsResult;
+}
+
+const getUserRankWithPointsIR: any = {"usedParamSet":{"user_address":true},"params":[{"name":"user_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":251,"b":263}]}],"statement":"WITH ranked_users AS (\n    SELECT\n        user_address,\n        balance,\n        RANK() OVER (ORDER BY balance DESC) AS rank\n    FROM\n        points\n)\nSELECT\n    user_address,\n    balance,\n    rank\nFROM\n    ranked_users\nWHERE\n    user_address = LOWER(:user_address)"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * WITH ranked_users AS (
+ *     SELECT
+ *         user_address,
+ *         balance,
+ *         RANK() OVER (ORDER BY balance DESC) AS rank
+ *     FROM
+ *         points
+ * )
+ * SELECT
+ *     user_address,
+ *     balance,
+ *     rank
+ * FROM
+ *     ranked_users
+ * WHERE
+ *     user_address = LOWER(:user_address)
+ * ```
+ */
+export const getUserRankWithPoints = new PreparedQuery<IGetUserRankWithPointsParams,IGetUserRankWithPointsResult>(getUserRankWithPointsIR);
+
+

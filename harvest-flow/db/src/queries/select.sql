@@ -49,3 +49,27 @@ FROM tokens
     INNER JOIN contracts ON tokens.chain_id = contracts.chain_id AND tokens.contract_address = contracts.address
 WHERE tokens.owner_address = LOWER(:owner_address);
 
+/* @name getUserPoints */
+SELECT balance
+FROM points
+WHERE user_address = LOWER(:user_address);
+
+/* @name getUserRankWithPoints */
+WITH ranked_users AS (
+    SELECT
+        user_address,
+        balance,
+        RANK() OVER (ORDER BY balance DESC) AS rank
+    FROM
+        points
+)
+SELECT
+    user_address,
+    balance,
+    rank
+FROM
+    ranked_users
+WHERE
+    user_address = LOWER(:user_address);
+
+

@@ -7,10 +7,13 @@ export type { Pool };
 export {
     insertToken,
     saveTransaction,
+    addPoints,
     IInsertTokenParams,
     IInsertTokenResult,
     ISaveTransactionParams,
     ISaveTransactionResult,
+    IAddPointsParams,
+    IAddPointsResult,
 } from './insert.queries.js';
 
 export {
@@ -19,6 +22,8 @@ export {
     getHistoryForContract,
     getTokenDetails,
     getUserTokens,
+    getUserPoints,
+    getUserRankWithPoints,
     IGetContractParams,
     IGetContractResult,
     IGetHistoryForUserParams,
@@ -29,6 +34,10 @@ export {
     IGetTokenDetailsResult,
     IGetUserTokensParams,
     IGetUserTokensResult,
+    IGetUserPointsParams,
+    IGetUserPointsResult,
+    IGetUserRankWithPointsParams,
+    IGetUserRankWithPointsResult,
 } from './select.queries.js';
 
 export {

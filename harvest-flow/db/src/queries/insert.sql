@@ -34,3 +34,11 @@ INSERT INTO tokens (
     :timestamp!,
     :tx_hash!
  );
+
+/*
+    @name addPoints
+*/
+INSERT INTO points (user_address, balance)
+VALUES (LOWER(:user_address!), :amount!)
+ON CONFLICT (user_address)
+   DO UPDATE SET balance = points.balance + :amount!;
