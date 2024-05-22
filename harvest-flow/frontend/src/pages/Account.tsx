@@ -5,6 +5,7 @@ import NftHistory from "@src/components/NftHistory";
 import MainController from "@src/MainController";
 import {AppContext} from "@src/main";
 import Dashboard from "@src/components/Dashboard";
+import NFTEarn from "@src/components/NFTEarn";
 
 const Account: React.FC = () => {
     const mainController: MainController = useContext(AppContext);
@@ -37,8 +38,8 @@ const Account: React.FC = () => {
                     )
                 }
 
-
             </Box>
+            <NFTEarn />
         </Layout>
     );
 }
