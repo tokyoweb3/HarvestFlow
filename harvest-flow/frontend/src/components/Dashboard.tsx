@@ -1,7 +1,5 @@
-import React, {useContext, useEffect} from 'react';
+import React from 'react';
 import { Box, Card, CardContent, Typography, Button, Grid, } from '@mui/material';
-import {AppContext} from "@src/main";
-import MainController from "@src/MainController";
 import {UserDetails} from "@harvest-flow/utils";
 import {
     getClaimablePrincipleForUser,
@@ -13,19 +11,10 @@ import {
 import {ethers} from "ethers";
 import {NUMBER_OF_DECIMAL_PLACES} from "@src/utils/constants";
 
-const Dashboard: React.FC = () => {
-    const mainController: MainController = useContext(AppContext);
-    const [userDetails, setUserDetails] = React.useState<UserDetails>(null);
-
-    const claimYield = async () => {
+const Dashboard: React.FC<{userDetails : UserDetails}> = ({userDetails}) => {
+    const harvestAll = async () => {
         // TODO: Implement yield claiming
     }
-
-    useEffect(() => {
-        mainController.getUserDetails().then((details) => {
-            setUserDetails(details);
-        });
-    },[]);
 
     return (
         <Box sx={{ padding: 4, maxWidth: 900, margin: '0 auto' }}>
@@ -79,7 +68,7 @@ const Dashboard: React.FC = () => {
                         <Typography variant="body1">Claimable Yield: {userDetails ? getClaimableYieldForUser(userDetails.ownedNfts).toFixed(NUMBER_OF_DECIMAL_PLACES) : "--" } DAI</Typography>
                         <Typography variant="body1">Claimable Principle: {userDetails ? getClaimablePrincipleForUser(userDetails.ownedNfts) : "----"} DAI</Typography>
                         <Button variant="contained" color="primary" sx={{ marginTop: 2 }}
-                              onClick = {() => claimYield()}
+                              onClick = {() => harvestAll()}
                         >
                             HARVEST
                         </Button>

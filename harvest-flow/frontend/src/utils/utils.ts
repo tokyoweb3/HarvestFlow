@@ -61,7 +61,7 @@ export function calculateTotalRewards(
     return totalRewards;
 }
 
-function getTotalYieldForNft(nft: NftDetails): number {
+export function getTotalYieldForNft(nft: NftDetails): number {
     if(Date.now() < nft.lendingData.lendingStart) return 0;
     const annualYield = (BigInt(nft.lendingData.principle) * BigInt(nft.lendingData.yield)) / BigInt(1e18);
 
@@ -72,7 +72,7 @@ function getTotalYieldForNft(nft: NftDetails): number {
     return Number(ethers.utils.formatEther(annualYield)) * proportionOfIntervalTotalScaled;
 }
 
-function getClaimableYieldForNft(nft: NftDetails): number {
+export function getClaimableYieldForNft(nft: NftDetails): number {
     return getTotalYieldForNft(nft) - Number(ethers.utils.formatEther(nft.lendingData.claimedYield));
 }
 
@@ -83,27 +83,31 @@ export function getTotalYieldForUser(userNfts : NftDetails[]): number {
 export function getClaimableYieldForUser(userNfts : NftDetails[]): number {
     return userNfts.reduce((total, nft) => total + getClaimableYieldForNft(nft), 0);
 }
-export function getTotalEquity(userNfts : NftDetails[]): number {
-    const getEquity = (nft: NftDetails) => {
-        const lendingAmount = nft.lendingData.isRedeemed ? 0 : Number(ethers.utils.formatEther(nft.lendingData.principle));
-        const claimableYield = getTotalYieldForNft(nft) - Number(ethers.utils.formatEther(nft.lendingData.claimedYield));
-        return lendingAmount + claimableYield;
 
-    }
-    return userNfts.reduce((total, nft) => total + getEquity(nft), 0);
+export function getEquityForNft(nft: NftDetails): number {
+    const lendingAmount = nft.lendingData.isRedeemed ? 0 : Number(ethers.utils.formatEther(nft.lendingData.principle));
+    const claimableYield = getTotalYieldForNft(nft) - Number(ethers.utils.formatEther(nft.lendingData.claimedYield));
+    return lendingAmount + claimableYield;
+}
+export function getTotalEquity(userNfts : NftDetails[]): number {
+
+    return userNfts.reduce((total, nft) => total + getEquityForNft(nft), 0);
+}
+
+export function getLendingAmountForNft(nft: NftDetails): number {
+    return nft.lendingData.isRedeemed ? 0 : Number(ethers.utils.formatEther(nft.lendingData.principle));
 }
 
 export function getTotalLendingAmount(userNfts : NftDetails[]): number {
-    const getLendingAmount = (nft: NftDetails) => {
-        return nft.lendingData.isRedeemed ? 0 : Number(ethers.utils.formatEther(nft.lendingData.principle));
-    }
-    return userNfts.reduce((total, nft) => total + getLendingAmount(nft), 0);
+
+    return userNfts.reduce((total, nft) => total + getLendingAmountForNft(nft), 0);
+}
+
+export function getClaimablePrincipleForNft(nft: NftDetails): number {
+    if(nft.lendingData.isRedeemed || Date.now() < nft.lendingData.lendingEnd) return 0;
+    else return Number(ethers.utils.formatEther(nft.lendingData.principle));
 }
 
 export function getClaimablePrincipleForUser(userNfts : NftDetails[]): number {
-    const getClaimablePrinciple = (nft: NftDetails) => {
-        if(nft.lendingData.isRedeemed || Date.now() < nft.lendingData.lendingEnd) return 0;
-        else return Number(ethers.utils.formatEther(nft.lendingData.principle));
-    }
-    return userNfts.reduce((total, nft) => total + getClaimablePrinciple(nft), 0);
+    return userNfts.reduce((total, nft) => total + getClaimablePrincipleForNft(nft), 0);
 }

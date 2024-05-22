@@ -162,23 +162,11 @@ class MainController {
       return response.data;
   }
 
-  async claimInterest(contractAddress: string, tokenIds: number[]) {
-    if(!this.isWalletConnected()){
-      this.callback(null, null, "Wallet not connected");
-      return;
-    }
-
-    if(tokenIds.length === 0){
-        this.callback(null, null, "No token to claim interest");
-        return;
-    }
+  async claimInterestForToken(contract: Contract, tokenId: string) {
 
     this.callback("Claiming interest", null, null);
     try {
-      // TODO: change to claim all
-      await this.lendingContract.claim(tokenIds[0], {
-        gasLimit: 100000,
-      });
+      await contract.claim(tokenId);
       this.callback(null, "Interest claimed successfully", null);
     } catch (e) {
       console.error("Error claiming interest: ", e);
@@ -187,6 +175,39 @@ class MainController {
     }
   }
 
+  async redeemToken(contract : Contract, tokenId: string) {
+
+    this.callback("Redeem Token", null, null);
+    try {
+      await contract.redeem(tokenId);
+      this.callback(null, "Redeemed token successfully", null);
+    } catch (e) {
+      console.error("Error in token redeem: ", e);
+      this.callback(null, null, "Error in token redeem");
+      return;
+    }
+  }
+
+  async harvestToken(contractAddress: string, maturityDateTimestamp: number, tokenId: string) {
+    if(!this.isWalletConnected()){
+      this.callback(null, null, "Wallet not connected");
+      return;
+    }
+
+    const nftContract = new Contract(contractAddress, TokTokNftAbi, this.provider.getSigner());
+    //check if the token is matured
+    this.provider.getBlock("latest").then((block: { timestamp: number; }) => {
+      if (maturityDateTimestamp / 1000 > block.timestamp) {
+        // Token not matured, claim interest
+        this.claimInterestForToken(nftContract, tokenId);
+      } else {
+        // Token matured, redeem
+        this.redeemToken(nftContract, tokenId);
+      }
+    });
+  }
 }
+
+
 
 export default MainController;
