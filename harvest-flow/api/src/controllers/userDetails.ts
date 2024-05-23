@@ -25,8 +25,8 @@ export class UserDetailsController extends Controller {
             pool
         );
 
-        const userPoints = Number(getUserRankWithPointsResult[0].balance) ?? 0;
-        const userRank = Number(getUserRankWithPointsResult[0].rank) ?? 0;
+        const userPoints = Number(getUserRankWithPointsResult[0]?.balance ?? 0) ;
+        const userRank = Number(getUserRankWithPointsResult[0]?.rank ?? 0) ;
 
         return {
             points: userPoints,
