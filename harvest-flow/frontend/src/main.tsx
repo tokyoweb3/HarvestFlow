@@ -1,12 +1,12 @@
-import React, {createContext} from "react";
-import {createRoot} from "react-dom/client";
+import React, { createContext } from "react";
+import { createRoot } from "react-dom/client";
 import PageCoordinator from "./pages/PageCoordinator";
-import MainController, {Page} from "./MainController";
-import {BrowserRouter} from "react-router-dom";
-import {ThemeProvider} from "@mui/material";
-import {theme} from "./theme";
+import MainController, { Page } from "./MainController";
+import { BrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "./theme";
 
-import "./main.scss";
+import "./main.css";
 
 console.log("[ERWT]: Renderer execution started");
 export const AppContext = createContext(null);
@@ -25,4 +25,3 @@ const app = (
 
 // Render application in DOM
 createRoot(document.getElementById("app")).render(app);
-
