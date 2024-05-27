@@ -258,7 +258,8 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
     function claim(uint256 tokenId) public whenNotPaused {
         if (!_isActive) revert NotActive();
 
-        uint256 claimableInterest = _calculateClaim() - claimed[tokenId];
+        uint256 claimableInterest =
+            Math.min(payableToken.balanceOf(address(this)), _calculateClaim() - claimed[tokenId]);
         claimed[tokenId] += claimableInterest;
         totalClaimed += claimableInterest;
 
@@ -285,7 +286,8 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
                 claimableInterestCurrentOwner = 0;
             }
             lastOwner = owner;
-            uint256 claimableInterest = accruedInterest - claimed[tokenId];
+            uint256 claimableInterest =
+                Math.min(payableToken.balanceOf(address(this)), accruedInterest - claimed[tokenId]);
             claimed[tokenId] += claimableInterest;
             claimableInterestCurrentOwner += claimableInterest;
             emit Claimed(owner, tokenId, claimableInterest);
