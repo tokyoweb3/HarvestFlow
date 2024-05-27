@@ -1,7 +1,7 @@
 import React from 'react';
 import { NUMBER_OF_DECIMAL_PLACES } from "@src/utils/constants";
 
-interface NFTCardProps {
+export interface NFTCardProps {
   tokenId: string;
   principal: number;
   yieldClaimed: number;
