@@ -1,32 +1,66 @@
 extensions:
-  - name: "TokTokNft contract activated"
+  - name: "Nft contract deploy"
     type: "generic"
-    contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+    contractAddress: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"
     startBlockHeight: 0
-    abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/TokTokNft.sol/TokTokNft.json"
-    eventSignature: "Activated()"
-    scheduledPrefix: "activated"
+    abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/NftFactory.sol/NftFactory.json"
+    eventSignature: "NftDeployed(address)"
+    scheduledPrefix: "deployed"
 
-  - name: "TokTokNft contract mint"
-    type: "generic"
-    contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+  - name: "Contract activate"
+    type: "dynamic-evm-primitive"
+    contractAddress: "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9"
+    eventSignature: "NftDeployed(address)"
+    abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/NftFactory.sol/NftFactory.json"
+    targetConfig:
+      scheduledPrefix: "activated"
+      type: "generic"
+      abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/TokTokNft.sol/TokTokNft.json"
+      eventSignature: "Activated()"
     startBlockHeight: 0
-    abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/TokTokNft.sol/TokTokNft.json"
-    eventSignature: "Minted(address,uint256,uint256)"
-    scheduledPrefix: "minted"
+    dynamicFields:
+      contractAddress: nft
 
-  - name: "TokTokNft contract claim"
-    type: "generic"
-    contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+  - name: "Nft mint"
+    type: "dynamic-evm-primitive"
+    contractAddress: "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9"
+    eventSignature: "NftDeployed(address)"
+    abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/NftFactory.sol/NftFactory.json"
+    targetConfig:
+      scheduledPrefix: "minted"
+      type: "generic"
+      abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/TokTokNft.sol/TokTokNft.json"
+      eventSignature: "Minted(address,uint256,uint256,uint256)"
     startBlockHeight: 0
-    abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/TokTokNft.sol/TokTokNft.json"
-    eventSignature: "Claimed(address,uint256,uint256)"
-    scheduledPrefix: "claimed"
+    dynamicFields:
+      contractAddress: nft
 
-  - name: "TokTokNft contract redeem"
-    type: "generic"
-    contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+  - name: "Interest claim"
+    type: "dynamic-evm-primitive"
+    contractAddress: "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9"
+    eventSignature: "NftDeployed(address)"
+    abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/NftFactory.sol/NftFactory.json"
+    targetConfig:
+      scheduledPrefix: "claimed"
+      type: "generic"
+      abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/TokTokNft.sol/TokTokNft.json"
+      eventSignature: "Claimed(address,uint256,uint256)"
     startBlockHeight: 0
-    abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/TokTokNft.sol/TokTokNft.json"
-    eventSignature: "Redeemed(address,uint256,uint256)"
-    scheduledPrefix: "redeemed"
+    dynamicFields:
+      contractAddress: nft
+
+  - name: "Principal redeem"
+    type: "dynamic-evm-primitive"
+    contractAddress: "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9"
+    eventSignature: "NftDeployed(address)"
+    abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/NftFactory.sol/NftFactory.json"
+    targetConfig:
+      scheduledPrefix: "redeemed"
+      type: "generic"
+      abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/TokTokNft.sol/TokTokNft.json"
+      eventSignature: "Redeemed(address,uint256,uint256)"
+    startBlockHeight: 0
+    dynamicFields:
+      contractAddress: nft
+
+
