@@ -58,6 +58,18 @@ contract NftFactoryTest is Test {
         }
     }
 
+    function test_deploy() public {
+        TokTokNft.InitializationParams memory params = TokTokNft.InitializationParams(
+            name, symbol, cap, address(payableToken), price, lendingAt, yield, lendingPeriod, uri, owner, signerAddress
+        );
+
+        // We're cloning non-deterministically, so we don't know the address in advance. Checking just the emission of the event.
+        vm.expectEmit(true, false, false, false);
+        emit NftFactory.NftDeployed(address(0));
+
+        factory.deploy(params);
+    }
+
     function test_claimAll() public {
         vm.warp(lendingAt + 1 days);
         factory.claimAll(nfts, tokenIds);
