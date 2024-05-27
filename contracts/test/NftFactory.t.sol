@@ -13,15 +13,15 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract NftFactoryTest is Test {
     NftFactory factory;
 
-    uint256 payable_token_supply = 100_000_000;
+    uint256 payableTokenSupply = 100_000_000;
     string name = "TokTokNft";
     string symbol = "TOK";
     uint256 cap = 1000;
-    ERC20 payable_token;
+    ERC20 payableToken;
     uint256 price = 1 ether;
     uint256 lendingAt = 100;
     uint256 yield = 0.1 ether;
-    uint256 lending_period = 365 days;
+    uint256 lendingPeriod = 365 days;
     string uri = "https://token-cdn-domain/{id}.json";
     address owner = address(this);
     address signerAddress;
@@ -34,28 +34,18 @@ contract NftFactoryTest is Test {
 
     function setUp() public {
         (signerAddress, signerPk) = makeAddrAndKey("signer");
-        payable_token = new MockERC20("MockERC20", "MOCK", payable_token_supply);
+        payableToken = new MockERC20("MockERC20", "MOCK", payableTokenSupply);
 
         address nftImpl = address(new TokTokNft());
         factory = new NftFactory(nftImpl);
         TokTokNft.InitializationParams memory params = TokTokNft.InitializationParams(
-            name,
-            symbol,
-            cap,
-            address(payable_token),
-            price,
-            lendingAt,
-            yield,
-            lending_period,
-            uri,
-            owner,
-            signerAddress
+            name, symbol, cap, address(payableToken), price, lendingAt, yield, lendingPeriod, uri, owner, signerAddress
         );
 
         for (uint256 i; i < 5; ++i) {
             TokTokNft toktok = TokTokNft(factory.deploy(params));
-            payable_token.approve(address(toktok), type(uint256).max);
-            payable_token.transfer(address(toktok), cap * price);
+            payableToken.approve(address(toktok), type(uint256).max);
+            payableToken.transfer(address(toktok), cap * price);
             toktok.setPublicsale(true);
 
             uint256 amount = 3;

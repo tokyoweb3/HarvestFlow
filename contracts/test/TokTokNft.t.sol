@@ -18,16 +18,16 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 
 contract TokTokNftTest is Test, ERC1155Holder {
-    uint256 payable_token_supply = 100_000_000;
+    uint256 payableTokenSupply = 100_000_000;
     TokTokNft toktok;
     string name = "TokTokNft";
     string symbol = "TOK";
     uint256 cap = 1000;
-    ERC20 payable_token;
+    ERC20 payableToken;
     uint256 price = 1 ether;
     uint256 lendingAt = 100;
     uint256 yield = 0.1 ether;
-    uint256 lending_period = 365 days;
+    uint256 lendingPeriod = 365 days;
     string uri = "https://token-cdn-domain/{id}.json";
     address owner = address(this);
     address signerAddress;
@@ -47,27 +47,17 @@ contract TokTokNftTest is Test, ERC1155Holder {
 
     function setUp() public {
         (signerAddress, signerPk) = makeAddrAndKey("signer");
-        payable_token = new MockERC20("MockERC20", "MOCK", payable_token_supply);
+        payableToken = new MockERC20("MockERC20", "MOCK", payableTokenSupply);
 
         address nftImpl = address(new TokTokNft());
         NftFactory factory = new NftFactory(nftImpl);
         TokTokNft.InitializationParams memory params = TokTokNft.InitializationParams(
-            name,
-            symbol,
-            cap,
-            address(payable_token),
-            price,
-            lendingAt,
-            yield,
-            lending_period,
-            uri,
-            owner,
-            signerAddress
+            name, symbol, cap, address(payableToken), price, lendingAt, yield, lendingPeriod, uri, owner, signerAddress
         );
         toktok = TokTokNft(factory.deploy(params));
 
-        payable_token.approve(address(toktok), type(uint256).max);
-        payable_token.transfer(address(toktok), cap * price);
+        payableToken.approve(address(toktok), type(uint256).max);
+        payableToken.transfer(address(toktok), cap * price);
         vm.deal(address(toktok), 1 ether);
         toktok.setPublicsale(true);
         toktok.setPresale(true);
@@ -76,9 +66,9 @@ contract TokTokNftTest is Test, ERC1155Holder {
         for (uint256 i; i < totalActors; ++i) {
             address actor = makeAddr(string(abi.encodePacked(i)));
             actors.push(actor);
-            payable_token.transfer(actor, (10 ** payable_token.decimals()) * payable_token_supply / totalActors / 2);
+            payableToken.transfer(actor, (10 ** payableToken.decimals()) * payableTokenSupply / totalActors / 2);
             vm.prank(actor);
-            payable_token.approve(address(toktok), type(uint256).max);
+            payableToken.approve(address(toktok), type(uint256).max);
         }
     }
 
@@ -86,10 +76,10 @@ contract TokTokNftTest is Test, ERC1155Holder {
         assertEq(toktok.name(), name);
         assertEq(toktok.symbol(), symbol);
         assertEq(toktok.cap(), cap);
-        assertEq(address(toktok.payable_token()), address(payable_token));
+        assertEq(address(toktok.payableToken()), address(payableToken));
         assertEq(toktok.lendingAt(), lendingAt);
         assertEq(toktok.yield(), yield);
-        assertEq(toktok.maturity(), lendingAt + lending_period);
+        assertEq(toktok.maturity(), lendingAt + lendingPeriod);
         assertEq(toktok.baseURI(), uri);
         assertEq(toktok.owner(), owner);
     }
@@ -142,8 +132,8 @@ contract TokTokNftTest is Test, ERC1155Holder {
 
         uint256 totalSupplyBefore = toktok.totalSupply();
         uint256 tokenReceiverBalanceBefore = toktok.balanceOf(receiver);
-        uint256 payableTokenContractBalanceBefore = payable_token.balanceOf(address(toktok));
-        uint256 payableTokenReceiverBalanceBefore = payable_token.balanceOf(receiver);
+        uint256 payableTokenContractBalanceBefore = payableToken.balanceOf(address(toktok));
+        uint256 payableTokenReceiverBalanceBefore = payableToken.balanceOf(receiver);
 
         vm.expectEmit(true, true, true, true);
         emit TokTokNft.Minted(receiver, expectedTokenId, amount, expectedCost);
@@ -155,8 +145,8 @@ contract TokTokNftTest is Test, ERC1155Holder {
         assertEq(toktok.ownerOf(expectedTokenId), receiver);
         assertEq(toktok.ownerOf(expectedTokenId + amount / 2), receiver);
         assertEq(toktok.ownerOf(expectedTokenId + amount - 1), receiver);
-        assertEq(payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore + expectedCost);
-        assertEq(payable_token.balanceOf(receiver), payableTokenReceiverBalanceBefore - expectedCost);
+        assertEq(payableToken.balanceOf(address(toktok)), payableTokenContractBalanceBefore + expectedCost);
+        assertEq(payableToken.balanceOf(receiver), payableTokenReceiverBalanceBefore - expectedCost);
     }
 
     function test_publicMint_mintAmountExceedingCap() public {
@@ -228,8 +218,8 @@ contract TokTokNftTest is Test, ERC1155Holder {
 
         uint256 totalSupplyBefore = toktok.totalSupply();
         uint256 tokenReceiverBalanceBefore = toktok.balanceOf(receiver);
-        uint256 payableTokenContractBalanceBefore = payable_token.balanceOf(address(toktok));
-        uint256 payableTokenReceiverBalanceBefore = payable_token.balanceOf(receiver);
+        uint256 payableTokenContractBalanceBefore = payableToken.balanceOf(address(toktok));
+        uint256 payableTokenReceiverBalanceBefore = payableToken.balanceOf(receiver);
 
         vm.expectEmit(true, true, true, true);
         emit TokTokNft.Minted(receiver, expectedTokenId, amount, expectedCost);
@@ -241,8 +231,8 @@ contract TokTokNftTest is Test, ERC1155Holder {
         assertEq(toktok.ownerOf(expectedTokenId), receiver);
         assertEq(toktok.ownerOf(expectedTokenId + amount / 2), receiver);
         assertEq(toktok.ownerOf(expectedTokenId + amount - 1), receiver);
-        assertEq(payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore + expectedCost);
-        assertEq(payable_token.balanceOf(receiver), payableTokenReceiverBalanceBefore - expectedCost);
+        assertEq(payableToken.balanceOf(address(toktok)), payableTokenContractBalanceBefore + expectedCost);
+        assertEq(payableToken.balanceOf(receiver), payableTokenReceiverBalanceBefore - expectedCost);
     }
 
     function test_preMint_mintAmountExceedingCap() public {
@@ -440,16 +430,16 @@ contract TokTokNftTest is Test, ERC1155Holder {
 
         vm.warp(toktok.maturity());
 
-        uint256 payableTokenContractBalanceBefore = payable_token.balanceOf(address(toktok));
-        uint256 payableTokenReceiverBalanceBefore = payable_token.balanceOf(receiver);
+        uint256 payableTokenContractBalanceBefore = payableToken.balanceOf(address(toktok));
+        uint256 payableTokenReceiverBalanceBefore = payableToken.balanceOf(receiver);
         uint256 expectedClaimAmount = price * toktok.yield() / 1e18;
 
         vm.expectEmit(true, true, true, true);
         emit TokTokNft.Claimed(receiver, tokenId, expectedClaimAmount);
         toktok.claim(tokenId);
 
-        assertEq(payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore - expectedClaimAmount);
-        assertEq(payable_token.balanceOf(receiver), payableTokenReceiverBalanceBefore + expectedClaimAmount);
+        assertEq(payableToken.balanceOf(address(toktok)), payableTokenContractBalanceBefore - expectedClaimAmount);
+        assertEq(payableToken.balanceOf(receiver), payableTokenReceiverBalanceBefore + expectedClaimAmount);
     }
 
     function test_claim_wontGiveAnythingMoreAfterMaturity(uint256 seed) public {
@@ -465,8 +455,8 @@ contract TokTokNftTest is Test, ERC1155Holder {
         vm.warp(toktok.maturity());
         toktok.claim(tokenId);
 
-        uint256 payableTokenContractBalanceBefore = payable_token.balanceOf(address(toktok));
-        uint256 payableTokenReceiverBalanceBefore = payable_token.balanceOf(receiver);
+        uint256 payableTokenContractBalanceBefore = payableToken.balanceOf(address(toktok));
+        uint256 payableTokenReceiverBalanceBefore = payableToken.balanceOf(receiver);
         uint256 expectedClaimAmount = 0;
         vm.warp(block.timestamp + 100);
 
@@ -474,13 +464,13 @@ contract TokTokNftTest is Test, ERC1155Holder {
         emit TokTokNft.Claimed(receiver, tokenId, expectedClaimAmount);
         toktok.claim(tokenId);
 
-        assertEq(payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore);
-        assertEq(payable_token.balanceOf(receiver), payableTokenReceiverBalanceBefore);
+        assertEq(payableToken.balanceOf(address(toktok)), payableTokenContractBalanceBefore);
+        assertEq(payableToken.balanceOf(receiver), payableTokenReceiverBalanceBefore);
     }
 
     function test_claim_doesNotDoublespend(uint256 seed, uint256 amount) public {
         address receiver = _getRandomActor(seed);
-        amount = bound(amount, 1, payable_token.balanceOf(receiver) / price);
+        amount = bound(amount, 1, payableToken.balanceOf(receiver) / price);
         vm.startPrank(receiver);
 
         uint256 tokenId = toktok.nextTokenId();
@@ -492,16 +482,16 @@ contract TokTokNftTest is Test, ERC1155Holder {
         vm.warp(block.timestamp + 100);
         toktok.claim(tokenId);
 
-        uint256 payableTokenContractBalanceBefore = payable_token.balanceOf(address(toktok));
-        uint256 payableTokenReceiverBalanceBefore = payable_token.balanceOf(receiver);
+        uint256 payableTokenContractBalanceBefore = payableToken.balanceOf(address(toktok));
+        uint256 payableTokenReceiverBalanceBefore = payableToken.balanceOf(receiver);
         uint256 expectedClaimAmount = 0;
 
         vm.expectEmit(true, true, true, true);
         emit TokTokNft.Claimed(receiver, tokenId, expectedClaimAmount);
         toktok.claim(tokenId);
 
-        assertEq(payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore);
-        assertEq(payable_token.balanceOf(receiver), payableTokenReceiverBalanceBefore);
+        assertEq(payableToken.balanceOf(address(toktok)), payableTokenContractBalanceBefore);
+        assertEq(payableToken.balanceOf(receiver), payableTokenReceiverBalanceBefore);
     }
 
     function test_claim_reverts_ifNotActive() public {
@@ -529,12 +519,12 @@ contract TokTokNftTest is Test, ERC1155Holder {
 
         vm.warp(toktok.maturity());
 
-        uint256 payableTokenContractBalanceBefore = payable_token.balanceOf(address(toktok));
+        uint256 payableTokenContractBalanceBefore = payableToken.balanceOf(address(toktok));
         uint256[] memory payableTokenReceiversBalancesBefore = new uint256[](actorsCount);
         uint256[] memory expectedClaimAmounts = new uint256[](actorsCount);
         uint256 totalExpectedClaimAmount;
         for (uint256 i; i < actorsCount; ++i) {
-            payableTokenReceiversBalancesBefore[i] = payable_token.balanceOf(receivers[i]);
+            payableTokenReceiversBalancesBefore[i] = payableToken.balanceOf(receivers[i]);
             expectedClaimAmounts[i] = (price * toktok.yield() / 1e18) * tokensForEachActor;
             totalExpectedClaimAmount += expectedClaimAmounts[i];
         }
@@ -551,10 +541,10 @@ contract TokTokNftTest is Test, ERC1155Holder {
 
         for (uint256 i; i < actorsCount; ++i) {
             assertEq(
-                payable_token.balanceOf(receivers[i]), payableTokenReceiversBalancesBefore[i] + expectedClaimAmounts[i]
+                payableToken.balanceOf(receivers[i]), payableTokenReceiversBalancesBefore[i] + expectedClaimAmounts[i]
             );
         }
-        assertEq(payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore - totalExpectedClaimAmount);
+        assertEq(payableToken.balanceOf(address(toktok)), payableTokenContractBalanceBefore - totalExpectedClaimAmount);
     }
 
     function test_redeem_satisfiesRequirements(uint256 seed) public {
@@ -570,8 +560,8 @@ contract TokTokNftTest is Test, ERC1155Holder {
         vm.warp(toktok.maturity());
 
         uint256 totalSupplyBefore = toktok.totalSupply();
-        uint256 payableTokenContractBalanceBefore = payable_token.balanceOf(address(toktok));
-        uint256 payableTokenReceiverBalanceBefore = payable_token.balanceOf(receiver);
+        uint256 payableTokenContractBalanceBefore = payableToken.balanceOf(address(toktok));
+        uint256 payableTokenReceiverBalanceBefore = payableToken.balanceOf(receiver);
         uint256 expectedClaimAmount = price * toktok.yield() / 1e18;
 
         vm.expectEmit(true, true, true, true);
@@ -579,9 +569,9 @@ contract TokTokNftTest is Test, ERC1155Holder {
         toktok.redeem(tokenId);
 
         assertEq(
-            payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore - expectedClaimAmount - price
+            payableToken.balanceOf(address(toktok)), payableTokenContractBalanceBefore - expectedClaimAmount - price
         );
-        assertEq(payable_token.balanceOf(receiver), payableTokenReceiverBalanceBefore + expectedClaimAmount + price);
+        assertEq(payableToken.balanceOf(receiver), payableTokenReceiverBalanceBefore + expectedClaimAmount + price);
         assertEq(toktok.totalSupply(), totalSupplyBefore);
     }
 
@@ -605,12 +595,12 @@ contract TokTokNftTest is Test, ERC1155Holder {
 
         vm.warp(toktok.maturity());
 
-        uint256 payableTokenContractBalanceBefore = payable_token.balanceOf(address(toktok));
+        uint256 payableTokenContractBalanceBefore = payableToken.balanceOf(address(toktok));
         uint256[] memory payableTokenReceiversBalancesBefore = new uint256[](actorsCount);
         uint256[] memory expectedClaimAmounts = new uint256[](actorsCount);
         uint256 totalExpectedClaimAmount;
         for (uint256 i; i < actorsCount; ++i) {
-            payableTokenReceiversBalancesBefore[i] = payable_token.balanceOf(receivers[i]);
+            payableTokenReceiversBalancesBefore[i] = payableToken.balanceOf(receivers[i]);
             expectedClaimAmounts[i] = ((price * toktok.yield() / 1e18) + price) * tokensForEachActor;
             totalExpectedClaimAmount += expectedClaimAmounts[i];
         }
@@ -623,10 +613,10 @@ contract TokTokNftTest is Test, ERC1155Holder {
 
         for (uint256 i; i < actorsCount; ++i) {
             assertEq(
-                payable_token.balanceOf(receivers[i]), payableTokenReceiversBalancesBefore[i] + expectedClaimAmounts[i]
+                payableToken.balanceOf(receivers[i]), payableTokenReceiversBalancesBefore[i] + expectedClaimAmounts[i]
             );
         }
-        assertEq(payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore - totalExpectedClaimAmount);
+        assertEq(payableToken.balanceOf(address(toktok)), payableTokenContractBalanceBefore - totalExpectedClaimAmount);
     }
 
     function test_redeem_reverts_ifNotActive() public {
@@ -649,17 +639,17 @@ contract TokTokNftTest is Test, ERC1155Holder {
 
     function test_withdraw_satisfiesRequirementsForERC20() public {
         address receiver = toktok.owner();
-        uint256 payableTokenContractBalanceBefore = payable_token.balanceOf(address(toktok));
-        uint256 payableTokenReceiverBalanceBefore = payable_token.balanceOf(receiver);
+        uint256 payableTokenContractBalanceBefore = payableToken.balanceOf(address(toktok));
+        uint256 payableTokenReceiverBalanceBefore = payableToken.balanceOf(receiver);
         uint256 expectedAmount = payableTokenContractBalanceBefore;
 
         vm.startPrank(receiver);
         vm.expectEmit(true, true, true, true);
-        emit TokTokNft.Withdrawn(receiver, address(payable_token), expectedAmount);
-        toktok.withdraw(address(payable_token), expectedAmount, receiver);
+        emit TokTokNft.Withdrawn(receiver, address(payableToken), expectedAmount);
+        toktok.withdraw(address(payableToken), expectedAmount, receiver);
 
-        assertEq(payable_token.balanceOf(address(toktok)), payableTokenContractBalanceBefore - expectedAmount);
-        assertEq(payable_token.balanceOf(receiver), payableTokenReceiverBalanceBefore + expectedAmount);
+        assertEq(payableToken.balanceOf(address(toktok)), payableTokenContractBalanceBefore - expectedAmount);
+        assertEq(payableToken.balanceOf(receiver), payableTokenReceiverBalanceBefore + expectedAmount);
     }
 
     function test_withdraw_satisfiesRequirementsForEth() public {
@@ -681,7 +671,7 @@ contract TokTokNftTest is Test, ERC1155Holder {
         address sender = makeAddr("random");
         vm.prank(sender);
         vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, sender));
-        toktok.withdraw(address(payable_token), 1, sender);
+        toktok.withdraw(address(payableToken), 1, sender);
     }
 
     function test_addBonusToken_satisfiesRequirements() public {
@@ -795,7 +785,7 @@ contract TokTokNftTest is Test, ERC1155Holder {
 
         address receiver = toktok.owner();
         vm.startPrank(receiver);
-        payable_token.approve(address(toktok), type(uint256).max);
+        payableToken.approve(address(toktok), type(uint256).max);
         uint256 tokenId = toktok.nextTokenId();
         toktok.publicMint(1);
         toktok.activate();
@@ -824,7 +814,7 @@ contract TokTokNftTest is Test, ERC1155Holder {
         uint256 amount = 100;
         address receiver = toktok.owner();
         vm.startPrank(receiver);
-        payable_token.approve(address(toktok), type(uint256).max);
+        payableToken.approve(address(toktok), type(uint256).max);
         uint256 tokenId = toktok.nextTokenId();
         toktok.publicMint(amount);
         toktok.activate();
@@ -903,7 +893,7 @@ contract TokTokNftTest is Test, ERC1155Holder {
 
         vm.startPrank(toktok.owner());
         toktok.activate();
-        toktok.withdraw(address(payable_token), payable_token.balanceOf(address(toktok)) - 10 ether, toktok.owner());
+        toktok.withdraw(address(payableToken), payableToken.balanceOf(address(toktok)) - 10 ether, toktok.owner());
         vm.startPrank(receiver);
 
         uint256 timestamp = lendingAt;
@@ -914,18 +904,18 @@ contract TokTokNftTest is Test, ERC1155Holder {
         assertEq(totalNotYetClaimed, 0);
         assertEq(needPayableTokenAmount, 0);
 
-        timestamp = lendingAt + (lending_period / 2);
+        timestamp = lendingAt + (lendingPeriod / 2);
         vm.warp(timestamp);
-        uint256 balanceBefore = payable_token.balanceOf(receiver);
+        uint256 balanceBefore = payableToken.balanceOf(receiver);
         toktok.claim(tokenId);
-        uint256 claimedAmount = payable_token.balanceOf(receiver) - balanceBefore;
+        uint256 claimedAmount = payableToken.balanceOf(receiver) - balanceBefore;
 
         uint256 expectedTotalClaimable =
-            (amount + amount2) * price * yield * ((lending_period / 2) * 1e18 / 365 days) / 1e18;
+            (amount + amount2) * price * yield * ((lendingPeriod / 2) * 1e18 / 365 days) / 1e18;
         uint256 expectedTotalNotYetClaimed = expectedTotalClaimable - claimedAmount;
-        uint256 expectedNeedPayableTokenAmount = payable_token.balanceOf(address(toktok)) > expectedTotalNotYetClaimed
+        uint256 expectedNeedPayableTokenAmount = payableToken.balanceOf(address(toktok)) > expectedTotalNotYetClaimed
             ? 0
-            : expectedTotalNotYetClaimed - payable_token.balanceOf(address(toktok));
+            : expectedTotalNotYetClaimed - payableToken.balanceOf(address(toktok));
         (totalClaimable, totalNotYetClaimed, needPayableTokenAmount) = toktok.calcRemainBalance(timestamp);
         assertEq(totalClaimable, expectedTotalClaimable);
         assertEq(totalNotYetClaimed, expectedTotalNotYetClaimed);
