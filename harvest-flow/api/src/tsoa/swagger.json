@@ -168,12 +168,10 @@
 						"type": "string"
 					},
 					"supplyCap": {
-						"type": "number",
-						"format": "double"
+						"type": "string"
 					},
 					"mintedAmount": {
-						"type": "number",
-						"format": "double"
+						"type": "string"
 					},
 					"leaseStart": {
 						"type": "number",

@@ -1,4 +1,5 @@
 export const PARSER_KEYS = {
+    contractDeployed: "deployed",
     contractActivated: 'activated',
     nftMinted: 'minted',
     claimed: 'claimed',
@@ -7,6 +8,7 @@ export const PARSER_KEYS = {
 } as const;
 
 export const PARSER_PREFIXES = {
+    [PARSER_KEYS.contractDeployed]: "deployed",
     [PARSER_KEYS.contractActivated]: 'activated',
     [PARSER_KEYS.nftMinted]: 'minted',
     [PARSER_KEYS.claimed]: 'claimed',

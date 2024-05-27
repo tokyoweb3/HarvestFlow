@@ -1,10 +1,17 @@
-import {SQLUpdate} from "@paima/node-sdk/db";
-import {Pool} from "pg";
-import type Prando from '@paima/sdk/prando';
-import type { SubmittedChainData } from '@paima/sdk/utils';
-import parse, {isInvalid} from "./parser";
-import {PARSER_KEYS} from "./constants";
-import {calculateDailyPoints, contractActivated, interestClaimed, nftMinted, principalRedeemed} from "./transition";
+import { SQLUpdate } from "@paima/node-sdk/db";
+import { Pool } from "pg";
+import type Prando from "@paima/sdk/prando";
+import type { SubmittedChainData } from "@paima/sdk/utils";
+import parse, { isInvalid } from "./parser";
+import { PARSER_KEYS } from "./constants";
+import {
+    calculateDailyPoints,
+    contractActivated,
+    contractDeployed,
+    interestClaimed,
+    nftMinted,
+    principalRedeemed
+} from "./transition";
 
 export default async function (
     inputData: SubmittedChainData,
@@ -23,6 +30,8 @@ export default async function (
     console.log(expanded, 'expanded input');
 
     switch (expanded.input) {
+        case PARSER_KEYS.contractDeployed:
+            return contractDeployed(expanded);
         case PARSER_KEYS.contractActivated:
             return contractActivated(expanded);
         case PARSER_KEYS.nftMinted:

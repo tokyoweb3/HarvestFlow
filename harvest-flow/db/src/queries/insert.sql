@@ -42,3 +42,29 @@ INSERT INTO points (user_address, balance)
 VALUES (LOWER(:user_address!), :amount!)
 ON CONFLICT (user_address)
    DO UPDATE SET balance = points.balance + :amount!;
+
+/*
+    @name saveNewContract
+ */
+INSERT INTO contracts (name,
+                       symbol,
+                       chain_id,
+                       address,
+                       supply_cap,
+                       lease_start,
+                       lease_end,
+                       min_yield,
+                       accepted_token,
+                       price,
+                       metadata_base_url)
+VALUES (:name!,
+        :symbol!,
+        LOWER(:chain_id!),
+        LOWER(:address!),
+        :supply_cap!,
+        :lease_start!,
+        :lease_end!,
+        :min_yield!,
+        LOWER(:accepted_token!),
+        :price!,
+        :metadata_base_url!);
