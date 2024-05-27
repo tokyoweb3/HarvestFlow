@@ -26,7 +26,7 @@ contract NftFactory {
     /// @param params.symbol Symbol of the ERC1155
     /// @param params.cap Total cap of tokens to be issued
     /// @param params.payableToken Address of the token used for payments
-    /// @param params.price Price of one token
+    /// @param params.price Price of one token (scaled to `payableToken` decimals)
     /// @param params.lendingAt Start time of the lending agreement (when claims can begin)
     /// @param params.yield Minimum params.fixed interest rate scaled to the 1e18
     /// @param params.lendingPeriod Duration of the lending agreement

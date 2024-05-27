@@ -30,7 +30,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         uint256 cap;
         /// @param payableToken Address of the token used for payments
         address payableToken;
-        /// @param price Price of one token
+        /// @param price Price of one token (scaled to `payableToken` decimals)
         uint256 price;
         /// @param lendingAt Start time of the lending agreement (when claims can begin)
         uint256 lendingAt;
@@ -75,9 +75,9 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
     bool public isPresale;
     /// @notice Returns if the public sale phase is running
     bool public isPublicsale;
-    /// @notice Price of token in the presale phase
+    /// @notice Price of token in the presale phase (scaled to `payableTokenDecimals`)
     uint256 public presalePrice;
-    /// @notice Price of token in the public sale phase
+    /// @notice Price of token in the public sale phase (scaled to `payableTokenDecimals`)
     uint256 public publicPrice;
     /// @notice Address of the signer for presale signatures
     address public signerAddress;
