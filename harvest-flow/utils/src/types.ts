@@ -4,6 +4,7 @@ export interface NftContract {
     symbol:  string; // erc721
 
     chainId: string; // caip-2 format
+    address: string; // address on chain
 
     leaseStart: number;
     leaseEnd: number;

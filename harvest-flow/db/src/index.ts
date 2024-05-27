@@ -22,6 +22,7 @@ export {
 
 export {
     getContract,
+    getContractsList,
     getHistoryForUser,
     getHistoryForContract,
     getTokenDetails,
@@ -31,6 +32,8 @@ export {
     getActiveTokensByUsersAndContract,
     IGetContractParams,
     IGetContractResult,
+    IGetContractsListResult,
+    IGetContractsListParams,
     IGetHistoryForUserParams,
     IGetHistoryForUserResult,
     IGetHistoryForContractParams,

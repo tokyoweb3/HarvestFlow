@@ -3,6 +3,17 @@ SELECT *
 FROM contracts
 WHERE contracts.chain_id = :chain_id AND contracts.address = LOWER(:address);
 
+/* @name getContractsList */
+SELECT name,
+       symbol,
+       address,
+       chain_id,
+       lease_start,
+       lease_end
+FROM contracts
+WHERE (activated = :just_activated)
+    OR (:just_activated = false);
+
 /* @name getHistoryForContract */
 SELECT *
 FROM transaction_history
