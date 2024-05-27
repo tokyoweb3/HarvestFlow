@@ -258,7 +258,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
     function claim(uint256 tokenId) public whenNotPaused {
         if (!_isActive) revert NotActive();
 
-        uint256 claimableInterest = _calculateClaim(tokenId);
+        uint256 claimableInterest = _calculateClaim() - claimed[tokenId];
         claimed[tokenId] += claimableInterest;
         totalClaimed += claimableInterest;
 
@@ -275,6 +275,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
 
         uint256 claimableInterestCurrentOwner;
         address lastOwner = ownerOf(tokenIds[0]);
+        uint256 accruedInterest = _calculateClaim();
         for (uint256 i; i < tokenIds.length;) {
             uint256 tokenId = tokenIds.unsafeMemoryAccess(i);
             address owner = ownerOf(tokenId);
@@ -284,7 +285,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
                 claimableInterestCurrentOwner = 0;
             }
             lastOwner = owner;
-            uint256 claimableInterest = _calculateClaim(tokenId);
+            uint256 claimableInterest = accruedInterest - claimed[tokenId];
             claimed[tokenId] += claimableInterest;
             claimableInterestCurrentOwner += claimableInterest;
             emit Claimed(owner, tokenId, claimableInterest);
@@ -518,9 +519,8 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         }
     }
 
-    /// @notice Calculate claimable interest accrued on a specific `tokenId`.
-    /// @param tokenId Token ID to claim interest for
-    function _calculateClaim(uint256 tokenId) internal view returns (uint256) {
+    /// @notice Calculate interest accrued on a token since the beginning of the lending until now.
+    function _calculateClaim() internal view returns (uint256 accruedInterest) {
         // Annual yield of payment tokens scaled to the payable token decimals
         uint256 annualYield = (publicPrice * yield) / 1e18;
 
@@ -528,8 +528,6 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         uint256 proportionOfIntervalTotalScaled = ((Math.min(block.timestamp, maturity) - lendingAt) * 1e18) / year;
 
         // Scale the claimable interest to the payable token's decimals and subtract already claimed amount
-        uint256 claimableInterest = ((annualYield * proportionOfIntervalTotalScaled) / 1e18) - claimed[tokenId];
-
-        return Math.min(claimableInterest, payableToken.balanceOf(address(this)));
+        accruedInterest = ((annualYield * proportionOfIntervalTotalScaled) / 1e18);
     }
 }
