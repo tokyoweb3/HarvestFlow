@@ -5,6 +5,7 @@ export type ParsedSubmittedInputRaw =
 
 
 export type ManualParsedSubmittedInput =
+  | ContractDeployedInput
     | NftMintedInput
     | ClaimedInput
     | RedeemedInput
@@ -17,6 +18,11 @@ export type ParsedSubmittedInput =
 
 export interface InvalidInput {
     input : 'invalidString'
+}
+
+export interface ContractDeployedInput {
+    input: "deployed";
+    nftAddress: string;
 }
 export interface ContractActivatedInput {
     input : 'activated'
@@ -47,4 +53,18 @@ export interface RedeemedInput {
     receiver : string
     tokenId : bigint
     amount : bigint
+}
+
+export interface ContractParams {
+    chainId: string;
+    contractAddress: string;
+    name: string;
+    symbol: string;
+    cap: bigint;
+    baseURI: string;
+    payableToken: string;
+    lendingAt: Date;
+    yieldRate: bigint;
+    maturity: Date;
+    publicPrice: bigint;
 }

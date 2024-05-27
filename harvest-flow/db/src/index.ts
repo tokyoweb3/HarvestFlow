@@ -1,5 +1,6 @@
-import type Pool from 'pg';
-import { creds, requirePool } from './pgPool';
+import type Pool from "pg";
+import { creds, requirePool } from "./pgPool";
+
 export { requirePool, creds };
 export type { Pool };
 
@@ -8,12 +9,15 @@ export {
     insertToken,
     saveTransaction,
     addPoints,
+    saveNewContract,
     IInsertTokenParams,
     IInsertTokenResult,
     ISaveTransactionParams,
     ISaveTransactionResult,
     IAddPointsParams,
     IAddPointsResult,
+    ISaveNewContractParams,
+    ISaveNewContractResult
 } from './insert.queries.js';
 
 export {

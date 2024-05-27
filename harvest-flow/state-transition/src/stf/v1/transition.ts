@@ -1,15 +1,22 @@
-import {SQLUpdate, createScheduledData} from "@paima/node-sdk/db";
-import {persistContractActivation, updateMintedAmount} from "./persist/contract";
-import {CalcPointsInput, ClaimedInput, ContractActivatedInput, NftMintedInput, RedeemedInput} from "./types";
-import {saveEventToHistory} from "./persist/history";
-import {ethers} from "ethers";
-import {ENV} from "@paima/sdk/utils";
-import {persistTokenOwnership, updateClaimedYieldAmount, updateTokenRedeemed} from "./persist/tokens";
-import {NftHistoryEventType} from "@harvest-flow/utils";
-import {addUserPoints} from "./persist/points";
-import {Pool} from "pg";
-import {getActiveTokensByUsersAndContract, getContract} from "@harvest-flow/db";
-import {PARSER_KEYS} from "./constants";
+import { createScheduledData, SQLUpdate } from "@paima/node-sdk/db";
+import { persistContractActivation, persistNewNftContract, updateMintedAmount } from "./persist/contract";
+import {
+  CalcPointsInput,
+  ClaimedInput,
+  ContractActivatedInput,
+  ContractDeployedInput,
+  NftMintedInput,
+  RedeemedInput
+} from "./types";
+import { saveEventToHistory } from "./persist/history";
+import { ethers } from "ethers";
+import { ENV } from "@paima/sdk/utils";
+import { persistTokenOwnership, updateClaimedYieldAmount, updateTokenRedeemed } from "./persist/tokens";
+import { NftHistoryEventType } from "@harvest-flow/utils";
+import { addUserPoints } from "./persist/points";
+import { Pool } from "pg";
+import { getActiveTokensByUsersAndContract, getContract } from "@harvest-flow/db";
+import { PARSER_KEYS } from "./constants";
 
 const contractAddress = process.env.TOKTOK_NFT_CONTRACT_ADDRESS!;
 const chainId = process.env.CHAIN_ID!;
@@ -21,6 +28,56 @@ export const contractActivated = async (
 
     const persistActivation = persistContractActivation(chainId, contractAddress);
     return [persistActivation];
+};
+
+export const contractDeployed = async (
+  input: ContractDeployedInput
+): Promise<SQLUpdate[]> => {
+  console.log(`Contract ${input.nftAddress} deployed`);
+
+  const abi = [
+    "function name() public view returns (string)",
+    "function symbol() public view returns (string)",
+    "function cap() public view returns (uint256)",
+    "function baseURI() public view returns (string)",
+    "function payableToken() public view returns (address)",
+    "function lendingAt() public view returns (uint256)",
+    "function yield() public view returns (uint256)",
+    "function maturity() public view returns (uint256)",
+    "function publicPrice() public view returns (uint256)"
+  ];
+
+  const provider = new ethers.JsonRpcProvider(ENV.CHAIN_URI);
+  const contract = new ethers.Contract(input.nftAddress, abi, provider);
+
+  const [name, symbol, cap, baseURI, payableToken, lendingAt, yieldRate, maturity, price] = await Promise.all([
+    contract.name(),
+    contract.symbol(),
+    contract.cap(),
+    contract.baseURI(),
+    contract.payableToken(),
+    contract.lendingAt(),
+    contract.yield(),
+    contract.maturity(),
+    contract.publicPrice()
+  ]);
+
+
+  return [
+    persistNewNftContract({
+      chainId: chainId,
+      contractAddress: input.nftAddress,
+      name: name,
+      symbol: symbol,
+      cap: cap,
+      baseURI: baseURI,
+      payableToken: payableToken,
+      lendingAt: new Date(Number(lendingAt) * 1000),
+      yieldRate: yieldRate,
+      maturity: new Date(Number(maturity) * 1000),
+      publicPrice: price
+    })
+  ];
 };
 
 export const nftMinted = async (

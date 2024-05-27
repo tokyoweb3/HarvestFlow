@@ -1,13 +1,19 @@
-import type { ParserRecord } from '@paima/sdk/concise';
-import { PaimaParser } from '@paima/sdk/concise';
+import type { ParserRecord } from "@paima/sdk/concise";
+import { PaimaParser } from "@paima/sdk/concise";
 import {
     CalcPointsInput,
     ClaimedInput,
-    ContractActivatedInput, InvalidInput, ManualParsedSubmittedInput, NftMintedInput,
-    ParsedSubmittedInput, ParsedSubmittedInputRaw, RedeemedInput,
-} from './types';
-import {PARSER_KEYS, PARSER_PREFIXES} from "./constants";
-import type { ValuesType } from 'utility-types';
+    ContractActivatedInput,
+    ContractDeployedInput,
+    InvalidInput,
+    ManualParsedSubmittedInput,
+    NftMintedInput,
+    ParsedSubmittedInput,
+    ParsedSubmittedInputRaw,
+    RedeemedInput
+} from "./types";
+import { PARSER_KEYS, PARSER_PREFIXES } from "./constants";
+import type { ValuesType } from "utility-types";
 
 function pref(key: ValuesType<typeof PARSER_KEYS>): string {
     return `${key} = ${PARSER_PREFIXES[key]}|`;
@@ -39,6 +45,7 @@ function manualParse(input: string): undefined | ManualParsedSubmittedInput {
     if (parts.length !== 2) return;
 
     const manuallyParsedPrefixes: string[] = [
+        PARSER_PREFIXES[PARSER_KEYS.contractDeployed],
         PARSER_PREFIXES[PARSER_KEYS.nftMinted],
         PARSER_PREFIXES[PARSER_KEYS.claimed],
         PARSER_PREFIXES[PARSER_KEYS.redeemed],
@@ -49,6 +56,8 @@ function manualParse(input: string): undefined | ManualParsedSubmittedInput {
         const parsed = JSON.parse(parts[1]);
 
         switch (parts[0]) {
+            case PARSER_PREFIXES[PARSER_KEYS.contractDeployed]:
+                return parseDeployed(parsed);
             case PARSER_PREFIXES[PARSER_KEYS.nftMinted]: return parseMinted(parsed);
             case PARSER_PREFIXES[PARSER_KEYS.claimed]: return parseClaimed(parsed);
             case PARSER_PREFIXES[PARSER_KEYS.redeemed]: return parseRedeemed(parsed);
@@ -82,7 +91,20 @@ export function isInvalid(input: ParsedSubmittedInput): input is InvalidInput {
     return (input as InvalidInput).input == 'invalidString';
 }
 
+function parseDeployed(jsonData: any): ContractDeployedInput | undefined {
+    if (
+      !Object.hasOwn(jsonData, "nft") ||
+      typeof jsonData.nft !== "string"
+    ) {
+        return;
+    }
 
+    return {
+        input: PARSER_KEYS.contractDeployed,
+        nftAddress: jsonData.nft
+    };
+
+}
 function parseMinted(jsonData: any): NftMintedInput | undefined {
     if (
         !Object.hasOwn(jsonData, 'receiver') ||
