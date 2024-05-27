@@ -13,6 +13,8 @@ contract NftFactory {
     /// @notice Address of the TokTokNFT implementation contract
     address public nftImplementation;
 
+    event NftDeployed(address nft);
+
     error InputLengthMismatch(uint256 nftsLength, uint256 tokenIdsLength);
 
     constructor(address _nftImplementation) {
@@ -35,6 +37,7 @@ contract NftFactory {
     function deploy(TokTokNft.InitializationParams memory params) public returns (address) {
         address nftClone = Clones.clone(nftImplementation);
         TokTokNft(nftClone).initialize(params);
+        emit NftDeployed(nftClone);
         return nftClone;
     }
 
