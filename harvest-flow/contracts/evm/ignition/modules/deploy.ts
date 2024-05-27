@@ -23,19 +23,27 @@ export default buildModule('TokTokNft', m => {
     signerAddress: m.getAccount(0)// @param signer
   };
 
-  // //activate the contract
-  // const activate = m.call(tokTokNftContract, "activate", []);
-  // const publicSale = m.call(tokTokNftContract, "setPublicsale", [true]);
 
-    // send ETH and MockToken to my test account
+  // send ETH and MockToken to my test account
     m.send("SendingEth", "0xC7894CC334A5D21a833CDe21B53d7Fd76B5D882D", 1_000_000_000_000_000_000n);
     m.call(mockToken, "transfer", ["0xC7894CC334A5D21a833CDe21B53d7Fd76B5D882D", 100_000_000_000_000_000_000_000n]);
 
     tokTokNftContract.dependencies.add(mockToken);
   factory.dependencies.add(tokTokNftContract);
 
-  m.call(factory, "deploy", [initParameters], { id: "Deploy1" });
-  m.call(factory, "deploy", [initParameters], { id: "Deploy2" });
+  const contract1 = m.call(factory, "deploy", [initParameters], { id: "Deploy1" });
+  const contract1Address = m.readEventArgument(contract1, "NftDeployed", "nft");
+  const nftContract1 = m.contractAt("TokTokNft", contract1Address, {id: "Nft1" });
+  const contract2 = m.call(factory, "deploy", [initParameters], { id: "Deploy2" });
+
+
+  // activate contract1
+  const activate1 = m.call(nftContract1, "activate", []);
+  const publicSale1 = m.call(nftContract1, "setPublicsale", [true]);
+
+  //nftContract1.dependencies.add(contract1);
+  activate1.dependencies.add(nftContract1);
+  publicSale1.dependencies.add(activate1);
 
   return { tokTokNftContract };
 });
