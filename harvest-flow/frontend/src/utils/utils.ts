@@ -1,8 +1,8 @@
 // Returns a ellipsis version of a string with the ellipsis being in the middle
 // eg. `0X97819177AF742660E6D8612F5E7882E538C7D9C9` will become `0x9781917..D9C9`
-import {NftContractDetails, NftDetails} from "@harvest-flow/utils";
-import { YEAR_IN_S} from "@src/utils/constants";
-import {ethers} from "ethers";
+import { NftContractDetails, NftDetails } from "@harvest-flow/utils";
+import { YEAR_IN_S } from "@src/utils/constants";
+import { ethers } from "ethers";
 
 export function middleEllipsis(address: string, length: number = 15) {
     const splitter = '...'
@@ -57,8 +57,7 @@ export function calculateTotalRewards(
     amountToBuy: number
 ): number {
     const timeLeft = nftDetails.leaseEnd - Date.now();
-    const totalRewards = (amountToBuy * Number(ethers.utils.formatEther(nftDetails.price) )) * Number(ethers.utils.formatEther(nftDetails.minYield)) * timeLeft / YEAR_IN_S / 1000;
-    return totalRewards;
+    return (amountToBuy * Number(ethers.utils.formatEther(nftDetails.price))) * Number(ethers.utils.formatEther(nftDetails.minYield)) * timeLeft / YEAR_IN_S / 1000;
 }
 
 export function getTotalYieldForNft(nft: NftDetails): number {
@@ -111,3 +110,9 @@ export function getClaimablePrincipleForNft(nft: NftDetails): number {
 export function getClaimablePrincipleForUser(userNfts : NftDetails[]): number {
     return userNfts.reduce((total, nft) => total + getClaimablePrincipleForNft(nft), 0);
 }
+
+export const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
+  arr.reduce((groups, item) => {
+      (groups[key(item)] ||= []).push(item);
+      return groups;
+  }, {} as Record<K, T[]>);

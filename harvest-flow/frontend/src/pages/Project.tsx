@@ -8,9 +8,6 @@ import TabPanel from "@src/components/TabPanel";
 import {AppContext} from "@src/main";
 import NftHistory from "@src/components/NftHistory";
 
-
-
-
 const Project: React.FC = () => {
     const mainController = useContext(AppContext);
     const [activeTab, setActiveTab] = React.useState(0);

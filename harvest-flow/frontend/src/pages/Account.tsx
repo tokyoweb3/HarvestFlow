@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import Layout from "@src/layouts/Layout";
-import { Box } from "@mui/material";
 import NftHistory from "@src/components/NftHistory";
 import MainController from "@src/MainController";
 import { AppContext } from "@src/main";
 import Dashboard from "@src/components/Dashboard";
 import { UserDetails } from "@harvest-flow/utils";
+import OwnedNfts from "@src/components/UserNftsPanel";
 
 const Account: React.FC = () => {
     const mainController: MainController = useContext(AppContext);
@@ -25,13 +25,14 @@ const Account: React.FC = () => {
                 Every Friday is Harvest Time! Harvest now and get a <strong>+10% Bonus!</strong>
             </div>
             <Dashboard userDetails={userDetails}  />
-            <Box
-                sx={{ flexGrow: 1, display: 'flex'}}
-            >
+            <div>
                 {
                     mainController.userAddress ?
                     (
+                      <div className="flex flex-col min-h-screen">
                         <NftHistory />
+                        <OwnedNfts ownedNfts={userDetails?.ownedNfts ?? []}/>
+                      </div>
                     )
                     :
                     (
@@ -41,7 +42,7 @@ const Account: React.FC = () => {
                     )
                 }
 
-            </Box>
+            </div>
         </Layout>
     );
 }
