@@ -1,14 +1,11 @@
-import React, {useContext, useEffect} from 'react';
+import React, { useContext, useEffect } from "react";
 import Layout from "@src/layouts/Layout";
-import {Box} from "@mui/material";
+import { Box } from "@mui/material";
 import NftHistory from "@src/components/NftHistory";
 import MainController from "@src/MainController";
-import {AppContext} from "@src/main";
+import { AppContext } from "@src/main";
 import Dashboard from "@src/components/Dashboard";
-import NFTEarn from "@src/components/NFTEarn";
-import {UserDetails} from "@harvest-flow/utils";
-import {getEquityForNft, getLendingAmountForNft, getClaimableYieldForNft, getTotalYieldForNft, getClaimablePrincipleForNft} from "@src/utils";
-import {ethers} from "ethers";
+import { UserDetails } from "@harvest-flow/utils";
 
 const Account: React.FC = () => {
     const mainController: MainController = useContext(AppContext);
@@ -45,17 +42,6 @@ const Account: React.FC = () => {
                 }
 
             </Box>
-            {userDetails && (<NFTEarn
-                contractAddress={userDetails.ownedNfts[0].contractAddress}
-                tokenId={userDetails.ownedNfts[0].tokenId}
-                maturityDateTimestamp={userDetails.ownedNfts[0].lendingData.lendingEnd}
-                totalEquity={getEquityForNft(userDetails.ownedNfts[0])}
-                lendingAmount={getLendingAmountForNft(userDetails.ownedNfts[0])}
-                totalYield={getTotalYieldForNft(userDetails.ownedNfts[0])}
-                claimableYield={getClaimableYieldForNft(userDetails.ownedNfts[0])}
-                claimablePrinciple={getClaimablePrincipleForNft(userDetails.ownedNfts[0])}
-                apr={Number(ethers.utils.formatEther(userDetails.ownedNfts[0].lendingData.yield))*100}
-            />)}
         </Layout>
     );
 }
