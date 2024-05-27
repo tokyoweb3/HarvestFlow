@@ -28,16 +28,16 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         string symbol;
         /// @param cap Total cap of tokens to be issued
         uint256 cap;
-        /// @param payable_token Address of the token used for payments
-        address payable_token;
+        /// @param payableToken Address of the token used for payments
+        address payableToken;
         /// @param price Price of one token
         uint256 price;
         /// @param lendingAt Start time of the lending agreement (when claims can begin)
         uint256 lendingAt;
         /// @param yield Minimum fixed interest rate scaled to the 1e18
         uint256 yield;
-        /// @param lending_period Duration of the lending agreement
-        uint256 lending_period;
+        /// @param lendingPeriod Duration of the lending agreement
+        uint256 lendingPeriod;
         /// @param baseURI Base URI for the token
         string baseURI;
         /// @param owner Owner of the contract
@@ -52,7 +52,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
     /// @notice Total cap of NFTs to be issued
     uint256 public cap;
     /// @notice Address of the token used for payments
-    ERC20 public payable_token;
+    ERC20 public payableToken;
     /// @notice Start time of the lending agreement (when claims can begin)
     uint256 public lendingAt;
     /// @notice Minimum fixed interest rate, scaled to the 1e18
@@ -85,8 +85,8 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
     mapping(address user => uint256 minted) public whitelistUserMintedCount;
     /// @notice Is claiming enabled
     bool internal _isActive;
-    /// @notice Decimals of the `payable_token`
-    uint256 internal payable_token_decimals;
+    /// @notice Decimals of the `payableToken`
+    uint256 internal payableTokenDecimals;
 
     event Activated();
     event BaseUriChanged(string newBaseURI);
@@ -120,11 +120,11 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
     /// @param params.name Name of the ERC1155
     /// @param params.symbol Symbol of the ERC1155
     /// @param params.cap Total cap of tokens to be issued
-    /// @param params.payable_token Address of the token used for payments
+    /// @param params.payableToken Address of the token used for payments
     /// @param params.price Price of one token
     /// @param params.lendingAt Start time of the lending agreement (when claims can begin)
     /// @param params.yield Minimum params.fixed interest rate scaled to the 1e18
-    /// @param params.lending_period Duration of the lending agreement
+    /// @param params.lendingPeriod Duration of the lending agreement
     /// @param params.baseURI Base URI for the token
     /// @param params.owner Owner of the contract
     /// @param params.signerAddress Address of the signer for presale signatures
@@ -134,7 +134,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         __Pausable_init();
 
         cap = params.cap;
-        payable_token = ERC20(params.payable_token);
+        payableToken = ERC20(params.payableToken);
         lendingAt = params.lendingAt;
         yield = params.yield;
         presalePrice = params.price;
@@ -142,11 +142,11 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         signerAddress = params.signerAddress;
         baseURI = params.baseURI;
 
-        maturity = params.lendingAt + params.lending_period;
-        payable_token_decimals = ERC20(params.payable_token).decimals();
+        maturity = params.lendingAt + params.lendingPeriod;
+        payableTokenDecimals = ERC20(params.payableToken).decimals();
     }
 
-    /// @notice Mint `mintAmount` of tokens during active public sale phase by paying `mintAmount * publicPrice` of `payable_token`.
+    /// @notice Mint `mintAmount` of tokens during active public sale phase by paying `mintAmount * publicPrice` of `payableToken`.
     /// @param mintAmount Amount of tokens to mint
     /// @return tokenId Starting token ID of the consecutive list of minted tokens
     function publicMint(uint256 mintAmount) public whenNotPaused returns (uint256) {
@@ -159,7 +159,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         uint256 cappedMintAmount = _mintCheck(mintAmount);
 
         uint256 cost = cappedMintAmount * publicPrice;
-        payable_token.transferFrom(msg.sender, address(this), cost);
+        payableToken.transferFrom(msg.sender, address(this), cost);
 
         uint256 tokenId = _nextTokenId();
         _mint(msg.sender, cappedMintAmount);
@@ -168,7 +168,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         return tokenId;
     }
 
-    /// @notice Mint `mintAmount` of tokens during active presale phase by paying `mintAmount * presalePrice` of `payable_token`.
+    /// @notice Mint `mintAmount` of tokens during active presale phase by paying `mintAmount * presalePrice` of `payableToken`.
     /// Maximum mint amount is capped by `maxMintAmount`, which is validated along with the signer address eligibility by the `signature`.
     /// @param mintAmount Amount of tokens to mint
     /// @param maxMintAmount Maximum amount a user is allowed to mint, validated against the signature
@@ -193,7 +193,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         }
 
         uint256 cost = cappedMintAmount * presalePrice;
-        payable_token.transferFrom(msg.sender, address(this), cost);
+        payableToken.transferFrom(msg.sender, address(this), cost);
         whitelistUserMintedCount[msg.sender] += cappedMintAmount;
 
         _verifyAddressSigner(signature, maxMintAmount);
@@ -263,7 +263,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         totalClaimed += claimableInterest;
 
         address owner = ownerOf(tokenId);
-        payable_token.transfer(owner, claimableInterest);
+        payableToken.transfer(owner, claimableInterest);
         emit Claimed(owner, tokenId, claimableInterest);
     }
 
@@ -280,7 +280,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
             address owner = ownerOf(tokenId);
             if (owner != lastOwner) {
                 totalClaimed += claimableInterestCurrentOwner;
-                payable_token.transfer(lastOwner, claimableInterestCurrentOwner);
+                payableToken.transfer(lastOwner, claimableInterestCurrentOwner);
                 claimableInterestCurrentOwner = 0;
             }
             lastOwner = owner;
@@ -293,7 +293,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
             }
         }
         totalClaimed += claimableInterestCurrentOwner;
-        payable_token.transfer(lastOwner, claimableInterestCurrentOwner);
+        payableToken.transfer(lastOwner, claimableInterestCurrentOwner);
     }
 
     /// @notice Claim interest accrued on a specific `tokenId` and redeem the principal.
@@ -310,7 +310,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
 
         address owner = ownerOf(tokenId);
         redeemed[tokenId] = true;
-        payable_token.transfer(owner, publicPrice);
+        payableToken.transfer(owner, publicPrice);
 
         emit Redeemed(owner, tokenId, publicPrice);
     }
@@ -333,7 +333,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
             }
             address owner = ownerOf(tokenId);
             if (owner != lastOwner) {
-                payable_token.transfer(lastOwner, claimablePrincipalCurrentOwner);
+                payableToken.transfer(lastOwner, claimablePrincipalCurrentOwner);
                 claimablePrincipalCurrentOwner = 0;
             }
             lastOwner = owner;
@@ -345,7 +345,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
                 ++i;
             }
         }
-        payable_token.transfer(lastOwner, claimablePrincipalCurrentOwner);
+        payableToken.transfer(lastOwner, claimablePrincipalCurrentOwner);
     }
 
     /// @notice Withdraw specified `amount` of `token` from the contract. Can be executed only by the owner.
@@ -466,10 +466,10 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         uint256 totalClaimableScaled = ((annualYieldScaled * proportionOfIntervalScaled) / 1e18);
 
         // Scale the amount of claimable tokens to the payable token's decimals
-        totalClaimable = (totalClaimableScaled * 10 ** payable_token_decimals) / 1e18;
+        totalClaimable = (totalClaimableScaled * 10 ** payableTokenDecimals) / 1e18;
 
         totalNotYetClaimed = totalClaimable - totalClaimed;
-        uint256 balance = payable_token.balanceOf(address(this));
+        uint256 balance = payableToken.balanceOf(address(this));
         needPayableTokenAmount = balance > totalNotYetClaimed ? 0 : totalNotYetClaimed - balance;
     }
 
@@ -530,6 +530,6 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         // Scale the claimable interest to the payable token's decimals and subtract already claimed amount
         uint256 claimableInterest = ((annualYield * proportionOfIntervalTotalScaled) / 1e18) - claimed[tokenId];
 
-        return Math.min(claimableInterest, payable_token.balanceOf(address(this)));
+        return Math.min(claimableInterest, payableToken.balanceOf(address(this)));
     }
 }

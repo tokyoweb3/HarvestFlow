@@ -23,11 +23,11 @@ contract NftFactory {
     /// @param params.name Name of the ERC1155
     /// @param params.symbol Symbol of the ERC1155
     /// @param params.cap Total cap of tokens to be issued
-    /// @param params.payable_token Address of the token used for payments
+    /// @param params.payableToken Address of the token used for payments
     /// @param params.price Price of one token
     /// @param params.lendingAt Start time of the lending agreement (when claims can begin)
     /// @param params.yield Minimum params.fixed interest rate scaled to the 1e18
-    /// @param params.lending_period Duration of the lending agreement
+    /// @param params.lendingPeriod Duration of the lending agreement
     /// @param params.baseURI Base URI for the token
     /// @param params.owner Owner of the contract
     /// @param params.signerAddress Address of the signer for presale signatures
