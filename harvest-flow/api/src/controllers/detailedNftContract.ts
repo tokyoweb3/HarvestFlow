@@ -11,7 +11,6 @@ export class DetailedNftContractController extends Controller {
     public async get(@Query() contractAddress : string): Promise<NftContractDetails | null> {
         const pool = requirePool();
 
-
         const contractAddressLc = contractAddress.toLowerCase();
 
         const getContractDataResult = await getContract.run(

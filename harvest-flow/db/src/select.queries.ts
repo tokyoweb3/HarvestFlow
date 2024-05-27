@@ -47,6 +47,46 @@ const getContractIR: any = {"usedParamSet":{"chain_id":true,"address":true},"par
 export const getContract = new PreparedQuery<IGetContractParams,IGetContractResult>(getContractIR);
 
 
+/** 'GetContractsList' parameters type */
+export interface IGetContractsListParams {
+  just_activated?: boolean | null | void;
+}
+
+/** 'GetContractsList' return type */
+export interface IGetContractsListResult {
+  address: string;
+  chain_id: string;
+  lease_end: Date;
+  lease_start: Date;
+  name: string;
+  symbol: string;
+}
+
+/** 'GetContractsList' query type */
+export interface IGetContractsListQuery {
+  params: IGetContractsListParams;
+  result: IGetContractsListResult;
+}
+
+const getContractsListIR: any = {"usedParamSet":{"just_activated":true},"params":[{"name":"just_activated","required":false,"transform":{"type":"scalar"},"locs":[{"a":132,"b":146},{"a":157,"b":171}]}],"statement":"SELECT name,\n       symbol,\n       address,\n       chain_id,\n       lease_start,\n       lease_end\nFROM contracts\nWHERE (activated = :just_activated)\n    OR (:just_activated = false)"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT name,
+ *        symbol,
+ *        address,
+ *        chain_id,
+ *        lease_start,
+ *        lease_end
+ * FROM contracts
+ * WHERE (activated = :just_activated)
+ *     OR (:just_activated = false)
+ * ```
+ */
+export const getContractsList = new PreparedQuery<IGetContractsListParams,IGetContractsListResult>(getContractsListIR);
+
+
 /** 'GetHistoryForContract' parameters type */
 export interface IGetHistoryForContractParams {
   chain_id?: string | null | void;
