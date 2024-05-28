@@ -54,7 +54,8 @@ const NftHistory : React.FC<NftHistoryProps> = ({contractAddress}) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {nftHistory.map((row, index) => (
+                    {nftHistory.sort((a, b) => b.timestamp - a.timestamp)
+                      .map((row, index) => (
                         <TableRow key={index}>
                             <TableCell component="th" scope="row" >
                                 {row.eventType}
