@@ -15,17 +15,14 @@ export enum Page {
   Account = "/account",
   Project = "/project",
 }
-const TOKTOK_NFT_CONTRACT_ADDRESS: string = process.env.TOKTOK_NFT_CONTRACT_ADDRESS;
+
 const PAYMENT_TOKEN_CONTRACT_ADDRESS: string = process.env.PAYMENT_TOKEN_CONTRACT_ADDRESS;
 
 // This is a class that will be used to control the state of the application
 // the benefit of this is that it is very easy to test its logic unlike a react component
 class MainController {
   userAddress: string | null = null;
-
-
   private provider?: Web3Provider = undefined;
-  private lendingContract? : Contract = undefined;
 
   callback: (
     loadingMessage: string | null,
@@ -53,9 +50,6 @@ class MainController {
     return this.userAddress !== null;
   };
 
-  getContractAddress = (): string => {
-    return TOKTOK_NFT_CONTRACT_ADDRESS;
-  }
 
   async connectWallet(loginInfo : LoginInfo) : Promise<string> {
     const response = await Paima.default.userWalletLogin(loginInfo);
@@ -64,12 +58,11 @@ class MainController {
       this.callback(null, `Wallet connected to address: ${response.result.walletAddress}`, null);
       this.userAddress = response.result.walletAddress;
       this.provider = new Web3Provider(window.ethereum);
-      this.lendingContract = new Contract(TOKTOK_NFT_CONTRACT_ADDRESS, TokTokNftAbi, this.provider.getSigner());
       return response.result.walletAddress;
     }
   }
 
-  async buyNft(amountToBuy : number, price: bigint){
+  async buyNft(contractAddress : string, amountToBuy : number, price: bigint){
     if(!this.isWalletConnected()){
       this.callback(null, null, "Wallet not connected");
       return;
@@ -89,7 +82,7 @@ class MainController {
     const amountToApprove = ethers.utils.parseEther(amountToPay.toString());
 
     try{
-      await paymentTokenContract.approve(TOKTOK_NFT_CONTRACT_ADDRESS, amountToApprove);
+      await paymentTokenContract.approve(contractAddress, amountToApprove);
       approved = true;
     } catch (e) {
       console.error("Error approving payment: ", e);
@@ -101,7 +94,8 @@ class MainController {
       this.callback("Buying NFT", null, null);
       try {
         //TODO: show some info about the NFT
-        await this.lendingContract.publicMint(amountToBuy);
+        const lendingContract = new Contract(contractAddress, TokTokNftAbi, this.provider.getSigner());
+        await lendingContract.publicMint(amountToBuy);
         this.callback(null, "NFT bought successfully", null);
       } catch (e) {
         console.error("Error buying NFT: ", e);
@@ -110,7 +104,6 @@ class MainController {
       }
 
     }
-
 
   }
 
