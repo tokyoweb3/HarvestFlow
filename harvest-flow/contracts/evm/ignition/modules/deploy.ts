@@ -32,18 +32,27 @@ export default buildModule('TokTokNft', m => {
   factory.dependencies.add(tokTokNftContract);
 
   const contract1 = m.call(factory, "deploy", [initParameters], { id: "Deploy1" });
-  const contract1Address = m.readEventArgument(contract1, "NftDeployed", "nft");
+  const contract1Address = m.readEventArgument(contract1, "NftDeployed", "nft", { id: "address1" });
   const nftContract1 = m.contractAt("TokTokNft", contract1Address, {id: "Nft1" });
+
   const contract2 = m.call(factory, "deploy", [initParameters], { id: "Deploy2" });
+  const contract2Address = m.readEventArgument(contract2, "NftDeployed", "nft", { id: "address2" });
+  const nftContract2 = m.contractAt("TokTokNft", contract2Address, {id: "Nft2" });
 
 
   // activate contract1
   const activate1 = m.call(nftContract1, "activate", []);
   const publicSale1 = m.call(nftContract1, "setPublicsale", [true]);
 
-  //nftContract1.dependencies.add(contract1);
+  //activate contract2
+  const activate2 = m.call(nftContract2, "activate", []);
+  const publicSale2 = m.call(nftContract2, "setPublicsale", [true]);
+
   activate1.dependencies.add(nftContract1);
   publicSale1.dependencies.add(activate1);
 
-  return { tokTokNftContract };
+  activate2.dependencies.add(nftContract2);
+  publicSale2.dependencies.add(activate2);
+
+  return { factory };
 });
