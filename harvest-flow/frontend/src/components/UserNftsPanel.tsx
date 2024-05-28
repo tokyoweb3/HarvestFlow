@@ -30,6 +30,7 @@ const NFTList: React.FC<NFTListProps> = ({ projectName, nfts }) => {
           {nfts.map((nft, index) => (
             <div key={index} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-2 mb-4">
               <NFTCard
+                contractAddress={nft.contractAddress}
                 tokenId={nft.tokenId}
                 principal={nft.principal}
                 yieldClaimed={nft.yieldClaimed}
@@ -60,6 +61,7 @@ const OwnedNfts: React.FC<OwnedNftsProps> = ( { ownedNfts }) => {
           <NFTList key={index}
                    projectName={groupedNfts[contractAddress][0].projectName}
                    nfts={groupedNfts[contractAddress].map(nft => ({
+                      contractAddress: nft.contractAddress,
                       tokenId: nft.tokenId,
                       principal: Number(ethers.utils.formatEther(nft.lendingData.principle)),
                       yieldClaimed: Number(ethers.utils.formatEther(nft.lendingData.claimedYield)),
