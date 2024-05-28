@@ -24,14 +24,14 @@ export default buildModule('TokTokNft', m => {
   };
 
   const initParameters2 = {
-    name: "Cambodia TukTuk vol.2", // @param name_ Name of the ERC1155
+    name: "Cambodia TukTuk vol.2(rapid)", // @param name_ Name of the ERC1155
     symbol: "CTT2",// @param symbol_ Symbol of the ERC1155
     cap: 2000,// @param cap_ Total cap of tokens to be issued
     payableToken: mockToken,// @param payable_token_ Address of the token used for payments
     price: BigInt(400e18),// @param price_ Price of the token in the smallest unit
-    lendingAt: Math.floor(Date.now() / 1000)+ 60 * 2,// @param lendingAt_ Start time of the lending agreement (when claims can begin)
+    lendingAt: Math.floor(Date.now() / 1000)+ 90,// @param lendingAt_ Start time of the lending agreement (when claims can begin)
     yield: BigInt(4e17), // 10% @param yield_ Minimum fixed interest rate scaled to the 1e18
-    lendingPeriod:  120,// 1 year @param lending period
+    lendingPeriod:  60,// 1 year @param lending period
     baseURI: "",// @param uri_ Base URI for the token
     owner: m.getAccount(0), // @param owner_ Owner of the contract
     signerAddress: m.getAccount(0)// @param signer

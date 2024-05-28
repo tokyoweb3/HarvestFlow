@@ -1,7 +1,9 @@
 import React from 'react';
 import { NUMBER_OF_DECIMAL_PLACES } from "@src/utils/constants";
+import { useNavigate } from "react-router-dom";
 
 export interface NFTCardProps {
+  contractAddress: string;
   tokenId: string;
   principal: number;
   yieldClaimed: number;
@@ -10,7 +12,9 @@ export interface NFTCardProps {
   yieldRate: number;
 }
 
-const NFTCard: React.FC<NFTCardProps> = ({ tokenId, principal, yieldClaimed, lendingStart, lendingEnd, yieldRate }) => {
+const NFTCard: React.FC<NFTCardProps> = ({ contractAddress, tokenId, principal, yieldClaimed, lendingStart, lendingEnd, yieldRate }) => {
+
+  const navigate = useNavigate();
   const formatTerm = (lendingStart : Date, lendingEnd : Date) => {
     const lendingStartYear = lendingStart.getFullYear();
     const lendingStartMonth = lendingStart.getMonth() + 1;
@@ -23,11 +27,12 @@ const NFTCard: React.FC<NFTCardProps> = ({ tokenId, principal, yieldClaimed, len
   return (
     <div className="max-w-sm mx-auto p-4">
       <div className="px-4 py-5 sm:px-6">
-        <img
-          src="https://via.placeholder.com/150"
-          alt="Investment Image"
-          className="w-full h-64 object-cover"
-        />
+          <img
+            src="https://via.placeholder.com/150"
+            alt="Investment Image"
+            className="w-full h-64 object-cover"
+            onClick={() => navigate(`/nft?address=${contractAddress}&tokenId=${tokenId}`)}
+          />
       </div>
       <div className="bg-gray-300 p-4">
         <div className="flex items-center justify-between">

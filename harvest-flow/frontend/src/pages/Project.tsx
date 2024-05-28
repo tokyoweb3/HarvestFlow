@@ -1,11 +1,10 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import Layout from "@src/layouts/Layout";
 import {Box, Grid, Typography} from "@mui/material";
 import BuyPanel from "@src/components/BuyPanel";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@src/components/TabPanel";
-import {AppContext} from "@src/main";
 import NftHistory from "@src/components/NftHistory";
 import { useSearchParams } from "react-router-dom";
 
