@@ -1,4 +1,5 @@
 import { SQLUpdate } from "@paima/node-sdk/db";
+import {getDynamicExtensionByName } from "@paima/node-sdk/utils-backend";
 import { Pool } from "pg";
 import type Prando from "@paima/sdk/prando";
 import type { SubmittedChainData } from "@paima/sdk/utils";
@@ -14,7 +15,7 @@ import {
 } from "./transition";
 
 export default async function (
-    inputData: SubmittedChainData,
+    inputData: any,
     blockHeight: number,
     randomnessGenerator: Prando,
     dbConn: Pool
@@ -33,16 +34,37 @@ export default async function (
         case PARSER_KEYS.contractDeployed:
             return contractDeployed(expanded);
         case PARSER_KEYS.contractActivated:
-            return contractActivated(expanded);
+            return contractActivated(
+              expanded,
+              await getContractAddressForEvent(dbConn, inputData.extensionName)
+            );
         case PARSER_KEYS.nftMinted:
-            return nftMinted(expanded, blockHeight,dbConn);
+            return nftMinted(
+              expanded,
+              await getContractAddressForEvent(dbConn, inputData.extensionName),
+              blockHeight,
+              dbConn
+            );
         case PARSER_KEYS.claimed:
-            return interestClaimed(expanded, blockHeight);
+            return interestClaimed(
+              expanded,
+              await getContractAddressForEvent(dbConn, inputData.extensionName),
+              blockHeight
+            );
         case PARSER_KEYS.redeemed:
-            return principalRedeemed(expanded, blockHeight);
+            return principalRedeemed(
+              expanded,
+              await getContractAddressForEvent(dbConn, inputData.extensionName),
+              blockHeight
+            );
         case PARSER_KEYS.calcPoints:
             return calculateDailyPoints(expanded, dbConn);
         default:
             return [];
     }
+}
+
+async function getContractAddressForEvent(dbConn: Pool, extensionName: string): Promise<string> {
+    const contract = await getDynamicExtensionByName(dbConn, extensionName);
+    return contract[0].contractAddress;
 }

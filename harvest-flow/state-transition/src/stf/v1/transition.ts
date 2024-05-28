@@ -18,10 +18,10 @@ import { Pool } from "pg";
 import { getActiveTokensByUsersAndContract, getContract } from "@harvest-flow/db";
 import { PARSER_KEYS } from "./constants";
 
-const contractAddress = process.env.TOKTOK_NFT_CONTRACT_ADDRESS!;
 const chainId = process.env.CHAIN_ID!;
 export const contractActivated = async (
-    input : ContractActivatedInput
+    input : ContractActivatedInput,
+    contractAddress: string,
 ): Promise<SQLUpdate[]> => {
 
     console.log(`Contract ${contractAddress} activated on chain ${chainId}`);
@@ -82,6 +82,7 @@ export const contractDeployed = async (
 
 export const nftMinted = async (
     input : NftMintedInput,
+    contractAddress: string,
     blockHeight: number,
     dbConn: Pool
 ): Promise<SQLUpdate[]> => {
@@ -129,6 +130,7 @@ export const nftMinted = async (
 
 export const interestClaimed = async (
     input : ClaimedInput,
+    contractAddress: string,
     blockHeight: number
 ): Promise<SQLUpdate[]> => {
     console.log(`Interest claimed for NFT ${input.tokenId} on chain ${chainId} for ${input.receiver} with amount ${input.amount}`);
@@ -154,6 +156,7 @@ export const interestClaimed = async (
 
 export const principalRedeemed = async (
     input : RedeemedInput,
+    contractAddress: string,
     blockHeight: number
 ): Promise<SQLUpdate[]> => {
     console.log(`Principal redeemed for NFT ${input.tokenId} on chain ${chainId} for ${input.receiver} with amount ${input.amount}`);
@@ -183,7 +186,8 @@ export const calculateDailyPoints = async (
 
     const persistNextCalculation = createScheduledData(
         `${PARSER_KEYS.calcPoints}|${calculationReferenceTimestamp.getTime()}`,
-        await getNextMidnightBlockHeight(calculationReferenceTimestamp)
+        await getNextMidnightBlockHeight(calculationReferenceTimestamp),
+      "pointsCalculation"
     );
 
     const pointsByUsers = await getDailyPointsByUsers(new Date(input.lastCalculationTimestamp), calculationReferenceTimestamp, dbConn);
