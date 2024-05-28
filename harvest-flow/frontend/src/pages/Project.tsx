@@ -7,10 +7,14 @@ import Tab from "@mui/material/Tab";
 import TabPanel from "@src/components/TabPanel";
 import {AppContext} from "@src/main";
 import NftHistory from "@src/components/NftHistory";
+import { useSearchParams } from "react-router-dom";
 
 const Project: React.FC = () => {
-    const mainController = useContext(AppContext);
     const [activeTab, setActiveTab] = React.useState(0);
+    const [searchParams] = useSearchParams();
+    const contractAddress = searchParams.get('address') || '';
+
+    console.log("contractAddress: ", contractAddress);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setActiveTab(newValue);
@@ -27,7 +31,7 @@ const Project: React.FC = () => {
                     </Grid>
                     <Grid item xs={6} >
                         <div style={{margin: '20px'}}>
-                            <BuyPanel nftContractAddress={mainController.getContractAddress()} />
+                            <BuyPanel nftContractAddress={contractAddress} />
                         </div>
                     </Grid>
                 </Grid>
@@ -40,7 +44,7 @@ const Project: React.FC = () => {
                 </Tabs>
                 <TabPanel value={activeTab} index={0}> Overview </TabPanel>
                 <TabPanel value={activeTab} index={1}>
-                    <NftHistory contractAddress={mainController.getContractAddress()} />
+                    <NftHistory contractAddress={contractAddress} />
                 </TabPanel>
                 <TabPanel value={activeTab} index={2}> Q&A </TabPanel>
             </Box>
