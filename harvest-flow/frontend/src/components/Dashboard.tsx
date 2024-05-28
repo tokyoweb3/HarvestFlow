@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from "react";
 import { Box, Card, CardContent, Typography, Button, Grid, } from '@mui/material';
 import {UserDetails} from "@harvest-flow/utils";
 import {
@@ -10,10 +10,18 @@ import {
 } from "@src/utils";
 import {ethers} from "ethers";
 import {NUMBER_OF_DECIMAL_PLACES} from "@src/utils/constants";
+import MainController from "@src/MainController";
+import { AppContext } from "@src/main";
 
 const Dashboard: React.FC<{userDetails : UserDetails}> = ({userDetails}) => {
+    const mainController: MainController = useContext(AppContext);
     const harvestAll = async () => {
-        // TODO: Implement yield claiming
+        const nftsToHarvest = userDetails.ownedNfts.filter((nft) => {
+            return nft.lendingData.lendingStart < Date.now()
+                && nft.lendingData.isRedeemed === false;
+        });
+
+        mainController.harvestAll(nftsToHarvest);
     }
 
     return (
