@@ -53,4 +53,8 @@ module.exports = [
       filename: "assets/[hash][ext][query]",
     },
   },
+  {
+    test: /\.(png|svg|jpg|jpeg|gif)$/i,
+    type: "asset/resource",
+  },
 ];
