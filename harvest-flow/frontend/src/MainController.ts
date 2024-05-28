@@ -1,10 +1,15 @@
 import * as Paima from "./paima/middleware.js";
-import {FailedResult, LoginInfo} from "@paima/sdk/mw-core";
-import { NftContract, NftContractDetails, NftDetails, NftHistory, UserDetails } from "@harvest-flow/utils";
-import {Web3Provider} from "@ethersproject/providers";
-import {Contract, ethers} from "ethers";
+import type { FailedResult, LoginInfo } from "@paima/sdk/mw-core";
+import type {
+  NftContract,
+  NftContractDetails,
+  NftHistory,
+  UserDetails,
+} from "@harvest-flow/utils";
+import { Web3Provider } from "@ethersproject/providers";
+import { Contract, ethers } from "ethers";
 import TokTokNftAbi from "./abi/TokTokNft";
-import { WalletMode } from '@paima/providers';
+import { WalletMode } from "@paima/providers";
 
 // The MainController is a React component that will be used to control the state of the application
 // It will be used to check if the user has metamask installed and if they are connected to the correct network
@@ -14,6 +19,7 @@ import { WalletMode } from '@paima/providers';
 export enum Page {
   Account = "/account",
   Project = "/project",
+  Homepage = "/",
 }
 
 const NFT_FACTORY_CONTRACT_ADDRESS: string = process.env.TOKTOK_NFT_FACTORY_CONTRACT_ADDRESS;
@@ -28,7 +34,7 @@ class MainController {
   callback: (
     loadingMessage: string | null,
     successMessage: string | null,
-    errorMessage: string | null
+    errorMessage: string | null,
   ) => void = () => {};
 
   private checkCallback() {
@@ -37,13 +43,13 @@ class MainController {
     }
   }
 
-   async enforceWalletConnected() {
+  async enforceWalletConnected() {
     this.checkCallback();
     if (!this.isWalletConnected() || !this.userAddress) {
       await this.connectWallet({
         mode: WalletMode.EvmInjected,
-        preferBatchedMode: false
-      })
+        preferBatchedMode: false,
+      });
     }
   }
 
@@ -52,19 +58,23 @@ class MainController {
   };
 
 
-  async connectWallet(loginInfo : LoginInfo) : Promise<string> {
+  async connectWallet(loginInfo: LoginInfo): Promise<string> {
     const response = await Paima.default.userWalletLogin(loginInfo);
     console.log("connect wallet response: ", response);
     if (response.success === true) {
-      this.callback(null, `Wallet connected to address: ${response.result.walletAddress}`, null);
+      this.callback(
+        null,
+        `Wallet connected to address: ${response.result.walletAddress}`,
+        null,
+      );
       this.userAddress = response.result.walletAddress;
       this.provider = new Web3Provider(window.ethereum);
       return response.result.walletAddress;
     }
   }
 
-  async buyNft(contractAddress : string, amountToBuy : number, price: bigint){
-    if(!this.isWalletConnected()){
+  async buyNft(contractAddress: string, amountToBuy : number, price: bigint){
+    if( !this.isWalletConnected()) {
       this.callback(null, null, "Wallet not connected");
       return;
     }
@@ -73,17 +83,22 @@ class MainController {
     // get approval for the contract
     this.callback("Approving payment", null, null);
     const paymentTokenContract = new Contract(
-        PAYMENT_TOKEN_CONTRACT_ADDRESS,
-        ["function approve(address _spender, uint256 _value) public returns (bool success)"],
-        this.provider.getSigner()
+      PAYMENT_TOKEN_CONTRACT_ADDRESS,
+      [
+        "function approve(address _spender, uint256 _value) public returns (bool success)",
+      ],
+      this.provider.getSigner(),
     );
 
     let approved = false;
 
     const amountToApprove = ethers.utils.parseEther(amountToPay.toString());
 
-    try{
-      await paymentTokenContract.approve(contractAddress, amountToApprove);
+    try {
+      await paymentTokenContract.approve(
+        contractAddress,
+        amountToApprove,
+      );
       approved = true;
     } catch (e) {
       console.error("Error approving payment: ", e);
@@ -91,7 +106,7 @@ class MainController {
       return;
     }
 
-    if(approved) {
+    if (approved) {
       this.callback("Buying NFT", null, null);
       try {
         //TODO: show some info about the NFT
@@ -103,16 +118,11 @@ class MainController {
         this.callback(null, null, "Error buying NFT");
         return;
       }
-
     }
-
   }
 
-
-  async getAllNft(notEnded : boolean): Promise<NftContract[]> {
-    const response = await Paima.default.getAllNfts(
-        notEnded
-    );
+  async getAllNft(notEnded: boolean): Promise<NftContract[]> {
+    const response = await Paima.default.getAllNfts(notEnded);
     console.debug("Get All Nft response: ", response);
     if (!response.success) {
       throw new Error((response as FailedResult).errorMessage);
@@ -120,8 +130,11 @@ class MainController {
     return response.contracts;
   }
 
-  async getDetailedNftContract(contractAddress: string): Promise<NftContractDetails> {
-    const response = await Paima.default.getDetailedNftContract(contractAddress);
+  async getDetailedNftContract(
+    contractAddress: string,
+  ): Promise<NftContractDetails> {
+    const response =
+      await Paima.default.getDetailedNftContract(contractAddress);
     console.debug("Get Nft Detail response: ", response);
     if (!response.success) {
       console.error("Error getting NFT details: ", response);
@@ -131,33 +144,33 @@ class MainController {
   }
 
   async getNftHistoryForUser(): Promise<NftHistory> {
-    const response = await Paima.default.getNftHistoryForUser(this.userAddress!);
+    const response = await Paima.default.getNftHistoryForUser(
+      this.userAddress!,
+    );
     if (!response.success) {
       throw new Error((response as FailedResult).errorMessage);
     }
-    return {address: response.address, history: response.history};
+    return { address: response.address, history: response.history };
   }
 
-  async getProjectHistory(contractAddress : string): Promise<NftHistory> {
+  async getProjectHistory(contractAddress: string): Promise<NftHistory> {
     const response = await Paima.default.getHistoryForProject(contractAddress);
     if (!response.success) {
       throw new Error((response as FailedResult).errorMessage);
     }
-    return {address: response.address, history: response.history};
+    return { address: response.address, history: response.history };
   }
 
   async getUserDetails(): Promise<UserDetails> {
-
-      const response = await Paima.default.getUserDetails(this.userAddress!);
-      console.debug("Get User details response: ", response);
-      if (!response.success) {
-        throw new Error((response as FailedResult).errorMessage);
-      }
-      return response.data;
+    const response = await Paima.default.getUserDetails(this.userAddress!);
+    console.debug("Get User details response: ", response);
+    if (!response.success) {
+      throw new Error((response as FailedResult).errorMessage);
+    }
+    return response.data;
   }
 
   async claimInterestForToken(contract: Contract, tokenId: string) {
-
     this.callback("Claiming interest", null, null);
     try {
       await contract.claim(tokenId);
@@ -169,8 +182,7 @@ class MainController {
     }
   }
 
-  async redeemToken(contract : Contract, tokenId: string) {
-
+  async redeemToken(contract: Contract, tokenId: string) {
     this.callback("Redeem Token", null, null);
     try {
       await contract.redeem(tokenId);
@@ -182,15 +194,23 @@ class MainController {
     }
   }
 
-  async harvestToken(contractAddress: string, maturityDateTimestamp: number, tokenId: string) {
-    if(!this.isWalletConnected()){
+  async harvestToken(
+    contractAddress: string,
+    maturityDateTimestamp: number,
+    tokenId: string,
+  ) {
+    if (!this.isWalletConnected()) {
       this.callback(null, null, "Wallet not connected");
       return;
     }
 
-    const nftContract = new Contract(contractAddress, TokTokNftAbi, this.provider.getSigner());
+    const nftContract = new Contract(
+      contractAddress,
+      TokTokNftAbi,
+      this.provider.getSigner(),
+    );
     //check if the token is matured
-    this.provider.getBlock("latest").then((block: { timestamp: number; }) => {
+    this.provider.getBlock("latest").then((block: { timestamp: number }) => {
       if (maturityDateTimestamp / 1000 > block.timestamp) {
         // Token not matured, claim interest
         this.claimInterestForToken(nftContract, tokenId);
@@ -236,7 +256,5 @@ class MainController {
 
   }
 }
-
-
 
 export default MainController;
