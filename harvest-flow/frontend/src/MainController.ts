@@ -1,6 +1,6 @@
 import * as Paima from "./paima/middleware.js";
 import {FailedResult, LoginInfo} from "@paima/sdk/mw-core";
-import {NftContract, NftContractDetails, NftHistory, UserDetails} from "@harvest-flow/utils";
+import { NftContract, NftContractDetails, NftDetails, NftHistory, UserDetails } from "@harvest-flow/utils";
 import {Web3Provider} from "@ethersproject/providers";
 import {Contract, ethers} from "ethers";
 import TokTokNftAbi from "./abi/TokTokNft";
@@ -16,6 +16,7 @@ export enum Page {
   Project = "/project",
 }
 
+const NFT_FACTORY_CONTRACT_ADDRESS: string = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
 const PAYMENT_TOKEN_CONTRACT_ADDRESS: string = process.env.PAYMENT_TOKEN_CONTRACT_ADDRESS;
 
 // This is a class that will be used to control the state of the application
@@ -198,6 +199,41 @@ class MainController {
         this.redeemToken(nftContract, tokenId);
       }
     });
+  }
+
+  async harvestAll(nfts: NftDetails[]){
+    if(!this.isWalletConnected()){
+      this.callback(null, null, "Wallet not connected");
+      return;
+    }
+
+    //sort them by contract address
+    const sortedNfts = Array.from(nfts);
+    sortedNfts.sort((a, b) => a.contractAddress.localeCompare(b.contractAddress));
+
+    // Make two list for the parameter, fist is for the address and the second is for the token id
+    const addresses: string[] = [];
+    const tokenIds: string[] = [];
+    for (const nft of sortedNfts) {
+      addresses.push(nft.contractAddress);
+      tokenIds.push(nft.tokenId);
+    }
+
+    const factoryAbi = [
+      "function claimAll(address[] memory, uint256[] memory) public",
+    ];
+
+    const factoryContract = new Contract(NFT_FACTORY_CONTRACT_ADDRESS, factoryAbi, this.provider.getSigner());
+    this.callback("Harvesting all", null, null);
+    try {
+      await factoryContract.claimAll(addresses, tokenIds);
+      this.callback(null, "Harvested all successfully", null);
+    } catch (e) {
+      console.error("Error harvesting all: ", e);
+      this.callback(null, null, "Error harvesting all");
+      return;
+    }
+
   }
 }
 
