@@ -1,26 +1,19 @@
-import { Box, Container } from "@mui/material";
 import React from "react";
 import Header from "@src/components/Header";
 import FeedbackModal from "@src/components/FeedbackModal";
+import Footer from "@src/components/Footer";
 
-interface Props {
+type LayoutProps = {
   children?: React.ReactNode;
-  small?: boolean;
-  header?: boolean;
-}
+};
 
-const Layout: React.FC<Props> = ({ children, small, header = true }) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <>
-      <Container
-          disableGutters maxWidth={small ? "sm" : "lg"}
-          className="borderAll"
-      >
-
-        {header && <Header /> }
-        {children}
-      </Container>
+      <Header />
+      <main>{children}</main>
       <FeedbackModal />
+      <Footer />
     </>
   );
 };

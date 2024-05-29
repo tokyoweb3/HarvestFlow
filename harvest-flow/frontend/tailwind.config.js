@@ -19,6 +19,12 @@ module.exports = {
         heading5: ["20px", "28px"],
         bodyLarge: ["18px", "26px"],
         body: ["15px", "18px"],
+        caption: ["12px", "14px"],
+        captionSmall: ["10px", "12px"],
+      },
+      colors: {
+        primary: "#E6B95F",
+        grey: "#B2B2B2",
       },
     },
   },
