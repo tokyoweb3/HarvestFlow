@@ -1,10 +1,8 @@
 import React from "react";
 
-import tukTukImage from "../../assets/images/tuktuk.jpg";
-
 const ProjectLendAHandSection: React.FC = () => {
   return (
-    <div className="pt-20 border-t border-black">
+    <div className="py-20 border-t border-black">
       <div className="max-w-[780px] mx-auto flex flex-col gap-32">
         <div className="flex gap-10">
           <div className="w-36 h-36 bg-white border border-black shrink-0"></div>

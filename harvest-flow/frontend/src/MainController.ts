@@ -20,6 +20,7 @@ import { WalletMode } from "@paima/providers";
 export enum Page {
   Account = "/account",
   Project = "/project",
+  Reports = "/reports",
   Homepage = "/",
 }
 
