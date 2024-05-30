@@ -4,7 +4,7 @@ import ProjectMintPanel from "./ProjectMintPanel";
 
 import tukTukImage from "../../assets/images/tuktuk.jpg";
 
-const ProjectHero: React.FC = () => {
+const ProjectHero: React.FC<{projectContractAddress: string}> = ({projectContractAddress}) => {
   return (
     <div
       className="h-[calc(100svh-63px)] bg-center bg-cover bg-no-repeat relative text-white border-b border-black"
@@ -18,7 +18,7 @@ const ProjectHero: React.FC = () => {
             </h1>
           </div>
           <div className="w-1/3">
-            <ProjectMintPanel />
+            <ProjectMintPanel projectContractAddress={projectContractAddress} />
           </div>
         </div>
       </div>
