@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import Layout from "@src/layouts/Layout";
-import NftHistory from "@src/components/NftHistory";
 import type MainController from "@src/MainController";
 import { AppContext } from "@src/main";
 import Dashboard from "@src/components/Dashboard";
@@ -37,22 +36,6 @@ const Account: React.FC = () => {
             <AccountProjectHistorySection />
             <AccountUpdatesSection />
             <AccountYourNFTSection />
-            <div>
-              <div className={"borderBottom"}>
-                Every Friday is Harvest Time! Harvest now and get a{" "}
-                <strong>+10% Bonus!</strong>
-              </div>
-              <Dashboard userDetails={userDetails} />
-              <Box sx={{ flexGrow: 1, display: "flex" }}>
-                {mainController.userAddress ? (
-                  <NftHistory />
-                ) : (
-                  <div>
-                    <div>Connect Wallet to view your account</div>
-                  </div>
-                )}
-              </Box>
-            </div>
           </div>
         </div>
       </div>
