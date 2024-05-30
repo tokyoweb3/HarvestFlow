@@ -3,8 +3,9 @@ import type { FailedResult, LoginInfo } from "@paima/sdk/mw-core";
 import type {
   NftContract,
   NftContractDetails,
+  NftDetails,
   NftHistory,
-  UserDetails,
+  UserDetails
 } from "@harvest-flow/utils";
 import { Web3Provider } from "@ethersproject/providers";
 import { Contract, ethers } from "ethers";
@@ -109,7 +110,7 @@ class MainController {
     if (approved) {
       this.callback("Buying NFT", null, null);
       try {
-        //TODO: show some info about the NFT
+        // TODO: show some info about the NFT
         const lendingContract = new Contract(contractAddress, TokTokNftAbi, this.provider.getSigner());
         await lendingContract.publicMint(amountToBuy);
         this.callback(null, "NFT bought successfully", null);
@@ -209,7 +210,7 @@ class MainController {
       TokTokNftAbi,
       this.provider.getSigner(),
     );
-    //check if the token is matured
+    // check if the token is matured
     this.provider.getBlock("latest").then((block: { timestamp: number }) => {
       if (maturityDateTimestamp / 1000 > block.timestamp) {
         // Token not matured, claim interest
@@ -227,7 +228,7 @@ class MainController {
       return;
     }
 
-    //sort them by contract address
+    // sort them by contract address
     const sortedNfts = Array.from(nfts);
     sortedNfts.sort((a, b) => a.contractAddress.localeCompare(b.contractAddress));
 
