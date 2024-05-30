@@ -1,10 +1,5 @@
 import React from "react";
 import Layout from "@src/layouts/Layout";
-import { Box } from "@mui/material";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import TabPanel from "@src/components/TabPanel";
-import NftHistory from "@src/components/NftHistory";
 import ProjectHero from "@src/components/ProjectHero";
 import ProjectTabsSection from "@src/components/ProjectTabsSection";
 import ProjectPointsSection from "@src/components/ProjectPointsSection";
@@ -38,24 +33,6 @@ const Project: React.FC = () => {
       <ProjectVideoSection />
       <ProjectSchemeSection />
       <ProjectLendAHandSection />
-      <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
-        <Tabs value={activeTab} onChange={handleChange} centered>
-          <Tab label="Overview" />
-          <Tab label="Reports" />
-          <Tab label="Q&A" />
-        </Tabs>
-        <TabPanel value={activeTab} index={0}>
-          {" "}
-          Overview{" "}
-        </TabPanel>
-        <TabPanel value={activeTab} index={1}>
-          <NftHistory contractAddress={contractAddress} />
-        </TabPanel>
-        <TabPanel value={activeTab} index={2}>
-          {" "}
-          Q&A{" "}
-        </TabPanel>
-      </Box>
     </Layout>
   );
 };
