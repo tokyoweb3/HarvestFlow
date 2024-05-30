@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 
 import type { DataTileProps } from "./DataTile";
 import DataTile from "./DataTile";

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import type { NFTCardProps } from "./NFTCard";
 import NFTCard from "./NFTCard";
@@ -9,39 +9,10 @@ import type { NFTProjectCardProps } from "./NFTProjectCard";
 import NFTProjectCard, { NFTProjectComingSoonCard } from "./NFTProjectCard";
 
 import tukTukImage from "../../assets/images/tuktuk.jpg";
+import { NftDetails } from "@harvest-flow/utils";
+import { groupBy } from "@src/utils";
+import { ethers } from "ethers";
 
-const nftData: NFTCardProps[] = [
-  {
-    position: 1,
-    asset: 3,
-    imageURL: tukTukImage,
-    investment: 1000,
-    earned: 24,
-    termStart: "24.6",
-    termEnd: "2027.5",
-    apr: 8,
-  },
-  {
-    position: 1,
-    asset: 3,
-    imageURL: tukTukImage,
-    investment: 1000,
-    earned: 24,
-    termStart: "24.6",
-    termEnd: "2027.5",
-    apr: 8,
-  },
-  {
-    position: 1,
-    asset: 3,
-    imageURL: tukTukImage,
-    investment: 1000,
-    earned: 24,
-    termStart: "24.6",
-    termEnd: "2027.5",
-    apr: 8,
-  },
-];
 
 const nftItemData: NFTItemCardProps[] = [
   {
@@ -66,7 +37,53 @@ const nftProjectsData: NFTProjectCardProps[] = [
   },
 ];
 
-const AccountYourNFTSection: React.FC = () => {
+interface NFTListProps {
+  projectName: string;
+  nfts: NFTCardProps[];
+}
+
+const NFTList: React.FC<NFTListProps> = ({ projectName, nfts }) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
+  return (
+    <div className="flex flex-col gap-10">
+      <div className="flex items-center gap-2"
+           onClick={toggleCollapse}>
+        <h3 className="text-heading4 uppercase font-medium">
+          {projectName}
+        </h3>
+        {/* TODO add arrowup icon */}
+        {isCollapsed ? (<ArrowDownIcon />) : (<ArrowDownIcon />)}
+      </div>
+      {!isCollapsed && (
+        <div className="grid grid-cols-3 gap-10">
+        {nfts.map((data) => (
+          <NFTCard
+            key={data.contractAddress.concat(data.tokenId.toString())}
+            contractAddress={data.contractAddress}
+            tokenId={data.tokenId}
+            asset={1} // TODO: What is this?
+            imageURL={data.imageURL}
+            investment={data.investment}
+            earned={data.earned}
+            termStart={data.termStart}
+            termEnd={data.termEnd}
+            apr={data.apr}
+           />
+        ))}
+        </div>
+       )}
+    </div>
+  );
+}
+
+const AccountYourNFTSection: React.FC<{ ownedNfts: NftDetails[] }> = ({ ownedNfts }) => {
+  const groupedNfts = groupBy(ownedNfts, nft => nft.contractAddress);
+
   return (
     <div className="flex flex-col gap-14">
       <h2 className="text-center text-heading3 font-medium uppercase">
@@ -74,52 +91,25 @@ const AccountYourNFTSection: React.FC = () => {
       </h2>
       <div className="w-full">
         <div className="flex flex-col gap-20">
-          <div className="flex flex-col gap-10">
-            <div className="flex items-center gap-2">
-              <h3 className="text-heading4 uppercase font-medium">
-                Cambodia Tuktuk vol.1
-              </h3>
-              <ArrowDownIcon />
-            </div>
-            <div className="grid grid-cols-3 gap-10">
-              {nftData.map((data) => (
-                <NFTCard
-                  key={data.position}
-                  position={data.position}
-                  asset={data.asset}
-                  imageURL={data.imageURL}
-                  investment={data.investment}
-                  earned={data.earned}
-                  termStart={data.termStart}
-                  termEnd={data.termEnd}
-                  apr={data.apr}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="flex flex-col gap-10">
-            <div className="flex items-center gap-2">
-              <h3 className="text-heading4 uppercase font-medium">
-                Cambodia Tuktuk vol.2
-              </h3>
-              <ArrowDownIcon />
-            </div>
-            <div className="grid grid-cols-3 gap-10">
-              {nftData.map((data) => (
-                <NFTCard
-                  key={data.position}
-                  position={data.position}
-                  asset={data.asset}
-                  imageURL={data.imageURL}
-                  investment={data.investment}
-                  earned={data.earned}
-                  termStart={data.termStart}
-                  termEnd={data.termEnd}
-                  apr={data.apr}
-                />
-              ))}
-            </div>
-          </div>
+          {
+            Object.keys(groupedNfts).map((contractAddress, index) => (
+              <NFTList key={index}
+                       projectName={groupedNfts[contractAddress][0].projectName}
+                       nfts={groupedNfts[contractAddress].map(nft => ({
+                         contractAddress: nft.contractAddress,
+                         tokenId: nft.tokenId,
+                         asset: 1, // TODO: What is this?
+                         imageURL: tukTukImage, // TODO: change this to the actual image
+                         investment: Number(ethers.utils.formatEther(nft.lendingData.principle)),
+                         earned: Number(ethers.utils.formatEther(nft.lendingData.claimedYield)),
+                         termStart: new Date(nft.lendingData.lendingStart),
+                         termEnd: new Date(nft.lendingData.lendingEnd),
+                         apr: Number(ethers.utils.formatEther(nft.lendingData.yield))*100,
+                       }))}
+              />
+            ))
+          }
+
           <div className="flex flex-col gap-10">
             <h3 className="text-heading4 uppercase font-medium">Items</h3>
             <div className="grid grid-cols-3 gap-10">

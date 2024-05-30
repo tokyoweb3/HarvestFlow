@@ -1,18 +1,20 @@
 import React from "react";
 
 export type NFTCardProps = {
-  position: number;
+  contractAddress: string;
+  tokenId: string;
   asset: number;
   imageURL: string;
   investment: number;
   earned: number;
-  termStart: string;
-  termEnd: string;
+  termStart: Date;
+  termEnd: Date;
   apr: number;
 };
 
 const NFTCard: React.FC<NFTCardProps> = ({
-  position,
+  contractAddress,
+  tokenId,
   asset,
   imageURL,
   investment,
@@ -21,11 +23,21 @@ const NFTCard: React.FC<NFTCardProps> = ({
   termEnd,
   apr,
 }) => {
+  const formatTerm = (lendingStart : Date, lendingEnd : Date) => {
+    const lendingStartYear = lendingStart.getFullYear();
+    const lendingStartMonth = lendingStart.getMonth() + 1;
+    const lendingEndYear = lendingEnd.getFullYear();
+    const lendingEndMonth = lendingEnd.getMonth() + 1;
+
+    return `${lendingStartYear.toString().substring(2)}.${lendingStartMonth} ~ ${lendingEndYear}.${lendingEndMonth}`;
+  };
+
   return (
+    // TODO: navigate to the NFT page
     <div className="p-4 w-full flex flex-col gap-2 border border-black bg-tertiary">
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <p className="uppercase">NO. {position}</p>
+          <p className="uppercase">NO. {tokenId}</p>
           <p className="uppercase">ASSET: {asset}</p>
         </div>
         <div
@@ -43,7 +55,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
         <p className="uppercase text-center py-2">
           Term:{" "}
           <span className="font-medium">
-            {termStart} ~ {termEnd}
+            {formatTerm(termStart, termEnd)}
           </span>
         </p>
         <p className="uppercase text-center py-2">
