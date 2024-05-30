@@ -1,4 +1,9 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import type MainController from "@src/MainController";
+import { AppContext } from "@src/main";
+import type { NftContractDetails } from "@harvest-flow/utils";
+import { calculateTotalRewards, formatTime } from "@src/utils";
+import { ethers } from "ethers";
 
 const TotalSupplyProgressBar: React.FC<{
   totalSupply: number;
@@ -26,9 +31,104 @@ const TotalSupplyProgressBar: React.FC<{
   );
 };
 
-const ProjectMintPanel: React.FC = () => {
-  const totalSupply = 60;
-  const currentSupply = 13;
+interface AmountInputProps {
+  amount: number;
+  maxAmount?: number;
+  setAmount: (amount: number) => void;
+}
+
+const AmountInput: React.FC<AmountInputProps> = ({
+                                                   amount,
+                                                   maxAmount,
+                                                   setAmount
+                                                 }) => {
+  return (
+    <div className="pb-2">
+      <div className="border border-black flex divide-x divide-black">
+        <button className="p-1 w-6 h-6 flex items-center justify-center"
+                onClick={() => {
+                  if (amount > 0) {
+                    setAmount(amount - 1);
+                  }
+                }}>
+          —
+        </button>
+        <div className="p-1 h-6 flex items-center justify-center flex-1 min-w-[80px]">
+          <p>{amount}</p>
+        </div>
+        <button className="p-1 w-6 h-6 flex items-center justify-center"
+                onClick={() => {
+                  if (maxAmount && amount < maxAmount) {
+                    setAmount(amount + 1);
+                  } else if (!maxAmount) {
+                    setAmount(amount + 1);
+                  }
+                }}>
+          +
+        </button>
+      </div>
+    </div>
+  );
+};
+
+
+const ProjectMintPanel: React.FC<{ projectContractAddress: string }> = ({ projectContractAddress }) => {
+  const mainController: MainController = useContext(AppContext);
+
+  const [amountToBuy, setAmountToBuy] = React.useState<number>(1);
+  const [nftDetails, setNftDetails] = React.useState<NftContractDetails>(null);
+  const [endingIn, setEndingIn] = React.useState<string>(
+    "- days - hours - minutes - seconds"
+  );
+  const [totalRewards, setTotalRewards] = React.useState<string>("0");
+
+  useEffect(() => {
+    mainController
+      .getDetailedNftContract(projectContractAddress)
+      .then((details) => {
+        setNftDetails(details);
+      });
+  }, [projectContractAddress]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (nftDetails) {
+        const now = new Date();
+        const ending = new Date(nftDetails.leaseEnd);
+        const diff = ending.getTime() - now.getTime();
+
+        if (diff < 0) {
+          setEndingIn("Ended");
+        } else {
+          setEndingIn(formatTime(diff));
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [nftDetails]);
+
+  useEffect(() => {
+    if (nftDetails) {
+      setTotalRewards(
+        calculateTotalRewards(nftDetails, amountToBuy).toFixed(2)
+      );
+    }
+  }, [nftDetails, amountToBuy]);
+
+  const buyNft = (amountToBuy: number) => {
+    if (!mainController.isWalletConnected()) {
+      console.error("Wallet is not connected");
+    }
+
+    mainController.buyNft(projectContractAddress, amountToBuy, BigInt(nftDetails.price)).then(() => {
+      mainController
+        .getDetailedNftContract(projectContractAddress)
+        .then((details) => {
+          setNftDetails(details);
+        });
+    });
+  };
 
   return (
     <div>
@@ -36,39 +136,36 @@ const ProjectMintPanel: React.FC = () => {
         <div className="border-b border-black py-4 px-6 flex flex-col gap-2">
           <p className="uppercase font-medium text-center">Phase: Allow list</p>
           <p className="text-captionSmall text-center">
-            Ending in 22 hours 23 mins 23 seconds
+            Ending in {endingIn}
           </p>
         </div>
         <div className="py-6 px-10 border-b border-black flex flex-col gap-6">
           <TotalSupplyProgressBar
-            totalSupply={totalSupply}
-            currentSupply={currentSupply}
+            totalSupply={Number(nftDetails?.supplyCap) ?? 0}
+            currentSupply={Number(nftDetails?.mintedAmount) ?? 0}
           />
           <p className="text-center uppercase">You can mint: 2 NFTs</p>
           <div className="flex justify-center items-end gap-6 px-6">
             <div className="flex flex-col">
               <p className="text-caption font-medium">Price</p>
               <p className="text-heading3 font-medium">
-                8,000 <span className="text-body">DAI</span>
+                {!nftDetails
+                  ? "----"
+                  : Number(ethers.utils.formatEther(nftDetails.price)) *
+                  amountToBuy} <span className="text-body">DAI</span>
               </p>
             </div>
-            <div className="pb-2">
-              <div className="border border-black flex divide-x divide-black">
-                <button className="p-1 w-6 h-6 flex items-center justify-center">
-                  —
-                </button>
-                <div className="p-1 h-6 flex items-center justify-center flex-1 min-w-[80px]">
-                  <p>1</p>
-                </div>
-                <button className="p-1 w-6 h-6 flex items-center justify-center">
-                  +
-                </button>
-              </div>
-            </div>
+            <AmountInput amount={amountToBuy} setAmount={setAmountToBuy} />
           </div>
           <div className="border-t border-b border-black divide-y divide-black divide-dashed">
             <p className="text-center uppercase py-3">
-              Expected APR: <span className="font-medium">9%</span>
+              Expected APR:
+              <span className="font-medium">
+                {nftDetails
+                  ? Number(ethers.utils.formatEther(nftDetails.minYield)) * 100
+                  : "-"}{" "}
+                %
+              </span>
             </p>
             <p className="text-center uppercase py-3">
               Redemption: <span className="font-medium">April, 2027</span>
@@ -80,13 +177,15 @@ const ProjectMintPanel: React.FC = () => {
           <div>
             <p className="text-center uppercase py-3">
               Total rewards:{" "}
-              <span className="font-medium text-heading3">100</span>{" "}
+              <span className="font-medium text-heading3">{totalRewards}</span>{" "}
               <span className="font-medium">DAI</span>
             </p>
           </div>
         </div>
         <div>
-          <button className="bg-primary text-black text-heading5 font-medium text-center px-8 py-6 uppercase w-full">
+          <button className="bg-primary text-black text-heading5 font-medium text-center px-8 py-6 uppercase w-full"
+                  onClick={() => buyNft(amountToBuy)}
+          >
             Mint
           </button>
         </div>

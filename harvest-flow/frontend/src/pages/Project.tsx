@@ -1,11 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import Layout from "@src/layouts/Layout";
-import { Box, Grid, Typography } from "@mui/material";
-import BuyPanel from "@src/components/BuyPanel";
+import { Box } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@src/components/TabPanel";
-import { AppContext } from "@src/main";
 import NftHistory from "@src/components/NftHistory";
 import ProjectHero from "@src/components/ProjectHero";
 import ProjectTabsSection from "@src/components/ProjectTabsSection";
@@ -30,7 +28,7 @@ const Project: React.FC = () => {
 
   return (
     <Layout>
-      <ProjectHero />
+      <ProjectHero projectContractAddress={contractAddress}  />
       <ProjectTabsSection activePage="overview" />
       <ProjectPointsSection />
       <ProjectStorySection />
@@ -40,22 +38,6 @@ const Project: React.FC = () => {
       <ProjectVideoSection />
       <ProjectSchemeSection />
       <ProjectLendAHandSection />
-      <div style={{ backgroundImage: "url(/assets/images/favicon.png)" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={6} alignContent={"center"}>
-            <Typography variant="h4" gutterBottom>
-              プロジェクトコピー
-            </Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <div style={{ margin: "20px" }}>
-              <BuyPanel
-                nftContractAddress={contractAddress}
-              />
-            </div>
-          </Grid>
-        </Grid>
-      </div>
       <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
         <Tabs value={activeTab} onChange={handleChange} centered>
           <Tab label="Overview" />
