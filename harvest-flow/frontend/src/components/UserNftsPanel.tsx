@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import NFTCard, { NFTCardProps } from "./NFTCard";
 import { NftDetails } from "@harvest-flow/utils";
 import { groupBy } from "@src/utils";
 import { ethers } from "ethers";
+import NFTCardOld, { NFTCardOldProps } from "@src/components/NftCardOld";
 
 
 interface NFTListProps {
   projectName: string;
-  nfts: NFTCardProps[];
+  nfts: NFTCardOldProps[];
 }
 
 const NFTList: React.FC<NFTListProps> = ({ projectName, nfts }) => {
@@ -29,7 +29,7 @@ const NFTList: React.FC<NFTListProps> = ({ projectName, nfts }) => {
         <div className="flex flex-wrap -mx-2">
           {nfts.map((nft, index) => (
             <div key={index} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-2 mb-4">
-              <NFTCard
+              <NFTCardOld
                 contractAddress={nft.contractAddress}
                 tokenId={nft.tokenId}
                 principal={nft.principal}
