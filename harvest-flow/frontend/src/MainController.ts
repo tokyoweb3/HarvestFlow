@@ -16,7 +16,7 @@ export enum Page {
   Project = "/project",
 }
 
-const NFT_FACTORY_CONTRACT_ADDRESS: string = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
+const NFT_FACTORY_CONTRACT_ADDRESS: string = process.env.TOKTOK_NFT_FACTORY_CONTRACT_ADDRESS;
 const PAYMENT_TOKEN_CONTRACT_ADDRESS: string = process.env.PAYMENT_TOKEN_CONTRACT_ADDRESS;
 
 // This is a class that will be used to control the state of the application
