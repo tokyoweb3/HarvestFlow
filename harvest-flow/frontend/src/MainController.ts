@@ -21,6 +21,7 @@ export enum Page {
   Account = "/account",
   Project = "/project",
   Reports = "/reports",
+  FAQ = "/faq",
   Homepage = "/",
 }
 
