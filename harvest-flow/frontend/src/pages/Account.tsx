@@ -10,6 +10,7 @@ import AccountDashboardSection from "@src/components/AccountDashboardSection";
 import AccountProjectHistorySection from "@src/components/AccountProjectHistorySection";
 import AccountUpdatesSection from "@src/components/AccountUpdatesSection";
 import AccountYourNFTSection from "@src/components/AccountYourNFTSection";
+import { Box } from "@mui/material";
 
 const Account: React.FC = () => {
   const mainController: MainController = useContext(AppContext);
@@ -32,7 +33,7 @@ const Account: React.FC = () => {
             </div>
           </div>
           <div className="w-full max-w-[1008px] flex flex-col gap-24">
-            <AccountDashboardSection />
+            <AccountDashboardSection userDetails={userDetails}/>
             <AccountProjectHistorySection />
             <AccountUpdatesSection />
             <AccountYourNFTSection />
