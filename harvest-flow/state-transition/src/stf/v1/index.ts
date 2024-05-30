@@ -2,7 +2,7 @@ import { SQLUpdate } from "@paima/node-sdk/db";
 import {getDynamicExtensionByName } from "@paima/node-sdk/utils-backend";
 import { Pool } from "pg";
 import type Prando from "@paima/sdk/prando";
-import type { SubmittedChainData } from "@paima/sdk/utils";
+import type { STFSubmittedData } from "@paima/sdk/utils";
 import parse, { isInvalid } from "./parser";
 import { PARSER_KEYS } from "./constants";
 import {
@@ -15,7 +15,7 @@ import {
 } from "./transition";
 
 export default async function (
-    inputData: any,
+    inputData: STFSubmittedData,
     blockHeight: number,
     randomnessGenerator: Prando,
     dbConn: Pool
@@ -36,25 +36,25 @@ export default async function (
         case PARSER_KEYS.contractActivated:
             return contractActivated(
               expanded,
-              await getContractAddressForEvent(dbConn, inputData.extensionName)
+              await getContractAddressForEvent(dbConn, inputData.extensionName!)
             );
         case PARSER_KEYS.nftMinted:
             return nftMinted(
               expanded,
-              await getContractAddressForEvent(dbConn, inputData.extensionName),
+              await getContractAddressForEvent(dbConn, inputData.extensionName!),
               blockHeight,
               dbConn
             );
         case PARSER_KEYS.claimed:
             return interestClaimed(
               expanded,
-              await getContractAddressForEvent(dbConn, inputData.extensionName),
+              await getContractAddressForEvent(dbConn, inputData.extensionName!),
               blockHeight
             );
         case PARSER_KEYS.redeemed:
             return principalRedeemed(
               expanded,
-              await getContractAddressForEvent(dbConn, inputData.extensionName),
+              await getContractAddressForEvent(dbConn, inputData.extensionName!),
               blockHeight
             );
         case PARSER_KEYS.calcPoints:
