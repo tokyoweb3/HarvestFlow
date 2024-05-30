@@ -2,14 +2,13 @@ import React, { useContext, useEffect } from "react";
 import Layout from "@src/layouts/Layout";
 import type MainController from "@src/MainController";
 import { AppContext } from "@src/main";
-import Dashboard from "@src/components/Dashboard";
 import type { UserDetails } from "@harvest-flow/utils";
 import AccountNavigation from "@src/components/AccountNavigation";
 import AccountDashboardSection from "@src/components/AccountDashboardSection";
 import AccountProjectHistorySection from "@src/components/AccountProjectHistorySection";
 import AccountUpdatesSection from "@src/components/AccountUpdatesSection";
 import AccountYourNFTSection from "@src/components/AccountYourNFTSection";
-import { Box } from "@mui/material";
+
 
 const Account: React.FC = () => {
   const mainController: MainController = useContext(AppContext);
@@ -35,7 +34,7 @@ const Account: React.FC = () => {
             <AccountDashboardSection userDetails={userDetails}/>
             <AccountProjectHistorySection />
             <AccountUpdatesSection />
-            <AccountYourNFTSection />
+            {userDetails && (<AccountYourNFTSection ownedNfts={userDetails.ownedNfts}/>)}
           </div>
         </div>
       </div>
