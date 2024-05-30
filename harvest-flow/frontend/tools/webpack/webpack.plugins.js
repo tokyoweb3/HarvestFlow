@@ -26,7 +26,7 @@ module.exports = [
           "START_BLOCKHEIGHT",
           "BACKEND_URI",
           "WEBSERVER_PORT",
-          "TOKTOK_NFT_CONTRACT_ADDRESS",
+          "TOKTOK_NFT_FACTORY_CONTRACT_ADDRESS",
           "PAYMENT_TOKEN_CONTRACT_ADDRESS"
         ].map((key) => [key, process.env[key]]),
       ),
