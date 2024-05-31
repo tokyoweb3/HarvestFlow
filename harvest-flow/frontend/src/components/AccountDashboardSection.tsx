@@ -20,7 +20,7 @@ const ExtraSmallTile: React.FC<DataTileProps> = ({ title, value }) => {
       wrapperClassName="border-t border-l border-black"
       title={title}
       value={value}
-      size="extra-small"
+      size="xs"
     />
   );
 };

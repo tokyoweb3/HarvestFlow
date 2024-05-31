@@ -8,6 +8,7 @@ import DummyProjectList from "@src/components/DummyProjectList";
 import OwnedNft from "@src/components/OwnedNft";
 import Reports from "./Reports";
 import FAQ from "./FAQ";
+import AccountProject from "./AccountProject";
 
 const PageCoordinator: React.FC = () => {
   return (
@@ -19,6 +20,8 @@ const PageCoordinator: React.FC = () => {
       <Route path="*" element={<DummyProjectList/>} />
       <Route path={Page.Reports} element={<Reports />} />
       <Route path={Page.FAQ} element={<FAQ />} />
+      <Route path={Page.AccountProject} element={<AccountProject />} />
+      <Route element={<div>There was something wrong...</div>} />
     </Routes>
   );
 };
