@@ -1,4 +1,6 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Page } from "@src/MainController";
 
 export type NFTCardProps = {
   contractAddress: string;
@@ -23,6 +25,8 @@ const NFTCard: React.FC<NFTCardProps> = ({
   termEnd,
   apr,
 }) => {
+  const navigate = useNavigate();
+
   const formatTerm = (lendingStart : Date, lendingEnd : Date) => {
     const lendingStartYear = lendingStart.getFullYear();
     const lendingStartMonth = lendingStart.getMonth() + 1;
@@ -33,8 +37,9 @@ const NFTCard: React.FC<NFTCardProps> = ({
   };
 
   return (
-    // TODO: navigate to the NFT page
-    <div className="p-4 w-full flex flex-col gap-2 border border-black bg-tertiary">
+    <div className="p-4 w-full flex flex-col gap-2 border border-black bg-tertiary"
+         onClick={() => {navigate(`${Page.AccountProject}?address=${contractAddress}&tokenId=${tokenId}`)}}
+    >
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <p className="uppercase">NO. {tokenId}</p>
