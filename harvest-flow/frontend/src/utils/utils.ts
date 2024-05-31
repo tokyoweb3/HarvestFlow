@@ -116,3 +116,18 @@ export const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
       (groups[key(item)] ||= []).push(item);
       return groups;
   }, {} as Record<K, T[]>);
+
+
+export function getMonthDifference(start: number, end: number): number {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const startYear = startDate.getFullYear();
+    const startMonth = startDate.getMonth(); // 0-based index
+    const endYear = endDate.getFullYear();
+    const endMonth = endDate.getMonth(); // 0-based index
+
+    const yearDifference = endYear - startYear;
+    const monthDifference = endMonth - startMonth;
+
+    return yearDifference * 12 + monthDifference;
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Layout from "@src/layouts/Layout";
 import ProjectHero from "@src/components/ProjectHero";
 import ProjectTabsSection from "@src/components/ProjectTabsSection";
@@ -11,23 +11,33 @@ import ProjectSchemeSection from "@src/components/ProjectSchemeSection";
 import ProjectVideoSection from "@src/components/ProjectVideoSection";
 import ProjectLendAHandSection from "@src/components/ProjectLendAHandSection";
 import { useSearchParams } from "react-router-dom";
+import { AppContext } from "@src/main";
+import type MainController from "@src/MainController";
+import type { NftContractDetails } from "@harvest-flow/utils";
 
 const Project: React.FC = () => {
-    const [activeTab, setActiveTab] = React.useState(0);
-    const [searchParams] = useSearchParams();
-    const contractAddress = searchParams.get('address') || '';
+  const mainController: MainController = useContext(AppContext);
+  const [searchParams] = useSearchParams();
+  const contractAddress = searchParams.get('address') || '';
+  const [projectContractDetails, setProjectContractDetails] = React.useState<NftContractDetails | null>(null);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
+  const loadContractDetails = () => {
+    mainController.getDetailedNftContract(contractAddress).then((details) => {
+      setProjectContractDetails(details);
+    })
   };
+
+  useEffect(() => {
+    loadContractDetails();
+  }, [contractAddress]);
 
   return (
     <Layout>
-      <ProjectHero projectContractAddress={contractAddress}  />
+      <ProjectHero projectContractDetails={projectContractDetails} refreshData={loadContractDetails}  />
       <ProjectTabsSection activePage="overview" />
       <ProjectPointsSection />
       <ProjectStorySection />
-      <ProjectOverviewSection />
+      <ProjectOverviewSection projectContractDetails={projectContractDetails}/>
       <ProjectScheduleSection />
       <ProjectBorrowerSection />
       <ProjectVideoSection />

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
-import MainController from "@src/MainController";
+import type MainController from "@src/MainController";
 import { AppContext } from "@src/main";
-import { NftHistoryEvent } from "@harvest-flow/utils";
+import type { NftHistoryEvent } from "@harvest-flow/utils";
 import { CHAIN_EXPLORER_URI } from "@src/utils/constants";
 import { formatTimestampForHistoryTable, middleEllipsis } from "@src/utils";
 import { ethers } from "ethers";
