@@ -71,30 +71,27 @@ const AmountInput: React.FC<AmountInputProps> = ({
   );
 };
 
+export interface ProjectMintPanelProps {
+  projectContractDetails: NftContractDetails;
+  refreshData: () => void;
+}
 
-const ProjectMintPanel: React.FC<{ projectContractAddress: string }> = ({ projectContractAddress }) => {
+const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({ projectContractDetails, refreshData }) => {
   const mainController: MainController = useContext(AppContext);
 
   const [amountToBuy, setAmountToBuy] = React.useState<number>(1);
-  const [nftDetails, setNftDetails] = React.useState<NftContractDetails>(null);
   const [endingIn, setEndingIn] = React.useState<string>(
     "- days - hours - minutes - seconds"
   );
   const [totalRewards, setTotalRewards] = React.useState<string>("0");
 
-  useEffect(() => {
-    mainController
-      .getDetailedNftContract(projectContractAddress)
-      .then((details) => {
-        setNftDetails(details);
-      });
-  }, [projectContractAddress]);
+
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (nftDetails) {
+      if (projectContractDetails) {
         const now = new Date();
-        const ending = new Date(nftDetails.leaseEnd);
+        const ending = new Date(projectContractDetails.leaseEnd);
         const diff = ending.getTime() - now.getTime();
 
         if (diff < 0) {
@@ -106,28 +103,24 @@ const ProjectMintPanel: React.FC<{ projectContractAddress: string }> = ({ projec
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [nftDetails]);
+  }, [projectContractDetails]);
 
   useEffect(() => {
-    if (nftDetails) {
+    if (projectContractDetails) {
       setTotalRewards(
-        calculateTotalRewards(nftDetails, amountToBuy).toFixed(2)
+        calculateTotalRewards(projectContractDetails, amountToBuy).toFixed(2)
       );
     }
-  }, [nftDetails, amountToBuy]);
+  }, [projectContractDetails, amountToBuy]);
 
   const buyNft = (amountToBuy: number) => {
     if (!mainController.isWalletConnected()) {
       console.error("Wallet is not connected");
     }
 
-    mainController.buyNft(projectContractAddress, amountToBuy, BigInt(nftDetails.price)).then(() => {
-      mainController
-        .getDetailedNftContract(projectContractAddress)
-        .then((details) => {
-          setNftDetails(details);
-        });
-    });
+    mainController.buyNft(projectContractDetails.address, amountToBuy, BigInt(projectContractDetails.price)).then(() => {
+      refreshData();
+    })
   };
 
   return (
@@ -141,17 +134,17 @@ const ProjectMintPanel: React.FC<{ projectContractAddress: string }> = ({ projec
         </div>
         <div className="py-6 px-10 border-b border-black flex flex-col gap-6">
           <TotalSupplyProgressBar
-            totalSupply={Number(nftDetails?.supplyCap) ?? 0}
-            currentSupply={Number(nftDetails?.mintedAmount) ?? 0}
+            totalSupply={Number(projectContractDetails?.supplyCap) ?? 0}
+            currentSupply={Number(projectContractDetails?.mintedAmount) ?? 0}
           />
           <p className="text-center uppercase">You can mint: 2 NFTs</p>
           <div className="flex justify-center items-end gap-6 px-6">
             <div className="flex flex-col">
               <p className="text-caption font-medium">Price</p>
               <p className="text-heading3 font-medium">
-                {!nftDetails
+                {!projectContractDetails
                   ? "----"
-                  : Number(ethers.utils.formatEther(nftDetails.price)) *
+                  : Number(ethers.utils.formatEther(projectContractDetails.price)) *
                   amountToBuy} <span className="text-body">DAI</span>
               </p>
             </div>
@@ -161,8 +154,8 @@ const ProjectMintPanel: React.FC<{ projectContractAddress: string }> = ({ projec
             <p className="text-center uppercase py-3">
               Expected APR:
               <span className="font-medium">
-                {nftDetails
-                  ? Number(ethers.utils.formatEther(nftDetails.minYield)) * 100
+                {projectContractDetails
+                  ? Number(ethers.utils.formatEther(projectContractDetails.minYield)) * 100
                   : "-"}{" "}
                 %
               </span>

@@ -7,11 +7,12 @@ type ProjectTabsSectionProps = ProjectTabsProps;
 
 const ProjectTabsSection: React.FC<ProjectTabsSectionProps> = ({
   activePage,
+  changeTab,
 }) => {
   return (
     <div className="pt-32 pb-56">
       <div className="max-w-[780px] mx-auto">
-        <ProjectTabs activePage={activePage} />
+        <ProjectTabs activePage={activePage} changeTab={changeTab} />
       </div>
     </div>
   );

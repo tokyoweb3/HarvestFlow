@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Layout from "@src/layouts/Layout";
 import ProjectHero from "@src/components/ProjectHero";
 import ProjectTabsSection from "@src/components/ProjectTabsSection";
@@ -11,27 +11,57 @@ import ProjectSchemeSection from "@src/components/ProjectSchemeSection";
 import ProjectVideoSection from "@src/components/ProjectVideoSection";
 import ProjectLendAHandSection from "@src/components/ProjectLendAHandSection";
 import { useSearchParams } from "react-router-dom";
+import type { NftContractDetails } from "@harvest-flow/utils";
+import { AppContext } from "@src/main";
+import type MainController from "@src/MainController";
+import ReportsDataHouseSection from "@src/components/ReportsDataHouseSection";
+import ReportsProjectHistorySection from "@src/components/ReportsProjectHistorySection";
+import FAQPageFAQSection from "@src/components/FAQPageFAQSection";
 
 const Project: React.FC = () => {
-    const [activeTab, setActiveTab] = React.useState(0);
-    const [searchParams] = useSearchParams();
-    const contractAddress = searchParams.get('address') || '';
+  const mainController: MainController = useContext(AppContext);
+  const [activeTab, setActiveTab] = React.useState<"overview" | "reports" | "qa">("overview");
+  const [searchParams] = useSearchParams();
+  const contractAddress = searchParams.get('address') || '';
+  const [contractDetails, setContractDetails] = React.useState<NftContractDetails>(null);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
-  };
+  const loadProjectDetails = () => {
+    mainController
+      .getDetailedNftContract(contractAddress)
+      .then((details) => {
+        setContractDetails(details);
+      });
+  }
+
+  useEffect(() => {
+    loadProjectDetails();
+  }, [contractAddress]);
+
 
   return (
     <Layout>
-      <ProjectHero projectContractAddress={contractAddress}  />
-      <ProjectTabsSection activePage="overview" />
-      <ProjectPointsSection />
-      <ProjectStorySection />
-      <ProjectOverviewSection />
-      <ProjectScheduleSection />
-      <ProjectBorrowerSection />
-      <ProjectVideoSection />
-      <ProjectSchemeSection />
+      <ProjectHero projectContractDetails={contractDetails} refreshData={loadProjectDetails}  />
+      <ProjectTabsSection activePage={activeTab} changeTab={setActiveTab} />
+      {
+        {
+          overview:
+            <>
+              <ProjectPointsSection />
+              <ProjectStorySection />
+              <ProjectOverviewSection />
+              <ProjectScheduleSection />
+              <ProjectBorrowerSection />
+              <ProjectVideoSection />
+              <ProjectSchemeSection />
+            </>,
+          reports:
+            <>
+              <ReportsDataHouseSection />
+              <ReportsProjectHistorySection projectContractAddress={contractAddress}/>
+            </>,
+          qa: <FAQPageFAQSection />
+        }[activeTab]
+      }
       <ProjectLendAHandSection />
     </Layout>
   );
