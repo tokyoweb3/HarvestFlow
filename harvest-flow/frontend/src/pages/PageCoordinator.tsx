@@ -6,8 +6,6 @@ import { Routes, Route } from "react-router-dom";
 import Homepage from "./Homepage";
 import DummyProjectList from "@src/components/DummyProjectList";
 import OwnedNft from "@src/components/OwnedNft";
-import Reports from "./Reports";
-import FAQ from "./FAQ";
 
 const PageCoordinator: React.FC = () => {
   return (
@@ -17,8 +15,6 @@ const PageCoordinator: React.FC = () => {
       <Route path={Page.Project} element={<Project />} />
       <Route path="nft" element={<OwnedNft />} />
       <Route path="*" element={<DummyProjectList/>} />
-      <Route path={Page.Reports} element={<Reports />} />
-      <Route path={Page.FAQ} element={<FAQ />} />
     </Routes>
   );
 };

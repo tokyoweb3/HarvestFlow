@@ -3,24 +3,27 @@ import clsx from "clsx";
 
 const pages = [
   {
-    page: "overview",
+    page: "overview" as ProjectPageTabsOptions,
     name: "Overview",
   },
   {
-    page: "reports",
+    page: "reports" as ProjectPageTabsOptions,
     name: "Reports",
   },
   {
-    page: "qa",
+    page: "qa" as ProjectPageTabsOptions,
     name: "Q & A",
-  },
+  }
 ];
 
+export type ProjectPageTabsOptions = "overview" | "reports" | "qa";
+
 export type ProjectTabsProps = {
-  activePage: "overview" | "reports" | "qa";
+  activePage: ProjectPageTabsOptions;
+  changeTab: (selectedTab: ProjectPageTabsOptions) => void;
 };
 
-const ProjectTabs: React.FC<ProjectTabsProps> = ({ activePage }) => {
+const ProjectTabs: React.FC<ProjectTabsProps> = ({ activePage, changeTab }) => {
   return (
     <div className="w-full flex">
       {pages.map((page) => (
@@ -32,6 +35,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({ activePage }) => {
               ? "border-primary"
               : "border-black hover:border-primary",
           )}
+          onClick={() => changeTab(page.page)}
         >
           <p className="text-heading4 font-medium uppercase">{page.name}</p>
         </div>
