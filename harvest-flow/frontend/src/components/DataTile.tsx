@@ -14,22 +14,44 @@ const TileHeader: React.FC<TileHeaderProps> = ({ title }) => {
 };
 
 type TileValueProps = {
-  value: string;
-  size?: "extra-small" | "small" | "large";
+  value?: string;
+  size?: "xxs" | "xs" | "small" | "large";
 };
 
 const TileValue: React.FC<TileValueProps> = ({ value, size = "small" }) => {
   const getPaddingFromSize = () => {
-    if (size === "extra-small") {
+    if (size === "xxs") {
+      return "p-4";
+    }
+
+    if (size === "xs") {
       return "p-6";
     }
 
     if (size === "large") {
-      return "p-4";
+      return "p-16";
     }
 
-    return "p-20";
+    return "p-8";
   };
+
+  const getTextSizeFromSize = () => {
+    if (size === "xxs") {
+      return "text-heading5";
+    }
+
+    if (size === "xs") {
+      return "text-heading4";
+    }
+
+    if (size === "large") {
+      return "text-heading1";
+    }
+
+    return "text-heading3";
+  };
+
+  if (!value) return null;
 
   return (
     <div
@@ -38,14 +60,7 @@ const TileValue: React.FC<TileValueProps> = ({ value, size = "small" }) => {
         getPaddingFromSize(),
       )}
     >
-      <p
-        className={clsx(
-          "text-center uppercase",
-          size === "small" || size === "extra-small"
-            ? "text-heading3"
-            : "text-heading1",
-        )}
-      >
+      <p className={clsx("text-center uppercase", getTextSizeFromSize())}>
         {value}
       </p>
     </div>
@@ -55,6 +70,7 @@ const TileValue: React.FC<TileValueProps> = ({ value, size = "small" }) => {
 export type DataTileProps = TileHeaderProps &
   TileValueProps & {
     wrapperClassName?: string;
+    customComponent?: React.ReactNode;
   };
 
 const DataTile: React.FC<DataTileProps> = ({
@@ -62,6 +78,7 @@ const DataTile: React.FC<DataTileProps> = ({
   value,
   size,
   wrapperClassName,
+  customComponent,
 }) => {
   return (
     <div
@@ -71,7 +88,9 @@ const DataTile: React.FC<DataTileProps> = ({
       )}
     >
       <TileHeader title={title} />
-      <TileValue value={value} size={size} />
+      <div className="flex items-center justify-center flex-1">
+        {customComponent ?? <TileValue value={value} size={size} />}
+      </div>
     </div>
   );
 };

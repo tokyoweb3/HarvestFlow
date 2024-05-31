@@ -19,6 +19,7 @@ import { WalletMode } from "@paima/providers";
 // create string enum called AppState
 export enum Page {
   Account = "/account",
+  AccountProject = "/account-project",
   Project = "/project",
   Reports = "/reports",
   FAQ = "/faq",
