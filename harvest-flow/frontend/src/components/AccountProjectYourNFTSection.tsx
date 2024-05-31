@@ -4,6 +4,12 @@ import type { DataTileProps } from "./DataTile";
 import DataTile from "./DataTile";
 
 import tukTukImage from "../../assets/images/tuktuk.jpg";
+import type { NftDetails } from "@harvest-flow/utils";
+import { ethers } from "ethers";
+import { getLendingAmountForNft } from "@src/utils";
+import { NUMBER_OF_DECIMAL_PLACES } from "@src/utils/constants";
+import { useNavigate } from "react-router-dom";
+import { Page } from "@src/MainController";
 
 const ExtraSmallTile: React.FC<DataTileProps> = ({
   title,
@@ -21,7 +27,18 @@ const ExtraSmallTile: React.FC<DataTileProps> = ({
   );
 };
 
-const AccountProjectYourNFTSection: React.FC = () => {
+const formatTerm = (lendingStart : Date, lendingEnd : Date) => {
+  const lendingStartYear = lendingStart.getFullYear();
+  const lendingStartMonth = lendingStart.getMonth() + 1;
+  const lendingEndYear = lendingEnd.getFullYear();
+  const lendingEndMonth = lendingEnd.getMonth() + 1;
+
+  return `${lendingStartYear.toString()}.${lendingStartMonth} ~ ${lendingEndYear}.${lendingEndMonth}`;
+};
+
+const AccountProjectYourNFTSection: React.FC<{tokenDetails : NftDetails}> = ({tokenDetails}) => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col gap-14">
       <div className="flex flex-col gap-6">
@@ -29,7 +46,7 @@ const AccountProjectYourNFTSection: React.FC = () => {
           Your NFT
         </h2>
         <h3 className="text-center text-heading4 font-medium">
-          Cambodia Tuktuk vol.1 NO.1
+          ${tokenDetails.projectName} NO.${tokenDetails.tokenId}
         </h3>
       </div>
       <div className="w-full border-b border-black border-l border-r flex">
@@ -53,11 +70,13 @@ const AccountProjectYourNFTSection: React.FC = () => {
           />
           <div className="grid grid-cols-4 grid-rows-1">
             <ExtraSmallTile title="Asset" value="1" />
-            <ExtraSmallTile title="Term" value="2024.1 ~ 2026.12" />
-            <ExtraSmallTile title="Lending" value="100 DAI" />
-            <ExtraSmallTile title="APR" value="8%" />
+            <ExtraSmallTile title="Term" value={formatTerm(new Date(tokenDetails.lendingData.lendingStart), new Date(tokenDetails.lendingData.lendingEnd))} />
+            <ExtraSmallTile title="Lending" value={`${getLendingAmountForNft(tokenDetails).toFixed(NUMBER_OF_DECIMAL_PLACES)} DAI`} />
+            <ExtraSmallTile title="APR" value={`${Number(ethers.utils.formatEther(tokenDetails.lendingData.yield))*100} %`} />
           </div>
-          <button className="bg-primary flex items-center justify-center border-t border-l border-black text-heading4 uppercase tracking-widest">
+          <button className="bg-primary flex items-center justify-center border-t border-l border-black text-heading4 uppercase tracking-widest"
+            onClick={() => navigate(`${Page.Project}?address=${tokenDetails.contractAddress}`)}
+          >
             Go to project page
           </button>
         </div>

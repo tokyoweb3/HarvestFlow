@@ -9,7 +9,7 @@ import type { NFTProjectCardProps } from "./NFTProjectCard";
 import NFTProjectCard, { NFTProjectComingSoonCard } from "./NFTProjectCard";
 
 import tukTukImage from "../../assets/images/tuktuk.jpg";
-import { NftDetails } from "@harvest-flow/utils";
+import type { NftDetails } from "@harvest-flow/utils";
 import { groupBy } from "@src/utils";
 import { ethers } from "ethers";
 
