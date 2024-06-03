@@ -2,6 +2,8 @@ import React from "react";
 
 import backgroundImage from "../../assets/images/hero-bg.svg";
 import SectionHeader from "./SectionHeader";
+import MinusIcon from "@src/icons/MinusIcon";
+import PlusIcon from "@src/icons/PlusIcon";
 
 const faqData = [
   {
@@ -37,15 +39,23 @@ const FAQItem: React.FC<{
   question: string;
   answer: string;
   index: number;
-}> = ({ question, answer, index }) => {
+  openByDefault?: boolean;
+}> = ({ question, answer, index, openByDefault }) => {
+  const [isOpen, setIsOpen] = React.useState(openByDefault);
+
   return (
     <div className="flex divide-x divide-black border-t border-black">
       <div className="p-10">
         <p className="text-heading5">Q{index}</p>
       </div>
-      <div className="px-10 py-6 flex flex-col gap-4">
-        <h3 className="text-heading5">{question}</h3>
-        <p>{answer}</p>
+      <div className="px-10 py-6 flex flex-col gap-4 flex-1">
+        <div className="flex justify-between flex-1 items-start gap-10">
+          <h3 className="text-heading5">{question}</h3>
+          <button onClick={() => setIsOpen(!isOpen)} className="pt-[6px]">
+            {isOpen ? <MinusIcon /> : <PlusIcon />}
+          </button>
+        </div>
+        {isOpen && <p>{answer}</p>}
       </div>
     </div>
   );
