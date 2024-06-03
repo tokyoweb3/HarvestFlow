@@ -39,8 +39,10 @@ export default buildModule('TokTokNft', m => {
 
 
   // send ETH and MockToken to my test account
-    m.send("SendingEth", "0xC7894CC334A5D21a833CDe21B53d7Fd76B5D882D", 1_000_000_000_000_000_000n);
-    m.call(mockToken, "transfer", ["0xC7894CC334A5D21a833CDe21B53d7Fd76B5D882D", 100_000_000_000_000_000_000_000n]);
+  m.send("SendingEth", "0xC7894CC334A5D21a833CDe21B53d7Fd76B5D882D", 1_000_000_000_000_000_000n);
+  m.call(mockToken, "transfer", ["0xC7894CC334A5D21a833CDe21B53d7Fd76B5D882D", 100_000_000_000_000_000_000_000n]);
+
+
 
     tokTokNftContract.dependencies.add(mockToken);
   factory.dependencies.add(tokTokNftContract);
@@ -52,6 +54,10 @@ export default buildModule('TokTokNft', m => {
   const contract2 = m.call(factory, "deploy", [initParameters2], { id: "Deploy2" });
   const contract2Address = m.readEventArgument(contract2, "NftDeployed", "nft", { id: "address2" });
   const nftContract2 = m.contractAt("TokTokNft", contract2Address, {id: "Nft2" });
+
+  //send mock token to contracts for the repayments
+  m.call(mockToken, "transfer", [contract1Address, 100_000_000_000_000_000_000_000n], { id: "Mock_token_to_contrac1" });
+  m.call(mockToken, "transfer", [contract2Address, 100_000_000_000_000_000_000_000n], { id: "Mock_token_to_contrac2" });
 
 
   // activate contract1

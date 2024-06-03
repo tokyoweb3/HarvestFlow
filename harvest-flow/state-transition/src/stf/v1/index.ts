@@ -42,6 +42,7 @@ export default async function (
             return nftMinted(
               expanded,
               await getContractAddressForEvent(dbConn, inputData.extensionName!),
+              inputData.scheduledTxHash ?? "",
               blockHeight,
               dbConn
             );
@@ -49,12 +50,14 @@ export default async function (
             return interestClaimed(
               expanded,
               await getContractAddressForEvent(dbConn, inputData.extensionName!),
+              inputData.scheduledTxHash ?? "",
               blockHeight
             );
         case PARSER_KEYS.redeemed:
             return principalRedeemed(
               expanded,
               await getContractAddressForEvent(dbConn, inputData.extensionName!),
+              inputData.scheduledTxHash ?? "",
               blockHeight
             );
         case PARSER_KEYS.calcPoints:
