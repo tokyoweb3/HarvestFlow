@@ -19,6 +19,8 @@ import { getActiveTokensByUsersAndContract, getContract } from "@harvest-flow/db
 import { PARSER_KEYS } from "./constants";
 
 const chainId = process.env.CHAIN_ID!;
+const provider = new ethers.JsonRpcProvider(ENV.CHAIN_URI);
+
 export const contractActivated = async (
     input : ContractActivatedInput,
     contractAddress: string,
@@ -47,7 +49,6 @@ export const contractDeployed = async (
     "function publicPrice() public view returns (uint256)"
   ];
 
-  const provider = new ethers.JsonRpcProvider(ENV.CHAIN_URI);
   const contract = new ethers.Contract(input.nftAddress, abi, provider);
 
   const [name, symbol, cap, baseURI, payableToken, lendingAt, yieldRate, maturity, price] = await Promise.all([
@@ -83,27 +84,18 @@ export const contractDeployed = async (
 export const nftMinted = async (
     input : NftMintedInput,
     contractAddress: string,
+    transactionHash: string,
     blockHeight: number,
     dbConn: Pool
 ): Promise<SQLUpdate[]> => {
     console.log(`NFT from ${input.startTokenId} to ${input.startTokenId + input.amount} minted for contract ${contractAddress} on chain ${chainId} for ${input.receiver} with cost ${input.cost}`);
 
-    // get timestamp from blockheight
-    const provider = new ethers.JsonRpcProvider(ENV.CHAIN_URI);
-    const block = (await provider.getBlock(blockHeight,true))!;
-    const timestamp = new Date(block.timestamp * 1000);
-
-    // TODO: replace with new Paima feature
-    // get transaction hash based on from and to values
-    const mintingTransaction = block.prefetchedTransactions
-        .find(transaction => transaction.from === input.receiver && transaction.to === contractAddress);
-
-    const transactionHash = mintingTransaction?.hash ?? '0x0';
-
     const persistOwnerShips : SQLUpdate[] = [];
     const persistMintEvents : SQLUpdate[] = [];
 
     const pricePerToken = input.cost / input.amount;
+
+    const timestamp = await getBlockTimestamp(blockHeight);
 
     for (let i = 0; i < input.amount; i++) {
         const tokenId = input.startTokenId + BigInt(i);
@@ -131,22 +123,12 @@ export const nftMinted = async (
 export const interestClaimed = async (
     input : ClaimedInput,
     contractAddress: string,
+    transactionHash: string,
     blockHeight: number
 ): Promise<SQLUpdate[]> => {
     console.log(`Interest claimed for NFT ${input.tokenId} on chain ${chainId} for ${input.receiver} with amount ${input.amount}`);
 
-    // get timestamp from blockheight
-    const provider = new ethers.JsonRpcProvider(ENV.CHAIN_URI);
-    const block = (await provider.getBlock(blockHeight,true))!;
-    const timestamp = new Date(block.timestamp * 1000);
-
-
-    // TODO: replace with new Paima feature
-    // get transaction hash based on from and to values
-    const claimTransaction = block.prefetchedTransactions
-        .find(transaction => transaction.from === input.receiver && transaction.to === contractAddress);
-
-    const transactionHash = claimTransaction?.hash ?? '0x0';
+    const timestamp = await getBlockTimestamp(blockHeight);
 
     const persistTransaction = saveEventToHistory(NftHistoryEventType.CLAIM,chainId, contractAddress, input.tokenId, input.amount, timestamp, transactionHash);
     const updateClaimedYield = updateClaimedYieldAmount(chainId, contractAddress, input.tokenId, input.amount);
@@ -157,19 +139,12 @@ export const interestClaimed = async (
 export const principalRedeemed = async (
     input : RedeemedInput,
     contractAddress: string,
+    transactionHash: string,
     blockHeight: number
 ): Promise<SQLUpdate[]> => {
     console.log(`Principal redeemed for NFT ${input.tokenId} on chain ${chainId} for ${input.receiver} with amount ${input.amount}`);
 
-    // get timestamp from blockheight
-    const provider = new ethers.JsonRpcProvider(ENV.CHAIN_URI);
-    const block = (await provider.getBlock(blockHeight, true))!;
-    const timestamp = new Date(block.timestamp * 1000);
-
-    const redeemTransaction = block.prefetchedTransactions
-        .find(transaction => transaction.from === input.receiver && transaction.to === contractAddress);
-
-    const transactionHash = redeemTransaction?.hash ?? '0x0';
+    const timestamp = await getBlockTimestamp(blockHeight);
 
     return [
         saveEventToHistory(NftHistoryEventType.REDEEM, chainId, contractAddress, input.tokenId, input.amount, timestamp, transactionHash),
@@ -215,7 +190,6 @@ async function getNftPrice(contractAddress : string, dbConn: Pool)  {
 async function getNextMidnightBlockHeight  (
     currentReferenceTimestamp: Date,
 ): Promise<number> {
-    const provider = new ethers.JsonRpcProvider(ENV.CHAIN_URI);
 
     const currentBlockNumber = await provider.getBlockNumber();
     const currentBlockTimestamp = (await provider.getBlock(currentBlockNumber))!.timestamp;
@@ -261,4 +235,12 @@ async function getDailyPointsByUsers(lastCalculationTimestamp: Date, currentRefe
     }
 
     return usersPoints;
+}
+
+async function getBlockTimestamp(blockHeight: number): Promise<Date> {
+    const block = await provider.getBlock(blockHeight);
+    if (!block) {
+        throw new Error(`Block not found: ${blockHeight}`);
+    }
+    return new Date(block.timestamp * 1000);
 }
