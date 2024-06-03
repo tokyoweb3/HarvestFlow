@@ -17,10 +17,10 @@ const Homepage: React.FC = () => {
     if (!mainController.isWalletConnected()) {
       mainController.enforceWalletConnected();
     }
-  }, []);
+  }, [mainController]);
 
   return (
-    <Layout>
+    <Layout overlayingFooter>
       <HomepageHero />
       <OurProjectsSection />
       <AboutHarvestFlowSection />

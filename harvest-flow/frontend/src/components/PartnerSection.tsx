@@ -60,9 +60,9 @@ const PartnerSection: React.FC = () => {
         Partner
       </h2>
       <div className="pt-24">
-        <div className="max-w-[1000px] mx-auto">
+        <div className="max-w-[1000px] mx-auto relative z-10">
           <div className="flex flex-col gap-8">
-            <div className="border border-black p-8 flex gap-10">
+            <div className="border border-black p-8 flex gap-10 bg-white">
               <div
                 className="w-[45%] shrink-0 aspect-square bg-cover bg-no-repeat bg-center"
                 style={{
@@ -71,7 +71,7 @@ const PartnerSection: React.FC = () => {
               ></div>
               <div className="flex flex-col justify-end gap-20 flex-1 pb-2">
                 <div className="flex flex-col gap-2">
-                  <p className="text-center">
+                  <p className="text-center uppercase">
                     {partnerData[currentSlide].subtitle}
                   </p>
                   <h3 className="text-heading3 uppercase font-medium text-center">

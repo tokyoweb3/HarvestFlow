@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 
 import backgroundImage from "../../assets/images/hero-bg.svg";
 
@@ -91,10 +92,14 @@ const ApasPortLogo: React.FC = () => (
   </svg>
 );
 
-const Footer: React.FC = () => {
+type FooterProps = {
+  overlayingFooter?: boolean;
+}
+
+const Footer: React.FC<FooterProps> = ({overlayingFooter = false}) => {
   return (
     <footer
-      className="bg-cover bg-no-repeat bg-center text-white pt-32"
+      className={clsx("bg-cover bg-no-repeat bg-center text-white", overlayingFooter ? "-mt-64 relative pt-64" : "pt-32")}
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <div className="max-w-[500px] mx-auto flex flex-col gap-32">
