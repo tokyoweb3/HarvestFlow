@@ -2,6 +2,7 @@ import React from "react";
 
 import backgroundImage from "../../assets/images/hero-bg.svg";
 import clsx from "clsx";
+import SectionHeader from "./SectionHeader";
 
 const partnerData = [
   {
@@ -43,7 +44,7 @@ const IndicatorDot: React.FC<{ active?: boolean; onClick: () => void }> = ({
   return (
     <div
       className={clsx(
-        "w-4 h-4 rounded-full border hover:cursor-pointer",
+        "w-3 h-3 desktop:w-4 desktop:h-4 rounded-full border hover:cursor-pointer",
         active ? "bg-black border-white" : "bg-white border-black",
       )}
       onClick={onClick}
@@ -55,26 +56,29 @@ const PartnerSection: React.FC = () => {
   const [currentSlide, setCurrentSlide] = React.useState(0);
 
   return (
-    <div className="pt-32 pb-32">
-      <h2 className="text-heading2 text-center uppercase font-medium tracking-widest">
+    <div className="desktop:py-32 relative z-10">
+      <h2 className="text-heading2 text-center uppercase font-medium tracking-widest hidden desktop:block">
         Partner
       </h2>
-      <div className="pt-24">
+      <div className="block desktop:hidden">
+        <SectionHeader title="Partner" />
+      </div>
+      <div className="desktop:pt-24 px-4 desktop:px-0">
         <div className="max-w-[1000px] mx-auto relative z-10">
           <div className="flex flex-col gap-8">
-            <div className="border border-black p-8 flex gap-10 bg-white">
+            <div className="border border-black p-8 flex flex-col desktop:flex-row gap-6 desktop:gap-10 bg-white">
               <div
-                className="w-[45%] shrink-0 aspect-square bg-cover bg-no-repeat bg-center"
+                className="desktop:w-[45%] shrink-0 aspect-square bg-cover bg-no-repeat bg-center"
                 style={{
                   backgroundImage: `url(${partnerData[currentSlide].imageURL})`,
                 }}
               ></div>
-              <div className="flex flex-col justify-end gap-20 flex-1 pb-2">
-                <div className="flex flex-col gap-2">
-                  <p className="text-center uppercase">
+              <div className="flex flex-col justify-end gap-6 desktop:gap-20 flex-1 pb-2">
+                <div className="flex flex-col gap-1 desktop:gap-2">
+                  <p className="text-center uppercase text-caption desktop:text-body">
                     {partnerData[currentSlide].subtitle}
                   </p>
-                  <h3 className="text-heading3 uppercase font-medium text-center">
+                  <h3 className="text-bodyLarge desktop:text-heading3 uppercase font-medium text-center">
                     {partnerData[currentSlide].title}
                   </h3>
                 </div>

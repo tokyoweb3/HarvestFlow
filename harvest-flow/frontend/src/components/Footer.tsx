@@ -94,17 +94,22 @@ const ApasPortLogo: React.FC = () => (
 
 type FooterProps = {
   overlayingFooter?: boolean;
-}
+};
 
-const Footer: React.FC<FooterProps> = ({overlayingFooter = false}) => {
+const Footer: React.FC<FooterProps> = ({ overlayingFooter = false }) => {
   return (
     <footer
-      className={clsx("bg-cover bg-no-repeat bg-center text-white", overlayingFooter ? "-mt-64 relative pt-64" : "pt-32")}
+      className={clsx(
+        "bg-cover bg-no-repeat bg-center text-white",
+        overlayingFooter
+          ? "-mt-64 desktop:-mt-64 relative pt-96 desktop:pt-64"
+          : "pt-32",
+      )}
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <div className="max-w-[500px] mx-auto flex flex-col gap-32">
         <div className="flex flex-col gap-10">
-          <h2 className="text-heading2 text-center uppercase font-medium tracking-[0.85rem]">
+          <h2 className="text-heading4 desktop:text-heading2 text-center uppercase font-medium tracking-[0.85rem]">
             Join our community
           </h2>
           <div className="flex justify-center items-center gap-8">
@@ -121,8 +126,8 @@ const Footer: React.FC<FooterProps> = ({overlayingFooter = false}) => {
         </div>
       </div>
       <div className="mt-8 border-t border-white">
-        <div className="flex justify-between items-center p-6">
-          <ul className="flex gap-10">
+        <div className="flex flex-col desktop:flex-row justify-between items-center p-6 gap-4">
+          <ul className="flex gap-4 desktop:gap-10">
             <li>
               <p className="uppercase">Contact</p>
             </li>

@@ -35,7 +35,7 @@ const XIcon: React.FC = () => (
 
 const Header: React.FC = () => {
   return (
-    <header className="flex border-b border-t border-black">
+    <header className="flex border-b border-t border-black bg-white relative z-10">
       <div className="flex-1 shrink-0 py-4 px-10">
         <img
           src={Logo}

@@ -7,8 +7,8 @@ import bgVideo from "../../assets/videos/pc_color_high.mp4";
 
 const FeaturesSection: React.FC = () => {
   return (
-    <div className="flex divide-x divide-black border-b border-black">
-      <div className="w-1/2 bg-cover bg-no-repeat bg-center relative">
+    <div className="flex flex-col desktop:flex-row divide-x divide-black border-b border-black relative z-10">
+      <div className="hidden desktop:block w-1/2 bg-cover bg-no-repeat bg-center relative">
         <video
           src={bgVideo}
           className="w-full h-full object-cover"
@@ -22,105 +22,154 @@ const FeaturesSection: React.FC = () => {
           </h2>
         </div>
       </div>
-      <div className="w-1/2">
-        <SectionHeader title="Features" />
-        <div className="pt-24">
-          <div className="px-10 flex flex-col gap-16">
-            <div className="flex gap-8">
-              <div className="flex flex-col gap-6 w-1/2">
-                <h3 className="text-heading4 uppercase font-medium">
-                  An investment experience that transforms society with emotion.
-                </h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et doloremagna.Lorem
-                  ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna. Lorem
-                  ipsum dolor sit amet, consectetur adipisicing elit,sed do
-                  eiusmod tempor incididunt ut labore et doloremagna.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et doloremagna.Lorem
-                  ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna. Lorem
-                  ipsum dolor sit amet, consectetur adipisicing elit,sed do
-                  eiusmod tempor incididunt ut labore et doloremagna.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et doloremagna.Lorem
-                  ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna. Lorem
-                  ipsum dolor sit amet, consectetur adipisicing elit,sed do
-                  eiusmod tempor incididunt ut labore et doloremagna.
-                </p>
+      <div className="w-full desktop:w-1/2 relative">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="h-full w-full object-cover absolute left-0 right-0 top-0 bottom-0 desktop:hidden"
+        >
+          <source src={bgVideo} type="video/mp4" />
+        </video>
+        <div className="relative z-10 text-white desktop:text-black">
+          <SectionHeader title="Features" />
+          <div className="desktop:pt-24">
+            <div className="px-4 desktop:px-10 flex flex-col gap-10 desktop:gap-16">
+              <div className="bg-white desktop:bg-transparent text-black py-10 px-8 desktop:p-0 flex gap-8">
+                <div className="flex flex-col gap-6 desktop:w-1/2">
+                  <h3 className="text-heading5 desktop:text-heading4 text-center desktop:text-left uppercase font-medium">
+                    An investment experience that transforms society with
+                    emotion.
+                  </h3>
+                  <div>
+                    <img
+                      src={backgroundImage}
+                      alt="background"
+                      className="ml-3 mb-3 float-right desktop:hidden max-w-[150px] desktop:max-w-full"
+                    />
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                      sed do eiusmod tempor incididunt ut labore et
+                      doloremagna.Lorem ipsum dolor sit amet, consectetur
+                      adipisicing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna. Lorem ipsum dolor sit amet,
+                      consectetur adipisicing elit,sed do eiusmod tempor
+                      incididunt ut labore et doloremagna.
+                    </p>
+                  </div>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor incididunt ut labore et
+                    doloremagna.Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna. Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit,sed do eiusmod tempor incididunt ut labore
+                    et doloremagna.
+                  </p>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor incididunt ut labore et
+                    doloremagna.Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna. Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit,sed do eiusmod tempor incididunt ut labore
+                    et doloremagna.
+                  </p>
+                </div>
+                <div className="w-1/2 hidden desktop:block">
+                  <img src={backgroundImage} alt="background" />
+                </div>
               </div>
-              <div className="w-1/2">
-                <img src={backgroundImage} alt="background" />
+              <div className="bg-white desktop:bg-transparent text-black py-10 px-8 desktop:p-0 flex gap-8">
+                <div className="flex flex-col gap-6 desktop:w-1/2">
+                  <h3 className="text-heading5 desktop:text-heading4 text-center desktop:text-left uppercase font-medium">
+                    An investment experience that transforms society with
+                    emotion.
+                  </h3>
+                  <div>
+                    <img
+                      src={backgroundImage}
+                      alt="background"
+                      className="ml-3 mb-3 float-right desktop:hidden max-w-[150px] desktop:max-w-full"
+                    />
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                      sed do eiusmod tempor incididunt ut labore et
+                      doloremagna.Lorem ipsum dolor sit amet, consectetur
+                      adipisicing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna. Lorem ipsum dolor sit amet,
+                      consectetur adipisicing elit,sed do eiusmod tempor
+                      incididunt ut labore et doloremagna.
+                    </p>
+                  </div>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor incididunt ut labore et
+                    doloremagna.Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna. Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit,sed do eiusmod tempor incididunt ut labore
+                    et doloremagna.
+                  </p>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor incididunt ut labore et
+                    doloremagna.Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna. Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit,sed do eiusmod tempor incididunt ut labore
+                    et doloremagna.
+                  </p>
+                </div>
+                <div className="w-1/2 hidden desktop:block">
+                  <img src={backgroundImage} alt="background" />
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col gap-6">
-              <h3 className="text-heading4 uppercase font-medium">
-                An investment experience that transforms society with emotion.
-              </h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et doloremagna.Lorem ipsum
-                dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna. Lorem ipsum dolor
-                sit amet, consectetur adipisicing elit,sed do eiusmod tempor
-                incididunt ut labore et doloremagna.
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et doloremagna.Lorem ipsum
-                dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna. Lorem ipsum dolor
-                sit amet, consectetur adipisicing elit,sed do eiusmod tempor
-                incididunt ut labore et doloremagna.
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et doloremagna.Lorem ipsum
-                dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna. Lorem ipsum dolor
-                sit amet, consectetur adipisicing elit,sed do eiusmod tempor
-                incididunt ut labore et doloremagna.
-              </p>
-            </div>
-            <div className="flex gap-8">
-              <div className="flex flex-col gap-6 w-1/2">
-                <h3 className="text-heading4 uppercase font-medium">
-                  An investment experience that transforms society with emotion.
-                </h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et doloremagna.Lorem
-                  ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna. Lorem
-                  ipsum dolor sit amet, consectetur adipisicing elit,sed do
-                  eiusmod tempor incididunt ut labore et doloremagna.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et doloremagna.Lorem
-                  ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna. Lorem
-                  ipsum dolor sit amet, consectetur adipisicing elit,sed do
-                  eiusmod tempor incididunt ut labore et doloremagna.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et doloremagna.Lorem
-                  ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna. Lorem
-                  ipsum dolor sit amet, consectetur adipisicing elit,sed do
-                  eiusmod tempor incididunt ut labore et doloremagna.
-                </p>
-              </div>
-              <div className="w-1/2">
-                <img src={backgroundImage} alt="background" />
+              <div className="bg-white desktop:bg-transparent text-black py-10 px-8 desktop:p-0 flex gap-8">
+                <div className="flex flex-col gap-6 desktop:w-1/2">
+                  <h3 className="text-heading5 desktop:text-heading4 text-center desktop:text-left uppercase font-medium">
+                    An investment experience that transforms society with
+                    emotion.
+                  </h3>
+                  <div>
+                    <img
+                      src={backgroundImage}
+                      alt="background"
+                      className="ml-3 mb-3 float-right desktop:hidden max-w-[150px] desktop:max-w-full"
+                    />
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                      sed do eiusmod tempor incididunt ut labore et
+                      doloremagna.Lorem ipsum dolor sit amet, consectetur
+                      adipisicing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna. Lorem ipsum dolor sit amet,
+                      consectetur adipisicing elit,sed do eiusmod tempor
+                      incididunt ut labore et doloremagna.
+                    </p>
+                  </div>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor incididunt ut labore et
+                    doloremagna.Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna. Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit,sed do eiusmod tempor incididunt ut labore
+                    et doloremagna.
+                  </p>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor incididunt ut labore et
+                    doloremagna.Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna. Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit,sed do eiusmod tempor incididunt ut labore
+                    et doloremagna.
+                  </p>
+                </div>
+                <div className="w-1/2 hidden desktop:block">
+                  <img src={backgroundImage} alt="background" />
+                </div>
               </div>
             </div>
           </div>

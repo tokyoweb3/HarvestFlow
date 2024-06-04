@@ -46,17 +46,17 @@ const FAQItem: React.FC<{
 
   return (
     <div className="flex divide-x divide-black border-t border-black">
-      <div className="p-10">
-        <p className="text-heading5">Q{index}</p>
+      <div className="px-3 py-6 desktop:p-10">
+        <p className="text-body desktop:text-heading5">Q{index}</p>
       </div>
-      <div className="px-10 py-6 flex flex-col gap-4 flex-1">
+      <div className="px-4 desktop:px-10 py-4 desktop:py-6 flex flex-col gap-4 flex-1">
         <div className="flex justify-between flex-1 items-start gap-10">
-          <h3 className="text-heading5">{question}</h3>
+          <h3 className="text-body desktop:text-heading5">{question}</h3>
           <button onClick={() => setIsOpen(!isOpen)} className="pt-[6px]">
             {isOpen ? <MinusIcon /> : <PlusIcon />}
           </button>
         </div>
-        {isOpen && <p>{answer}</p>}
+        {isOpen && <p className="text-caption desktop:text-body">{answer}</p>}
       </div>
     </div>
   );
@@ -64,16 +64,16 @@ const FAQItem: React.FC<{
 
 const FAQSection: React.FC = () => {
   return (
-    <div className="flex divide-x divide-black border-b border-black">
-      <div className="w-1/2">
+    <div className="flex flex-col desktop:flex-row desktop:divide-x desktop:divide-black desktop:border-b desktop:border-black relative z-10">
+      <div className="w-full desktop:w-1/2">
         <SectionHeader title="FAQ" />
-        <div className="pt-24">
+        <div className="desktop:pt-24">
           <div className="px-10 pb-10">
-            <h3 className="text-heading4 uppercase font-medium">
+            <h3 className="text-heading5 desktop:text-heading4 text-center desktop:text-left uppercase font-medium">
               An investment experience that transforms society with emotion.
             </h3>
           </div>
-          <div>
+          <div className="border-b border-black desktop:border-0">
             {faqData.map((faqItem, index) => (
               <FAQItem
                 key={index}
@@ -85,9 +85,7 @@ const FAQSection: React.FC = () => {
           </div>
         </div>
       </div>
-      <div
-        className="w-1/2 bg-cover bg-no-repeat bg-center relative"
-      >
+      <div className="hidden desktop:block w-1/2 bg-cover bg-no-repeat bg-center relative">
         <video
           src={bgVideo}
           className="w-full h-full object-cover"

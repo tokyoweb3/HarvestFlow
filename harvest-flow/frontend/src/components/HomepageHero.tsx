@@ -3,16 +3,26 @@ import React from "react";
 import HomepageHeroStatistics from "./HomepageHeroStatistics";
 
 import bgVideo from "../../assets/videos/pc_color_high.mp4";
+import bgVideoMobile from "../../assets/videos/sp_color_high.mp4";
 
 const HomepageHero: React.FC = () => {
   return (
-    <div className="h-[calc(100svh-63px)] bg-center bg-cover bg-no-repeat relative text-white border-b border-black">
+    <div className="h-[calc(100svh-63px)] bg-center bg-cover bg-no-repeat relative text-white border-b border-black z-10">
       <video
         src={bgVideo}
-        className="w-full h-full object-cover relative z-0"
+        className="w-full h-full object-cover relative z-0 hidden desktop:block"
         autoPlay
         loop
         muted
+        playsInline
+      />
+      <video
+        src={bgVideoMobile}
+        className="w-full h-full object-cover relative z-0 block desktop:hidden"
+        autoPlay
+        loop
+        muted
+        playsInline
       />
       <div className="w-full h-full absolute left-0 top-0 z-10">
         <div className="container mx-auto min-h-full flex flex-col justify-end pb-14 gap-32">
