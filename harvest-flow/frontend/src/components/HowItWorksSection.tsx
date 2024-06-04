@@ -1,6 +1,6 @@
 import React from "react";
 
-import backgroundImage from "../../assets/images/hero-bg.svg";
+import backgroundImage from "../../assets/images/tuktuk.jpg";
 
 const HowItWorksSection: React.FC = () => {
   return (

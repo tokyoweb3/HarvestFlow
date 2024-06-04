@@ -1,9 +1,10 @@
 import React from "react";
 
-import backgroundImage from "../../assets/images/hero-bg.svg";
 import SectionHeader from "./SectionHeader";
 import MinusIcon from "@src/icons/MinusIcon";
 import PlusIcon from "@src/icons/PlusIcon";
+
+import bgVideo from "../../assets/videos/pc_color_high.mp4";
 
 const faqData = [
   {
@@ -86,9 +87,15 @@ const FAQSection: React.FC = () => {
       </div>
       <div
         className="w-1/2 bg-cover bg-no-repeat bg-center relative"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
       >
-        <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full flex items-center justify-center">
+        <video
+          src={bgVideo}
+          className="w-full h-full object-cover"
+          autoPlay
+          loop
+          muted
+        />
+        <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full flex items-center justify-center z-10">
           <h2 className="text-white text-heading2 font-medium uppercase tracking-widest text-center">
             FAQ
           </h2>

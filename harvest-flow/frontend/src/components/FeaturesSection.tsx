@@ -1,15 +1,21 @@
 import React from "react";
 
-import backgroundImage from "../../assets/images/hero-bg.svg";
 import SectionHeader from "./SectionHeader";
+
+import backgroundImage from "../../assets/images/hero-bg.svg";
+import bgVideo from "../../assets/videos/pc_color_high.mp4";
 
 const FeaturesSection: React.FC = () => {
   return (
     <div className="flex divide-x divide-black border-b border-black">
-      <div
-        className="w-1/2 bg-cover bg-no-repeat bg-center relative"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
-      >
+      <div className="w-1/2 bg-cover bg-no-repeat bg-center relative">
+        <video
+          src={bgVideo}
+          className="w-full h-full object-cover"
+          autoPlay
+          loop
+          muted
+        />
         <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full flex items-center justify-center">
           <h2 className="text-white text-heading2 font-medium uppercase tracking-widest text-center">
             Features

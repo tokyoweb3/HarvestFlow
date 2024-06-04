@@ -1,7 +1,8 @@
 import React from "react";
 
-import backgroundImage from "../../assets/images/hero-bg.svg";
 import SectionHeader from "./SectionHeader";
+
+import backgroundImage from "../../assets/images/tuktuk.jpg";
 
 const OurProjectsSection: React.FC = () => {
   return (
