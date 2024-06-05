@@ -10,12 +10,14 @@ import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
+import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable, PausableUpgradeable {
     using Address for address payable;
     using Arrays for address[];
     using Arrays for uint256[];
     using ECDSA for bytes32;
+    using SafeERC20 for ERC20;
 
     struct BonusTokenSettings {
         uint256 amount;
@@ -162,11 +164,11 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         }
         uint256 cappedMintAmount = _mintCheck(mintAmount);
 
-        uint256 cost = cappedMintAmount * publicPrice;
-        payableToken.transferFrom(msg.sender, address(this), cost);
-
         uint256 tokenId = _nextTokenId();
         _mint(msg.sender, cappedMintAmount);
+
+        uint256 cost = cappedMintAmount * publicPrice;
+        payableToken.safeTransferFrom(msg.sender, address(this), cost);
 
         emit Minted(msg.sender, tokenId, cappedMintAmount, cost);
         return tokenId;
@@ -196,8 +198,6 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
             revert CapReached(maxMintAmount);
         }
 
-        uint256 cost = cappedMintAmount * presalePrice;
-        payableToken.transferFrom(msg.sender, address(this), cost);
         whitelistUserMintedCount[msg.sender] += cappedMintAmount;
 
         _verifyAddressSigner(signature, maxMintAmount);
@@ -205,6 +205,8 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         uint256 tokenId = _nextTokenId();
         _mint(msg.sender, cappedMintAmount);
 
+        uint256 cost = cappedMintAmount * presalePrice;
+        payableToken.safeTransferFrom(msg.sender, address(this), cost);
         emit Minted(msg.sender, tokenId, cappedMintAmount, cost);
         return tokenId;
     }
@@ -268,7 +270,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         totalClaimed += claimableInterest;
 
         address owner = ownerOf(tokenId);
-        payableToken.transfer(owner, claimableInterest);
+        payableToken.safeTransfer(owner, claimableInterest);
         emit Claimed(owner, tokenId, claimableInterest);
     }
 
@@ -286,7 +288,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
             address owner = ownerOf(tokenId);
             if (owner != lastOwner) {
                 totalClaimed += claimableInterestCurrentOwner;
-                payableToken.transfer(lastOwner, claimableInterestCurrentOwner);
+                payableToken.safeTransfer(lastOwner, claimableInterestCurrentOwner);
                 claimableInterestCurrentOwner = 0;
             }
             lastOwner = owner;
@@ -300,7 +302,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
             }
         }
         totalClaimed += claimableInterestCurrentOwner;
-        payableToken.transfer(lastOwner, claimableInterestCurrentOwner);
+        payableToken.safeTransfer(lastOwner, claimableInterestCurrentOwner);
     }
 
     /// @notice Claim interest accrued on a specific `tokenId` and redeem the principal.
@@ -317,7 +319,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
 
         address owner = ownerOf(tokenId);
         redeemed[tokenId] = true;
-        payableToken.transfer(owner, publicPrice);
+        payableToken.safeTransfer(owner, publicPrice);
 
         emit Redeemed(owner, tokenId, publicPrice);
     }
@@ -340,7 +342,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
             }
             address owner = ownerOf(tokenId);
             if (owner != lastOwner) {
-                payableToken.transfer(lastOwner, claimablePrincipalCurrentOwner);
+                payableToken.safeTransfer(lastOwner, claimablePrincipalCurrentOwner);
                 claimablePrincipalCurrentOwner = 0;
             }
             lastOwner = owner;
@@ -352,7 +354,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
                 ++i;
             }
         }
-        payableToken.transfer(lastOwner, claimablePrincipalCurrentOwner);
+        payableToken.safeTransfer(lastOwner, claimablePrincipalCurrentOwner);
     }
 
     /// @notice Withdraw specified `amount` of `token` from the contract. Can be executed only by the owner.
@@ -363,7 +365,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         if (token == address(0)) {
             payable(receiver).sendValue(amount);
         } else {
-            ERC20(token).transfer(receiver, amount);
+            ERC20(token).safeTransfer(receiver, amount);
         }
 
         emit Withdrawn(receiver, token, amount);
@@ -382,7 +384,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
             revert InvalidInput(l, r);
         }
 
-        ERC20(token).transferFrom(msg.sender, address(this), amount);
+        ERC20(token).safeTransferFrom(msg.sender, address(this), amount);
 
         bonusToken[token] = BonusTokenSettings(amount, l, r);
         bonusTokenList.push(token);
@@ -410,7 +412,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
             }
         }
 
-        ERC20(token).transfer(receiver, ERC20(token).balanceOf(address(this)));
+        ERC20(token).safeTransfer(receiver, ERC20(token).balanceOf(address(this)));
 
         emit BonusTokenRemoved(token);
     }
@@ -435,7 +437,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
             ((((settings.amount * proportionOfIntervalScaled) / 1e18) / totalSupply()) - claimedToken[key]);
 
         claimedToken[key] += sendAmount;
-        ERC20(token).transfer(ownerOf(tokenId), sendAmount);
+        ERC20(token).safeTransfer(ownerOf(tokenId), sendAmount);
 
         emit BonusTokenClaimed(token, tokenId, sendAmount);
     }
