@@ -768,6 +768,51 @@ contract TokTokNftTest is Test, ERC1155Holder {
         assertEq(bonusToken.balanceOf(receiver), bonusTokenBalanceReceiverBefore + amount);
     }
 
+    function test_removeBonusToken_deletesClaimedToken() public {
+        address receiver = toktok.owner();
+        vm.startPrank(receiver);
+        uint256 amount = 100 ether;
+        MockERC20 bonusToken = new MockERC20("MockERC20", "MOCK", amount);
+        bonusToken.approve(address(toktok), type(uint256).max);
+        uint256 l = block.timestamp + 100;
+        uint256 r = block.timestamp + 200;
+        toktok.addBonusToken(address(bonusToken), amount, l, r);
+
+        uint256 tokenId = toktok.nextTokenId();
+        toktok.publicMint(1);
+        toktok.activate();
+
+        // warp to end of the bonus period
+        vm.warp(r);
+        uint256 bonusTokenBalanceContractBefore = bonusToken.balanceOf(address(toktok));
+        uint256 bonusTokenBalanceReceiverBefore = bonusToken.balanceOf(receiver);
+        // whole yield
+        uint256 expectedClaimAmount = amount;
+
+        toktok.claimToken(address(bonusToken), tokenId);
+
+        assertEq(bonusToken.balanceOf(address(toktok)), bonusTokenBalanceContractBefore - expectedClaimAmount);
+        assertEq(bonusToken.balanceOf(receiver), bonusTokenBalanceReceiverBefore + expectedClaimAmount);
+
+        toktok.removeBonusToken(address(bonusToken), receiver);
+
+        // repeat to check if claimedToken was deleted
+
+        l = block.timestamp + 100;
+        r = block.timestamp + 200;
+        toktok.addBonusToken(address(bonusToken), amount, l, r);
+
+        // warp to end of the bonus period
+        vm.warp(r);
+        bonusTokenBalanceContractBefore = bonusToken.balanceOf(address(toktok));
+        bonusTokenBalanceReceiverBefore = bonusToken.balanceOf(receiver);
+
+        toktok.claimToken(address(bonusToken), tokenId);
+
+        assertEq(bonusToken.balanceOf(address(toktok)), bonusTokenBalanceContractBefore - expectedClaimAmount);
+        assertEq(bonusToken.balanceOf(receiver), bonusTokenBalanceReceiverBefore + expectedClaimAmount);
+    }
+
     function test_removeBonusToken_reverts_ifBonusTokenNotSet() public {
         address receiver = toktok.owner();
         vm.startPrank(receiver);

@@ -71,8 +71,10 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
     mapping(address token => BonusTokenSettings) public bonusToken;
     /// @notice List of bonus tokens
     address[] public bonusTokenList;
-    /// @notice Amount of claimed `token` by `tokenId`
-    mapping(address token => mapping(uint256 tokenId => uint256 amount)) public claimedToken;
+    /// @notice Amount of claimed `token` by `key`, which is `keccak256(abi.encodePacked(token, tokenId, currentClaimedTokenMappingVersion[token]))`
+    mapping(bytes32 key => uint256 amount) public claimedToken;
+    /// @notice Version of the `claimedToken` mapping for specific token, to be able to delete the `claimedToken` mapping
+    mapping(address token => uint256 version) public currentClaimedTokenMappingVersion;
     /// @notice Returns if the presale phase is running
     bool public isPresale;
     /// @notice Returns if the public sale phase is running
@@ -397,6 +399,9 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         }
         delete bonusToken[token];
 
+        // This effectively deletes the claimed token mapping for the token
+        ++currentClaimedTokenMappingVersion[token];
+
         for (uint256 i = 0; i < bonusTokenList.length; i++) {
             if (bonusTokenList[i] == token) {
                 bonusTokenList[i] = bonusTokenList[bonusTokenList.length - 1];
@@ -424,11 +429,12 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
         uint256 proportionOfIntervalScaled =
             ((Math.min(settings.r, block.timestamp) - settings.l) * 1e18) / (settings.r - settings.l);
 
+        bytes32 key = keccak256(abi.encodePacked(token, tokenId, currentClaimedTokenMappingVersion[token]));
         // Amount of token to be sent
         uint256 sendAmount =
-            ((((settings.amount * proportionOfIntervalScaled) / 1e18) / totalSupply()) - claimedToken[token][tokenId]);
+            ((((settings.amount * proportionOfIntervalScaled) / 1e18) / totalSupply()) - claimedToken[key]);
 
-        claimedToken[token][tokenId] += sendAmount;
+        claimedToken[key] += sendAmount;
         ERC20(token).transfer(ownerOf(tokenId), sendAmount);
 
         emit BonusTokenClaimed(token, tokenId, sendAmount);
