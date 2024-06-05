@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
+import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 import {Arrays} from "@openzeppelin/contracts/utils/Arrays.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {ERC2981Upgradeable} from "@openzeppelin/contracts-upgradeable/token/common/ERC2981Upgradeable.sol";
@@ -11,6 +12,7 @@ import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Own
 import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 
 contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable, PausableUpgradeable {
+    using Address for address payable;
     using Arrays for address[];
     using Arrays for uint256[];
     using ECDSA for bytes32;
@@ -357,7 +359,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
     /// @param receiver Recipient of the withdrawn tokens
     function withdraw(address token, uint256 amount, address receiver) public onlyOwner whenNotPaused {
         if (token == address(0)) {
-            payable(receiver).transfer(amount);
+            payable(receiver).sendValue(amount);
         } else {
             ERC20(token).transfer(receiver, amount);
         }
