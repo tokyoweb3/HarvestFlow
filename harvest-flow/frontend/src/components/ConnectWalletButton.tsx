@@ -22,7 +22,7 @@ const ConnectWalletButton: React.FC = () => {
 
   return (
     <div>
-      {mainController.isWalletConnected() ? (
+      {mainController.isWalletConnected() && userAddress ? (
         <div
           onClick={() => {
             navigate(Page.Account);
