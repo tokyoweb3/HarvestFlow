@@ -140,7 +140,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     /// @param params.baseURI Base URI for the token
     /// @param params.owner Owner of the contract
     /// @param params.signerAddress Address of the signer for presale signatures
-    function initialize(InitializationParams memory params) public initializerERC721A initializer {
+    function initialize(InitializationParams memory params) external initializerERC721A initializer {
         __ERC721A_init(params.name, params.symbol);
         __Ownable_init(params.owner);
         __Pausable_init();
@@ -161,7 +161,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     /// @notice Mint `mintAmount` of tokens during active public sale phase by paying `mintAmount * publicPrice` of `payableToken`.
     /// @param mintAmount Amount of tokens to mint
     /// @return tokenId Starting token ID of the consecutive list of minted tokens
-    function publicMint(uint256 mintAmount) public whenNotPaused returns (uint256) {
+    function publicMint(uint256 mintAmount) external whenNotPaused returns (uint256) {
         if (block.timestamp > lendingAt) {
             revert LendingAtPassed(lendingAt, block.timestamp);
         }
@@ -187,7 +187,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     /// @param signature Cryptographic signature to verify the caller's eligibility
     /// @return tokenId Starting token ID of the consecutive list of minted tokens
     function preMint(uint256 mintAmount, uint256 maxMintAmount, bytes memory signature)
-        public
+        external
         whenNotPaused
         returns (uint256)
     {
@@ -218,27 +218,27 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     }
 
     /// @notice Returns the next token ID to be minted.
-    function nextTokenId() public view returns (uint256) {
+    function nextTokenId() external view returns (uint256) {
         return _nextTokenId();
     }
 
     /// @notice Toggle the state of the sale. Can be executed only by the owner.
     /// @param value Enable or disable presale phase
-    function setPresale(bool value) public onlyOwner whenNotPaused {
+    function setPresale(bool value) external onlyOwner whenNotPaused {
         isPresale = value;
         emit PresaleChanged(value);
     }
 
     /// @notice Toggle the state of the sale. Can be executed only by the owner.
     /// @param value Enable or disable public sale phase
-    function setPublicsale(bool value) public onlyOwner whenNotPaused {
+    function setPublicsale(bool value) external onlyOwner whenNotPaused {
         isPublicsale = value;
         emit PublicsaleChanged(value);
     }
 
     /// @notice Set the presale price of token. Can be executed only by the owner and only if presale is not happening yet.
     /// @param value Price of token in the presale phase
-    function setPresalePrice(uint256 value) public onlyOwner whenNotPaused {
+    function setPresalePrice(uint256 value) external onlyOwner whenNotPaused {
         if (isPresale) {
             revert SaleOngoing();
         }
@@ -249,7 +249,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
 
     /// @notice Set the public sale price of token. Can be executed only by the owner and only if public sale is not happening yet.
     /// @param value Price of token in the public sale phase
-    function setPublicPrice(uint256 value) public onlyOwner whenNotPaused {
+    function setPublicPrice(uint256 value) external onlyOwner whenNotPaused {
         if (isPublicsale) {
             revert SaleOngoing();
         }
@@ -259,13 +259,13 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     }
 
     /// @notice Enables users to claim and redeem. Can be executed only by the owner.
-    function activate() public onlyOwner whenNotPaused {
+    function activate() external onlyOwner whenNotPaused {
         _isActive = true;
         emit Activated();
     }
 
     /// @notice Update the base URI of the token. Can be executed only by the owner.
-    function setBaseURI(string memory newBaseURI) public onlyOwner whenNotPaused {
+    function setBaseURI(string memory newBaseURI) external onlyOwner whenNotPaused {
         baseURI = newBaseURI;
         emit BaseUriChanged(newBaseURI);
     }
@@ -320,7 +320,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     /// @notice Claim interest accrued on a specific `tokenId` and redeem the principal.
     /// @param tokenId Token ID to claim interest and redeem principal for
     /// @dev Only callable when the contract is active (checked in `claim` function call)
-    function redeem(uint256 tokenId) public whenNotPaused {
+    function redeem(uint256 tokenId) external whenNotPaused {
         if (redeemed[tokenId]) {
             revert AlreadyRedeemed(tokenId);
         }
@@ -339,7 +339,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     /// @notice Claim interest accrued on an array of specific `tokenIds` and redeem the principals.
     /// @param tokenIds Array of token IDs to claim interest and redeem principal for
     /// @dev Only callable when the contract is active (checked in `claim` function call)
-    function redeemAll(uint256[] memory tokenIds) public whenNotPaused {
+    function redeemAll(uint256[] memory tokenIds) external whenNotPaused {
         if (block.timestamp < maturity) {
             revert NotMaturedYet(maturity, block.timestamp);
         }
@@ -373,7 +373,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     /// @param token Address of the token to withdraw
     /// @param amount Amount of the token to withdraw
     /// @param receiver Recipient of the withdrawn tokens
-    function withdraw(address token, uint256 amount, address receiver) public onlyOwner whenNotPaused {
+    function withdraw(address token, uint256 amount, address receiver) external onlyOwner whenNotPaused {
         if (receiver == address(0) || amount == 0) {
             revert InvalidZeroValue();
         }
@@ -391,7 +391,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     /// @param amount Amount of the token to add
     /// @param l Start time of the yielding period
     /// @param r End time of the yielding period
-    function addBonusToken(address token, uint256 amount, uint256 l, uint256 r) public onlyOwner whenNotPaused {
+    function addBonusToken(address token, uint256 amount, uint256 l, uint256 r) external onlyOwner whenNotPaused {
         if (token == address(0) || amount == 0) {
             revert InvalidZeroValue();
         }
@@ -413,7 +413,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     /// @notice Remove bonus `token` from the contract, transferring the remaining balance to `receiver`. Can be executed only by the owner.
     /// @param token Address of the token to remove
     /// @param receiver Recipient of the remaining balance
-    function removeBonusToken(address token, address receiver) public onlyOwner whenNotPaused {
+    function removeBonusToken(address token, address receiver) external onlyOwner whenNotPaused {
         if (token == address(0) || receiver == address(0)) {
             revert InvalidZeroValue();
         }
@@ -441,7 +441,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     /// @notice Claim bonus `token` for `tokenId`.
     /// @param token Address of the bonus token to claim
     /// @param tokenId Token ID to claim bonus for
-    function claimToken(address token, uint256 tokenId) public whenNotPaused {
+    function claimToken(address token, uint256 tokenId) external whenNotPaused {
         if (token == address(0)) {
             revert InvalidZeroValue();
         }
@@ -467,19 +467,19 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     }
 
     /// @notice To temporarily suspend the operation of the smart contract. Callable only by the owner.
-    function pause() public onlyOwner {
+    function pause() external onlyOwner {
         _pause();
     }
 
     /// @notice Resume the operation of the smart contract. Callable only by the owner.
-    function unpause() public onlyOwner {
+    function unpause() external onlyOwner {
         _unpause();
     }
 
     /// @notice Set the address of the royalty recipient.
     /// @param _royaltyAddress Address of the royalty recipient
     /// @param _royaltyFee Fee to be paid to the royalty recipient expressed in basis points
-    function setRoyaltyAddress(address _royaltyAddress, uint96 _royaltyFee) public onlyOwner whenNotPaused {
+    function setRoyaltyAddress(address _royaltyAddress, uint96 _royaltyFee) external onlyOwner whenNotPaused {
         _setDefaultRoyalty(_royaltyAddress, _royaltyFee);
         emit RoyaltyInfoChanged(_royaltyAddress, _royaltyFee);
     }
@@ -490,7 +490,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     /// @return totalNotYetClaimed Total amount of tokens not yet claimed
     /// @return needPayableTokenAmount Total amount of tokens the contract needs to have for claims
     function calcRemainBalance(uint256 until)
-        public
+        external
         view
         returns (uint256 totalClaimable, uint256 totalNotYetClaimed, uint256 needPayableTokenAmount)
     {
