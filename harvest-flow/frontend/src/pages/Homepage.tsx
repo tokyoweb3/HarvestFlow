@@ -9,6 +9,7 @@ import FAQSection from "@src/components/FAQSection";
 import HowItWorksSection from "@src/components/HowItWorksSection";
 import PartnerSection from "@src/components/PartnerSection";
 import Layout from "@src/layouts/Layout";
+import MobileVideoBackground from "@src/components/MobileVideoBackground";
 
 const Homepage: React.FC = () => {
   const mainController: MainController = useContext(AppContext);
@@ -17,10 +18,10 @@ const Homepage: React.FC = () => {
     if (!mainController.isWalletConnected()) {
       mainController.enforceWalletConnected();
     }
-  }, []);
+  }, [mainController]);
 
   return (
-    <Layout>
+    <Layout overlayingFooter>
       <HomepageHero />
       <OurProjectsSection />
       <AboutHarvestFlowSection />
@@ -28,6 +29,7 @@ const Homepage: React.FC = () => {
       <FAQSection />
       <HowItWorksSection />
       <PartnerSection />
+      <MobileVideoBackground />
     </Layout>
   );
 };

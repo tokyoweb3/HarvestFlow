@@ -2,6 +2,9 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
+    screens: {
+      desktop: "1200px",
+    },
     fontWeight: {
       normal: "400",
       medium: "500",

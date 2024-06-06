@@ -1,7 +1,13 @@
 import React from "react";
-import Logo from "../../assets/images/logo.svg";
 
 import ConnectWalletButton from "@src/components/ConnectWalletButton";
+import MobileVideoBackground from "./MobileVideoBackground";
+
+import Logo from "../../assets/images/logo.svg";
+import MobileMenuLogo from "../../assets/images/mobile-menu-logo.svg";
+import CloseIcon from "@src/icons/CloseIcon";
+import { ApasPortLogo } from "./Footer";
+import clsx from "clsx";
 
 const DiscordIcon: React.FC = () => (
   <svg
@@ -34,33 +40,86 @@ const XIcon: React.FC = () => (
 );
 
 const Header: React.FC = () => {
+  const [menuOpen, setMenuOpen] = React.useState(false);
+
   return (
-    <header className="flex border-b border-t border-black">
-      <div className="flex-1 shrink-0 py-4 px-10">
-        <img
-          src={Logo}
-          alt="Harvestflow logo"
-          className="max-w-[187px] w-full"
-        />
-      </div>
-      <div className="flex border-l border-r border-black divide-x divide-black">
-        <div className="flex items-center justify-center p-4">
-          <DiscordIcon />
+    <>
+      <header className="flex border-b border-t border-black bg-white relative z-10">
+        <div className="flex-1 shrink-0 px-4 py-3 desktop:py-4 desktop:px-10">
+          <img
+            src={Logo}
+            alt="Harvestflow logo"
+            className="max-w-[140px] desktop:max-w-[187px] w-full"
+          />
         </div>
-        <div className="flex items-center justify-center p-4">
-          <XIcon />
+        <div className="hidden desktop:flex border-l border-r border-black divide-x divide-black">
+          <div className="flex items-center justify-center p-4">
+            <DiscordIcon />
+          </div>
+          <div className="flex items-center justify-center p-4">
+            <XIcon />
+          </div>
+        </div>
+        <div className="hidden desktop:flex items-center justify-center border-r border-black">
+          <ConnectWalletButton />
+        </div>
+        {/* TODO: Replace with a language switcher probably */}
+        <div className="hidden desktop:flex items-center justify-center p-4">
+          <p className="text-header font-medium text-black uppercase ">
+            Japanese
+          </p>
+        </div>
+        <button
+          className="flex flex-col justify-center gap-1 border-l border-black p-4 desktop:hidden"
+          onClick={() => setMenuOpen(true)}
+        >
+          <div className="w-4 border-t border-black" />
+          <div className="w-4 border-t border-black" />
+          <div className="w-2 border-t border-black" />
+        </button>
+      </header>
+      <div
+        className={clsx(
+          "fixed left-0 right-0 top-0 bottom-0 w-screen h-screen flex flex-col",
+          menuOpen ? "block z-20" : "hidden",
+        )}
+      >
+        <MobileVideoBackground />
+        <div className="flex flex-col items-center justify-center gap-16 relative z-30 px-14 py-20 w-full h-full">
+          <button
+            onClick={() => setMenuOpen(false)}
+            className="absolute top-4 right-4"
+          >
+            <CloseIcon />
+          </button>
+          <img src={MobileMenuLogo} alt="Harvestflow logo" className="" />
+          <div className="flex flex-col items-center gap-10">
+            {/* TODO: Replace with a language switcher probably */}
+            <p className="text-heading5 font-medium text-black uppercase ">
+              Japanese
+            </p>
+            {/* TODO: Replace with connect wallet button */}
+            <p className="text-heading5 font-medium text-black uppercase ">
+              Connect wallet
+            </p>
+            <div className="flex gap-2">
+              <div className="flex items-center justify-center p-4">
+                <XIcon />
+              </div>
+              <div className="flex items-center justify-center p-4">
+                <DiscordIcon />
+              </div>
+            </div>
+          </div>
+          <div className="flex items-end justify-center gap-2 w-full">
+            <p className="text-heading5 relative -top-2">Produced by</p>
+            <div className="max-w-[110px] w-full pb-[10px]">
+              <ApasPortLogo />
+            </div>
+          </div>
         </div>
       </div>
-      <div className="flex items-center justify-center border-r border-black">
-        <ConnectWalletButton />
-      </div>
-      {/* TODO: Replace with a language switcher probably */}
-      <div className="flex items-center justify-center p-4">
-        <p className="text-header font-medium text-black uppercase ">
-          Japanese
-        </p>
-      </div>
-    </header>
+    </>
   );
 };
 

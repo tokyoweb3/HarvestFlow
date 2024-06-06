@@ -1,7 +1,10 @@
 import React from "react";
 
-import backgroundImage from "../../assets/images/hero-bg.svg";
 import SectionHeader from "./SectionHeader";
+import MinusIcon from "@src/icons/MinusIcon";
+import PlusIcon from "@src/icons/PlusIcon";
+
+import bgVideo from "../../assets/videos/pc_color_high.mp4";
 
 const faqData = [
   {
@@ -37,15 +40,23 @@ const FAQItem: React.FC<{
   question: string;
   answer: string;
   index: number;
-}> = ({ question, answer, index }) => {
+  openByDefault?: boolean;
+}> = ({ question, answer, index, openByDefault }) => {
+  const [isOpen, setIsOpen] = React.useState(openByDefault);
+
   return (
     <div className="flex divide-x divide-black border-t border-black">
-      <div className="p-10">
-        <p className="text-heading5">Q{index}</p>
+      <div className="px-3 py-6 desktop:p-10">
+        <p className="text-body desktop:text-heading5">Q{index}</p>
       </div>
-      <div className="px-10 py-6 flex flex-col gap-4">
-        <h3 className="text-heading5">{question}</h3>
-        <p>{answer}</p>
+      <div className="px-4 desktop:px-10 py-4 desktop:py-6 flex flex-col gap-4 flex-1">
+        <div className="flex justify-between flex-1 items-start gap-10">
+          <h3 className="text-body desktop:text-heading5">{question}</h3>
+          <button onClick={() => setIsOpen(!isOpen)} className="pt-[6px]">
+            {isOpen ? <MinusIcon /> : <PlusIcon />}
+          </button>
+        </div>
+        {isOpen && <p className="text-caption desktop:text-body">{answer}</p>}
       </div>
     </div>
   );
@@ -53,16 +64,16 @@ const FAQItem: React.FC<{
 
 const FAQSection: React.FC = () => {
   return (
-    <div className="flex divide-x divide-black border-b border-black">
-      <div className="w-1/2">
+    <div className="flex flex-col desktop:flex-row desktop:divide-x desktop:divide-black desktop:border-b desktop:border-black relative z-10">
+      <div className="w-full desktop:w-1/2">
         <SectionHeader title="FAQ" />
-        <div className="pt-24">
+        <div className="desktop:pt-24">
           <div className="px-10 pb-10">
-            <h3 className="text-heading4 uppercase font-medium">
+            <h3 className="text-heading5 desktop:text-heading4 text-center desktop:text-left uppercase font-medium">
               An investment experience that transforms society with emotion.
             </h3>
           </div>
-          <div>
+          <div className="border-b border-black desktop:border-0">
             {faqData.map((faqItem, index) => (
               <FAQItem
                 key={index}
@@ -74,11 +85,15 @@ const FAQSection: React.FC = () => {
           </div>
         </div>
       </div>
-      <div
-        className="w-1/2 bg-cover bg-no-repeat bg-center relative"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
-      >
-        <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full flex items-center justify-center">
+      <div className="hidden desktop:block w-1/2 bg-cover bg-no-repeat bg-center relative">
+        <video
+          src={bgVideo}
+          className="w-full h-full object-cover"
+          autoPlay
+          loop
+          muted
+        />
+        <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full flex items-center justify-center z-10">
           <h2 className="text-white text-heading2 font-medium uppercase tracking-widest text-center">
             FAQ
           </h2>

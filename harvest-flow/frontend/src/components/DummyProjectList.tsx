@@ -19,7 +19,7 @@ const DummyProjectList: React.FC = () => {
   return (
     <>
       <h1>Projects</h1>
-      {projects.map((project) => (
+      {/* {projects.map((project) => (
         <div key={project.address}>
           <span
             onClick={() => {
@@ -27,9 +27,9 @@ const DummyProjectList: React.FC = () => {
             }}
           >{project.name}</span>
         </div>
-      ))}
+      ))} */}
     </>
   );
-}
+};
 
 export default DummyProjectList;
