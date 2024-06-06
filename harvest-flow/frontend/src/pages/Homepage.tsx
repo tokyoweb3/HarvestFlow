@@ -10,6 +10,7 @@ import HowItWorksSection from "@src/components/HowItWorksSection";
 import PartnerSection from "@src/components/PartnerSection";
 import Layout from "@src/layouts/Layout";
 import MobileVideoBackground from "@src/components/MobileVideoBackground";
+import DesktopVideoBackground from "@src/components/DesktopVideoBackground";
 
 const Homepage: React.FC = () => {
   const mainController: MainController = useContext(AppContext);
@@ -29,6 +30,7 @@ const Homepage: React.FC = () => {
       <FAQSection />
       <HowItWorksSection />
       <PartnerSection />
+      <DesktopVideoBackground />
       <MobileVideoBackground />
     </Layout>
   );
