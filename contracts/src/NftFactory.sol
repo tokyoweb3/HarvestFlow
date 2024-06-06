@@ -38,7 +38,7 @@ contract NftFactory {
     /// @param params.owner Owner of the contract
     /// @param params.signerAddress Address of the signer for presale signatures
     /// @return Address of the new NFT contract.
-    function deploy(TokTokNft.InitializationParams memory params) public returns (address) {
+    function deploy(TokTokNft.InitializationParams memory params) external returns (address) {
         if (
             params.cap == 0 || params.payableToken == address(0) || params.price == 0 || params.lendingAt == 0
                 || params.yield == 0 || params.lendingPeriod == 0 || params.owner == address(0)
@@ -55,7 +55,7 @@ contract NftFactory {
     /// @notice Claim all NFTs from the given addresses and token IDs. If an NFT is past maturity, redeem it.
     /// @param nfts Array of NFT addresses
     /// @param tokenIds Array of token IDs (one for each NFT address)
-    function claimAll(address[] memory nfts, uint256[] memory tokenIds) public {
+    function claimAll(address[] memory nfts, uint256[] memory tokenIds) external {
         if (nfts.length != tokenIds.length) {
             revert InputLengthMismatch(nfts.length, tokenIds.length);
         }
