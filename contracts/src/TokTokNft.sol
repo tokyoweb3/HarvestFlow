@@ -112,6 +112,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
     error AmountZero();
     error InvalidInput(uint256 a, uint256 b);
     error InvalidSignature();
+    error InvalidZeroValue();
     error LendingAtPassed(uint256 lendingAt, uint256 currentTimestamp);
     error NotActive();
     error NotMaturedYet(uint256 maturity, uint256 currentTimestamp);
@@ -362,6 +363,9 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
     /// @param amount Amount of the token to withdraw
     /// @param receiver Recipient of the withdrawn tokens
     function withdraw(address token, uint256 amount, address receiver) public onlyOwner whenNotPaused {
+        if (receiver == address(0) || amount == 0) {
+            revert InvalidZeroValue();
+        }
         if (token == address(0)) {
             payable(receiver).sendValue(amount);
         } else {
@@ -377,6 +381,9 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
     /// @param l Start time of the yielding period
     /// @param r End time of the yielding period
     function addBonusToken(address token, uint256 amount, uint256 l, uint256 r) public onlyOwner whenNotPaused {
+        if (token == address(0) || amount == 0) {
+            revert InvalidZeroValue();
+        }
         if (bonusToken[token].amount > 0) {
             revert BonusTokenAlreadySet(token);
         }
@@ -396,6 +403,9 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
     /// @param token Address of the token to remove
     /// @param receiver Recipient of the remaining balance
     function removeBonusToken(address token, address receiver) public onlyOwner whenNotPaused {
+        if (token == address(0) || receiver == address(0)) {
+            revert InvalidZeroValue();
+        }
         if (bonusToken[token].amount == 0) {
             revert BonusTokenNotSet(token);
         }
@@ -421,6 +431,9 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
     /// @param token Address of the bonus token to claim
     /// @param tokenId Token ID to claim bonus for
     function claimToken(address token, uint256 tokenId) public whenNotPaused {
+        if (token == address(0)) {
+            revert InvalidZeroValue();
+        }
         if (!_isActive) revert NotActive();
         BonusTokenSettings memory settings = bonusToken[token];
         if (block.timestamp < settings.l) {
