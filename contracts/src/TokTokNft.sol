@@ -295,7 +295,8 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
         uint256 claimableInterestCurrentOwner;
         address lastOwner = ownerOf(tokenIds[0]);
         uint256 accruedInterest = _calculateClaim();
-        for (uint256 i; i < tokenIds.length;) {
+        uint256 tokenIdsLength = tokenIds.length;
+        for (uint256 i; i < tokenIdsLength;) {
             uint256 tokenId = tokenIds.unsafeMemoryAccess(i);
             address owner = ownerOf(tokenId);
             if (owner != lastOwner) {
@@ -347,7 +348,8 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
 
         uint256 claimablePrincipalCurrentOwner;
         address lastOwner = ownerOf(tokenIds[0]);
-        for (uint256 i; i < tokenIds.length;) {
+        uint256 tokenIdsLength = tokenIds.length;
+        for (uint256 i; i < tokenIdsLength;) {
             uint256 tokenId = tokenIds.unsafeMemoryAccess(i);
             if (redeemed[tokenId]) {
                 revert AlreadyRedeemed(tokenId);
@@ -425,9 +427,10 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
         // This effectively deletes the claimed token mapping for the token
         ++currentClaimedTokenMappingVersion[token];
 
-        for (uint256 i = 0; i < bonusTokenList.length; i++) {
+        uint256 bonusTokenListLength = bonusTokenList.length;
+        for (uint256 i = 0; i < bonusTokenListLength; i++) {
             if (bonusTokenList[i] == token) {
-                bonusTokenList[i] = bonusTokenList[bonusTokenList.length - 1];
+                bonusTokenList[i] = bonusTokenList[bonusTokenListLength - 1];
                 bonusTokenList.pop();
                 break;
             }
