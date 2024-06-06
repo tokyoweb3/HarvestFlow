@@ -26,8 +26,8 @@ contract NftFactory {
     }
 
     /// @notice Create and issue a new NFT contract.
-    /// @param params.name Name of the ERC1155
-    /// @param params.symbol Symbol of the ERC1155
+    /// @param params.name Name of the ERC721
+    /// @param params.symbol Symbol of the ERC721
     /// @param params.cap Total cap of tokens to be issued
     /// @param params.payableToken Address of the token used for payments
     /// @param params.price Price of one token (scaled to `payableToken` decimals)
