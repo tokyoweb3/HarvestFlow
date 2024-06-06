@@ -65,25 +65,34 @@ const PartnerSection: React.FC = () => {
       </div>
       <div className="desktop:pt-24 px-4 desktop:px-0">
         <div className="max-w-[1000px] mx-auto relative z-10">
-          <div className="flex flex-col gap-8">
-            <div className="border border-black p-8 flex flex-col desktop:flex-row gap-6 desktop:gap-10 bg-white">
+          <div className="flex flex-col gap-16 relative">
+            <div className="relative">
               <div
-                className="desktop:w-[45%] shrink-0 aspect-square bg-cover bg-no-repeat bg-center"
-                style={{
-                  backgroundImage: `url(${partnerData[currentSlide].imageURL})`,
-                }}
-              ></div>
-              <div className="flex flex-col justify-end gap-6 desktop:gap-20 flex-1 pb-2">
-                <div className="flex flex-col gap-1 desktop:gap-2">
-                  <p className="text-center uppercase text-caption desktop:text-body">
-                    {partnerData[currentSlide].subtitle}
+                className="border border-black p-8 flex flex-col desktop:flex-row gap-6 desktop:gap-10 bg-white relative z-40"
+                key={currentSlide}
+              >
+                <div
+                  className="desktop:w-[45%] shrink-0 aspect-square bg-cover bg-no-repeat bg-center animate-fade"
+                  style={{
+                    backgroundImage: `url(${partnerData[currentSlide].imageURL})`,
+                  }}
+                ></div>
+                <div className="flex flex-col justify-end gap-6 desktop:gap-20 flex-1 pb-2">
+                  <div className="flex flex-col gap-1 desktop:gap-2">
+                    <p className="text-center uppercase text-caption desktop:text-body animate-fade">
+                      {partnerData[currentSlide].subtitle}
+                    </p>
+                    <h3 className="text-bodyLarge desktop:text-heading3 uppercase font-medium text-center animate-fade">
+                      {partnerData[currentSlide].title}
+                    </h3>
+                  </div>
+                  <p className="animate-fade">
+                    {partnerData[currentSlide].text}
                   </p>
-                  <h3 className="text-bodyLarge desktop:text-heading3 uppercase font-medium text-center">
-                    {partnerData[currentSlide].title}
-                  </h3>
                 </div>
-                <p>{partnerData[currentSlide].text}</p>
               </div>
+              <div className="absolute top-2 left-2 w-full h-full bg-[#E7EFF7] border border-black z-30"></div>
+              <div className="absolute top-4 left-4 w-full h-full bg-[#E7EFF7] border border-black z-20"></div>
             </div>
             <div className="flex gap-6 justify-center items-center">
               {partnerData.map((_, index) => (

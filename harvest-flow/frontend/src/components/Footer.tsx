@@ -96,7 +96,7 @@ const Footer: React.FC<FooterProps> = ({ overlayingFooter = false }) => {
       className={clsx(
         "bg-cover bg-no-repeat bg-center text-white",
         overlayingFooter
-          ? "-mt-64 desktop:-mt-64 relative pt-96 desktop:pt-64"
+          ? "-mt-64 desktop:-mt-96 relative pt-96 desktop:pt-96"
           : "pt-32",
       )}
       style={{ backgroundImage: `url(${backgroundImage})` }}
