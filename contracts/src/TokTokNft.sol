@@ -26,9 +26,9 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
     }
 
     struct InitializationParams {
-        /// @param name Name of the ERC1155
+        /// @param name Name of the ERC721
         string name;
-        /// @param symbol Symbol of the ERC1155
+        /// @param symbol Symbol of the ERC721
         string symbol;
         /// @param cap Total cap of tokens to be issued
         uint256 cap;
@@ -124,8 +124,8 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable
     }
 
     /// @notice Initialize the contract
-    /// @param params.name Name of the ERC1155
-    /// @param params.symbol Symbol of the ERC1155
+    /// @param params.name Name of the ERC721
+    /// @param params.symbol Symbol of the ERC721
     /// @param params.cap Total cap of tokens to be issued
     /// @param params.payableToken Address of the token used for payments
     /// @param params.price Price of one token
