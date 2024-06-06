@@ -101,7 +101,12 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     event BonusTokenRemoved(address indexed token);
     event Claimed(address indexed receiver, uint256 indexed tokenId, uint256 amount);
     event Minted(address indexed receiver, uint256 indexed startTokenId, uint256 amount, uint256 cost);
+    event PresaleChanged(bool newValue);
+    event PresalePriceChanged(uint256 oldPrice, uint256 newPrice);
+    event PublicsaleChanged(bool newValue);
+    event PublicsalePriceChanged(uint256 oldPrice, uint256 newPrice);
     event Redeemed(address indexed receiver, uint256 indexed tokenId, uint256 amount);
+    event RoyaltyInfoChanged(address receiver, uint96 fee);
     event Withdrawn(address indexed receiver, address indexed token, uint256 amount);
 
     error AlreadyRedeemed(uint256 tokenId);
@@ -221,12 +226,14 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     /// @param value Enable or disable presale phase
     function setPresale(bool value) public onlyOwner whenNotPaused {
         isPresale = value;
+        emit PresaleChanged(value);
     }
 
     /// @notice Toggle the state of the sale. Can be executed only by the owner.
     /// @param value Enable or disable public sale phase
     function setPublicsale(bool value) public onlyOwner whenNotPaused {
         isPublicsale = value;
+        emit PublicsaleChanged(value);
     }
 
     /// @notice Set the presale price of token. Can be executed only by the owner and only if presale is not happening yet.
@@ -235,7 +242,9 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
         if (isPresale) {
             revert SaleOngoing();
         }
+        uint256 oldPrice = presalePrice;
         presalePrice = value;
+        emit PresalePriceChanged(oldPrice, value);
     }
 
     /// @notice Set the public sale price of token. Can be executed only by the owner and only if public sale is not happening yet.
@@ -244,7 +253,9 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
         if (isPublicsale) {
             revert SaleOngoing();
         }
+        uint256 oldPrice = publicPrice;
         publicPrice = value;
+        emit PublicsalePriceChanged(oldPrice, value);
     }
 
     /// @notice Enables users to claim and redeem. Can be executed only by the owner.
@@ -470,6 +481,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
     /// @param _royaltyFee Fee to be paid to the royalty recipient expressed in basis points
     function setRoyaltyAddress(address _royaltyAddress, uint96 _royaltyFee) public onlyOwner whenNotPaused {
         _setDefaultRoyalty(_royaltyAddress, _royaltyFee);
+        emit RoyaltyInfoChanged(_royaltyAddress, _royaltyFee);
     }
 
     /// @notice Calculate the balance the contract needs to have for claims until timestamp `until`.
