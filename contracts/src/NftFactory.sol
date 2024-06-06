@@ -75,7 +75,7 @@ contract NftFactory {
             if (groupLength > 1) {
                 // If the group has more than one NFT, call claimAll/redeemAll on the group
                 uint256[] memory groupTokenIds = new uint256[](groupLength);
-                for (uint256 j = 0; j < groupLength; j++) {
+                for (uint256 j; j < groupLength; j++) {
                     groupTokenIds[j] = tokenIds[groupStart + j];
                 }
                 TokTokNft nft = TokTokNft(nfts[groupStart]);

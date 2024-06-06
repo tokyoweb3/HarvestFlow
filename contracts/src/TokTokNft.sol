@@ -428,11 +428,14 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
         ++currentClaimedTokenMappingVersion[token];
 
         uint256 bonusTokenListLength = bonusTokenList.length;
-        for (uint256 i = 0; i < bonusTokenListLength; i++) {
+        for (uint256 i; i < bonusTokenListLength;) {
             if (bonusTokenList[i] == token) {
                 bonusTokenList[i] = bonusTokenList[bonusTokenListLength - 1];
                 bonusTokenList.pop();
                 break;
+            }
+            unchecked {
+                ++i;
             }
         }
 
