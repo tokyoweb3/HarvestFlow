@@ -16,8 +16,12 @@ contract NftFactory {
     event NftDeployed(address nft);
 
     error InputLengthMismatch(uint256 nftsLength, uint256 tokenIdsLength);
+    error InvalidZeroValue();
 
     constructor(address _nftImplementation) {
+        if (_nftImplementation == address(0)) {
+            revert InvalidZeroValue();
+        }
         nftImplementation = _nftImplementation;
     }
 
@@ -35,6 +39,13 @@ contract NftFactory {
     /// @param params.signerAddress Address of the signer for presale signatures
     /// @return Address of the new NFT contract.
     function deploy(TokTokNft.InitializationParams memory params) public returns (address) {
+        if (
+            params.cap == 0 || params.payableToken == address(0) || params.price == 0 || params.lendingAt == 0
+                || params.yield == 0 || params.lendingPeriod == 0 || params.owner == address(0)
+                || params.signerAddress == address(0)
+        ) {
+            revert InvalidZeroValue();
+        }
         address nftClone = Clones.clone(nftImplementation);
         TokTokNft(nftClone).initialize(params);
         emit NftDeployed(nftClone);
