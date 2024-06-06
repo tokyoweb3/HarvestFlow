@@ -8,11 +8,11 @@ import {ERC2981Upgradeable} from "@openzeppelin/contracts-upgradeable/token/comm
 import {ERC721AUpgradeable} from "erc721a-upgradeable/contracts/ERC721AUpgradeable.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import {Ownable2StepUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Ownable2StepUpgradeable.sol";
 import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, OwnableUpgradeable, PausableUpgradeable {
+contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgradeable, PausableUpgradeable {
     using Address for address payable;
     using Arrays for address[];
     using Arrays for uint256[];
