@@ -56,15 +56,16 @@ contract NftFactory {
     /// @param nfts Array of NFT addresses
     /// @param tokenIds Array of token IDs (one for each NFT address)
     function claimAll(address[] memory nfts, uint256[] memory tokenIds) external {
-        if (nfts.length != tokenIds.length) {
-            revert InputLengthMismatch(nfts.length, tokenIds.length);
+        uint256 nftsLength = nfts.length;
+        if (nftsLength != tokenIds.length) {
+            revert InputLengthMismatch(nftsLength, tokenIds.length);
         }
 
         uint256 i;
-        while (i < nfts.length) {
+        while (i < nftsLength) {
             // Find the length of the current group of consecutive identical NFTs
             uint256 groupStart = i;
-            while (i < nfts.length - 1 && nfts[i] == nfts[i + 1]) {
+            while (i < nftsLength - 1 && nfts[i] == nfts[i + 1]) {
                 i++;
             }
 
