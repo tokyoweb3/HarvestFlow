@@ -27,7 +27,7 @@ const HomepageHero: React.FC = () => {
       <div className="w-full h-full absolute left-0 top-0 z-10">
         <div className="container mx-auto min-h-full flex flex-col justify-end pb-10 desktop:pb-14 gap-12 desktop:gap-32 px-4 desktop:px-0">
           <div className="flex flex-col items-center justify-center max-w-[520px] mx-auto gap-10">
-            <h1 className="text-heading2 font-medium uppercase tracking-widest text-center">
+            <h1 className="text-heading2 desktop:text-heading1 font-medium uppercase tracking-widest text-center">
               Harvest flow
             </h1>
             <div className="flex flex-col gap-6">
