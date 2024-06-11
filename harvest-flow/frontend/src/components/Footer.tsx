@@ -94,6 +94,7 @@ const Footer: React.FC<FooterProps> = ({ overlayingFooter = false }) => {
   return (
     <footer
       className={clsx(
+        "relative z-[5]",
         "bg-cover bg-no-repeat bg-center text-white",
         overlayingFooter
           ? "-mt-64 desktop:-mt-96 relative pt-96 desktop:pt-96"

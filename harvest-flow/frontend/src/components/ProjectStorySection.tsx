@@ -4,11 +4,13 @@ import tukTukImage from "../../assets/images/tuktuk.jpg";
 
 const ProjectStorySection: React.FC = () => {
   return (
-    <div className="flex flex-col gap-32 pt-44">
-      <h2 className="text-center text-heading2 font-medium uppercase">Story</h2>
-      <div className="max-w-[780px] mx-auto flex flex-col gap-20">
+    <div className="flex flex-col gap-16 desktop:gap-32 pt-20 desktop:pt-44 relative z-10 px-4 desktop:px-0">
+      <h2 className="text-center text-heading4 desktop:text-heading2 font-medium uppercase">
+        Story
+      </h2>
+      <div className="max-w-[780px] mx-auto flex flex-col gap-4 desktop:gap-20">
         <div className="flex flex-col gap-10">
-          <h3 className="text-heading4 font-medium">
+          <h3 className="text-bodyLarge desktop:text-heading4 font-medium text-center desktop:text-left">
             Impression of Cambodia and Current Situation
           </h3>
           <div className="flex flex-col gap-6">

@@ -27,13 +27,15 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({ activePage }) => {
         <div
           key={page.page}
           className={clsx(
-            "w-1/3 border-b-[3px] flex items-center justify-center p-6 hover:cursor-pointer",
+            "w-1/3 border-b-[3px] flex items-center justify-center p-4 desktop:p-6 hover:cursor-pointer",
             page.page === activePage
               ? "border-primary"
               : "border-black hover:border-primary",
           )}
         >
-          <p className="text-heading4 font-medium uppercase">{page.name}</p>
+          <p className="text-body desktop:text-heading4 font-medium uppercase tracking-widest">
+            {page.name}
+          </p>
         </div>
       ))}
     </div>
