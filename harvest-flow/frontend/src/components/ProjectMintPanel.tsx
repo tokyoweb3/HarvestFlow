@@ -38,32 +38,36 @@ interface AmountInputProps {
 }
 
 const AmountInput: React.FC<AmountInputProps> = ({
-                                                   amount,
-                                                   maxAmount,
-                                                   setAmount
-                                                 }) => {
+  amount,
+  maxAmount,
+  setAmount,
+}) => {
   return (
     <div className="pb-2">
       <div className="border border-black flex divide-x divide-black">
-        <button className="p-1 w-6 h-6 flex items-center justify-center"
-                onClick={() => {
-                  if (amount > 0) {
-                    setAmount(amount - 1);
-                  }
-                }}>
+        <button
+          className="p-1 w-6 h-6 flex items-center justify-center"
+          onClick={() => {
+            if (amount > 0) {
+              setAmount(amount - 1);
+            }
+          }}
+        >
           —
         </button>
         <div className="p-1 h-6 flex items-center justify-center flex-1 min-w-[80px]">
           <p>{amount}</p>
         </div>
-        <button className="p-1 w-6 h-6 flex items-center justify-center"
-                onClick={() => {
-                  if (maxAmount && amount < maxAmount) {
-                    setAmount(amount + 1);
-                  } else if (!maxAmount) {
-                    setAmount(amount + 1);
-                  }
-                }}>
+        <button
+          className="p-1 w-6 h-6 flex items-center justify-center"
+          onClick={() => {
+            if (maxAmount && amount < maxAmount) {
+              setAmount(amount + 1);
+            } else if (!maxAmount) {
+              setAmount(amount + 1);
+            }
+          }}
+        >
           +
         </button>
       </div>
@@ -76,15 +80,17 @@ export interface ProjectMintPanelProps {
   refreshData: () => void;
 }
 
-const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({ projectContractDetails, refreshData }) => {
+const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
+  projectContractDetails,
+  refreshData,
+}) => {
   const mainController: MainController = useContext(AppContext);
 
   const [amountToBuy, setAmountToBuy] = React.useState<number>(1);
   const [endingIn, setEndingIn] = React.useState<string>(
-    "- days - hours - minutes - seconds"
+    "- days - hours - minutes - seconds",
   );
   const [totalRewards, setTotalRewards] = React.useState<string>("0");
-
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -107,7 +113,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({ projectContractDeta
   useEffect(() => {
     if (projectContractDetails) {
       setTotalRewards(
-        calculateTotalRewards(projectContractDetails, amountToBuy).toFixed(2)
+        calculateTotalRewards(projectContractDetails, amountToBuy).toFixed(2),
       );
     }
   }, [projectContractDetails, amountToBuy]);
@@ -117,19 +123,25 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({ projectContractDeta
       console.error("Wallet is not connected");
     }
 
-    mainController.buyNft(projectContractDetails.address, amountToBuy, BigInt(projectContractDetails.price)).then(() => {
-      refreshData();
-    });
-  }
+    mainController
+      .buyNft(
+        projectContractDetails.address,
+        amountToBuy,
+        BigInt(projectContractDetails.price),
+      )
+      .then(() => {
+        refreshData();
+      });
+  };
 
   return (
     <div>
       <div className="w-full bg-white border border-black text-black">
         <div className="border-b border-black py-4 px-6 flex flex-col gap-2">
-          <p className="uppercase font-medium text-center">Phase: Allow list</p>
-          <p className="text-captionSmall text-center">
-            Ending in {endingIn}
+          <p className="text-bodyLarge desktop:text-body uppercase font-medium text-center">
+            Phase: Allow list
           </p>
+          <p className="text-captionSmall text-center">Ending in {endingIn}</p>
         </div>
         <div className="py-6 px-10 border-b border-black flex flex-col gap-6">
           <TotalSupplyProgressBar
@@ -143,8 +155,10 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({ projectContractDeta
               <p className="text-heading3 font-medium">
                 {!projectContractDetails
                   ? "----"
-                  : Number(ethers.utils.formatEther(projectContractDetails.price)) *
-                  amountToBuy} <span className="text-body">DAI</span>
+                  : Number(
+                      ethers.utils.formatEther(projectContractDetails.price),
+                    ) * amountToBuy}{" "}
+                <span className="text-body">DAI</span>
               </p>
             </div>
             <AmountInput amount={amountToBuy} setAmount={setAmountToBuy} />
@@ -154,7 +168,9 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({ projectContractDeta
               Expected APR:
               <span className="font-medium">
                 {projectContractDetails
-                  ? Number(ethers.utils.formatEther(projectContractDetails.minYield)) * 100
+                  ? Number(
+                      ethers.utils.formatEther(projectContractDetails.minYield),
+                    ) * 100
                   : "-"}{" "}
                 %
               </span>
@@ -175,14 +191,15 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({ projectContractDeta
           </div>
         </div>
         <div>
-          <button className="bg-primary text-black text-heading5 font-medium text-center px-8 py-6 uppercase w-full"
-                  onClick={() => buyNft(amountToBuy)}
+          <button
+            className="bg-primary text-black text-heading5 font-medium text-center px-8 py-6 uppercase w-full"
+            onClick={() => buyNft(amountToBuy)}
           >
             Mint
           </button>
         </div>
       </div>
-      <div className="mt-2 text-white">
+      <div className="mt-4 desktop:mt-2 text-black desktop:text-white">
         <p className="text-caption">
           Sunt ullamco eiusmod consectetur esse. Aliqua cillum exercitation ut
           minim laborum ea excepteur elit. Est id et sint qui duis do do nisi

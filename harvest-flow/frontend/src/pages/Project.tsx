@@ -14,17 +14,19 @@ import { useSearchParams } from "react-router-dom";
 import { AppContext } from "@src/main";
 import type MainController from "@src/MainController";
 import type { NftContractDetails } from "@harvest-flow/utils";
+import MobileVideoBackground from "@src/components/MobileVideoBackground";
 
 const Project: React.FC = () => {
   const mainController: MainController = useContext(AppContext);
   const [searchParams] = useSearchParams();
-  const contractAddress = searchParams.get('address') || '';
-  const [projectContractDetails, setProjectContractDetails] = React.useState<NftContractDetails | null>(null);
+  const contractAddress = searchParams.get("address") || "";
+  const [projectContractDetails, setProjectContractDetails] =
+    React.useState<NftContractDetails | null>(null);
 
   const loadContractDetails = () => {
     mainController.getDetailedNftContract(contractAddress).then((details) => {
       setProjectContractDetails(details);
-    })
+    });
   };
 
   useEffect(() => {
@@ -33,16 +35,20 @@ const Project: React.FC = () => {
 
   return (
     <Layout>
-      <ProjectHero projectContractDetails={projectContractDetails} refreshData={loadContractDetails}  />
+      <ProjectHero
+        projectContractDetails={projectContractDetails}
+        refreshData={loadContractDetails}
+      />
       <ProjectTabsSection activePage="overview" />
       <ProjectPointsSection />
       <ProjectStorySection />
-      <ProjectOverviewSection projectContractDetails={projectContractDetails}/>
+      <ProjectOverviewSection projectContractDetails={projectContractDetails} />
       <ProjectScheduleSection />
       <ProjectBorrowerSection />
       <ProjectVideoSection />
       <ProjectSchemeSection />
       <ProjectLendAHandSection />
+      <MobileVideoBackground />
     </Layout>
   );
 };

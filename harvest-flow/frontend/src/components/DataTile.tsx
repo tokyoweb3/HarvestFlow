@@ -8,7 +8,9 @@ type TileHeaderProps = {
 const TileHeader: React.FC<TileHeaderProps> = ({ title }) => {
   return (
     <div className="px-6 py-4 border-b border-black border-dashed flex items-center justify-center">
-      <p className="text-center uppercase">{title}</p>
+      <p className="text-center uppercase text-caption desktop:text-body">
+        {title}
+      </p>
     </div>
   );
 };
@@ -29,7 +31,7 @@ const TileValue: React.FC<TileValueProps> = ({ value, size = "small" }) => {
     }
 
     if (size === "large") {
-      return "p-16";
+      return "p-8 desktop:p-16";
     }
 
     return "p-8";
@@ -45,10 +47,10 @@ const TileValue: React.FC<TileValueProps> = ({ value, size = "small" }) => {
     }
 
     if (size === "large") {
-      return "text-heading1";
+      return "text-heading3 desktop:text-heading1";
     }
 
-    return "text-heading3";
+    return "text-body desktop:text-heading3";
   };
 
   if (!value) return null;
