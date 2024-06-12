@@ -43,12 +43,12 @@ const FAQItem: React.FC<{
 
   return (
     <div className="border border-black px-10 py-8">
-      <div className="flex gap-10">
-        <div className="w-10">
-          <p className="text-heading5">Q{index}</p>
+      <div className="flex gap-6 desktop:gap-10">
+        <div className="w-4 desktop:w-10">
+          <p className="text-body desktop:text-heading5">Q{index}</p>
         </div>
         <div className="flex justify-between flex-1 items-center">
-          <p className="text-heading5">{question}</p>
+          <p className="text-body desktop:text-heading5">{question}</p>
           <button onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <MinusIcon /> : <PlusIcon />}
           </button>
@@ -56,7 +56,7 @@ const FAQItem: React.FC<{
       </div>
       {isOpen && (
         <div className="border-t border-black border-dashed mt-6 pt-6">
-          <p>{answer}</p>
+          <p className="text-caption desktop:text-body">{answer}</p>
         </div>
       )}
     </div>
@@ -65,9 +65,11 @@ const FAQItem: React.FC<{
 
 const FAQPageFAQSection: React.FC = () => {
   return (
-    <div className="flex flex-col gap-32 pb-56">
-      <h2 className="text-center text-heading2 font-medium uppercase">Q & A</h2>
-      <div className="w-full max-w-[1008px] mx-auto flex flex-col gap-6">
+    <div className="flex flex-col gap-16 desktop:gap-32 pb-24 destkop:pb-56">
+      <h2 className="text-center text-heading4 desktop:text-heading2 font-medium uppercase">
+        Q & A
+      </h2>
+      <div className="w-full max-w-[1008px] mx-auto flex flex-col gap-6 px-4 desktop:px-0">
         {faqData.map((faq, index) => (
           <FAQItem
             key={index}
