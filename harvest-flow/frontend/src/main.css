@@ -2,6 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+/* * {
+  outline: 1px solid #f00 !important;
+} */
+
+.headroom-wrapper {
+  position: fixed;
+  z-index: 20;
+  width: 100vw;
+}
+
+.headroom {
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  transition: transform 200ms ease-in-out;
+}
+.headroom--unfixed {
+  position: fixed;
+  transform: translateY(0);
+}
+.headroom--scrolled {
+  transition: transform 200ms ease-in-out;
+}
+.headroom--unpinned {
+  position: fixed;
+  transform: translateY(-100%);
+}
+.headroom--pinned {
+  position: fixed;
+  transform: translateY(0%);
+}
+
 @layer base {
   @font-face {
     font-family: "Function Pro";

@@ -15,6 +15,7 @@
     "@types/node": "^20.11.5",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
+    "@types/react-headroom": "^3.2.3",
     "@types/webpack-env": "^1.18.4",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
@@ -68,6 +69,7 @@
     "postcss-preset-env": "^9.5.14",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-headroom": "^3.2.1",
     "react-router-dom": "^6.21.1"
   }
 }
