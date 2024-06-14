@@ -7,7 +7,7 @@ import bgVideoMobile from "../../assets/videos/sp_color_high.mp4";
 
 const HomepageHero: React.FC = () => {
   return (
-    <div className="h-[calc(100svh-63px)] bg-center bg-cover bg-no-repeat relative text-white border-b border-black z-10">
+    <div className="h-screen bg-center bg-cover bg-no-repeat relative text-white border-b border-black z-10">
       <video
         src={bgVideo}
         className="w-full h-full object-cover relative z-0 hidden desktop:block"

@@ -31,14 +31,20 @@ module.exports = {
         tertiary: "#CADBE8",
         grey: "#B2B2B2",
         greyLight: "#E0E0E0",
+        greySuperLight: "#E7E7E7",
       },
       animation: {
         fade: "fadeIn .5s ease-in-out",
+        fadeOut: "fadeOut .5s ease-in-out",
       },
       keyframes: {
         fadeIn: {
           from: { opacity: 0 },
           to: { opacity: 1 },
+        },
+        fadeOut: {
+          to: { opacity: 0 },
+          from: { opacity: 1 },
         },
       },
     },

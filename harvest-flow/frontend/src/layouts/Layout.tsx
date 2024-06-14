@@ -5,19 +5,15 @@ import Footer from "@src/components/Footer";
 
 type LayoutProps = {
   children?: React.ReactNode;
-  overlayingFooter?: boolean;
 };
 
-const Layout: React.FC<LayoutProps> = ({
-  children,
-  overlayingFooter = false,
-}) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <>
       <Header />
       <main className="relative">{children}</main>
       <FeedbackModal />
-      <Footer overlayingFooter={overlayingFooter} />
+      <Footer />
     </>
   );
 };

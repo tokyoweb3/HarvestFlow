@@ -5,39 +5,31 @@ import SectionHeader from "./SectionHeader";
 
 const AboutHarvestFlowSection: React.FC = () => {
   return (
-    <div className="flex flex-col-reverse desktop:flex-row divide-x divide-black border-b border-black relative z-10">
-      <div className="w-full desktop:w-1/3">
+    <div className="flex flex-col-reverse desktop:flex-row divide-x divide-black border-b border-black relative z-10 desktop:h-screen">
+      <div className="w-full desktop:w-1/3 desktop:flex desktop:flex-col">
         <div className="hidden desktop:block">
           <SectionHeader title="About Harvest Flow" />
         </div>
-        <div className="py-16 desktop:pt-24">
+        <div className="py-16 desktop:flex-1 desktop:flex desktop:flex-col desktop:justify-end">
           <div className="flex flex-col gap-6 px-4 desktop:p-10">
             <h3 className="text-bodyLarge desktop:text-heading4 text-center desktop:text-left uppercase font-medium">
-              An investment experience that transforms society with emotion.
+              Get started with crypto lending and earn 8% interest through
+              social action.
             </h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et doloremagna.Lorem ipsum
-              dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna. Lorem ipsum dolor sit
-              amet, consectetur adipisicing elit,sed do eiusmod tempor
-              incididunt ut labore et doloremagna.
+              HARVEST FLOW is a service that enables social contribution by
+              lending cryptocurrency to businesses dedicated to improving the
+              world, thereby earning stable income gains while supporting
+              impactful initiatives. Beyond financial returns, it offers a new
+              form of social action by harvesting global prosperity (Harvest)
+              and creating economic and social impact through the flow of funds
+              (Flow).
             </p>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et doloremagna.Lorem ipsum
-              dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna. Lorem ipsum dolor sit
-              amet, consectetur adipisicing elit,sed do eiusmod tempor
-              incididunt ut labore et doloremagna.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et doloremagna.Lorem ipsum
-              dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna. Lorem ipsum dolor sit
-              amet, consectetur adipisicing elit,sed do eiusmod tempor
-              incididunt ut labore et doloremagna.
+              The gathered funds are invested in real-world assets (RWA) that
+              generate revenue over time, allowing users to tangibly see how
+              their support is making a positive impact on society through the
+              visualization of social actions.
             </p>
           </div>
         </div>

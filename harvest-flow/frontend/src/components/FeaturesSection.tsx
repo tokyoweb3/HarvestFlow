@@ -7,7 +7,7 @@ import bgVideo from "../../assets/videos/pc_color_high.mp4";
 
 const FeaturesSection: React.FC = () => {
   return (
-    <div className="flex flex-col desktop:flex-row divide-x divide-black border-b border-black relative z-10">
+    <div className="flex flex-col desktop:flex-row divide-x divide-black border-b border-black relative z-10 desktop:h-screen">
       <div className="hidden desktop:block w-1/2 bg-cover bg-no-repeat bg-center relative">
         <video
           src={bgVideo}
@@ -22,7 +22,7 @@ const FeaturesSection: React.FC = () => {
           </h2>
         </div>
       </div>
-      <div className="w-full desktop:w-1/2 relative">
+      <div className="w-full desktop:w-1/2 relative desktop:flex desktop:flex-col">
         <video
           autoPlay
           muted
@@ -32,9 +32,9 @@ const FeaturesSection: React.FC = () => {
         >
           <source src={bgVideo} type="video/mp4" />
         </video>
-        <div className="relative z-10 text-white desktop:text-black">
+        <div className="relative z-10 text-white desktop:text-black desktop:flex desktop:flex-col desktop:flex-1 desktop:max-h-screen">
           <SectionHeader title="Features" />
-          <div className="desktop:pt-24">
+          <div className="desktop:pt-24 desktop:flex-1 desktop:overflow-y-scroll desktop:pb-16">
             <div className="px-4 desktop:px-10 flex flex-col gap-10 desktop:gap-16">
               <div className="bg-white desktop:bg-transparent text-black py-10 px-8 desktop:p-0 flex gap-8">
                 <div className="flex flex-col gap-6 desktop:w-1/2">

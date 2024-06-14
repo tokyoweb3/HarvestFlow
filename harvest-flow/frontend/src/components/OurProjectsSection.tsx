@@ -6,27 +6,33 @@ import backgroundImage from "../../assets/images/tuktuk.jpg";
 
 const OurProjectsSection: React.FC = () => {
   return (
-    <div className="desktop:border-b desktop:border-black px-4 desktop:px-0 pb-16 desktop:pb-0 relative z-10">
+    <div className="desktop:border-b desktop:border-black px-4 desktop:px-0 pb-16 desktop:pb-0 relative z-10 desktop:h-screen flex flex-col">
       <SectionHeader title="Our projects" />
-      <div className="flex flex-col desktop:flex-row desktop:divide-x desktop:divide-black border border-black desktop:border-0">
+      <div className="flex flex-col desktop:flex-row desktop:divide-x desktop:divide-black border border-black desktop:border-0 flex-1">
         <div
           className="w-full desktop:w-1/2 bg-cover bg-no-repeat bg-center min-h-[220px] desktop:min-h-[initial]"
           style={{ backgroundImage: `url(${backgroundImage})` }}
         ></div>
         <div className="w-full desktop:w-1/2 flex divide-x divide-black">
-          <div className="w-full desktop:w-2/3 flex flex-col desktop:pt-24 justify-end">
+          <div className="w-full desktop:w-2/3 flex flex-col desktop:pt-12 justify-end">
             <div className="flex flex-col gap-4 desktop:gap-6 px-4 py-8 desktop:p-10">
               <h3 className="text-heading4 desktop:text-heading3 text-center desktop:text-left uppercase font-medium">
-                TUK TUK harvest flow future project
+                Driving the Future of Emerging Countries TUK TUK Loan Business
+                in Cambodia
               </h3>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et doloremagna.Lorem ipsum
-                dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna. Lorem ipsum dolor
-                sit amet, consectetur adipisicing elit,sed do eiusmod tempor
-                incididunt ut labore et doloremagna.
+                The inaugural project RWA-001 involves crypto asset lending to a
+                company that operates a tuk tuk loan business in Cambodia, a
+                country that has experienced remarkable growth with a 7% GDP
+                growth rate over the past five years and has attracted over 3
+                million tourists.
               </p>
+              <div className="py-2 px-4 bg-greySuperLight border border-black">
+                <p className="font-medium uppercase text-center">
+                  Applications open on June 30th. Pre-register{" "}
+                  <span className="underline">here</span>.
+                </p>
+              </div>
             </div>
             <div className="border-t border-b border-black divide-x divide-black flex">
               <div className="w-full">

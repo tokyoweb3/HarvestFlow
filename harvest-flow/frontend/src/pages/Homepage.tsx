@@ -11,6 +11,8 @@ import PartnerSection from "@src/components/PartnerSection";
 import Layout from "@src/layouts/Layout";
 import MobileVideoBackground from "@src/components/MobileVideoBackground";
 import DesktopVideoBackground from "@src/components/DesktopVideoBackground";
+import POSSection from "@src/components/POSSection";
+import HowToStartSection from "@src/components/HowToStartSection";
 
 const Homepage: React.FC = () => {
   const mainController: MainController = useContext(AppContext);
@@ -22,14 +24,16 @@ const Homepage: React.FC = () => {
   }, [mainController]);
 
   return (
-    <Layout overlayingFooter>
+    <Layout>
       <HomepageHero />
       <OurProjectsSection />
       <AboutHarvestFlowSection />
-      <FeaturesSection />
-      <FAQSection />
       <HowItWorksSection />
+      <FeaturesSection />
+      <POSSection />
+      <HowToStartSection />
       <PartnerSection />
+      <FAQSection />
       <DesktopVideoBackground />
       <MobileVideoBackground />
     </Layout>
