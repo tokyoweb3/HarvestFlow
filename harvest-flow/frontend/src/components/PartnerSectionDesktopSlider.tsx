@@ -27,7 +27,7 @@ const PartnerSectionDesktopSlider: React.FC<{
       <div className="relative grid grid-cols-1 desktop:grid-cols-3 desktop:gap-10">
         {visiblePartnerData.map((data, index) => (
           <PartnerCard
-            key={index}
+            key={`${index}${currentSlide}`}
             subtitle={data.subtitle}
             title={data.title}
             imageURL={data.imageURL}

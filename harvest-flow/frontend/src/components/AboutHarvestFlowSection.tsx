@@ -5,7 +5,7 @@ import SectionHeader from "./SectionHeader";
 
 const AboutHarvestFlowSection: React.FC = () => {
   return (
-    <div className="flex flex-col-reverse desktop:flex-row divide-x divide-black border-b border-black relative z-10 desktop:h-screen">
+    <div className="flex flex-col-reverse desktop:flex-row divide-x divide-black border-b border-black relative z-10 desktop:h-screen bg-white">
       <div className="w-full desktop:w-1/3 desktop:flex desktop:flex-col">
         <div className="hidden desktop:block">
           <SectionHeader title="About Harvest Flow" />
