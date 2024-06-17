@@ -29,7 +29,6 @@ const FeaturesSection: React.FC = () => {
           start: "top top",
           end: `+=${scrollableTextWrapper.current.scrollHeight}px`,
           pin: true,
-          markers: true,
         },
       });
 
@@ -39,7 +38,6 @@ const FeaturesSection: React.FC = () => {
           trigger: ".gsap-features-inner",
           start: "top top",
           end: `+=${scrollableTextWrapper.current.scrollHeight + window.innerHeight - 160}px`,
-          markers: true,
           scrub: true,
         },
       });
