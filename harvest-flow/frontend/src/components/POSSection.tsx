@@ -1,6 +1,11 @@
 import React from "react";
 
 import SectionHeader from "./SectionHeader";
+import FocusAreaUseCases from "@src/icons/FocusAreaUseCases";
+import FocusAreaFinancial from "@src/icons/FocusAreaFinancial";
+import FocusAreaGrowth from "@src/icons/FocusAreaGrowth";
+import FocusAreaTransparency from "@src/icons/FocusAreaTransparency";
+import FocusAreaCulture from "@src/icons/FocusAreaCulture";
 
 const POSSection: React.FC = () => {
   return (
@@ -37,31 +42,41 @@ const POSSection: React.FC = () => {
             </h2>
             <div className="flex flex-wrap desktop:flex-nowrap gap-4 justify-center">
               <div className="w-[30%] desktop:w-[initial] flex flex-col gap-2 items-center">
-                <div className="bg-tertiary w-10 h-10 desktop:w-16 desktop:h-16" />
+                <div className="w-10 h-10 desktop:w-16 desktop:h-16 flex items-center justify-center">
+                  <FocusAreaUseCases />
+                </div>
                 <h3 className="text-caption font-normal text-center uppercase">
                   WEB3 Social Use Cases
                 </h3>
               </div>
               <div className="w-[30%] desktop:w-[initial] flex flex-col gap-2 items-center">
-                <div className="bg-tertiary w-10 h-10 desktop:w-16 desktop:h-16" />
+                <div className="w-10 h-10 desktop:w-16 desktop:h-16 flex items-center justify-center">
+                  <FocusAreaFinancial />
+                </div>
                 <h3 className="text-caption font-normal text-center uppercase">
                   Financial Inclusion
                 </h3>
               </div>
               <div className="w-[30%] desktop:w-[initial] flex flex-col gap-2 items-center">
-                <div className="bg-tertiary w-10 h-10 desktop:w-16 desktop:h-16" />
+                <div className="w-10 h-10 desktop:w-16 desktop:h-16 flex items-center justify-center">
+                  <FocusAreaGrowth />
+                </div>
                 <h3 className="text-caption font-normal text-center uppercase">
                   Economic Growth
                 </h3>
               </div>
               <div className="w-[30%] desktop:w-[initial] flex flex-col gap-2 items-center">
-                <div className="bg-tertiary w-10 h-10 desktop:w-16 desktop:h-16" />
+                <div className="w-10 h-10 desktop:w-16 desktop:h-16 flex items-center justify-center">
+                  <FocusAreaTransparency />
+                </div>
                 <h3 className="text-caption font-normal text-center uppercase">
                   Transparency
                 </h3>
               </div>
               <div className="w-[30%] desktop:w-[initial] flex flex-col gap-2 items-center">
-                <div className="bg-tertiary w-10 h-10 desktop:w-16 desktop:h-16" />
+                <div className="w-10 h-10 desktop:w-16 desktop:h-16 flex items-center justify-center">
+                  <FocusAreaCulture />
+                </div>
                 <h3 className="text-caption font-normal text-center uppercase">
                   Art & Culture
                 </h3>
