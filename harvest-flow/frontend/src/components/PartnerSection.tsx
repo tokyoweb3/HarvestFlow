@@ -1,46 +1,45 @@
 import React from "react";
+import clsx from "clsx";
+
+import SectionHeader from "./SectionHeader";
+import type { PartnerData } from "./PartnerSectionDesktopSlider";
+import PartnerSectionDesktopSlider from "./PartnerSectionDesktopSlider";
 
 import backgroundImage from "../../assets/images/hero-bg.svg";
-import clsx from "clsx";
-import SectionHeader from "./SectionHeader";
+import PartnerSectionMobileSlider from "./PartnerSectionMobileSlider";
 
 const partnerData = [
   {
     subtitle: "FiNANCiE founde",
     title: "HiRONAO KUNiMiTSU",
-    text: "Ex anim ipsum commodo elit non consectetur enim duis laboris. Occaecat nostrud reprehenderit ullamco ex labore elit velit magna cupidatat deserunt amet adipisicing qui. Consequat voluptate tempor exercitation voluptate mollit deserunt excepteur officia commodo do consectetur incididunt sit. Aliquip ad aute elit in ipsum esse aute deserunt adipisicing. Lorem excepteur et excepteur occaecat ut do est culpa proident veniam sit velit elit qui. Et cupidatat ad ad proident. Aliqua amet mollit irure labore incididunt aliquip. Eu voluptate in eu velit id officia velit. Labore elit mollit Lorem officia cupidatat.",
     imageURL: backgroundImage,
   },
   {
     subtitle: "Position 1",
     title: "HiRONAO KUNiMiTSU 2",
-    text: "Cillum ut proident qui reprehenderit magna sunt pariatur mollit veniam ullamco. Mollit magna velit aliquip veniam. Culpa reprehenderit commodo amet consectetur deserunt Lorem ut et duis voluptate consectetur non. Elit culpa est ipsum ipsum nisi. Enim id nisi consectetur laboris minim exercitation officia mollit eu. Culpa ex cupidatat ex consectetur ad enim. Occaecat minim anim labore reprehenderit sint ut. Reprehenderit sit Lorem exercitation duis nostrud nisi pariatur. Ullamco elit nostrud elit consectetur est dolor fugiat ullamco velit.",
     imageURL: backgroundImage,
   },
   {
     subtitle: "Position 2",
     title: "HiRONAO KUNiMiTSU 3",
-    text: "Labore ad voluptate qui enim do consectetur culpa reprehenderit duis nisi cillum. Veniam nostrud laboris do Lorem cupidatat non. Tempor aute amet duis quis Lorem in reprehenderit anim nulla sunt. Minim reprehenderit nulla sint velit id enim aliquip consequat. Mollit velit aute laborum elit veniam minim tempor in ipsum magna. Ipsum ad duis esse et est qui consequat minim laboris. Veniam nulla eu duis enim duis adipisicing enim Lorem veniam irure veniam proident. Est anim consequat voluptate velit dolore nulla dolor in veniam. Laborum nulla laborum magna mollit veniam aute duis qui. Occaecat ad ipsum enim mollit mollit tempor cillum minim sunt.",
     imageURL: backgroundImage,
   },
   {
     subtitle: "Position 3",
     title: "HiRONAO KUNiMiTSU 4",
-    text: "Nulla culpa amet duis nisi ullamco. Est cupidatat dolor sint tempor fugiat. Reprehenderit ipsum id amet in et proident incididunt voluptate. Ea laboris laborum reprehenderit incididunt nisi fugiat quis enim elit magna aliqua cupidatat veniam ut. Proident exercitation eu voluptate do anim exercitation ad. Incididunt magna nisi duis et ad fugiat. Ex labore esse do proident elit quis proident sit eiusmod adipisicing non irure et. Et laborum magna est exercitation eiusmod deserunt laboris. Minim dolore sunt anim occaecat eiusmod ex duis sint laboris ea dolor aliqua elit. Tempor minim deserunt non incididunt veniam anim. Aliquip in consequat id anim esse sint et sint cillum cupidatat enim cupidatat.",
     imageURL: backgroundImage,
   },
   {
     subtitle: "Position 4",
     title: "HiRONAO KUNiMiTSU 5",
-    text: "Nulla anim consectetur cillum reprehenderit exercitation ut in in. Occaecat do est dolor incididunt irure ea. Nostrud fugiat in ad occaecat aliquip reprehenderit. Officia voluptate exercitation ea minim anim ad. Quis ad commodo aliqua do est laboris occaecat nulla eu ea enim consequat proident. Do est elit eiusmod ad cillum id quis non sunt. Labore est ut magna sunt veniam est aute Lorem ullamco pariatur nostrud commodo non magna.",
     imageURL: backgroundImage,
   },
 ];
 
-const IndicatorDot: React.FC<{ active?: boolean; onClick: () => void }> = ({
-  active = false,
-  onClick,
-}) => {
+export const IndicatorDot: React.FC<{
+  active?: boolean;
+  onClick: () => void;
+}> = ({ active = false, onClick }) => {
   return (
     <div
       className={clsx(
@@ -52,57 +51,47 @@ const IndicatorDot: React.FC<{ active?: boolean; onClick: () => void }> = ({
   );
 };
 
-const PartnerSection: React.FC = () => {
-  const [currentSlide, setCurrentSlide] = React.useState(0);
-
+export const PartnerCard: React.FC<
+  PartnerData & {
+    onClick?: () => void;
+  }
+> = ({ subtitle, title, imageURL, onClick }) => {
   return (
-    <div className="desktop:py-32 relative z-10">
-      <h2 className="text-heading2 text-center uppercase font-medium tracking-widest hidden desktop:block">
-        Partner
-      </h2>
-      <div className="block desktop:hidden">
-        <SectionHeader title="Partner" />
+    <div
+      className="border border-black p-8 flex flex-col gap-6 desktop:gap-10 bg-white relative z-40 hover:cursor-pointer"
+      onClick={onClick}
+    >
+      <div
+        className="shrink-0 aspect-square bg-cover bg-no-repeat bg-center animate-fade"
+        style={{
+          backgroundImage: `url(${imageURL})`,
+        }}
+      ></div>
+      <div className="flex flex-col justify-end gap-6 desktop:gap-20 flex-1 pb-2">
+        <div className="flex flex-col gap-1 desktop:gap-2">
+          <p className="text-center uppercase text-caption desktop:text-body animate-fade">
+            {subtitle}
+          </p>
+          <h3 className="text-bodyLarge desktop:text-heading4 uppercase font-medium text-center animate-fade">
+            {title}
+          </h3>
+        </div>
       </div>
-      <div className="desktop:pt-24 px-4 desktop:px-0">
-        <div className="max-w-[1000px] mx-auto relative z-10">
-          <div className="flex flex-col gap-16 relative">
-            <div className="relative">
-              <div
-                className="border border-black p-8 flex flex-col desktop:flex-row gap-6 desktop:gap-10 bg-white relative z-40"
-                key={currentSlide}
-              >
-                <div
-                  className="desktop:w-[45%] shrink-0 aspect-square bg-cover bg-no-repeat bg-center animate-fade"
-                  style={{
-                    backgroundImage: `url(${partnerData[currentSlide].imageURL})`,
-                  }}
-                ></div>
-                <div className="flex flex-col justify-end gap-6 desktop:gap-20 flex-1 pb-2">
-                  <div className="flex flex-col gap-1 desktop:gap-2">
-                    <p className="text-center uppercase text-caption desktop:text-body animate-fade">
-                      {partnerData[currentSlide].subtitle}
-                    </p>
-                    <h3 className="text-bodyLarge desktop:text-heading3 uppercase font-medium text-center animate-fade">
-                      {partnerData[currentSlide].title}
-                    </h3>
-                  </div>
-                  <p className="animate-fade">
-                    {partnerData[currentSlide].text}
-                  </p>
-                </div>
-              </div>
-              <div className="absolute top-2 left-2 w-full h-full bg-[#E7EFF7] border border-black z-30"></div>
-              <div className="absolute top-4 left-4 w-full h-full bg-[#E7EFF7] border border-black z-20"></div>
-            </div>
-            <div className="flex gap-6 justify-center items-center">
-              {partnerData.map((_, index) => (
-                <IndicatorDot
-                  key={index}
-                  active={index === currentSlide}
-                  onClick={() => setCurrentSlide(index)}
-                />
-              ))}
-            </div>
+    </div>
+  );
+};
+
+const PartnerSection: React.FC = () => {
+  return (
+    <div className="relative z-10 border-b border-black desktop:h-screen flex flex-col pb-16 desktop:pb-0">
+      <SectionHeader title="Partner" />
+      <div className="desktop:py-16 px-4 desktop:px-0 flex-1 flex flex-col justify-center">
+        <div className="max-w-[1188px] mx-auto relative z-10 px-4 desktop:px-0 w-full">
+          <div className="hidden desktop:block">
+            <PartnerSectionDesktopSlider partnerData={partnerData} />
+          </div>
+          <div className="block desktop:hidden">
+            <PartnerSectionMobileSlider partnerData={partnerData} />
           </div>
         </div>
       </div>

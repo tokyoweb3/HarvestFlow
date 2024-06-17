@@ -64,8 +64,8 @@ const FAQItem: React.FC<{
 
 const FAQSection: React.FC = () => {
   return (
-    <div className="flex flex-col desktop:flex-row desktop:divide-x desktop:divide-black desktop:border-b desktop:border-black relative z-10">
-      <div className="w-full desktop:w-1/2">
+    <div className="flex flex-col desktop:flex-row desktop:divide-x desktop:divide-black desktop:border-b desktop:border-black relative z-10 desktop:h-screen bg-white">
+      <div className="w-full desktop:w-1/2 desktop:flex desktop:flex-col desktop:justify-between">
         <SectionHeader title="FAQ" />
         <div className="desktop:pt-24">
           <div className="px-10 pb-10">

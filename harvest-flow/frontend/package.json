@@ -15,6 +15,7 @@
     "@types/node": "^20.11.5",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
+    "@types/react-headroom": "^3.2.3",
     "@types/webpack-env": "^1.18.4",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
@@ -56,6 +57,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@gsap/react": "^2.1.1",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.5",
     "@thirdweb-dev/wallets": "^2.1.11",
@@ -63,11 +65,13 @@
     "date-fns": "^2.29.3",
     "eslint-plugin-react-hooks": "^4.6.0",
     "ethers": "^5.7.2",
+    "gsap": "^3.12.5",
     "postcss": "^8.4.38",
     "postcss-loader": "^8.1.1",
     "postcss-preset-env": "^9.5.14",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-headroom": "^3.2.1",
     "react-router-dom": "^6.21.1"
   }
 }

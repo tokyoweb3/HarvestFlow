@@ -1,6 +1,6 @@
 import type MainController from "@src/MainController";
 import { AppContext } from "@src/main";
-import { NftContract } from "@harvest-flow/utils";
+import type { NftContract } from "@harvest-flow/utils";
 import { useContext, useEffect, useState } from "react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -19,15 +19,17 @@ const DummyProjectList: React.FC = () => {
   return (
     <>
       <h1>Projects</h1>
-      {/* {projects.map((project) => (
+      {projects.map((project) => (
         <div key={project.address}>
           <span
             onClick={() => {
               navigate(`project?address=${project.address}`);
             }}
-          >{project.name}</span>
+          >
+            {project.name}
+          </span>
         </div>
-      ))} */}
+      ))}
     </>
   );
 };
