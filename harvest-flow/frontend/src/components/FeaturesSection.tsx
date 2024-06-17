@@ -15,6 +15,9 @@ const FeaturesSection: React.FC = () => {
     () => {
       if (!scrollableTextWrapper.current) return;
 
+      // disable on mobile
+      if (window.innerWidth < 1200) return;
+
       // disable scroll trigger if content is less than window height
       // if (scrollableTextWrapper.current.scrollHeight < window.innerHeight)
       //   return;
