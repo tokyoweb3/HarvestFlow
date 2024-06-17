@@ -24,6 +24,7 @@ const ConnectWalletButton: React.FC = () => {
     <div>
       {mainController.isWalletConnected() && userAddress ? (
         <div
+          className="text-heading5 desktop:text-header font-medium text-black uppercase p-4 hover:cursor-pointer"
           onClick={() => {
             navigate(Page.Account);
           }}
@@ -38,7 +39,7 @@ const ConnectWalletButton: React.FC = () => {
               setUserAddress(result);
             });
           }}
-          className="text-header font-medium text-black uppercase p-4 "
+          className="text-heading5 desktop:text-header font-medium text-black uppercase p-4 hover:cursor-pointer"
         >
           Connect Wallet
         </button>
