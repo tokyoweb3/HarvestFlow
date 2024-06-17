@@ -6,6 +6,7 @@ import SectionHeader from "./SectionHeader";
 
 import backgroundImage from "../../assets/images/hero-bg.svg";
 import bgVideo from "../../assets/videos/pc_color_high.mp4";
+import bgVideoMobile from "../../assets/videos/sp_color_high.mp4";
 
 const FeaturesSection: React.FC = () => {
   const container = useRef();
@@ -57,6 +58,7 @@ const FeaturesSection: React.FC = () => {
               autoPlay
               loop
               muted
+              playsInline
             />
             <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full flex items-center justify-center">
               <h2 className="text-white text-heading3 desktop:text-heading2 font-medium uppercase tracking-widest text-center">
@@ -72,7 +74,7 @@ const FeaturesSection: React.FC = () => {
               playsInline
               className="h-full w-full object-cover absolute left-0 right-0 top-0 bottom-0 desktop:hidden"
             >
-              <source src={bgVideo} type="video/mp4" />
+              <source src={bgVideoMobile} type="video/mp4" />
             </video>
             <div className="relative z-10 text-white desktop:text-black desktop:flex desktop:flex-col desktop:flex-1 desktop:max-h-screen">
               <SectionHeader title="Features" />
