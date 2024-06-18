@@ -77,5 +77,11 @@ export interface NftDetails {
 
 }
 
+export interface Summary {
+    totalLoaned: number; // amount in Dai
+    totalRepaid: number; // amount in Dai
+    userCount: number;
+}
+
 
 

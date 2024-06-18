@@ -3,4 +3,4 @@ export declare function backendQueryGetDetailedNftContract(contractAddress: stri
 export declare function backendQueryGetNftHistoryForUser(userAddress: string): string;
 export declare function backendQueryGetNftHistoryForProject(contractAddress: string): string;
 export declare function backendQueryGetUserDetails(userAddress: string): string;
-export declare function backendQueryGetClaimable(nftAddress: string, tokenId: string): string;
+export declare function backendQueryGetSummary(): string;

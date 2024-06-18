@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { Summary } from "@harvest-flow/utils";
+import { AppContext } from "@src/main";
+import MainController from "@src/MainController";
 
 const HomepageHeroStatistics: React.FC = () => {
+  const mainController: MainController = useContext(AppContext);
+  const [summaryData, setSummaryData] = React.useState<Summary | null>(null);
+
+  useEffect(() => {
+    mainController.getSummary().then((summary) => {
+      setSummaryData(summary);
+    });
+  },[]);
+
   return (
     <div className="grid grid-rows-2 grid-cols-2 desktop:grid-rows-1 desktop:grid-cols-3 desktop:divide-x desktop:divide-white px-6 desktop:px-32 gap-y-2">
       <div className="px-4 desktop:px-8 col-span-2 desktop:col-span-1">
@@ -8,7 +20,7 @@ const HomepageHeroStatistics: React.FC = () => {
           Total value loaned
         </h3>
         <h4 className="text-heading3 desktop:text-heading1 font-medium text-center">
-          $123.456
+          ${summaryData?.totalLoaned ?? "1.000"}
         </h4>
       </div>
       <div className="px-4 desktop:px-8 border-r border-white desktop:border-0">
@@ -16,7 +28,7 @@ const HomepageHeroStatistics: React.FC = () => {
           Repaid
         </h3>
         <h4 className="text-heading3 desktop:text-heading1 font-medium text-center">
-          $12.345
+          ${summaryData?.totalRepaid.toFixed(3) ?? "1,000"}
         </h4>
       </div>
       <div className="px-4 desktop:px-8">
@@ -24,7 +36,7 @@ const HomepageHeroStatistics: React.FC = () => {
           Holders
         </h3>
         <h4 className="text-heading3 desktop:text-heading1 font-medium text-center">
-          1,023
+          {summaryData?.userCount ?? "1"}
         </h4>
       </div>
     </div>
