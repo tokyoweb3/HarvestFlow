@@ -47,13 +47,16 @@ const Header: React.FC = () => {
     <>
       <Headroom disableInlineStyles>
         <header className="flex border-b border-t border-black bg-white z-20 relative">
-          <div className="flex-1 shrink-0 px-4 py-3 desktop:py-4 desktop:px-10">
+          <a
+            href="/"
+            className="flex-1 shrink-0 px-4 py-3 desktop:py-4 desktop:px-10"
+          >
             <img
               src={Logo}
               alt="Harvestflow logo"
               className="max-w-[140px] desktop:max-w-[187px] w-full"
             />
-          </div>
+          </a>
           <div className="hidden desktop:flex border-l border-r border-black divide-x divide-black">
             <div className="flex items-center justify-center p-4">
               <DiscordIcon />
@@ -102,9 +105,7 @@ const Header: React.FC = () => {
               Japanese
             </p>
             {/* TODO: Replace with connect wallet button */}
-            <p className="text-heading5 font-medium text-black uppercase ">
-              Connect wallet
-            </p>
+            <ConnectWalletButton />
             <div className="flex gap-2">
               <div className="flex items-center justify-center p-4">
                 <XIcon />
