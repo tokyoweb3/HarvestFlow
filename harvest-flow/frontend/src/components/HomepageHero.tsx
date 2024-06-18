@@ -42,7 +42,8 @@ const HomepageHero: React.FC = () => {
             </div>
           </div>
           <div>
-            <HomepageHeroStatistics />
+            {/* TODO: reveal statistics after main launch */}
+            {/* <HomepageHeroStatistics /> */}
           </div>
         </div>
       </div>
