@@ -30,6 +30,9 @@ export {
     getUserPoints,
     getUserRankWithPoints,
     getActiveTokensByUsersAndContract,
+    getTotalLoaned,
+    getTotalRepaid,
+    getOwnersCount,
     IGetContractParams,
     IGetContractResult,
     IGetContractsListResult,
@@ -48,6 +51,9 @@ export {
     IGetUserRankWithPointsResult,
     IGetActiveTokensByUsersAndContractParams,
     IGetActiveTokensByUsersAndContractResult,
+    IGetTotalLoanedResult,
+    IGetTotalRepaidResult,
+    IGetOwnersCountResult,
 } from './select.queries.js';
 
 export {

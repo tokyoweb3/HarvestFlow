@@ -381,3 +381,85 @@ const getActiveTokensByUsersAndContractIR: any = {"usedParamSet":{},"params":[],
 export const getActiveTokensByUsersAndContract = new PreparedQuery<IGetActiveTokensByUsersAndContractParams,IGetActiveTokensByUsersAndContractResult>(getActiveTokensByUsersAndContractIR);
 
 
+/** 'GetTotalLoaned' parameters type */
+export type IGetTotalLoanedParams = void;
+
+/** 'GetTotalLoaned' return type */
+export interface IGetTotalLoanedResult {
+  total_token_prices: string | null;
+}
+
+/** 'GetTotalLoaned' query type */
+export interface IGetTotalLoanedQuery {
+  params: IGetTotalLoanedParams;
+  result: IGetTotalLoanedResult;
+}
+
+const getTotalLoanedIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT SUM(c.price) AS total_token_prices\nFROM tokens t\n   JOIN contracts c\n   ON t.chain_id = c.chain_id AND t.contract_address = c.address"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT SUM(c.price) AS total_token_prices
+ * FROM tokens t
+ *    JOIN contracts c
+ *    ON t.chain_id = c.chain_id AND t.contract_address = c.address
+ * ```
+ */
+export const getTotalLoaned = new PreparedQuery<IGetTotalLoanedParams,IGetTotalLoanedResult>(getTotalLoanedIR);
+
+
+/** 'GetTotalRepaid' parameters type */
+export type IGetTotalRepaidParams = void;
+
+/** 'GetTotalRepaid' return type */
+export interface IGetTotalRepaidResult {
+  total_repaid_amount: string | null;
+}
+
+/** 'GetTotalRepaid' query type */
+export interface IGetTotalRepaidQuery {
+  params: IGetTotalRepaidParams;
+  result: IGetTotalRepaidResult;
+}
+
+const getTotalRepaidIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT SUM(t.yield_claimed + CASE WHEN t.redeemed THEN c.price ELSE 0 END) AS total_repaid_amount\nFROM tokens t\n    JOIN contracts c\n    ON t.chain_id = c.chain_id AND t.contract_address = c.address"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT SUM(t.yield_claimed + CASE WHEN t.redeemed THEN c.price ELSE 0 END) AS total_repaid_amount
+ * FROM tokens t
+ *     JOIN contracts c
+ *     ON t.chain_id = c.chain_id AND t.contract_address = c.address
+ * ```
+ */
+export const getTotalRepaid = new PreparedQuery<IGetTotalRepaidParams,IGetTotalRepaidResult>(getTotalRepaidIR);
+
+
+/** 'GetOwnersCount' parameters type */
+export type IGetOwnersCountParams = void;
+
+/** 'GetOwnersCount' return type */
+export interface IGetOwnersCountResult {
+  total_unique_owners: string | null;
+}
+
+/** 'GetOwnersCount' query type */
+export interface IGetOwnersCountQuery {
+  params: IGetOwnersCountParams;
+  result: IGetOwnersCountResult;
+}
+
+const getOwnersCountIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT COUNT(DISTINCT owner_address) AS total_unique_owners\nFROM tokens"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT COUNT(DISTINCT owner_address) AS total_unique_owners
+ * FROM tokens
+ * ```
+ */
+export const getOwnersCount = new PreparedQuery<IGetOwnersCountParams,IGetOwnersCountResult>(getOwnersCountIR);
+
+
