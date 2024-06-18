@@ -1,13 +1,9 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
 export default buildModule('TokTokNft', m => {
-    const mockToken = m.contract('MockERC20', ['MockToken', 'MT', 1000000]);
+  const factory = m.contractAt("NftFactory", "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512");
 
-
-  // https://github.com/NomicFoundation/hardhat-ignition/issues/673
-  const tokTokNftContract = m.contract("TokTokNft", []);
-
-  const factory = m.contract("NftFactory", [tokTokNftContract]);
+  const mockToken = m.contract('MockERC20', ['MockToken', 'MT', 1000000]);
 
   const initParameters1 = {
     name: "Cambodia TukTuk vol.1", // @param name_ Name of the ERC1155
@@ -43,10 +39,6 @@ export default buildModule('TokTokNft', m => {
   m.call(mockToken, "transfer", ["0xC7894CC334A5D21a833CDe21B53d7Fd76B5D882D", 100_000_000_000_000_000_000_000n]);
 
 
-
-    tokTokNftContract.dependencies.add(mockToken);
-  factory.dependencies.add(tokTokNftContract);
-
   const contract1 = m.call(factory, "deploy", [initParameters1], { id: "Deploy1" });
   const contract1Address = m.readEventArgument(contract1, "NftDeployed", "nft", { id: "address1" });
   const nftContract1 = m.contractAt("TokTokNft", contract1Address, {id: "Nft1" });
@@ -54,6 +46,9 @@ export default buildModule('TokTokNft', m => {
   const contract2 = m.call(factory, "deploy", [initParameters2], { id: "Deploy2" });
   const contract2Address = m.readEventArgument(contract2, "NftDeployed", "nft", { id: "address2" });
   const nftContract2 = m.contractAt("TokTokNft", contract2Address, {id: "Nft2" });
+
+  contract1.dependencies.add(mockToken);
+  contract2.dependencies.add(mockToken);
 
   //send mock token to contracts for the repayments
   m.call(mockToken, "transfer", [contract1Address, 100_000_000_000_000_000_000_000n], { id: "Mock_token_to_contrac1" });
