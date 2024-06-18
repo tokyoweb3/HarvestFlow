@@ -5,6 +5,7 @@ import type {
   NftContractDetails,
   NftDetails,
   NftHistory,
+  Summary,
   UserDetails
 } from "@harvest-flow/utils";
 import { Web3Provider } from "@ethersproject/providers";
@@ -258,6 +259,14 @@ class MainController {
       return;
     }
 
+  }
+
+  async getSummary(): Promise<Summary> {
+    const response = await Paima.default.getSummary();
+    if (!response.success) {
+      throw new Error((response as FailedResult).errorMessage);
+    }
+    return response.data;
   }
 }
 

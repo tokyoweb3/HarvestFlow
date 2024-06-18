@@ -45,12 +45,9 @@ export function backendQueryGetUserDetails(userAddress: string): string {
     return buildBackendQuery(endpoint, options);
 }
 
-export function backendQueryGetClaimable(nftAddress: string, tokenId : string): string {
-    const endpoint = 'claimable';
-    const options : QueryOptions = {
-        nftAddress,
-        tokenId,
-    }
+export function backendQueryGetSummary(): string {
+    const endpoint = 'summary';
+    const options : QueryOptions = {}
 
     return buildBackendQuery(endpoint, options);
 }

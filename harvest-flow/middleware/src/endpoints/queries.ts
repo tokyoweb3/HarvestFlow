@@ -1,17 +1,19 @@
 import type { FailedResult } from '@paima/sdk/mw-core';
 import { PaimaMiddlewareErrorCode } from '@paima/sdk/mw-core';
-import {NftContract, NftContractDetails, NftHistory, UserDetails} from "@harvest-flow/utils";
+import { NftContract, NftContractDetails, NftHistory, Summary, UserDetails } from "@harvest-flow/utils";
 import {
     backendQueryGetAllNfts,
     backendQueryGetDetailedNftContract,
     backendQueryGetNftHistoryForProject,
     backendQueryGetNftHistoryForUser,
+    backendQueryGetSummary,
     backendQueryGetUserDetails
 } from "../helpers/query-constructors";
 import {
     GetAllNftContractsResponse,
     GetDetailedNftContractResponse,
     GetNftHistoryResponse,
+    GetSummaryResponse,
     GetUserDetailsResponse
 } from "../types";
 import {buildEndpointErrorFxn, MiddlewareErrorCode} from "../errors";
@@ -118,6 +120,24 @@ async function getUserDetails(userAddress: string): Promise<GetUserDetailsRespon
     }
 }
 
+async function getSummary(): Promise<GetSummaryResponse | FailedResult> {
+    const errorFxn = buildEndpointErrorFxn('getSummary');
+    let response: Response;
+
+    try {
+        const query = backendQueryGetSummary();
+        response = await fetch(query);
+    } catch (err) {
+        return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+    }
+
+    try {
+        const summary = (await response.json()) as Summary;
+        return {success: true, data: summary};
+    } catch (err) {
+        return errorFxn(PaimaMiddlewareErrorCode.INVALID_RESPONSE_FROM_BACKEND, err);
+    }
+}
 
 export const queryEndpoints = {
     getAllNfts,
@@ -125,4 +145,5 @@ export const queryEndpoints = {
     getNftHistoryForUser,
     getHistoryForProject,
     getUserDetails,
+    getSummary
 }

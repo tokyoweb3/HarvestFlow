@@ -98,6 +98,29 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"Summary": {
+				"properties": {
+					"totalLoaned": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalRepaid": {
+						"type": "number",
+						"format": "double"
+					},
+					"userCount": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"totalLoaned",
+					"totalRepaid",
+					"userCount"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"NftHistoryEventType": {
 				"enum": [
 					"contract_created",
@@ -224,6 +247,9 @@
 					"chainId": {
 						"type": "string"
 					},
+					"address": {
+						"type": "string"
+					},
 					"leaseStart": {
 						"type": "number",
 						"format": "double"
@@ -237,6 +263,7 @@
 					"name",
 					"symbol",
 					"chainId",
+					"address",
 					"leaseStart",
 					"leaseEnd"
 				],
@@ -282,6 +309,25 @@
 						}
 					}
 				]
+			}
+		},
+		"/summary": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Summary"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/nft_history/user": {
@@ -431,7 +477,7 @@
 				"parameters": [
 					{
 						"in": "query",
-						"name": "notEnded",
+						"name": "justActive",
 						"required": false,
 						"schema": {
 							"default": true,

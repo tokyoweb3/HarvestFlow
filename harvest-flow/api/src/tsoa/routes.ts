@@ -5,6 +5,8 @@ import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, H
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UserDetailsController } from './../controllers/userDetails';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { SummaryController } from './../controllers/summary';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { NftHistoryController } from './../controllers/nftHistory';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ClaimableController } from './../controllers/nftDetails';
@@ -35,6 +37,16 @@ const models: TsoaRoute.Models = {
             "points": {"dataType":"double","required":true},
             "rank": {"dataType":"double","required":true},
             "ownedNfts": {"dataType":"array","array":{"dataType":"refObject","ref":"NftDetails"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Summary": {
+        "dataType": "refObject",
+        "properties": {
+            "totalLoaned": {"dataType":"double","required":true},
+            "totalRepaid": {"dataType":"double","required":true},
+            "userCount": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },
@@ -84,6 +96,7 @@ const models: TsoaRoute.Models = {
             "name": {"dataType":"string","required":true},
             "symbol": {"dataType":"string","required":true},
             "chainId": {"dataType":"string","required":true},
+            "address": {"dataType":"string","required":true},
             "leaseStart": {"dataType":"double","required":true},
             "leaseEnd": {"dataType":"double","required":true},
         },
@@ -116,6 +129,30 @@ export function RegisterRoutes(app: Router) {
                 validatedArgs = getValidatedArgs(args, request, response);
 
                 const controller = new UserDetailsController();
+
+
+              const promise = controller.get.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/summary',
+            ...(fetchMiddlewares<RequestHandler>(SummaryController)),
+            ...(fetchMiddlewares<RequestHandler>(SummaryController.prototype.get)),
+
+            function SummaryController_get(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new SummaryController();
 
 
               const promise = controller.get.apply(controller, validatedArgs as any);
@@ -232,7 +269,7 @@ export function RegisterRoutes(app: Router) {
 
             function AllNftContractController_get(request: any, response: any, next: any) {
             const args = {
-                    notEnded: {"default":true,"in":"query","name":"notEnded","dataType":"boolean"},
+                    justActive: {"default":true,"in":"query","name":"justActive","dataType":"boolean"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
