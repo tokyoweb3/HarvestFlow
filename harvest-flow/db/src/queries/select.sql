@@ -105,5 +105,24 @@ GROUP BY
     c.lease_start,
     c.lease_end;
 
+/* @name getTotalLoaned */
+SELECT SUM(c.price) AS total_token_prices
+FROM tokens t
+   JOIN contracts c
+   ON t.chain_id = c.chain_id AND t.contract_address = c.address;
+
+/* @name getTotalRepaid */
+SELECT SUM(t.yield_claimed + CASE WHEN t.redeemed THEN c.price ELSE 0 END) AS total_repaid_amount
+FROM tokens t
+    JOIN contracts c
+    ON t.chain_id = c.chain_id AND t.contract_address = c.address;
+
+/* @name getOwnersCount */
+SELECT COUNT(DISTINCT owner_address) AS total_unique_owners
+FROM tokens;
+
+
+
+
 
 

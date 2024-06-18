@@ -20,7 +20,7 @@ const HomepageHeroStatistics: React.FC = () => {
           Total value loaned
         </h3>
         <h4 className="text-heading3 desktop:text-heading1 font-medium text-center">
-          ${summaryData?.totalLoaned ?? "1.000"}
+          ${summaryData?.totalLoaned ?? "0"}
         </h4>
       </div>
       <div className="px-4 desktop:px-8 border-r border-white desktop:border-0">
@@ -28,7 +28,7 @@ const HomepageHeroStatistics: React.FC = () => {
           Repaid
         </h3>
         <h4 className="text-heading3 desktop:text-heading1 font-medium text-center">
-          ${summaryData?.totalRepaid.toFixed(3) ?? "1,000"}
+          ${summaryData?.totalRepaid?.toFixed(3) ?? "0"}
         </h4>
       </div>
       <div className="px-4 desktop:px-8">
@@ -36,7 +36,7 @@ const HomepageHeroStatistics: React.FC = () => {
           Holders
         </h3>
         <h4 className="text-heading3 desktop:text-heading1 font-medium text-center">
-          {summaryData?.userCount ?? "1"}
+          {summaryData?.userCount ?? "0"}
         </h4>
       </div>
     </div>
