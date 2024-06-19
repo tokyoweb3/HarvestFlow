@@ -3,6 +3,7 @@ import React from "react";
 const FocusAreaUseCases: React.FC = () => (
   <svg
     viewBox="0 0 70 70"
+    width="100%"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >

@@ -1,4 +1,6 @@
 import React from "react";
+import { useSwipeable } from "react-swipeable";
+
 import { IndicatorDot, PartnerCard } from "./PartnerSection";
 
 export type PartnerData = {
@@ -10,8 +12,6 @@ export type PartnerData = {
 const PartnerSectionMobileSlider: React.FC<{
   partnerData: PartnerData[];
 }> = ({ partnerData }) => {
-  const [currentSlide, setCurrentSlide] = React.useState(0);
-
   const handleCardClick = () => {
     if (currentSlide + 1 < partnerData.length) {
       setCurrentSlide(currentSlide + 1);
@@ -20,9 +20,36 @@ const PartnerSectionMobileSlider: React.FC<{
     }
   };
 
+  const handleGoToNext = () => {
+    if (currentSlide + 1 < partnerData.length) {
+      setCurrentSlide(currentSlide + 1);
+    }
+  };
+
+  const handleGoToPrevious = () => {
+    if (currentSlide - 1 >= 0) {
+      setCurrentSlide(currentSlide - 1);
+    }
+  };
+
+  const config = {
+    onSwipedLeft: () => {
+      handleGoToNext();
+    },
+    onSwipedRight: () => {
+      handleGoToPrevious();
+    },
+  };
+
+  const handlers = useSwipeable({
+    ...config,
+  });
+
+  const [currentSlide, setCurrentSlide] = React.useState(0);
+
   return (
     <div className="flex flex-col gap-16 relative w-full">
-      <div className="relative grid grid-cols-1">
+      <div className="relative grid grid-cols-1" {...handlers}>
         <PartnerCard
           subtitle={partnerData[currentSlide].subtitle}
           title={partnerData[currentSlide].title}

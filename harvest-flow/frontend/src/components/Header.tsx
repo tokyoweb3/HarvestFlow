@@ -1,6 +1,7 @@
 import React from "react";
 import Headroom from "react-headroom";
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 
 import ConnectWalletButton from "@src/components/ConnectWalletButton";
 import MobileVideoBackground from "./MobileVideoBackground";
@@ -43,6 +44,8 @@ const XIcon: React.FC = () => (
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
+  const { i18n } = useTranslation();
+
   return (
     <>
       <Headroom disableInlineStyles>
@@ -58,20 +61,29 @@ const Header: React.FC = () => {
             />
           </a>
           <div className="hidden desktop:flex border-l border-r border-black divide-x divide-black">
-            <div className="flex items-center justify-center p-4">
-              <DiscordIcon />
-            </div>
-            <div className="flex items-center justify-center p-4">
+            <div className="flex items-center justify-center p-4 hover:cursor-pointer">
               <XIcon />
+            </div>
+            <div className="flex items-center justify-center p-4 hover:cursor-pointer">
+              <DiscordIcon />
             </div>
           </div>
           <div className="hidden desktop:flex items-center justify-center border-r border-black">
             <ConnectWalletButton />
           </div>
-          {/* TODO: Replace with a language switcher probably */}
           <div className="hidden desktop:flex items-center justify-center p-4">
-            <p className="text-header font-medium text-black uppercase ">
-              Japanese
+            <p
+              className="text-header font-medium text-black uppercase"
+              role="button"
+              onClick={() => {
+                if (i18n.language === "en") {
+                  i18n.changeLanguage("jp");
+                } else {
+                  i18n.changeLanguage("en");
+                }
+              }}
+            >
+              {i18n.language === "en" ? "Japanese" : "English"}
             </p>
           </div>
           <button
@@ -100,11 +112,19 @@ const Header: React.FC = () => {
           </button>
           <img src={MobileMenuLogo} alt="Harvestflow logo" className="" />
           <div className="flex flex-col items-center gap-10">
-            {/* TODO: Replace with a language switcher probably */}
-            <p className="text-heading5 font-medium text-black uppercase ">
-              Japanese
+            <p
+              className="text-heading5 font-medium text-black uppercase"
+              role="button"
+              onClick={() => {
+                if (i18n.language === "en") {
+                  i18n.changeLanguage("jp");
+                } else {
+                  i18n.changeLanguage("en");
+                }
+              }}
+            >
+              {i18n.language === "en" ? "Japanese" : "English"}
             </p>
-            {/* TODO: Replace with connect wallet button */}
             <ConnectWalletButton />
             <div className="flex gap-2">
               <div className="flex items-center justify-center p-4">

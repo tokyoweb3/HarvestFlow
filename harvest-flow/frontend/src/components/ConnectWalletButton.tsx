@@ -7,6 +7,7 @@ import { WalletMode } from "@paima/providers";
 import { middleEllipsis } from "@src/utils";
 import type { LoginInfo } from "@paima/sdk/mw-core";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const ConnectWalletButton: React.FC = () => {
   const mainController: MainController = useContext(AppContext);
@@ -14,6 +15,7 @@ const ConnectWalletButton: React.FC = () => {
     mainController.userAddress,
   );
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const loginInfo: LoginInfo = {
     mode: WalletMode.EvmInjected,
@@ -41,7 +43,7 @@ const ConnectWalletButton: React.FC = () => {
           }}
           className="text-heading5 desktop:text-header font-medium text-black uppercase p-4 hover:cursor-pointer"
         >
-          Connect Wallet
+          {t("general.connect_wallet")}
         </button>
       )}
     </div>
