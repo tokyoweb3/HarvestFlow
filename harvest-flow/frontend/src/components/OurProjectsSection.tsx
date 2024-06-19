@@ -81,7 +81,7 @@ const OurProjectsSection: React.FC = () => {
                 </div>
               </div>
             </div>
-            <button className="p-4 desktop:p-10 uppercase text-center w-full text-caption desktop:text-heading5 font-medium">
+            <button className="p-4 desktop:p-10 uppercase text-center w-full text-caption desktop:text-heading5 font-medium hover:cursor-not-allowed bg-greyLight">
               {t("general.view_more")}
             </button>
           </div>
