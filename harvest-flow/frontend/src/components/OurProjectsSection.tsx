@@ -2,12 +2,16 @@ import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 
 import SectionHeader from "./SectionHeader";
+import {
+  OUR_PROJECTS_REGISTER_EN,
+  OUR_PROJECTS_REGISTER_JP,
+} from "@src/utils/links";
 
 import backgroundImage from "../../assets/images/our_projects.jpg";
 import backgroundImageNext from "../../assets/images/our_projects_next_bg.jpg";
 
 const OurProjectsSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <div className="desktop:border-b desktop:border-black px-4 desktop:px-0 pb-16 desktop:pb-0 relative z-10 desktop:h-screen flex flex-col">
@@ -30,7 +34,16 @@ const OurProjectsSection: React.FC = () => {
                     i18nKey="homepage.our_projects.note"
                     components={[
                       // eslint-disable-next-line react/jsx-key
-                      <a href="#" className="underline" />,
+                      <a
+                        href={
+                          i18n.language === "en"
+                            ? OUR_PROJECTS_REGISTER_EN
+                            : OUR_PROJECTS_REGISTER_JP
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline"
+                      />,
                     ]}
                   ></Trans>
                 </p>

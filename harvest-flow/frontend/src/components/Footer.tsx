@@ -1,9 +1,16 @@
 import React from "react";
-import clsx from "clsx";
+import { useTranslation } from "react-i18next";
+
+import {
+  APAS_PORT_CONTACT_LINK_EN,
+  APAS_PORT_CONTACT_LINK_JP,
+  APAS_PORT_LINK,
+  DISCORD_LINK,
+  TWITTER_LINK,
+} from "@src/utils/links";
 
 import bgVideo from "../../assets/videos/pc_color_high.mp4";
 import bgVideoMobile from "../../assets/videos/sp_color_high.mp4";
-import { useTranslation } from "react-i18next";
 
 const XIcon: React.FC = () => (
   <svg
@@ -89,7 +96,7 @@ export const ApasPortLogo: React.FC = () => (
 );
 
 const Footer: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <footer className="relative w-screen h-screen">
@@ -116,23 +123,53 @@ const Footer: React.FC = () => {
               Join our community
             </h2>
             <div className="flex justify-center items-center gap-8">
-              <XIcon />
-              <DiscordIcon />
+              <a
+                href={TWITTER_LINK}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex items-center justify-center p-4 hover:cursor-pointer"
+              >
+                <XIcon />
+              </a>
+              <a
+                href={DISCORD_LINK}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex items-center justify-center p-4 hover:cursor-pointer"
+              >
+                <DiscordIcon />
+              </a>
             </div>
             <p className="text-center text-heading5">{t("footer.claim")}</p>
           </div>
           <div className="flex items-end justify-center gap-2">
             <p className="text-heading5 relative -top-2">Produced by</p>
-            <div className="max-w-[145px] w-full pb-[8px]">
+            <a
+              href={APAS_PORT_LINK}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="max-w-[145px] w-full pb-[8px]"
+            >
               <ApasPortLogo />
-            </div>
+            </a>
           </div>
         </div>
         <div className="mt-8 border-t border-white">
           <div className="flex flex-col desktop:flex-row justify-between items-center p-6 gap-4">
             <ul className="flex gap-4 desktop:gap-10">
               <li>
-                <p className="uppercase">Contact</p>
+                <a
+                  href={
+                    i18n.language === "en"
+                      ? APAS_PORT_CONTACT_LINK_EN
+                      : APAS_PORT_CONTACT_LINK_JP
+                  }
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  className="uppercase"
+                >
+                  Contact
+                </a>
               </li>
               <li>
                 <p className="uppercase">Privacy policy</p>

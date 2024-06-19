@@ -7,6 +7,7 @@ import ConnectWalletButton from "@src/components/ConnectWalletButton";
 import MobileVideoBackground from "./MobileVideoBackground";
 import { ApasPortLogo } from "./Footer";
 import CloseIcon from "@src/icons/CloseIcon";
+import { APAS_PORT_LINK, DISCORD_LINK, TWITTER_LINK } from "@src/utils/links";
 
 import Logo from "../../assets/images/logo.svg";
 import MobileMenuLogo from "../../assets/images/mobile-menu-logo.svg";
@@ -61,12 +62,22 @@ const Header: React.FC = () => {
             />
           </a>
           <div className="hidden desktop:flex border-l border-r border-black divide-x divide-black">
-            <div className="flex items-center justify-center p-4 hover:cursor-pointer">
+            <a
+              href={TWITTER_LINK}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="flex items-center justify-center p-4 hover:cursor-pointer"
+            >
               <XIcon />
-            </div>
-            <div className="flex items-center justify-center p-4 hover:cursor-pointer">
+            </a>
+            <a
+              href={DISCORD_LINK}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="flex items-center justify-center p-4 hover:cursor-pointer"
+            >
               <DiscordIcon />
-            </div>
+            </a>
           </div>
           <div className="hidden desktop:flex items-center justify-center border-r border-black">
             <ConnectWalletButton />
@@ -127,19 +138,34 @@ const Header: React.FC = () => {
             </p>
             <ConnectWalletButton />
             <div className="flex gap-2">
-              <div className="flex items-center justify-center p-4">
+              <a
+                href={TWITTER_LINK}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex items-center justify-center p-4"
+              >
                 <XIcon />
-              </div>
-              <div className="flex items-center justify-center p-4">
+              </a>
+              <a
+                href={DISCORD_LINK}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex items-center justify-center p-4"
+              >
                 <DiscordIcon />
-              </div>
+              </a>
             </div>
           </div>
           <div className="flex items-end justify-center gap-2 w-full">
             <p className="text-heading5 relative -top-2">Produced by</p>
-            <div className="max-w-[110px] w-full pb-[10px]">
+            <a
+              href={APAS_PORT_LINK}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="max-w-[110px] w-full pb-[10px]"
+            >
               <ApasPortLogo />
-            </div>
+            </a>
           </div>
         </div>
       </div>
