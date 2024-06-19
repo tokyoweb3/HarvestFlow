@@ -130,6 +130,7 @@ i18n
           "partners.shieldify.position": "",
           "partners.deform.name": "Deform",
           "partners.deform.position": "",
+          "footer.claim": "Ride the current of a new world.",
         },
       },
       jp: {
@@ -240,6 +241,7 @@ i18n
           "partners.shieldify.position": "",
           "partners.deform.name": "Deform",
           "partners.deform.position": "",
+          "footer.claim": "飛び込もう。新しい世界の流れに。",
         },
       },
     },

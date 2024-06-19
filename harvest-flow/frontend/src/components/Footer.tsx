@@ -3,6 +3,7 @@ import clsx from "clsx";
 
 import bgVideo from "../../assets/videos/pc_color_high.mp4";
 import bgVideoMobile from "../../assets/videos/sp_color_high.mp4";
+import { useTranslation } from "react-i18next";
 
 const XIcon: React.FC = () => (
   <svg
@@ -88,6 +89,8 @@ export const ApasPortLogo: React.FC = () => (
 );
 
 const Footer: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <footer className="relative w-screen h-screen">
       <video
@@ -116,9 +119,7 @@ const Footer: React.FC = () => {
               <XIcon />
               <DiscordIcon />
             </div>
-            <p className="text-center text-heading5">
-              &apos;Feel, think, and grow the world with your investments.&apos;
-            </p>
+            <p className="text-center text-heading5">{t("footer.claim")}</p>
           </div>
           <div className="flex items-end justify-center gap-2">
             <p className="text-heading5 relative -top-2">Produced by</p>
