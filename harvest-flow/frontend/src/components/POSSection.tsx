@@ -19,7 +19,7 @@ const POSSection: React.FC = () => {
           <p className="text-body text-justify">{t("homepage.pos.text")}</p>
         </div>
       </div>
-      <div className="w-full desktop:w-1/2 flex flex-col border-l border-black">
+      <div className="w-full desktop:w-1/2 flex flex-col desktop:border-l desktop:border-black">
         <SectionHeader title={t("homepage.social_action.title")} />
         <div className="flex-1 flex flex-col gap-6 desktop:gap-10 items-center justify-center desktop:max-w-[500px] desktop:mx-auto p-4">
           <p className="text-body text-justify">
