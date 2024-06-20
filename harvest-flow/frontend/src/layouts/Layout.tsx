@@ -11,7 +11,7 @@ import FeedbackModal from "@src/components/FeedbackModal";
 import Footer from "@src/components/Footer";
 import IntroSplashScreen from "@src/components/IntroSplashScreen";
 
-const ENABLE_INTRO_ANIMATION = false;
+const ENABLE_INTRO_ANIMATION = true;
 
 type LayoutProps = {
   children?: React.ReactNode;
