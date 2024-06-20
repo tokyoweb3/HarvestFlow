@@ -7,6 +7,7 @@ import MainController from "./MainController";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
+import TagManager from "react-gtm-module";
 
 import "./main.css";
 
@@ -251,6 +252,12 @@ i18n
       escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
     },
   });
+
+const tagManagerArgs = {
+  gtmId: "G-T10TL48SWJ",
+};
+
+TagManager.initialize(tagManagerArgs);
 
 // Application to Render
 const app = (
