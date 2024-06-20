@@ -1,11 +1,13 @@
 import React from "react";
 import Headroom from "react-headroom";
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 
 import ConnectWalletButton from "@src/components/ConnectWalletButton";
 import MobileVideoBackground from "./MobileVideoBackground";
 import { ApasPortLogo } from "./Footer";
 import CloseIcon from "@src/icons/CloseIcon";
+import { APAS_PORT_LINK, DISCORD_LINK, TWITTER_LINK } from "@src/utils/links";
 
 import Logo from "../../assets/images/logo.svg";
 import MobileMenuLogo from "../../assets/images/mobile-menu-logo.svg";
@@ -43,6 +45,8 @@ const XIcon: React.FC = () => (
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
+  const { i18n } = useTranslation();
+
   return (
     <>
       <Headroom disableInlineStyles>
@@ -58,20 +62,39 @@ const Header: React.FC = () => {
             />
           </a>
           <div className="hidden desktop:flex border-l border-r border-black divide-x divide-black">
-            <div className="flex items-center justify-center p-4">
-              <DiscordIcon />
-            </div>
-            <div className="flex items-center justify-center p-4">
+            <a
+              href={TWITTER_LINK}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="flex items-center justify-center p-4 hover:cursor-pointer"
+            >
               <XIcon />
-            </div>
+            </a>
+            <a
+              href={DISCORD_LINK}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="flex items-center justify-center p-4 hover:cursor-pointer"
+            >
+              <DiscordIcon />
+            </a>
           </div>
           <div className="hidden desktop:flex items-center justify-center border-r border-black">
             <ConnectWalletButton />
           </div>
-          {/* TODO: Replace with a language switcher probably */}
           <div className="hidden desktop:flex items-center justify-center p-4">
-            <p className="text-header font-medium text-black uppercase ">
-              Japanese
+            <p
+              className="text-header font-medium text-black uppercase"
+              role="button"
+              onClick={() => {
+                if (i18n.language === "en") {
+                  i18n.changeLanguage("jp");
+                } else {
+                  i18n.changeLanguage("en");
+                }
+              }}
+            >
+              {i18n.language === "en" ? "Japanese" : "English"}
             </p>
           </div>
           <button
@@ -100,26 +123,49 @@ const Header: React.FC = () => {
           </button>
           <img src={MobileMenuLogo} alt="Harvestflow logo" className="" />
           <div className="flex flex-col items-center gap-10">
-            {/* TODO: Replace with a language switcher probably */}
-            <p className="text-heading5 font-medium text-black uppercase ">
-              Japanese
+            <p
+              className="text-heading5 font-medium text-black uppercase"
+              role="button"
+              onClick={() => {
+                if (i18n.language === "en") {
+                  i18n.changeLanguage("jp");
+                } else {
+                  i18n.changeLanguage("en");
+                }
+              }}
+            >
+              {i18n.language === "en" ? "Japanese" : "English"}
             </p>
-            {/* TODO: Replace with connect wallet button */}
             <ConnectWalletButton />
             <div className="flex gap-2">
-              <div className="flex items-center justify-center p-4">
+              <a
+                href={TWITTER_LINK}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex items-center justify-center p-4"
+              >
                 <XIcon />
-              </div>
-              <div className="flex items-center justify-center p-4">
+              </a>
+              <a
+                href={DISCORD_LINK}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex items-center justify-center p-4"
+              >
                 <DiscordIcon />
-              </div>
+              </a>
             </div>
           </div>
           <div className="flex items-end justify-center gap-2 w-full">
             <p className="text-heading5 relative -top-2">Produced by</p>
-            <div className="max-w-[110px] w-full pb-[10px]">
+            <a
+              href={APAS_PORT_LINK}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="max-w-[110px] w-full pb-[10px]"
+            >
               <ApasPortLogo />
-            </div>
+            </a>
           </div>
         </div>
       </div>

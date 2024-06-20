@@ -12,6 +12,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['"Function Pro"', "sans-serif"],
+        noto: ['"Noto Sans JP"', "sans-serif"],
       },
       fontSize: {
         header: ["15px", "15px"],
@@ -31,7 +32,7 @@ module.exports = {
         tertiary: "#CADBE8",
         grey: "#B2B2B2",
         greyLight: "#E0E0E0",
-        greySuperLight: "#E7E7E7",
+        greySuperLight: "#E7EFF7",
       },
       animation: {
         fade: "fadeIn .5s ease-in-out",

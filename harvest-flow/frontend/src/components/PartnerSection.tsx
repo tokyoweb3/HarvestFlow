@@ -1,40 +1,20 @@
 import React from "react";
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 
 import SectionHeader from "./SectionHeader";
 import type { PartnerData } from "./PartnerSectionDesktopSlider";
 import PartnerSectionDesktopSlider from "./PartnerSectionDesktopSlider";
-
-import backgroundImage from "../../assets/images/hero-bg.svg";
 import PartnerSectionMobileSlider from "./PartnerSectionMobileSlider";
 
-const partnerData = [
-  {
-    subtitle: "FiNANCiE founde",
-    title: "HiRONAO KUNiMiTSU",
-    imageURL: backgroundImage,
-  },
-  {
-    subtitle: "Position 1",
-    title: "HiRONAO KUNiMiTSU 2",
-    imageURL: backgroundImage,
-  },
-  {
-    subtitle: "Position 2",
-    title: "HiRONAO KUNiMiTSU 3",
-    imageURL: backgroundImage,
-  },
-  {
-    subtitle: "Position 3",
-    title: "HiRONAO KUNiMiTSU 4",
-    imageURL: backgroundImage,
-  },
-  {
-    subtitle: "Position 4",
-    title: "HiRONAO KUNiMiTSU 5",
-    imageURL: backgroundImage,
-  },
-];
+import peopleImageKunimitsu from "../../assets/images/people_kunimitsu.jpg";
+import peopleImageMasakazu from "../../assets/images/people_masakazu.jpg";
+import peopleImageKanemoto from "../../assets/images/people_kanemoto.jpg";
+import peopleImageNagase from "../../assets/images/people_nagase.jpg";
+import peopleImageYamashita from "../../assets/images/people_yamashita.jpg";
+import peopleImageNarimoto from "../../assets/images/people_narimoto.jpg";
+import peopleImageShieldify from "../../assets/images/people_shieldify.jpg";
+import peopleImageDeform from "../../assets/images/people_deform.jpg";
 
 export const IndicatorDot: React.FC<{
   active?: boolean;
@@ -82,6 +62,51 @@ export const PartnerCard: React.FC<
 };
 
 const PartnerSection: React.FC = () => {
+  const { t } = useTranslation();
+
+  const partnerData = [
+    {
+      subtitle: t("partners.kunimitsu.position"),
+      title: t("partners.kunimitsu.name"),
+      imageURL: peopleImageKunimitsu,
+    },
+    {
+      subtitle: t("partners.nagase.position"),
+      title: t("partners.nagase.name"),
+      imageURL: peopleImageNagase,
+    },
+    {
+      subtitle: t("partners.narimoto.position"),
+      title: t("partners.narimoto.name"),
+      imageURL: peopleImageNarimoto,
+    },
+    {
+      subtitle: t("partners.yamashita.position"),
+      title: t("partners.yamashita.name"),
+      imageURL: peopleImageYamashita,
+    },
+    {
+      subtitle: t("partners.masakazu.position"),
+      title: t("partners.masakazu.name"),
+      imageURL: peopleImageMasakazu,
+    },
+    {
+      subtitle: t("partners.kanemoto.position"),
+      title: t("partners.kanemoto.name"),
+      imageURL: peopleImageKanemoto,
+    },
+    {
+      subtitle: t("partners.shieldify.position"),
+      title: t("partners.shieldify.name"),
+      imageURL: peopleImageShieldify,
+    },
+    {
+      subtitle: t("partners.deform.position"),
+      title: t("partners.deform.name"),
+      imageURL: peopleImageDeform,
+    },
+  ];
+
   return (
     <div className="relative z-10 border-b border-black desktop:h-screen flex flex-col pb-16 desktop:pb-0">
       <SectionHeader title="Partner" />

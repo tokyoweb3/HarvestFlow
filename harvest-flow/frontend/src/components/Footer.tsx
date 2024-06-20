@@ -1,7 +1,16 @@
 import React from "react";
-import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 
-import backgroundImage from "../../assets/images/hero-bg.svg";
+import {
+  APAS_PORT_CONTACT_LINK_EN,
+  APAS_PORT_CONTACT_LINK_JP,
+  APAS_PORT_LINK,
+  DISCORD_LINK,
+  TWITTER_LINK,
+} from "@src/utils/links";
+
+import bgVideo from "../../assets/videos/pc_color_high.mp4";
+import bgVideoMobile from "../../assets/videos/sp_color_high.mp4";
 
 const XIcon: React.FC = () => (
   <svg
@@ -86,59 +95,88 @@ export const ApasPortLogo: React.FC = () => (
   </svg>
 );
 
-type FooterProps = {
-  overlayingFooter?: boolean;
-};
+const Footer: React.FC = () => {
+  const { t, i18n } = useTranslation();
 
-const Footer: React.FC<FooterProps> = ({ overlayingFooter = false }) => {
   return (
-    <footer
-      className={clsx(
-        "relative z-[5]",
-        "bg-cover bg-no-repeat bg-center text-white",
-        overlayingFooter
-          ? "-mt-64 desktop:-mt-96 relative pt-96 desktop:pt-96"
-          : "pt-32",
-      )}
-      style={{ backgroundImage: `url(${backgroundImage})` }}
-    >
-      <div className="max-w-[500px] mx-auto flex flex-col gap-32">
-        <div className="flex flex-col gap-10">
-          <h2 className="text-heading4 desktop:text-heading2 text-center uppercase font-medium tracking-[0.85rem]">
-            Join our community
-          </h2>
-          <div className="flex justify-center items-center gap-8">
-            <XIcon />
-            <DiscordIcon />
+    <footer className="relative w-screen h-screen">
+      <video
+        src={bgVideo}
+        className="w-full h-full object-cover relative z-0 hidden desktop:block"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+      <video
+        src={bgVideoMobile}
+        className="w-full h-full object-cover relative z-0 block desktop:hidden"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+      <div className="w-full h-full absolute left-0 top-0 z-10 flex flex-col pt-32 text-white">
+        <div className="flex flex-col justify-center gap-32 flex-1">
+          <div className="flex flex-col gap-10">
+            <h2 className="text-heading4 desktop:text-heading2 text-center uppercase font-medium tracking-[0.85rem]">
+              Join our community
+            </h2>
+            <div className="flex justify-center items-center gap-8">
+              <a
+                href={TWITTER_LINK}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex items-center justify-center p-4 hover:cursor-pointer"
+              >
+                <XIcon />
+              </a>
+              <a
+                href={DISCORD_LINK}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex items-center justify-center p-4 hover:cursor-pointer"
+              >
+                <DiscordIcon />
+              </a>
+            </div>
+            <p className="text-center text-heading5">{t("footer.claim")}</p>
           </div>
-          <p className="text-center text-heading5">
-            &apos;Feel, think, and grow the world with your investments.&apos;
-          </p>
-        </div>
-        <div className="flex items-end justify-center gap-2">
-          <p className="text-heading5 relative -top-2">Produced by</p>
-          <div className="max-w-[145px] w-full pb-[8px]">
-            <ApasPortLogo />
+          <div className="flex items-end justify-center gap-2">
+            <p className="text-heading5 relative -top-2">Produced by</p>
+            <a
+              href={APAS_PORT_LINK}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="max-w-[145px] w-full pb-[8px]"
+            >
+              <ApasPortLogo />
+            </a>
           </div>
         </div>
-      </div>
-      <div className="mt-8 border-t border-white">
-        <div className="flex flex-col desktop:flex-row justify-between items-center p-6 gap-4">
-          <ul className="flex gap-4 desktop:gap-10">
-            <li>
-              <p className="uppercase">Contact</p>
-            </li>
-            <li>
-              <p className="uppercase">Legal</p>
-            </li>
-            <li>
-              <p className="uppercase">Terms of use</p>
-            </li>
-            <li>
-              <p className="uppercase">Privacy policy</p>
-            </li>
-          </ul>
-          <p>Copyright © Apasport all rights reserved.</p>
+        <div className="mt-8 border-t border-white">
+          <div className="flex flex-col desktop:flex-row justify-between items-center p-6 gap-4">
+            <ul className="flex gap-4 desktop:gap-10">
+              <li>
+                <a
+                  href={
+                    i18n.language === "en"
+                      ? APAS_PORT_CONTACT_LINK_EN
+                      : APAS_PORT_CONTACT_LINK_JP
+                  }
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  className="uppercase"
+                >
+                  Contact
+                </a>
+              </li>
+              <li>
+                <p className="uppercase">Privacy policy</p>
+              </li>
+            </ul>
+            <p>Copyright © Apasport all rights reserved.</p>
+          </div>
         </div>
       </div>
     </footer>

@@ -1,14 +1,18 @@
 import React, { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { useTranslation } from "react-i18next";
 
 import SectionHeader from "./SectionHeader";
 
 import backgroundImage from "../../assets/images/hero-bg.svg";
 import bgVideo from "../../assets/videos/pc_color_high.mp4";
 import bgVideoMobile from "../../assets/videos/sp_color_high.mp4";
+import featureImage1 from "../../assets/images/feature1.jpg";
+import featureImage2 from "../../assets/images/feature2.jpg";
 
 const FeaturesSection: React.FC = () => {
+  const { t } = useTranslation();
   const container = useRef();
   const scrollableTextWrapper = useRef<HTMLDivElement>();
 
@@ -48,11 +52,11 @@ const FeaturesSection: React.FC = () => {
   return (
     <div ref={container}>
       <div className="gsap-features-container">
-        <div className="flex flex-col desktop:flex-row divide-x divide-black border-b border-black relative z-10 desktop:h-screen bg-white gsap-features-inner">
+        <div className="flex flex-col desktop:flex-row divide-x divide-black border-b border-black relative z-10 desktop:h-screen bg-greySuperLight gsap-features-inner">
           <div className="hidden desktop:block w-1/2 bg-cover bg-no-repeat bg-center relative">
             <video
               src={bgVideo}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-left"
               autoPlay
               loop
               muted
@@ -60,7 +64,7 @@ const FeaturesSection: React.FC = () => {
             />
             <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full flex items-center justify-center">
               <h2 className="text-white text-heading3 desktop:text-heading2 font-medium uppercase tracking-widest text-center">
-                Features
+                {t("homepage.features.title")}
               </h2>
             </div>
           </div>
@@ -74,146 +78,57 @@ const FeaturesSection: React.FC = () => {
             >
               <source src={bgVideoMobile} type="video/mp4" />
             </video>
-            <div className="relative z-10 text-white desktop:text-black desktop:flex desktop:flex-col desktop:flex-1 desktop:max-h-screen">
-              <SectionHeader title="Features" />
+            <div className="relative z-10 text-white desktop:text-black desktop:flex desktop:flex-col desktop:flex-1 desktop:max-h-screen desktop:justify-between">
+              <SectionHeader title={t("homepage.features.title")} />
               <div
-                className="desktop:pt-24 desktop:flex-1 desktop:overflow-y-hidden desktop:pb-16 gsap-features-text-scroll-container"
+                className="desktop:pt-96 desktop:flex-1 desktop:overflow-y-hidden desktop:pb-16 gsap-features-text-scroll-container"
                 ref={scrollableTextWrapper}
               >
                 <div className="px-4 desktop:px-10 flex flex-col gap-10 desktop:gap-16">
                   <div className="bg-white desktop:bg-transparent text-black py-10 px-8 desktop:p-0 flex gap-8">
-                    <div className="flex flex-col gap-6 desktop:w-1/2">
+                    <div className="flex flex-col gap-6 desktop:w-full">
                       <h3 className="text-heading5 desktop:text-heading4 text-center desktop:text-left uppercase font-medium">
-                        An investment experience that transforms society with
-                        emotion.
+                        {t("homepage.features.feature1_title")}
                       </h3>
                       <div>
                         <img
-                          src={backgroundImage}
+                          src={featureImage1}
                           alt="background"
                           className="ml-3 mb-3 float-right desktop:hidden max-w-[150px] desktop:max-w-full"
                         />
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          doloremagna.Lorem ipsum dolor sit amet, consectetur
-                          adipisicing elit, sed do eiusmod tempor incididunt ut
-                          labore et dolore magna. Lorem ipsum dolor sit amet,
-                          consectetur adipisicing elit,sed do eiusmod tempor
-                          incididunt ut labore et doloremagna.
-                        </p>
+                        <p>{t("homepage.features.feature1_text")}</p>
                       </div>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit, sed do eiusmod tempor incididunt ut labore et
-                        doloremagna.Lorem ipsum dolor sit amet, consectetur
-                        adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna. Lorem ipsum dolor sit amet,
-                        consectetur adipisicing elit,sed do eiusmod tempor
-                        incididunt ut labore et doloremagna.
-                      </p>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit, sed do eiusmod tempor incididunt ut labore et
-                        doloremagna.Lorem ipsum dolor sit amet, consectetur
-                        adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna. Lorem ipsum dolor sit amet,
-                        consectetur adipisicing elit,sed do eiusmod tempor
-                        incididunt ut labore et doloremagna.
-                      </p>
                     </div>
-                    <div className="w-1/2 hidden desktop:block">
-                      <img src={backgroundImage} alt="background" />
+                    <div className="w-[270px] hidden desktop:block">
+                      <img src={featureImage1} alt="background" />
                     </div>
                   </div>
                   <div className="bg-white desktop:bg-transparent text-black py-10 px-8 desktop:p-0 flex gap-8">
-                    <div className="flex flex-col gap-6 desktop:w-1/2">
+                    <div className="flex flex-col gap-6 desktop:w-full">
                       <h3 className="text-heading5 desktop:text-heading4 text-center desktop:text-left uppercase font-medium">
-                        An investment experience that transforms society with
-                        emotion.
+                        {t("homepage.features.feature2_title")}
                       </h3>
                       <div>
                         <img
-                          src={backgroundImage}
+                          src={featureImage2}
                           alt="background"
                           className="ml-3 mb-3 float-right desktop:hidden max-w-[150px] desktop:max-w-full"
                         />
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          doloremagna.Lorem ipsum dolor sit amet, consectetur
-                          adipisicing elit, sed do eiusmod tempor incididunt ut
-                          labore et dolore magna. Lorem ipsum dolor sit amet,
-                          consectetur adipisicing elit,sed do eiusmod tempor
-                          incididunt ut labore et doloremagna.
-                        </p>
+                        <p>{t("homepage.features.feature2_text")}</p>
                       </div>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit, sed do eiusmod tempor incididunt ut labore et
-                        doloremagna.Lorem ipsum dolor sit amet, consectetur
-                        adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna. Lorem ipsum dolor sit amet,
-                        consectetur adipisicing elit,sed do eiusmod tempor
-                        incididunt ut labore et doloremagna.
-                      </p>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit, sed do eiusmod tempor incididunt ut labore et
-                        doloremagna.Lorem ipsum dolor sit amet, consectetur
-                        adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna. Lorem ipsum dolor sit amet,
-                        consectetur adipisicing elit,sed do eiusmod tempor
-                        incididunt ut labore et doloremagna.
-                      </p>
                     </div>
-                    <div className="w-1/2 hidden desktop:block">
-                      <img src={backgroundImage} alt="background" />
+                    <div className="w-[270px] hidden desktop:block">
+                      <img src={featureImage2} alt="background" />
                     </div>
                   </div>
                   <div className="bg-white desktop:bg-transparent text-black py-10 px-8 desktop:p-0 flex gap-8">
-                    <div className="flex flex-col gap-6 desktop:w-1/2">
+                    <div className="flex flex-col gap-6 desktop:w-full">
                       <h3 className="text-heading5 desktop:text-heading4 text-center desktop:text-left uppercase font-medium">
-                        An investment experience that transforms society with
-                        emotion.
+                        {t("homepage.features.feature3_title")}
                       </h3>
                       <div>
-                        <img
-                          src={backgroundImage}
-                          alt="background"
-                          className="ml-3 mb-3 float-right desktop:hidden max-w-[150px] desktop:max-w-full"
-                        />
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          doloremagna.Lorem ipsum dolor sit amet, consectetur
-                          adipisicing elit, sed do eiusmod tempor incididunt ut
-                          labore et dolore magna. Lorem ipsum dolor sit amet,
-                          consectetur adipisicing elit,sed do eiusmod tempor
-                          incididunt ut labore et doloremagna.
-                        </p>
+                        <p>{t("homepage.features.feature3_text")}</p>
                       </div>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit, sed do eiusmod tempor incididunt ut labore et
-                        doloremagna.Lorem ipsum dolor sit amet, consectetur
-                        adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna. Lorem ipsum dolor sit amet,
-                        consectetur adipisicing elit,sed do eiusmod tempor
-                        incididunt ut labore et doloremagna.
-                      </p>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit, sed do eiusmod tempor incididunt ut labore et
-                        doloremagna.Lorem ipsum dolor sit amet, consectetur
-                        adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna. Lorem ipsum dolor sit amet,
-                        consectetur adipisicing elit,sed do eiusmod tempor
-                        incididunt ut labore et doloremagna.
-                      </p>
-                    </div>
-                    <div className="w-1/2 hidden desktop:block">
-                      <img src={backgroundImage} alt="background" />
                     </div>
                   </div>
                 </div>

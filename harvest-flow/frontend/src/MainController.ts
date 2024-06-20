@@ -5,8 +5,8 @@ import type {
   NftContractDetails,
   NftDetails,
   NftHistory,
-  Summary,
-  UserDetails
+  // Summary,
+  UserDetails,
 } from "@harvest-flow/utils";
 import { Web3Provider } from "@ethersproject/providers";
 import { Contract, ethers } from "ethers";
@@ -27,8 +27,10 @@ export enum Page {
   Homepage = "/",
 }
 
-const NFT_FACTORY_CONTRACT_ADDRESS: string = process.env.TOKTOK_NFT_FACTORY_CONTRACT_ADDRESS;
-const PAYMENT_TOKEN_CONTRACT_ADDRESS: string = process.env.PAYMENT_TOKEN_CONTRACT_ADDRESS;
+const NFT_FACTORY_CONTRACT_ADDRESS: string =
+  process.env.TOKTOK_NFT_FACTORY_CONTRACT_ADDRESS;
+const PAYMENT_TOKEN_CONTRACT_ADDRESS: string =
+  process.env.PAYMENT_TOKEN_CONTRACT_ADDRESS;
 
 // This is a class that will be used to control the state of the application
 // the benefit of this is that it is very easy to test its logic unlike a react component
@@ -49,6 +51,8 @@ class MainController {
   }
 
   async enforceWalletConnected() {
+    // Temporarily disabled because of launching just the homepage
+    return;
     this.checkCallback();
     if (!this.isWalletConnected() || !this.userAddress) {
       await this.connectWallet({
@@ -61,7 +65,6 @@ class MainController {
   isWalletConnected = (): boolean => {
     return this.userAddress !== null;
   };
-
 
   async connectWallet(loginInfo: LoginInfo): Promise<string> {
     const response = await Paima.default.userWalletLogin(loginInfo);
@@ -78,8 +81,8 @@ class MainController {
     }
   }
 
-  async buyNft(contractAddress: string, amountToBuy : number, price: bigint){
-    if( !this.isWalletConnected()) {
+  async buyNft(contractAddress: string, amountToBuy: number, price: bigint) {
+    if (!this.isWalletConnected()) {
       this.callback(null, null, "Wallet not connected");
       return;
     }
@@ -100,10 +103,7 @@ class MainController {
     const amountToApprove = ethers.utils.parseEther(amountToPay.toString());
 
     try {
-      await paymentTokenContract.approve(
-        contractAddress,
-        amountToApprove,
-      );
+      await paymentTokenContract.approve(contractAddress, amountToApprove);
       approved = true;
     } catch (e) {
       console.error("Error approving payment: ", e);
@@ -115,7 +115,11 @@ class MainController {
       this.callback("Buying NFT", null, null);
       try {
         // TODO: show some info about the NFT
-        const lendingContract = new Contract(contractAddress, TokTokNftAbi, this.provider.getSigner());
+        const lendingContract = new Contract(
+          contractAddress,
+          TokTokNftAbi,
+          this.provider.getSigner(),
+        );
         await lendingContract.publicMint(amountToBuy);
         this.callback(null, "NFT bought successfully", null);
       } catch (e) {
@@ -226,15 +230,17 @@ class MainController {
     });
   }
 
-  async harvestAll(nfts: NftDetails[]){
-    if(!this.isWalletConnected()){
+  async harvestAll(nfts: NftDetails[]) {
+    if (!this.isWalletConnected()) {
       this.callback(null, null, "Wallet not connected");
       return;
     }
 
     // sort them by contract address
     const sortedNfts = Array.from(nfts);
-    sortedNfts.sort((a, b) => a.contractAddress.localeCompare(b.contractAddress));
+    sortedNfts.sort((a, b) =>
+      a.contractAddress.localeCompare(b.contractAddress),
+    );
 
     // Make two list for the parameter, fist is for the address and the second is for the token id
     const addresses: string[] = [];
@@ -248,7 +254,11 @@ class MainController {
       "function claimAll(address[] memory, uint256[] memory) public",
     ];
 
-    const factoryContract = new Contract(NFT_FACTORY_CONTRACT_ADDRESS, factoryAbi, this.provider.getSigner());
+    const factoryContract = new Contract(
+      NFT_FACTORY_CONTRACT_ADDRESS,
+      factoryAbi,
+      this.provider.getSigner(),
+    );
     this.callback("Harvesting all", null, null);
     try {
       await factoryContract.claimAll(addresses, tokenIds);
@@ -258,10 +268,9 @@ class MainController {
       this.callback(null, null, "Error harvesting all");
       return;
     }
-
   }
 
-  async getSummary(): Promise<Summary> {
+  async getSummary(): Promise<unknown> {
     const response = await Paima.default.getSummary();
     if (!response.success) {
       throw new Error((response as FailedResult).errorMessage);

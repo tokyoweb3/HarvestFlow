@@ -1,11 +1,14 @@
 import React from "react";
+import { Trans, useTranslation } from "react-i18next";
 
 import SectionHeader from "./SectionHeader";
 
 const HowToStartSection: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="relative z-10 desktop:h-screen border-b border-black flex flex-col">
-      <SectionHeader title="How to start" />
+      <SectionHeader title={t("homepage.how_to_start.title")} />
       <div className="py-16 desktop:py-32 flex-1 desktop:flex desktop:flex-col desktop:justify-center">
         <div className="max-w-[1188px] px-4 desktop:px-0 w-full mx-auto overflow-x-auto">
           <div className="grid grid-cols-[65vw_65vw_65vw_65vw_5vw] desktop:grid-cols-4 grid-rows-1">
@@ -21,18 +24,16 @@ const HowToStartSection: React.FC = () => {
               <div className="w-full h-20 bg-[#1C1C64] border-l border-black border-b"></div>
               <div className="px-10 py-8 flex flex-col gap-10 border-l border-black">
                 <h3 className="text-heading5 desktop:text-heading4 uppercase font-medium">
-                  Lending Application
+                  {t("homepage.how_to_start.step1.title")}
                 </h3>
                 <div className="flex flex-col gap-6">
-                  <p>
-                    After agreeing to the terms of use on the project page that
-                    is currently accepting applications, select the amount and
-                    apply (MINT).
-                  </p>
-                  <p className="text-caption">
-                    *Please ensure that you hold the cryptocurrency. accepted by
-                    the project on the supported blockchain.
-                  </p>
+                  <Trans
+                    i18nKey="homepage.how_to_start.step1.text"
+                    components={[
+                      // eslint-disable-next-line react/jsx-key
+                      <p className="text-caption"></p>,
+                    ]}
+                  />
                 </div>
               </div>
             </div>
@@ -48,11 +49,11 @@ const HowToStartSection: React.FC = () => {
               <div className="w-full h-20 bg-[#1C1C64] border-t border-black"></div>
               <div className="px-10 py-8 flex flex-col gap-10">
                 <h3 className="text-heading5 desktop:text-heading4 uppercase font-medium">
-                  Proof of Support (POS)NFT Issuance
+                  {t("homepage.how_to_start.step2.title")}
                 </h3>
                 <div className="flex flex-col gap-6">
                   <p className="text-caption">
-                    A POS NFT will be issued to the wallet used for lending.
+                    {t("homepage.how_to_start.step2.text")}
                   </p>
                 </div>
               </div>
@@ -69,18 +70,17 @@ const HowToStartSection: React.FC = () => {
               <div className="w-full h-20 bg-[#1C1C64]"></div>
               <div className="px-10 py-8 flex flex-col gap-10">
                 <h3 className="text-heading5 desktop:text-heading4 uppercase font-medium">
-                  Receiving Yield and Principal
+                  {t("homepage.how_to_start.step3.title")}
                 </h3>
                 <div className="flex flex-col gap-6">
                   <p className="text-caption">
-                    To claim the yield and principal, connect the wallet holding
-                    the POS and access the account page.
+                    {t("homepage.how_to_start.step3.text")}
                   </p>
                 </div>
               </div>
             </div>
             <div className="relative">
-              <div className="absolute h-[calc(100%-280px)] right-0 bottom-0 w-[1px] border-r border-dashed border-black" />
+              <div className="absolute h-[calc(100%-280px)] right-0 bottom-0 w-[1px]" />
               <div className="w-full h-20 bg-transparent"></div>
               <div className="w-full h-20 bg-transparent"></div>
               <div className="w-full h-20 bg-transparent"></div>
@@ -91,11 +91,11 @@ const HowToStartSection: React.FC = () => {
               </div>
               <div className="px-10 py-8 flex flex-col gap-10">
                 <h3 className="text-heading5 desktop:text-heading4 uppercase font-medium">
-                  Checking Project Details
+                  {t("homepage.how_to_start.step4.title")}
                 </h3>
                 <div className="flex flex-col gap-6">
                   <p className="text-caption">
-                    You can view project and/or RWA details via the Owner Page.
+                    {t("homepage.how_to_start.step4.text")}
                   </p>
                 </div>
               </div>

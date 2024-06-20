@@ -1,7 +1,12 @@
 import React from "react";
 
 const FocusAreaFinancial: React.FC = () => (
-  <svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    viewBox="0 0 70 70"
+    width="100%"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <rect width="70" height="70" rx="35" fill="#325AB4" />
     <g clipPath="url(#clip0_200_2243)">
       <path
