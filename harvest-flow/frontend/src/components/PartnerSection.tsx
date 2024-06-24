@@ -15,6 +15,7 @@ import peopleImageYamashita from "../../assets/images/people_yamashita.jpg";
 import peopleImageNarimoto from "../../assets/images/people_narimoto.jpg";
 import peopleImageShieldify from "../../assets/images/people_shieldify.jpg";
 import peopleImageDeform from "../../assets/images/people_deform.jpg";
+import peopleImageWatanabe from "../../assets/images/people_watanabe.jpg";
 
 export const IndicatorDot: React.FC<{
   active?: boolean;
@@ -49,7 +50,7 @@ export const PartnerCard: React.FC<
       ></div>
       <div className="flex flex-col justify-end gap-6 desktop:gap-20 flex-1 pb-2">
         <div className="flex flex-col gap-1 desktop:gap-2">
-          <p className="text-center uppercase text-caption desktop:text-body animate-fade">
+          <p className="text-center uppercase text-caption desktop:text-body animate-fade min-h-[36px]">
             {subtitle}
           </p>
           <h3 className="text-bodyLarge desktop:text-heading4 uppercase font-medium text-center animate-fade">
@@ -69,6 +70,11 @@ const PartnerSection: React.FC = () => {
       subtitle: t("partners.kunimitsu.position"),
       title: t("partners.kunimitsu.name"),
       imageURL: peopleImageKunimitsu,
+    },
+    {
+      subtitle: t("partners.watanabe.position"),
+      title: t("partners.watanabe.name"),
+      imageURL: peopleImageWatanabe,
     },
     {
       subtitle: t("partners.nagase.position"),
@@ -109,7 +115,7 @@ const PartnerSection: React.FC = () => {
 
   return (
     <div className="relative z-10 border-b border-black desktop:h-screen flex flex-col pb-16 desktop:pb-0">
-      <SectionHeader title="Partner" />
+      <SectionHeader title={t("partners.title")} />
       <div className="desktop:py-16 px-4 desktop:px-0 flex-1 flex flex-col justify-center">
         <div className="max-w-[1188px] mx-auto relative z-10 px-4 desktop:px-0 w-full">
           <div className="hidden desktop:block">

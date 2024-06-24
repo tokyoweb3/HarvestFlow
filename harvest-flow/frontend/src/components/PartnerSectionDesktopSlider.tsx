@@ -16,7 +16,7 @@ const PartnerSectionDesktopSlider: React.FC<{
 
   const handleCardClick = () => {
     if (currentSlide + 3 < partnerData.length) {
-      setCurrentSlide(currentSlide + 1);
+      setCurrentSlide(currentSlide + 3);
     } else {
       setCurrentSlide(0);
     }
@@ -36,13 +36,13 @@ const PartnerSectionDesktopSlider: React.FC<{
         ))}
       </div>
       <div className="flex gap-6 justify-center items-center">
-        {Array(partnerData.length - 3 + 1)
+        {Array(Math.ceil(partnerData.length / 3))
           .fill(1)
           .map((_, index) => (
             <IndicatorDot
               key={index}
-              active={index === currentSlide}
-              onClick={() => setCurrentSlide(index)}
+              active={index === Math.ceil(currentSlide / 3)}
+              onClick={() => setCurrentSlide(index * 3)}
             />
           ))}
       </div>

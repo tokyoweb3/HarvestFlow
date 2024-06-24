@@ -11,7 +11,7 @@ const AboutHarvestFlowSection: React.FC = () => {
 
   return (
     <div className="flex flex-col-reverse desktop:flex-row divide-x divide-black border-b border-black relative z-10 desktop:h-screen bg-greySuperLight">
-      <div className="w-full desktop:w-1/3 desktop:flex desktop:flex-col">
+      <div className="w-full desktop:w-[40%] desktop:flex desktop:flex-col">
         <div className="hidden desktop:block">
           <SectionHeader title={t("homepage.about.title")} />
         </div>
@@ -27,13 +27,13 @@ const AboutHarvestFlowSection: React.FC = () => {
         </div>
       </div>
       <div
-        className="w-full desktop:w-2/3 bg-cover bg-no-repeat bg-center relative min-h-[220px] desktop:min-h-[initial]"
+        className="w-full desktop:w-[60%] bg-cover bg-no-repeat bg-center relative min-h-[220px] desktop:min-h-[initial]"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
         <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full flex flex-col items-center justify-center p-10">
           <div className="h-20 hidden desktop:block"></div>
           <h2 className="text-white text-heading3 desktop:text-heading2 font-medium uppercase tracking-widest text-center whitespace-pre-line">
-            {t("homepage.about.title")}
+            {t("homepage.about.title", { lng: "en" })}
           </h2>
           {/* <div className="absolute desktop:relative -bottom-10 desktop:bottom-0 h-20 flex items-center justify-center desktop:justify-end w-full">
             <button

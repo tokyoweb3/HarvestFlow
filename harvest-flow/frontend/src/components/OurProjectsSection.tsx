@@ -22,12 +22,19 @@ const OurProjectsSection: React.FC = () => {
           style={{ backgroundImage: `url(${backgroundImage})` }}
         ></div>
         <div className="w-full desktop:w-1/2 flex divide-x divide-black">
-          <div className="w-full desktop:w-2/3 flex flex-col desktop:pt-12 justify-end">
-            <div className="flex flex-col gap-4 desktop:gap-6 px-4 py-8 desktop:p-10">
-              <h3 className="text-heading4 desktop:text-heading3 text-center desktop:text-left uppercase font-medium">
-                {t("homepage.our_projects.heading")}
-              </h3>
-              <p>{t("homepage.our_projects.text")}</p>
+          <div className="w-full desktop:w-2/3 flex flex-col desktop:pt-8 justify-end">
+            <div className="flex flex-col gap-4 desktop:gap-6 px-4 py-8 desktop:p-10 desktop:pt-0">
+              <div className="flex flex-col gap-2">
+                <h4 className="text-caption desktop:text-body text-center desktop:text-left uppercase font-normal">
+                  RWA-001
+                </h4>
+                <h3 className="text-heading4 desktop:text-heading4 text-center desktop:text-left uppercase font-medium">
+                  {t("homepage.our_projects.heading")}
+                </h3>
+              </div>
+              <p className="text-bodySmaller">
+                {t("homepage.our_projects.text")}
+              </p>
               <div className="py-2 px-4 bg-greySuperLight border border-black">
                 <p className="font-medium uppercase text-center whitespace-pre-line">
                   <Trans
@@ -66,7 +73,7 @@ const OurProjectsSection: React.FC = () => {
                 </h4>
                 <div className="py-6 desktop:py-8 px-4">
                   <h5 className="text-bodyLarge desktop:text-heading4 text-center uppercase">
-                    Open
+                    {t("homepage.our_projects.coming_soon")}
                   </h5>
                 </div>
               </div>
@@ -74,22 +81,22 @@ const OurProjectsSection: React.FC = () => {
                 <h4 className="uppercase text-caption desktop:text-body text-center p-2 border-b border-black border-dashed">
                   {t("general.asset_type")}
                 </h4>
-                <div className="py-6 desktop:py-8 px-4">
+                <div className="py-6 desktop:py-8 px-4 desktop:px-2">
                   <h5 className="text-bodyLarge desktop:text-heading4 text-center uppercase">
-                    Vehicle
+                    {t("homepage.our_projects.vehicle")}
                   </h5>
                 </div>
               </div>
             </div>
-            <button className="p-4 desktop:p-10 uppercase text-center w-full text-caption desktop:text-heading5 font-medium hover:cursor-not-allowed bg-greyLight">
+            <button className="p-4 desktop:p-8 uppercase text-center w-full text-caption desktop:text-heading5 font-medium hover:cursor-not-allowed bg-greyLight">
               {t("general.view_more")}
             </button>
           </div>
           <div
-            className="hidden desktop:flex w-1/3 flex-col gap-4 items-center justify-center p-10 bg-center bg-cover bg-no-repeat text-white"
+            className="hidden desktop:flex w-1/3 flex-col gap-4 items-center justify-center p-8 bg-center bg-cover bg-no-repeat text-white"
             style={{ backgroundImage: `url(${backgroundImageNext})` }}
           >
-            <p className="uppercase text-center text-heading5 desktop:text-heading4">
+            <p className="uppercase text-center text-heading5 desktop:text-heading4Smaller">
               {t("general.next_project")}
             </p>
             <p className="uppercase text-center">{t("general.coming_soon")}</p>
