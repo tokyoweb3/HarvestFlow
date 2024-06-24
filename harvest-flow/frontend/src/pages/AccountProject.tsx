@@ -11,7 +11,7 @@ import AccountProjectAssetOverviewSection from "@src/components/AccountProjectAs
 import type MainController from "@src/MainController";
 import { Page } from "@src/MainController";
 import { AppContext } from "@src/main";
-import type { NftDetails } from "@harvest-flow/utils";
+import type { DeviceDetails, NftDetails } from "@harvest-flow/utils";
 import AccountProjectNavigation, {
   AccountProjectNavigationLink,
 } from "@src/components/AccountProjectNavigation";
@@ -24,6 +24,7 @@ const AccountProject: React.FC = () => {
   const tokenId = searchParams.get("tokenId") || "";
 
   const [nftDetails, setNftDetails] = useState<NftDetails>(null);
+  const [rwaData, setRwaData] = useState<DeviceDetails>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -34,11 +35,20 @@ const AccountProject: React.FC = () => {
           nft.tokenId === tokenId
         ) {
           setNftDetails(nft);
-          setIsLoading(false);
         }
       });
     });
+
+    mainController.getRWAData(contractAddress, tokenId).then((data) => {
+      setRwaData(data);
+    });
   }, [contractAddress, tokenId]);
+
+  useEffect(() => {
+    if (nftDetails && rwaData) {
+      setIsLoading(false);
+    }
+  }, [nftDetails, rwaData]);
 
   return (
     <Layout>
@@ -62,7 +72,7 @@ const AccountProject: React.FC = () => {
                   className="gsap-section-trigger"
                   id={AccountProjectNavigationLink.AssetOverview}
                 >
-                  <AccountProjectAssetOverviewSection />
+                  <AccountProjectAssetOverviewSection deviceDetails={rwaData}/>
                 </div>
                 <div
                   className="gsap-section-trigger"

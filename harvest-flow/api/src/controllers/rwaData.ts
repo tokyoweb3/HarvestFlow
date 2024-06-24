@@ -1,6 +1,6 @@
 import { Get, Query, Route } from "tsoa";
 import { Controller } from "@tsoa/runtime";
-import { DeviceDetails, DeviceSummary, NftDetails } from "@harvest-flow/utils";
+import { DeviceDetails } from "@harvest-flow/utils";
 import { getDeviceSummary } from "@harvest-flow/game-logic/build/gmsCloudApi";
 
 @Route('rwaData')
@@ -10,7 +10,7 @@ export class RWADataController extends Controller {
     console.log("Getting device details");
 
     //get deviceId
-    const deviceId = "10254142";
+    const deviceId = 10254142;
 
     const [deviceSummary] = await Promise.all([
       getDeviceSummary(deviceId)
