@@ -1,6 +1,7 @@
 import * as Paima from "./paima/middleware.js";
 import type { FailedResult, LoginInfo } from "@paima/sdk/mw-core";
 import type {
+  DeviceDetails,
   NftContract,
   NftContractDetails,
   NftDetails,
@@ -270,6 +271,14 @@ class MainController {
 
   async getSummary(): Promise<unknown> {
     const response = await Paima.default.getSummary();
+    if (!response.success) {
+      throw new Error((response as FailedResult).errorMessage);
+    }
+    return response.data;
+  }
+
+  async getRWAData(contractAddress: string, tokenId: string): Promise<DeviceDetails> {
+    const response = await Paima.default.getRWAData(contractAddress, tokenId);
     if (!response.success) {
       throw new Error((response as FailedResult).errorMessage);
     }
