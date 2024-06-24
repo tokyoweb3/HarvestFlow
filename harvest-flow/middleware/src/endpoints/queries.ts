@@ -5,14 +5,14 @@ import {
     backendQueryGetAllNfts,
     backendQueryGetDetailedNftContract,
     backendQueryGetNftHistoryForProject,
-    backendQueryGetNftHistoryForUser,
+    backendQueryGetNftHistoryForUser, backendQueryGetRWAData,
     backendQueryGetSummary,
     backendQueryGetUserDetails
 } from "../helpers/query-constructors";
 import {
     GetAllNftContractsResponse,
     GetDetailedNftContractResponse,
-    GetNftHistoryResponse,
+    GetNftHistoryResponse, GetRWADataResponse,
     GetSummaryResponse,
     GetUserDetailsResponse
 } from "../types";
@@ -139,11 +139,31 @@ async function getSummary(): Promise<GetSummaryResponse | FailedResult> {
     }
 }
 
+async function getRWAData(contractAddress: string, tokenId: string) : Promise<GetRWADataResponse | FailedResult> {
+    const errorFxn = buildEndpointErrorFxn('getRWAData');
+    let response: Response;
+
+    try {
+        const query = backendQueryGetRWAData(contractAddress, tokenId);
+        response = await fetch(query);
+    } catch (err) {
+        return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+    }
+
+    try {
+        const rwaData = (await response.json());
+        return {success: true, data: rwaData};
+    } catch (err) {
+        return errorFxn(PaimaMiddlewareErrorCode.INVALID_RESPONSE_FROM_BACKEND, err);
+    }
+}
+
 export const queryEndpoints = {
     getAllNfts,
     getDetailedNftContract,
     getNftHistoryForUser,
     getHistoryForProject,
     getUserDetails,
-    getSummary
+    getSummary,
+    getRWAData
 }
