@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as process from "node:process";
 import { DeviceSummary } from "@harvest-flow/utils";
+import { DeviceSummaryResponse } from "./types";
 
 const GMS_CLOUD_CLIENT_ID = process.env.GMS_CLOUD_CLIENT_ID!;
 const GMS_CLOUD_CLIENT_SECRET = process.env.GMS_CLOUD_CLIENT_SECRET!;
@@ -10,7 +11,7 @@ let gmsCloudTokenExpiresAt: number | null = null;
 
 const GMS_CLOUD_BASE_URL = 'https://api.cloud-gms.com';
 const GMS_CLOUD_REQUEST_TOKEN_URL = GMS_CLOUD_BASE_URL + '/v1/oauth2/token';
-const GMS_CLOUD_GET_DEVICE_SUMMARY_URL = GMS_CLOUD_BASE_URL + 'v3/stats/devices/summary';
+const GMS_CLOUD_GET_DEVICE_SUMMARY_URL = GMS_CLOUD_BASE_URL + '/v3/stats/devices/summary';
 
 async function requestToken() {
   console.debug('Requesting access token');
@@ -29,6 +30,9 @@ async function requestToken() {
   gmsCloudToken = authResponse.data.access_token;
   gmsCloudTokenExpiresAt = Date.now() + authResponse.data.expires_in * 1000;
 
+  console.debug('Access token:', gmsCloudToken);
+  console.debug('Expires at:', new Date(gmsCloudTokenExpiresAt));
+
 }
 
 export async function getAccessToken() {
@@ -39,10 +43,8 @@ export async function getAccessToken() {
   return gmsCloudToken;
 }
 
-export async function getDeviceSummary(deviceId: string)  {
+export async function getDeviceSummary(deviceId: number)  {
   console.debug('Getting device summary for device:', deviceId);
-
-  const token = await getAccessToken();
 
   const accessToken = await getAccessToken();
   const response = await axios.get(GMS_CLOUD_GET_DEVICE_SUMMARY_URL, {
@@ -50,7 +52,7 @@ export async function getDeviceSummary(deviceId: string)  {
       Authorization: `Bearer ${accessToken}`
     },
     params: {
-      "device": deviceId
+      "device[]": deviceId
     }
   });
 
@@ -58,16 +60,30 @@ export async function getDeviceSummary(deviceId: string)  {
     throw new Error('Failed to get device summary');
   }
 
-  if (!(response.data?.length > 0)) {
-    throw new Error('Device not found');
+  const responseBody : DeviceSummaryResponse = response.data;
+
+  if ( responseBody.err ) {
+    console.error('Error:', responseBody.err);
+    throw new Error(responseBody.err);
   }
 
-  const deviceData = response.data.find((device: any) => device.deviceId === deviceId);
+  if (!(responseBody.data?.length > 0)) {
+    console.error('Invalid response:', response.data);
+    throw new Error(response.data?.err || 'Failed to get device summary');
+  }
+
+  console.debug('Response:', responseBody);
+
+  const deviceData = responseBody.data.find(device => device.deviceId === deviceId);
+
+  if (!deviceData) {
+    throw new Error('Device not found');
+  }
 
   const summaryData : DeviceSummary = {
     deviceId: deviceData.deviceId,
     totalMileage: deviceData.totalMileage,
-    totalDrivingTime: deviceData.totalDrivingTime
+    totalDrivingTime: deviceData.totalDrivingtime
   }
 
   console.debug('Device summary:', summaryData);

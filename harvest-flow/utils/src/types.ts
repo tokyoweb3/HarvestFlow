@@ -84,7 +84,7 @@ export interface Summary {
 }
 
 export interface DeviceSummary {
-    deviceId: string;
+    deviceId: number;
     totalMileage: number;
     totalDrivingTime: number;
 }
@@ -101,7 +101,7 @@ interface DailyDeviceSummary {
 }
 
 export interface DeviceDetails {
-    deviceId: string;
+    deviceId: number;
     totalMileage: number;
     totalDrivingTime: number;
     assetType: string;

@@ -4,6 +4,7 @@ import type { DataTileProps } from "./DataTile";
 import DataTile from "./DataTile";
 
 import tukTukImage from "../../assets/images/tuktuk.jpg";
+import type { DeviceDetails } from "@harvest-flow/utils";
 
 const DriverAvatar = () => (
   <svg viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,7 +35,7 @@ const ExtraSmallTile: React.FC<DataTileProps> = ({
   );
 };
 
-const AccountProjectAssetOverviewSection: React.FC = () => {
+const AccountProjectAssetOverviewSection: React.FC<{deviceDetails: DeviceDetails}> = ({deviceDetails}) => {
   return (
     <div className="flex flex-col gap-14">
       <h2 className="text-center text-heading3 font-medium uppercase">
@@ -49,8 +50,8 @@ const AccountProjectAssetOverviewSection: React.FC = () => {
                 style={{ backgroundImage: `url(${tukTukImage})` }}
               ></div>
               <div className="grid grid-rows-2 grid-cols-1">
-                <ExtraSmallTile title="Asset ID" value="1" />
-                <ExtraSmallTile title="Vehicle model" value="TVS Model 1" />
+                <ExtraSmallTile title="Asset ID" value={deviceDetails.deviceId.toString()} />
+                <ExtraSmallTile title="Vehicle model" value={deviceDetails.vehicleModel} />
               </div>
             </div>
             <div className="flex w-full">
@@ -75,12 +76,12 @@ const AccountProjectAssetOverviewSection: React.FC = () => {
                 <ExtraSmallTile title="DNFT ID" value="0x123...789" />
                 <ExtraSmallTile
                   title="Asset type"
-                  value="Two wheeled vehicle"
+                  value={deviceDetails.assetType}
                 />
               </div>
               <div className="grid grid-cols-2 grid-rows-1">
-                <ExtraSmallTile title="Mileage" value="35,122 KM" />
-                <ExtraSmallTile title="Mileage time" value="400 hrs" />
+                <ExtraSmallTile title="Mileage" value={`${deviceDetails.totalMileage} KM`} />
+                <ExtraSmallTile title="Mileage time" value={`${Math.floor(deviceDetails.totalDrivingTime/3600)} hrs`} />
               </div>
             </div>
             <div className="flex w-full">
