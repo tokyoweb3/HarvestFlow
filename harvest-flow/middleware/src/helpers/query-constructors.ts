@@ -51,3 +51,13 @@ export function backendQueryGetSummary(): string {
 
     return buildBackendQuery(endpoint, options);
 }
+
+export function backendQueryGetRWAData(contractAddress: string, tokenId: string): string {
+    const endpoint = 'rwaData';
+    const options : QueryOptions = {
+        contractAddress,
+        tokenId,
+    }
+
+    return buildBackendQuery(endpoint, options);
+}
