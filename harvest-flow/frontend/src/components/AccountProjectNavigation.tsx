@@ -2,15 +2,15 @@ import React from "react";
 import clsx from "clsx";
 import gsap from "gsap";
 
-export enum AccountNavigationLink {
-  Dashboard = "dashboard",
-  ProjectHistory = "project-history",
-  Update = "update",
+export enum AccountProjectNavigationLink {
   YourNFT = "your-nft",
-  UpcomingProjects = "upcoming-projects",
+  AssetOverview = "asset-overview",
+  Earn = "earn",
+  RWA = "rwa",
+  Updates = "updates",
 }
 
-const AccountNavigation: React.FC = () => {
+const AccountProjectNavigation: React.FC = () => {
   const getElement = (dataAttribute: string) => {
     return document.getElementById(dataAttribute);
   };
@@ -33,42 +33,9 @@ const AccountNavigation: React.FC = () => {
           "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
         )}
         onClick={() => {
-          handleScrollToElement(AccountNavigationLink.Dashboard);
+          handleScrollToElement(AccountProjectNavigationLink.YourNFT);
         }}
-        data-to-scrollspy-id={AccountNavigationLink.Dashboard}
-      >
-        Dashboard
-      </li>
-      <li
-        className={clsx(
-          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
-        )}
-        onClick={() => {
-          handleScrollToElement(AccountNavigationLink.ProjectHistory);
-        }}
-        data-to-scrollspy-id={AccountNavigationLink.ProjectHistory}
-      >
-        Project history
-      </li>
-      <li
-        className={clsx(
-          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
-        )}
-        onClick={() => {
-          handleScrollToElement(AccountNavigationLink.Update);
-        }}
-        data-to-scrollspy-id={AccountNavigationLink.Update}
-      >
-        Update
-      </li>
-      <li
-        className={clsx(
-          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
-        )}
-        onClick={() => {
-          handleScrollToElement(AccountNavigationLink.YourNFT);
-        }}
-        data-to-scrollspy-id={AccountNavigationLink.YourNFT}
+        data-to-scrollspy-id={AccountProjectNavigationLink.YourNFT}
       >
         Your NFT
       </li>
@@ -77,14 +44,47 @@ const AccountNavigation: React.FC = () => {
           "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
         )}
         onClick={() => {
-          handleScrollToElement(AccountNavigationLink.UpcomingProjects);
+          handleScrollToElement(AccountProjectNavigationLink.AssetOverview);
         }}
-        data-to-scrollspy-id={AccountNavigationLink.UpcomingProjects}
+        data-to-scrollspy-id={AccountProjectNavigationLink.AssetOverview}
       >
-        Upcoming projects
+        Asset overview
+      </li>
+      <li
+        className={clsx(
+          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
+        )}
+        onClick={() => {
+          handleScrollToElement(AccountProjectNavigationLink.Earn);
+        }}
+        data-to-scrollspy-id={AccountProjectNavigationLink.Earn}
+      >
+        Earn
+      </li>
+      <li
+        className={clsx(
+          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
+        )}
+        onClick={() => {
+          handleScrollToElement(AccountProjectNavigationLink.RWA);
+        }}
+        data-to-scrollspy-id={AccountProjectNavigationLink.RWA}
+      >
+        RWA
+      </li>
+      <li
+        className={clsx(
+          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
+        )}
+        onClick={() => {
+          handleScrollToElement(AccountProjectNavigationLink.Updates);
+        }}
+        data-to-scrollspy-id={AccountProjectNavigationLink.Updates}
+      >
+        Updates
       </li>
     </ul>
   );
 };
 
-export default AccountNavigation;
+export default AccountProjectNavigation;

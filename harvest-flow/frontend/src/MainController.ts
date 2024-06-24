@@ -51,8 +51,6 @@ class MainController {
   }
 
   async enforceWalletConnected() {
-    // Temporarily disabled because of launching just the homepage
-    return;
     this.checkCallback();
     if (!this.isWalletConnected() || !this.userAddress) {
       await this.connectWallet({

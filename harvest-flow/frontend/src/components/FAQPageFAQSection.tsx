@@ -42,7 +42,7 @@ const FAQItem: React.FC<{
   const [isOpen, setIsOpen] = React.useState(openByDefault);
 
   return (
-    <div className="border border-black px-10 py-8">
+    <div className="border border-black px-10 py-8 bg-white">
       <div className="flex gap-6 desktop:gap-10">
         <div className="w-4 desktop:w-10">
           <p className="text-body desktop:text-heading5">Q{index}</p>
@@ -65,7 +65,7 @@ const FAQItem: React.FC<{
 
 const FAQPageFAQSection: React.FC = () => {
   return (
-    <div className="flex flex-col gap-16 desktop:gap-32 pb-24 destkop:pb-56">
+    <div className="flex flex-col gap-16 desktop:gap-28 pb-24 destkop:pb-56 relative z-10">
       <h2 className="text-center text-heading4 desktop:text-heading2 font-medium uppercase">
         Q & A
       </h2>

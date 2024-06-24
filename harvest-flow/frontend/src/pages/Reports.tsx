@@ -10,17 +10,20 @@ import { useSearchParams } from "react-router-dom";
 import type { NftContractDetails } from "@harvest-flow/utils";
 import type MainController from "@src/MainController";
 import { AppContext } from "@src/main";
+import DesktopVideoBackground from "@src/components/DesktopVideoBackground";
+import MobileVideoBackground from "@src/components/MobileVideoBackground";
 
 const Reports: React.FC = () => {
   const mainController: MainController = useContext(AppContext);
   const [searchParams] = useSearchParams();
-  const contractAddress = searchParams.get('address') || '';
-  const [projectContractDetails, setProjectContractDetails] = React.useState<NftContractDetails | null>(null);
+  const contractAddress = searchParams.get("address") || "";
+  const [projectContractDetails, setProjectContractDetails] =
+    React.useState<NftContractDetails | null>(null);
 
   const loadContractDetails = () => {
     mainController.getDetailedNftContract(contractAddress).then((details) => {
       setProjectContractDetails(details);
-    })
+    });
   };
 
   useEffect(() => {
@@ -29,11 +32,16 @@ const Reports: React.FC = () => {
 
   return (
     <Layout>
-      <ProjectHero projectContractDetails={projectContractDetails} refreshData={loadContractDetails}  />
+      <ProjectHero
+        projectContractDetails={projectContractDetails}
+        refreshData={loadContractDetails}
+      />
       <ProjectTabsSection activePage="reports" />
       <ReportsDataHouseSection />
-      <ReportsProjectHistorySection projectContractAddress={contractAddress}/>
+      <ReportsProjectHistorySection projectContractAddress={contractAddress} />
       <ProjectLendAHandSection />
+      <DesktopVideoBackground />
+      <MobileVideoBackground />
     </Layout>
   );
 };

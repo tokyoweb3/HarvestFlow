@@ -15,6 +15,7 @@ import { AppContext } from "@src/main";
 import type MainController from "@src/MainController";
 import type { NftContractDetails } from "@harvest-flow/utils";
 import MobileVideoBackground from "@src/components/MobileVideoBackground";
+import DesktopVideoBackground from "@src/components/DesktopVideoBackground";
 
 const Project: React.FC = () => {
   const mainController: MainController = useContext(AppContext);
@@ -48,6 +49,7 @@ const Project: React.FC = () => {
       <ProjectVideoSection />
       <ProjectSchemeSection />
       <ProjectLendAHandSection />
+      <DesktopVideoBackground />
       <MobileVideoBackground />
     </Layout>
   );

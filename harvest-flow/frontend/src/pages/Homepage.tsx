@@ -24,7 +24,7 @@ const Homepage: React.FC = () => {
   }, [mainController]);
 
   return (
-    <Layout>
+    <Layout enableIntroAnimation>
       <HomepageHero />
       <OurProjectsSection />
       <AboutHarvestFlowSection />

@@ -14,7 +14,7 @@ const ProjectHero: React.FC<ProjectMintPanelProps> = ({
 
   return (
     <div
-      className="desktop:h-[calc(100svh-63px)] desktop:bg-center desktop:bg-cover desktop:bg-no-repeat relative text-black desktop:text-white desktop:border-b desktop:border-black z-10"
+      className="desktop:h-screen desktop:bg-center desktop:bg-cover desktop:bg-no-repeat relative text-black desktop:text-white desktop:border-b desktop:border-black z-10"
       style={{ backgroundImage: isDesktop ? `url(${tukTukImage})` : "" }}
     >
       <div className="desktop:hidden mb-6 desktop:mb-0">

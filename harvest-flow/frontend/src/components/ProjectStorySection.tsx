@@ -1,8 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 
-import tukTukImage from "../../assets/images/tuktuk.jpg";
+import { IndicatorDot } from "./PartnerSection";
+
+import sliderImage1 from "../../assets/images/project-slider-1.jpg";
+import sliderImage2 from "../../assets/images/project-slider-2.jpg";
+import sliderImage3 from "../../assets/images/project-slider-3.jpg";
+import sliderImage4 from "../../assets/images/project-slider-4.jpg";
+import sliderImage5 from "../../assets/images/project-slider-5.jpg";
+import sliderImage6 from "../../assets/images/project-slider-6.jpg";
+
+const images = [
+  sliderImage1,
+  sliderImage2,
+  sliderImage3,
+  sliderImage4,
+  sliderImage5,
+  sliderImage6,
+];
 
 const ProjectStorySection: React.FC = () => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // previous image index loops back to the last image
+  const previousImageIndex =
+    currentImageIndex === 0 ? images.length - 1 : currentImageIndex - 1;
+
+  // next image index loops back to the first image
+  const nextImageIndex =
+    currentImageIndex === images.length - 1 ? 0 : currentImageIndex + 1;
+
+  const handleImageClick = () => {
+    setCurrentImageIndex(nextImageIndex);
+  };
+
   return (
     <div className="flex flex-col gap-16 desktop:gap-32 pt-20 desktop:pt-44 relative z-10 px-4 desktop:px-0">
       <h2 className="text-center text-heading4 desktop:text-heading2 font-medium uppercase">
@@ -49,8 +79,39 @@ const ProjectStorySection: React.FC = () => {
             </p>
           </div>
         </div>
-        <div>
-          <img src={tukTukImage} alt="illustration image" />
+      </div>
+      <div className="flex flex-col gap-6">
+        {currentImageIndex}
+        <div className="flex gap-8 desktop:gap-16">
+          <div
+            className="flex-1 bg-center bg-cover bg-no-repeat hidden desktop:block animate-fade"
+            style={{ backgroundImage: `url(${[images[previousImageIndex]]})` }}
+            onClick={() => handleImageClick()}
+            key={`a${previousImageIndex}`}
+          ></div>
+          <div
+            className="desktop:max-w-[780px] pt-[32.5%] w-full bg-center bg-cover bg-no-repeat animate-fade"
+            style={{ backgroundImage: `url(${images[currentImageIndex]})` }}
+            onClick={() => handleImageClick()}
+            key={`b${currentImageIndex}`}
+          ></div>
+          <div
+            className="flex-1 bg-center bg-cover bg-no-repeat hidden desktop:block animate-fade"
+            style={{ backgroundImage: `url(${images[nextImageIndex]})` }}
+            onClick={() => handleImageClick()}
+            key={`c${nextImageIndex}`}
+          ></div>
+        </div>
+        <div className="flex gap-6 justify-center items-center">
+          {Array(images.length)
+            .fill(1)
+            .map((_, index) => (
+              <IndicatorDot
+                key={index}
+                active={index === currentImageIndex}
+                onClick={() => setCurrentImageIndex(index)}
+              />
+            ))}
         </div>
       </div>
     </div>

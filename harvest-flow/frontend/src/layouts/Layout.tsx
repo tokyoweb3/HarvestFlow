@@ -15,9 +15,13 @@ const ENABLE_INTRO_ANIMATION = true;
 
 type LayoutProps = {
   children?: React.ReactNode;
+  enableIntroAnimation?: boolean;
 };
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({
+  children,
+  enableIntroAnimation = false,
+}) => {
   gsap.registerPlugin(useGSAP);
   gsap.registerPlugin(ScrollTrigger);
   gsap.registerPlugin(ScrollToPlugin);
@@ -25,27 +29,27 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { i18n } = useTranslation();
 
   useGSAP(() => {
-    if (!ENABLE_INTRO_ANIMATION) return;
+    if (ENABLE_INTRO_ANIMATION && enableIntroAnimation) {
+      gsap.to(".gsap-splashscreen-container", {
+        opacity: 1,
+        duration: 1,
+        ease: "power2.out",
+      });
 
-    gsap.to(".gsap-splashscreen-container", {
-      opacity: 1,
-      duration: 1,
-      ease: "power2.out",
-    });
+      gsap.to(".gsap-splashscreen-container", {
+        opacity: 0,
+        duration: 1,
+        ease: "power2.out",
+        delay: 5,
+      });
 
-    gsap.to(".gsap-splashscreen-container", {
-      opacity: 0,
-      duration: 1,
-      ease: "power2.out",
-      delay: 5,
-    });
-
-    gsap.to(".gsap-content-container", {
-      opacity: 1,
-      duration: 1,
-      ease: "power2.in",
-      delay: 5,
-    });
+      gsap.to(".gsap-content-container", {
+        opacity: 1,
+        duration: 1,
+        ease: "power2.in",
+        delay: 5,
+      });
+    }
   }, {});
 
   const mainPageContent = (
@@ -65,12 +69,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <>
-      {ENABLE_INTRO_ANIMATION && (
+      {ENABLE_INTRO_ANIMATION && enableIntroAnimation && (
         <div style={{ opacity: 0 }} className="gsap-splashscreen-container">
           <IntroSplashScreen />
         </div>
       )}
-      {ENABLE_INTRO_ANIMATION ? (
+      {ENABLE_INTRO_ANIMATION && enableIntroAnimation ? (
         <div style={{ opacity: 0 }} className="gsap-content-container">
           {mainPageContent}
         </div>
