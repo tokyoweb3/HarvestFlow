@@ -7,6 +7,8 @@ import { UserDetailsController } from './../controllers/userDetails';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { SummaryController } from './../controllers/summary';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { RWADataController } from './../controllers/rwaData';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { NftHistoryController } from './../controllers/nftHistory';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ClaimableController } from './../controllers/nftDetails';
@@ -47,6 +49,39 @@ const models: TsoaRoute.Models = {
             "totalLoaned": {"dataType":"double","required":true},
             "totalRepaid": {"dataType":"double","required":true},
             "userCount": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DeviceHistory": {
+        "dataType": "refObject",
+        "properties": {
+            "eventTime": {"dataType":"double","required":true},
+            "eventDescription": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DailyDeviceSummary": {
+        "dataType": "refObject",
+        "properties": {
+            "date": {"dataType":"string","required":true},
+            "dailyMileage": {"dataType":"double","required":true},
+            "dailyDrivingTime": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DeviceDetails": {
+        "dataType": "refObject",
+        "properties": {
+            "deviceId": {"dataType":"string","required":true},
+            "totalMileage": {"dataType":"double","required":true},
+            "totalDrivingTime": {"dataType":"double","required":true},
+            "assetType": {"dataType":"string","required":true},
+            "vehicleModel": {"dataType":"string","required":true},
+            "history": {"dataType":"array","array":{"dataType":"refObject","ref":"DeviceHistory"},"required":true},
+            "dailySummary": {"dataType":"array","array":{"dataType":"refObject","ref":"DailyDeviceSummary"},"required":true},
         },
         "additionalProperties": false,
     },
@@ -153,6 +188,32 @@ export function RegisterRoutes(app: Router) {
                 validatedArgs = getValidatedArgs(args, request, response);
 
                 const controller = new SummaryController();
+
+
+              const promise = controller.get.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/rwaData',
+            ...(fetchMiddlewares<RequestHandler>(RWADataController)),
+            ...(fetchMiddlewares<RequestHandler>(RWADataController.prototype.get)),
+
+            function RWADataController_get(request: any, response: any, next: any) {
+            const args = {
+                    contractAddress: {"in":"query","name":"contractAddress","required":true,"dataType":"string"},
+                    tokenId: {"in":"query","name":"tokenId","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new RWADataController();
 
 
               const promise = controller.get.apply(controller, validatedArgs as any);

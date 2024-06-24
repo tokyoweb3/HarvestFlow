@@ -83,5 +83,32 @@ export interface Summary {
     userCount: number;
 }
 
+export interface DeviceSummary {
+    deviceId: string;
+    totalMileage: number;
+    totalDrivingTime: number;
+}
+
+interface DeviceHistory {
+    eventTime: number;
+    eventDescription: string;
+}
+
+interface DailyDeviceSummary {
+    date: string;
+    dailyMileage: number;
+    dailyDrivingTime: number;
+}
+
+export interface DeviceDetails {
+    deviceId: string;
+    totalMileage: number;
+    totalDrivingTime: number;
+    assetType: string;
+    vehicleModel: string;
+    history: DeviceHistory[];
+    dailySummary: DailyDeviceSummary[];
+}
+
 
 

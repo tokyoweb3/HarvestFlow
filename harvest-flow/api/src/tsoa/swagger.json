@@ -121,6 +121,89 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"DeviceHistory": {
+				"properties": {
+					"eventTime": {
+						"type": "number",
+						"format": "double"
+					},
+					"eventDescription": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"eventTime",
+					"eventDescription"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DailyDeviceSummary": {
+				"properties": {
+					"date": {
+						"type": "string"
+					},
+					"dailyMileage": {
+						"type": "number",
+						"format": "double"
+					},
+					"dailyDrivingTime": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"date",
+					"dailyMileage",
+					"dailyDrivingTime"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DeviceDetails": {
+				"properties": {
+					"deviceId": {
+						"type": "string"
+					},
+					"totalMileage": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalDrivingTime": {
+						"type": "number",
+						"format": "double"
+					},
+					"assetType": {
+						"type": "string"
+					},
+					"vehicleModel": {
+						"type": "string"
+					},
+					"history": {
+						"items": {
+							"$ref": "#/components/schemas/DeviceHistory"
+						},
+						"type": "array"
+					},
+					"dailySummary": {
+						"items": {
+							"$ref": "#/components/schemas/DailyDeviceSummary"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"deviceId",
+					"totalMileage",
+					"totalDrivingTime",
+					"assetType",
+					"vehicleModel",
+					"history",
+					"dailySummary"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"NftHistoryEventType": {
 				"enum": [
 					"contract_created",
@@ -328,6 +411,42 @@
 				},
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/rwaData": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DeviceDetails"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "contractAddress",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "tokenId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/nft_history/user": {
