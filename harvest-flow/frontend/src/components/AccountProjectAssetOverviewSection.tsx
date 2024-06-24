@@ -5,6 +5,7 @@ import DataTile from "./DataTile";
 
 import tukTukImage from "../../assets/images/tuktuk.jpg";
 import type { DeviceDetails } from "@harvest-flow/utils";
+import { getMonth } from "@src/utils";
 
 const DriverAvatar = () => (
   <svg viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -59,12 +60,11 @@ const AccountProjectAssetOverviewSection: React.FC<{deviceDetails: DeviceDetails
                 title="Drive History"
                 customComponent={
                   <div className="flex flex-col items-center justify-center gap-3">
-                    <p className="text-heading4 text-center">
-                      2023 Oct / Started Operation
-                    </p>
-                    <p className="text-heading4 text-center">
-                      2023 Dec / Changed Driver
-                    </p>
+                    {deviceDetails.history.map((event, index) => (
+                      <p key={index} className="text-heading4 text-center">
+                        {new Date(event.eventTime).getFullYear()} {getMonth(event.eventTime)} / {event.eventDescription}
+                      </p>
+                    ))}
                   </div>
                 }
               />

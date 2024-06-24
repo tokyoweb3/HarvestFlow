@@ -30,9 +30,6 @@ async function requestToken() {
   gmsCloudToken = authResponse.data.access_token;
   gmsCloudTokenExpiresAt = Date.now() + authResponse.data.expires_in * 1000;
 
-  console.debug('Access token:', gmsCloudToken);
-  console.debug('Expires at:', new Date(gmsCloudTokenExpiresAt));
-
 }
 
 export async function getAccessToken() {
@@ -83,7 +80,8 @@ export async function getDeviceSummary(deviceId: number)  {
   const summaryData : DeviceSummary = {
     deviceId: deviceData.deviceId,
     totalMileage: deviceData.totalMileage,
-    totalDrivingTime: deviceData.totalDrivingtime
+    totalDrivingTime: deviceData.totalDrivingtime,
+    operationStarted: new Date(deviceData.firstCommunicatedAt),
   }
 
   console.debug('Device summary:', summaryData);

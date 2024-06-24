@@ -28,6 +28,12 @@ export function formatTime(time: number): string {
     return `${String(days)} d ${String(hours).padStart(2, '0')} hrs ${String(minutes).padStart(2, '0')} mins ${String(seconds).padStart(2, '0')} secs`;
 }
 
+export function getMonth(time: number): string {
+    const date = new Date(time);
+    const month = date.toLocaleString('default', { month: 'short' });
+    return month;
+}
+
 export function formatTimestampForHistoryTable(timestamp: number): string {
     const date = new Date(timestamp); // Convert epoch to milliseconds
 

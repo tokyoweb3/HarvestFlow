@@ -9,7 +9,7 @@ export class RWADataController extends Controller {
   public async get(@Query() contractAddress: string, @Query() tokenId : string): Promise<DeviceDetails> {
     console.log("Getting device details");
 
-    //get deviceId
+    //TODO: get deviceId
     const deviceId = 10254142;
 
     const [deviceSummary] = await Promise.all([
@@ -20,9 +20,14 @@ export class RWADataController extends Controller {
       deviceId: deviceId,
       totalMileage: deviceSummary.totalMileage,
       totalDrivingTime: deviceSummary.totalDrivingTime,
-      assetType: "Car",
-      vehicleModel: "Tesla Model 3",
-      history: [],
+      assetType: "Vehicle",
+      vehicleModel: "TVS Deluxe 200CC",
+      history: [
+        {
+          eventTime: deviceSummary.operationStarted.getTime(),
+          eventDescription: "Started Operation"
+        }
+      ],
       dailySummary: []
     }
   }
