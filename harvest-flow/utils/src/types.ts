@@ -87,6 +87,7 @@ export interface DeviceSummary {
     deviceId: number;
     totalMileage: number;
     totalDrivingTime: number;
+    operationStarted: Date;
 }
 
 interface DeviceHistory {
