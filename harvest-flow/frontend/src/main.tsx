@@ -27,14 +27,16 @@ i18n
           "homepage.hero.title": "Harvest Flow",
           "homepage.hero.subtitle": "Ride the current of a new world.",
           "homepage.hero.text":
-            "Engage in Social Action with an 8% Interest. Connecting with the world through cryptocurrency lending.",
+            "Engage in Social Action with an 8% Interest.\nConnecting with the world through cryptocurrency lending.",
           "homepage.our_projects.title": "Our projects",
           "homepage.our_projects.heading":
             "Driving the Future of Emerging Countries TUK TUK Loan Business in Cambodia",
           "homepage.our_projects.text":
             "The inaugural project RWA-001 involves crypto asset lending to a company that operates a tuk tuk loan business in Cambodia, a country that has experienced remarkable growth with a 7% GDP growth rate over the past five years and has attracted over 5 million tourists.",
           "homepage.our_projects.note":
-            "Applications open on July 6th. Pre-register <0>here</0>.",
+            "APPLICATIONS OPEN IN LATE JULY. PRE-REGISTER <0>HERE</0>.",
+          "homepage.our_projects.coming_soon": "Coming soon",
+          "homepage.our_projects.vehicle": "Vehicle",
           "general.play_movie": "Play movie",
           "general.apy": "APY",
           "general.status": "Status",
@@ -45,7 +47,7 @@ i18n
           "general.connect_wallet": "Connect wallet",
           "homepage.about.title": "About\nHarvest Flow",
           "homepage.about.heading":
-            "Engage in Social Action with an 8% Interest. Connecting with the world through cryptocurrency lending.",
+            "Engage in Social Action with an 8% Interest.\nConnecting with the world through cryptocurrency lending.",
           "homepage.about.text":
             "HARVEST FLOW is a service that enables social contribution by lending cryptocurrency to businesses dedicated to improving the world, thereby earning stable income gains while supporting impactful initiatives. Beyond financial returns, it offers a new form of social action by harvesting global prosperity (Harvest) and creating economic and social impact through the flow of funds (Flow).\n\nThe gathered funds are invested in real-world assets (RWA) that generate revenue over time, allowing users to tangibly see how their support is making a positive impact on society through the visualization of social actions.",
           "homepage.how_it_works.title": "How it works",
@@ -87,18 +89,19 @@ i18n
           "faq.question6": "How can I get in touch for questions or inquiries?",
           "faq.answer6":
             "All inquiries are accepted in the HARVEST HALL <0>Discord.</0>",
-          "homepage.pos.title": "POS（Proof of Support",
+          "homepage.pos.title": "POS（Proof of Support)",
           "homepage.pos.text":
             "When lending cryptocurrency to a project, you'll receive a POS (Proof of Support) as a digital certificate. This POS utilizes NFT (Non-Fungible Token) blockchain technology, ensuring both high transparency and resistance to tampering. By partnering with unique artists and brands for every project, we ensure that each certificate is one-of-a-kind and exclusively yours. Holding a POS enables your wallet to earn interest/principal and grants access to the Owner Page. You also have the option to sell it on external markets.",
           "homepage.social_action.title": "Social action",
           "homepage.social_action.text":
-            'We call the act of contributing to a sustainable society while obtaining a stable income gain through HARVEST FLOW "Social Action" and our mission is to achieve both economic and social prosperity.',
-          "homepage.social_action.subtitle": "Key Focus Areas for HARVEST FLOW",
-          "homepage.social_action.usecase": "WEB3 Social Use Cases",
-          "homepage.social_action.financial": "Financial Inclusion",
-          "homepage.social_action.growth": "Economic Growth",
-          "homepage.social_action.transparency": "Transparency",
-          "homepage.social_action.culture": "Art & Culture",
+            "HARVEST FLOW centers its project on social actions that not only solve societal issues but also enhance the economic prosperity of those involved. By proactively utilizing cryptocurrencies with large market capitalizations globally, we aim to deliver sustainable benefits to both the world and our users.",
+          "homepage.social_action.subtitle":
+            "Key Focus Areas for HARVEST FLOW\nTo Enhance the World",
+          "homepage.social_action.usecase": "Solving Social Issues",
+          "homepage.social_action.financial": "Sharing Prosperity",
+          "homepage.social_action.growth": "The Future of Emerging Countries",
+          "homepage.social_action.transparency": "Tranparency in Fund Usage",
+          "homepage.social_action.culture": "Supporting Art & Culture",
           "homepage.social_action.learn_more": "Learn more",
           "homepage.how_to_start.title": "How to start",
           "homepage.how_to_start.step1.title": "Lending Application",
@@ -115,6 +118,7 @@ i18n
           "homepage.how_to_start.step4.title": "Checking Project Details",
           "homepage.how_to_start.step4.text":
             "You can view project and/or RWA details via the Owner Page.",
+          "partners.title": "SUPPORTER",
           "partners.kunimitsu.name": "Hironao Kunimitsu",
           "partners.kunimitsu.position": "FiNANCiE CEO",
           "partners.masakazu.name": "Masakazu Kikuchi",
@@ -129,9 +133,12 @@ i18n
           "partners.narimoto.position": "TMI Partner Legal Counsel",
           "partners.shieldify.name": "Shieldify",
           "partners.shieldify.position": "",
+          "partners.watanabe.name": "Sota Watanabe",
+          "partners.watanabe.position": "Astar Network Founder",
           "partners.deform.name": "Deform",
           "partners.deform.position": "",
-          "footer.claim": "Ride the current of a new world.",
+          "footer.claim":
+            "We provide the latest updates and support through our community.",
         },
       },
       jp: {
@@ -139,14 +146,16 @@ i18n
           "homepage.hero.title": "Harvest Flow",
           "homepage.hero.subtitle": "飛び込もう。新しい世界の流れに。",
           "homepage.hero.text":
-            "受け取り利息8%のソーシャルアクション。世界と繋がる暗号資産レンディング。",
+            "受け取り利息8%の\nソーシャルアクション。\n世界と繋がる暗号資産レンディング。",
           "homepage.our_projects.title": "プロジェクトハイライト",
           "homepage.our_projects.heading":
             "新興国の未来をドライブする カンボジア トゥクトゥクローン事業",
           "homepage.our_projects.text":
             "初回ブロジェクトRWA-001は過去5年間のGDP成長率が7%と急速な経済成長を遂げ、500万人を超える旅行客が訪れるなど、目覚ましい発展を遂げているカンボジアでトゥクトゥクローン事業を展開する優良企業に暗号資産レンディングを行います。",
           "homepage.our_projects.note":
-            "7月6日申込受付開始\n事前登録は<0>こちら</0>",
+            "7月下旬募集開始\n事前登録は<0>こちら</0>",
+          "homepage.our_projects.coming_soon": "準備中",
+          "homepage.our_projects.vehicle": "車両",
           "general.play_movie": "動画を再生する",
           "general.apy": "年率（APY）",
           "general.status": "ステータス",
@@ -204,13 +213,14 @@ i18n
             "プロジェクトに暗号資産を貸し出すとデジタル証明書としてPOS（Proof of Support、応援証明書）が発行されます。POSは透明性・耐改ざん性の高いNFT（Non-Fungible Token、非代替性トークン）というブロックチェーン技術を採用しています。POSを保有しているウォレットは利息と元本の受け取りや、オーナーページへのアクセスをすることができます。また、NFTは外部のマーケットプレイスで自由に売買することが可能です。アーティストやブランドとコラボレーションをした特別な作品が登録されており、あなただけの唯一無二の証明書になります。",
           "homepage.social_action.title": "ソーシャルアクション",
           "homepage.social_action.text":
-            "HARVEST FLOWを通して安定したインカムゲインを得ながら、持続可能な社会に貢献をすることを私たちは「ソーシャルアクション」と呼び、経済的と社会的な豊かさの両立を目指すことをミッションとしています",
-          "homepage.social_action.subtitle": "HARVEST FLOWが注力するキーワード",
-          "homepage.social_action.usecase": "WEB3社会ユースケース",
-          "homepage.social_action.financial": "金融包摂",
-          "homepage.social_action.growth": "経済成長",
-          "homepage.social_action.transparency": "透明性",
-          "homepage.social_action.culture": "芸術＆文化",
+            "HARVEST FLOWは社会課題の解決だけではなく、関わる人たちの経済的な豊かさも両立できるソーシャルアクションをプロジェクトの中心に据えています。グローバルで大きな時価総額を持つ暗号資産を前向きに活用することで、世界とユーザーに持続可能な実りを提供します。",
+          "homepage.social_action.subtitle":
+            "HARVEST FLOWが注力する\n世界をよくするキーワード",
+          "homepage.social_action.usecase": "社会課題を解決",
+          "homepage.social_action.financial": "豊かさをシェア",
+          "homepage.social_action.growth": "新興国の未来",
+          "homepage.social_action.transparency": "資金使途の透明性",
+          "homepage.social_action.culture": "芸術文化を支援",
           "homepage.social_action.learn_more": "もっと詳しく見る",
           "homepage.how_to_start.title": "始め方",
           "homepage.how_to_start.step1.title": "レンディング申込",
@@ -225,6 +235,7 @@ i18n
           "homepage.how_to_start.step4.title": "応援プロジェクト詳細の確認",
           "homepage.how_to_start.step4.text":
             "オーナーページからプロジェクトやRWAの詳細を確認できます。",
+          "partners.title": "サポーター",
           "partners.kunimitsu.name": "國光 宏尚",
           "partners.kunimitsu.position": "フィナンシェ代表取締役CEO",
           "partners.masakazu.name": "キクチ・マサカズ",
@@ -240,13 +251,16 @@ i18n
           "partners.narimoto.position": "TMI総合法律事務所 パートナー弁護士",
           "partners.shieldify.name": "Shieldify",
           "partners.shieldify.position": "",
+          "partners.watanabe.name": "渡辺 創太",
+          "partners.watanabe.position": "Astar Network 創業者",
           "partners.deform.name": "Deform",
           "partners.deform.position": "",
-          "footer.claim": "飛び込もう。新しい世界の流れに。",
+          "footer.claim":
+            "最新情報の案内やサポートはコミュニティで行っております。",
         },
       },
     },
-    lng: "en", // if you're using a language detector, do not define the lng option
+    lng: "jp", // if you're using a language detector, do not define the lng option
     fallbackLng: "en",
     interpolation: {
       escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape

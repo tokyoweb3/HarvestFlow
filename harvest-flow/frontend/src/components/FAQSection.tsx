@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import React, { useRef } from "react";
 import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Trans, useTranslation } from "react-i18next";
 
@@ -19,6 +20,12 @@ const FAQItem: React.FC<{
 }> = ({ question, answer, index, openByDefault }) => {
   const [isOpen, setIsOpen] = React.useState(openByDefault);
 
+  const handleQuestionToggle = () => {
+    ScrollTrigger.refresh();
+    ScrollTrigger.update();
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div
       className={clsx(
@@ -32,7 +39,7 @@ const FAQItem: React.FC<{
       <div className="px-4 desktop:px-10 py-4 desktop:py-6 flex flex-col gap-4 flex-1">
         <div className="flex justify-between flex-1 items-start gap-10">
           <h3 className="text-body desktop:text-heading5">{question}</h3>
-          <button onClick={() => setIsOpen(!isOpen)} className="pt-[6px]">
+          <button onClick={() => handleQuestionToggle()} className="pt-[6px]">
             {isOpen ? <MinusIcon /> : <PlusIcon />}
           </button>
         </div>
@@ -164,7 +171,7 @@ const FAQSection: React.FC = () => {
           <div className="w-full desktop:w-1/2 desktop:flex desktop:flex-col desktop:justify-between">
             <SectionHeader title={t("homepage.faq.title")} />
             <div
-              className="desktop:pt-24 desktop:overflow-y-hidden gsap-faq-text-scroll-container"
+              className="desktop:pt-96 desktop:overflow-y-hidden gsap-faq-text-scroll-container"
               ref={scrollableTextWrapper}
             >
               <div className="border-b border-black desktop:border-0">

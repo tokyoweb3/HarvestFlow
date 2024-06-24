@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import ScrollToPlugin from "gsap/ScrollToPlugin";
@@ -24,29 +24,38 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const { i18n } = useTranslation();
 
-  useGSAP(() => {
-    if (!ENABLE_INTRO_ANIMATION) return;
+  const [introVideosLoaded, setIntroVideosLoaded] = useState(false);
 
-    gsap.to(".gsap-splashscreen-container", {
-      opacity: 1,
-      duration: 1,
-      ease: "power2.out",
-    });
+  useGSAP(
+    () => {
+      if (!ENABLE_INTRO_ANIMATION) return;
 
-    gsap.to(".gsap-splashscreen-container", {
-      opacity: 0,
-      duration: 1,
-      ease: "power2.out",
-      delay: 5,
-    });
+      if (!introVideosLoaded) return;
 
-    gsap.to(".gsap-content-container", {
-      opacity: 1,
-      duration: 1,
-      ease: "power2.in",
-      delay: 5,
-    });
-  }, {});
+      gsap.to(".gsap-splashscreen-container", {
+        opacity: 1,
+        duration: 1,
+        ease: "power2.out",
+      });
+
+      gsap.to(".gsap-splashscreen-container", {
+        opacity: 0,
+        duration: 1,
+        ease: "power2.out",
+        delay: 3,
+      });
+
+      gsap.to(".gsap-content-container", {
+        opacity: 1,
+        duration: 1,
+        ease: "power2.in",
+        delay: 3,
+      });
+    },
+    {
+      dependencies: [introVideosLoaded],
+    },
+  );
 
   const mainPageContent = (
     <>
@@ -67,7 +76,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <>
       {ENABLE_INTRO_ANIMATION && (
         <div style={{ opacity: 0 }} className="gsap-splashscreen-container">
-          <IntroSplashScreen />
+          <IntroSplashScreen onVideoLoaded={() => setIntroVideosLoaded(true)} />
         </div>
       )}
       {ENABLE_INTRO_ANIMATION ? (

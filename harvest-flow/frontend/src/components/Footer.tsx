@@ -158,16 +158,7 @@ const Footer: React.FC = () => {
           <div className="flex flex-col desktop:flex-row justify-between items-center p-6 gap-4">
             <ul className="flex gap-4 desktop:gap-10">
               <li>
-                <a
-                  href={
-                    i18n.language === "en"
-                      ? APAS_PORT_CONTACT_LINK_EN
-                      : APAS_PORT_CONTACT_LINK_JP
-                  }
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  className="uppercase"
-                >
+                <a href="mailto:info@harvestflow.io" className="uppercase">
                   Contact
                 </a>
               </li>
@@ -175,7 +166,7 @@ const Footer: React.FC = () => {
                 <p className="uppercase">Privacy policy</p>
               </li>
             </ul>
-            <p>Copyright © Apasport all rights reserved.</p>
+            <p>Copyright © Apas Port Co., Ltd. all rights reserved.</p>
           </div>
         </div>
       </div>
