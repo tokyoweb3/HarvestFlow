@@ -26,7 +26,7 @@ const AccountUpdatesSection: React.FC = () => {
           Updates from the project.
         </h3>
       </div>
-      <div className="w-full border border-black divide-y divide-black divide-dashed">
+      <div className="w-full border border-black divide-y divide-black divide-dashed bg-white">
         {updatesData.map((update, index) => (
           <div
             key={index}

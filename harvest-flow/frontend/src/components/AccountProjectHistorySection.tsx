@@ -23,8 +23,8 @@ const AccountProjectHistorySection: React.FC = () => {
       <h2 className="text-center text-heading4 desktop:text-heading3 font-medium uppercase">
         Project History
       </h2>
-      <div className="w-full border border-black divide-x divide-black">
-        <table className="w-full">
+      <div className="w-full divide-x divide-black bg-white">
+        <table className="w-full border border-black">
           <thead>
             <tr className="border-b border-black border-dashed">
               <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black last-of-type:border-0 w-1/4">

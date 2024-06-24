@@ -4,7 +4,7 @@ import tukTukImage from "../../assets/images/tuktuk-single.jpg";
 
 const ReportsDataHouseSection: React.FC = () => {
   return (
-    <div className="flex flex-col gap-16 desktop:gap-32">
+    <div className="flex flex-col gap-16 desktop:gap-28 relative z-10">
       <h2 className="text-center text-heading4 desktop:text-heading2 font-medium uppercase">
         Data house
       </h2>
@@ -22,89 +22,89 @@ const ReportsDataHouseSection: React.FC = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-black border-dashed">
-                    <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black last-of-type:border-0">
+                    <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black">
                       Asset
                     </th>
-                    <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black last-of-type:border-0">
+                    <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black">
                       DNFT ID
                     </th>
-                    <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black last-of-type:border-0">
+                    <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black">
                       Vehicle model
                     </th>
-                    <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black last-of-type:border-0">
+                    <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black">
                       Amount
                     </th>
-                    <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black last-of-type:border-0">
+                    <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black">
                       Status
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr className="border-b border-black border-dashed last-of-type:border-0">
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       1
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       0x..123
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       TVS123
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       $4350
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       Ongoing
                     </td>
                   </tr>
                   <tr className="border-b border-black border-dashed last-of-type:border-0">
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       2
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       0x..123
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       TVS123
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       $4350
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       Ongoing
                     </td>
                   </tr>
                   <tr className="border-b border-black border-dashed last-of-type:border-0">
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       3
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       0x..123
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       TVS123
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       $4350
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       Ongoing
                     </td>
                   </tr>
                   <tr className="border-b border-black border-dashed last-of-type:border-0">
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       4
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       0x..123
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       TVS123
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       $4350
                     </td>
-                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0">
+                    <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black">
                       Ongoing
                     </td>
                   </tr>

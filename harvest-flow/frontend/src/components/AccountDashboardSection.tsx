@@ -15,12 +15,17 @@ import {
 import { NUMBER_OF_DECIMAL_PLACES } from "@src/utils/constants";
 import { ethers } from "ethers/lib";
 
-const ExtraSmallTile: React.FC<DataTileProps> = ({ title, value }) => {
+const ExtraSmallTile: React.FC<DataTileProps> = ({
+  title,
+  value,
+  tooltipText,
+}) => {
   return (
     <DataTile
       wrapperClassName="border-t border-l border-black"
       title={title}
       value={value}
+      tooltipText={tooltipText}
       size="xs"
     />
   );
@@ -66,7 +71,7 @@ const AccountDashboardSection: React.FC<{ userDetails: UserDetails }> = ({
       <h2 className="text-center text-heading4 desktop:text-heading3 font-medium uppercase">
         Dashboard
       </h2>
-      <div className="">
+      <div className="bg-white">
         <div className="flex flex-col desktop:flex-row">
           <LargeTile title="TOTAL EQUITY in USD" value={totalEquityString} />
           <div className="w-full desktop:w-[20%] grid grid-cols-2 grid-rows-1 desktop:grid-cols-1 desktop:grid-rows-2">
@@ -74,7 +79,11 @@ const AccountDashboardSection: React.FC<{ userDetails: UserDetails }> = ({
             <ExtraSmallTile title="Lending Now" value={lendingAmountString} />
           </div>
           <div className="w-full desktop:w-[20%] grid grid-cols-2 grid-rows-1 desktop:grid-cols-1 desktop:grid-rows-2">
-            <ExtraSmallTile title="BOOST" value="+0.5%" />
+            <ExtraSmallTile
+              title="BOOST"
+              value="+0.5%"
+              tooltipText="Some tooltip comes here"
+            />
             <ExtraSmallTile title="Total Yield" value={totalYieldString} />
           </div>
           <div className="w-full desktop:w-[30%] border-l border-black border-t border-r flex flex-col items-center justify-center p-6 gap-6">
