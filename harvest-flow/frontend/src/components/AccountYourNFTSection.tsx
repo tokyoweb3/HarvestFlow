@@ -5,8 +5,6 @@ import NFTCard from "./NFTCard";
 import ArrowDownIcon from "@src/icons/ArrowDownIcon";
 import type { NFTItemCardProps } from "./NFTItemCard";
 import NFTItemCard from "./NFTItemCard";
-import type { NFTProjectCardProps } from "./NFTProjectCard";
-import NFTProjectCard, { NFTProjectComingSoonCard } from "./NFTProjectCard";
 
 import tukTukImage from "../../assets/images/tuktuk.jpg";
 import type { NftDetails } from "@harvest-flow/utils";
@@ -25,14 +23,6 @@ const nftItemData: NFTItemCardProps[] = [
     title: "Blast Testnet Special NFT",
     text: "Boost APY +0.5%",
     caption: "Coming in Vol.2 2024 Fall",
-  },
-];
-
-const nftProjectsData: NFTProjectCardProps[] = [
-  {
-    imageURL: tukTukImage,
-    title: "Dec. 24th 2025",
-    text: "Release on",
   },
 ];
 
@@ -136,30 +126,6 @@ const AccountYourNFTSection: React.FC<{ ownedNfts: NftDetails[] }> = ({
                     />
                   </div>
                 ))}
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col gap-6 desktop:gap-10">
-            <h3 className="text-heading5 desktop:text-heading4 uppercase font-medium">
-              Upcoming projects
-            </h3>
-            <div className="overflow-x-auto">
-              <div className="flex desktop:grid desktop:grid-cols-3 gap-6 desktop:gap-10">
-                {nftProjectsData.map((data, index) => (
-                  <div
-                    key={index}
-                    className="w-[80vw] max-w-[300px] desktop:w-full desktop:max-w-[initial] shrink-0"
-                  >
-                    <NFTProjectCard
-                      imageURL={data.imageURL}
-                      text={data.text}
-                      title={data.title}
-                    />
-                  </div>
-                ))}
-                <div className="w-[80vw] max-w-[300px] desktop:w-full desktop:max-w-[initial] shrink-0 flex">
-                  <NFTProjectComingSoonCard />
-                </div>
               </div>
             </div>
           </div>
