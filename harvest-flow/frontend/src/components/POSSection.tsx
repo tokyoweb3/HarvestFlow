@@ -15,7 +15,7 @@ const POSSection: React.FC = () => {
     <div className="relative z-10 desktop:h-screen border-b border-black flex flex-col desktop:flex-row">
       <div className="w-full desktop:w-1/2 flex flex-col">
         <SectionHeader title={t("homepage.pos.title")} />
-        <div className="flex-1 flex items-center justify-center desktop:max-w-[427px] desktop:mx-auto p-4">
+        <div className="flex-1 flex items-center justify-center desktop:max-w-[459px] desktop:mx-auto p-4">
           <p className="text-bodySmaller text-justify">
             {t("homepage.pos.text")}
           </p>
