@@ -67,6 +67,7 @@
 
   body {
     @apply text-body;
+    line-break: strict;
   }
 
   h1,
