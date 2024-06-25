@@ -26,6 +26,8 @@ import favicon32x32 from "../../assets/favicon/favicon-32x32.png";
 import favicon96x96 from "../../assets/favicon/favicon-96x96.png";
 import favicon16x16 from "../../assets/favicon/favicon-16x16.png";
 import msIcon144x144 from "../../assets/favicon/ms-icon-144x144.png";
+import ogImageEN from "../../assets/images/og-en.png";
+import ogImageJP from "../../assets/images/og-jp.png";
 
 const ENABLE_INTRO_ANIMATION = true;
 
@@ -148,6 +150,32 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Meta name="msapplication-TileColor" content="#ffffff" />
         <Meta name="msapplication-TileImage" content={msIcon144x144} />
         <Meta name="theme-color" content="#ffffff" />
+        <Meta
+          property="og:image"
+          content={i18n.language === "en" ? ogImageEN : ogImageJP}
+        />
+        <Meta property="og:title" content="HARVEST FLOW" />
+        <Meta property="og:type" content="website" />
+        <Meta property="og:site_name" content="HARVEST FLOW" />
+        <Meta property="og:url" content="https://harvestflow.io" />
+        {i18n.language === "en" && (
+          <>
+            <Meta
+              property="og:description"
+              content="Engage in Social Action with an 8% Interest. Connecting with the world through cryptocurrency lending."
+            />
+            <Meta property="og:locale" content="en_US" />
+          </>
+        )}
+        {i18n.language === "jp" && (
+          <>
+            <Meta
+              property="og:description"
+              content="受け取り利息8%のソーシャルアクション。世界と繋がる暗号資産レンディング。"
+            />
+            <Meta property="og:locale" content="ja_JP" />
+          </>
+        )}
       </HeadProvider>
       {ENABLE_INTRO_ANIMATION && (
         <div style={{ opacity: 0 }} className="gsap-splashscreen-container">
