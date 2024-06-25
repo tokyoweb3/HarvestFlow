@@ -1,7 +1,7 @@
 import { Get, Query, Route } from "tsoa";
 import { Controller } from "@tsoa/runtime";
 import { DeviceDetails } from "@harvest-flow/utils";
-import { getDeviceSummary } from "@harvest-flow/game-logic/build/gmsCloudApi";
+import { getDailyHistory, getDeviceSummary } from "@harvest-flow/game-logic";
 
 @Route('rwaData')
 export class RWADataController extends Controller {
@@ -12,8 +12,9 @@ export class RWADataController extends Controller {
     //TODO: get deviceId
     const deviceId = 10254142;
 
-    const [deviceSummary] = await Promise.all([
-      getDeviceSummary(deviceId)
+    const [deviceSummary, dailySummary] = await Promise.all([
+      getDeviceSummary(deviceId),
+      getDailyHistory(deviceId)
     ]);
 
     return {
@@ -28,7 +29,7 @@ export class RWADataController extends Controller {
           eventDescription: "Started Operation"
         }
       ],
-      dailySummary: []
+      dailySummary: dailySummary
     }
   }
 

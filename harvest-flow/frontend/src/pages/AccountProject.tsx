@@ -84,7 +84,7 @@ const AccountProject: React.FC = () => {
                   className="gsap-section-trigger"
                   id={AccountProjectNavigationLink.RWA}
                 >
-                  <AccountProjectRWASection />
+                  <AccountProjectRWASection deviceDetails={rwaData}/>
                 </div>
                 <div
                   className="gsap-section-trigger"
