@@ -111,18 +111,10 @@ const FeaturesSection: React.FC = () => {
                         {t("homepage.features.feature2_title")}
                       </h3>
                       <div>
-                        <img
-                          src={featureImage2}
-                          alt="background"
-                          className="ml-3 mb-3 float-right desktop:hidden max-w-[150px] desktop:max-w-full"
-                        />
                         <p className="text-bodySmaller">
                           {t("homepage.features.feature2_text")}
                         </p>
                       </div>
-                    </div>
-                    <div className="w-[270px] shrink-0 hidden desktop:block">
-                      <img src={featureImage2} alt="background" />
                     </div>
                   </div>
                   <div className="bg-white desktop:bg-transparent text-black py-10 px-8 desktop:p-0 flex gap-8">
@@ -131,10 +123,18 @@ const FeaturesSection: React.FC = () => {
                         {t("homepage.features.feature3_title")}
                       </h3>
                       <div>
+                        <img
+                          src={featureImage2}
+                          alt="background"
+                          className="ml-3 mb-3 float-right desktop:hidden max-w-[150px] desktop:max-w-full"
+                        />
                         <p className="text-bodySmaller">
                           {t("homepage.features.feature3_text")}
                         </p>
                       </div>
+                    </div>
+                    <div className="w-[270px] shrink-0 hidden desktop:block">
+                      <img src={featureImage2} alt="background" />
                     </div>
                   </div>
                   <div className="bg-white desktop:bg-transparent text-black py-10 px-8 desktop:p-0 flex gap-8">

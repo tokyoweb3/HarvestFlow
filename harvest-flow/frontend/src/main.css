@@ -8,6 +8,17 @@
   outline: 1px solid #f00 !important;
 } */
 
+/* For Webkit-based browsers (Chrome, Safari and Opera) */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* For IE, Edge and Firefox */
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .headroom-wrapper {
   position: fixed;
   z-index: 20;
@@ -56,6 +67,7 @@
 
   body {
     @apply text-body;
+    line-break: strict;
   }
 
   h1,
