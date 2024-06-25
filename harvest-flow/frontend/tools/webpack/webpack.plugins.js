@@ -27,14 +27,14 @@ module.exports = [
           "BACKEND_URI",
           "WEBSERVER_PORT",
           "TOKTOK_NFT_FACTORY_CONTRACT_ADDRESS",
-          "PAYMENT_TOKEN_CONTRACT_ADDRESS"
+          "PAYMENT_TOKEN_CONTRACT_ADDRESS",
         ].map((key) => [key, process.env[key]]),
       ),
     ),
   }),
   new HtmlWebpackPlugin({
     template: "src/index.html",
-    favicon: "assets/images/favicon.png",
+    favicon: "assets/favicon/favicon.ico",
     inject: true,
   }),
   new MiniCssExtractPlugin({
