@@ -137,3 +137,19 @@ export function getMonthDifference(start: number, end: number): number {
 
     return yearDifference * 12 + monthDifference;
 }
+
+function getStartOfWeek(date: Date): Date {
+    const day = date.getDay();  // Sunday - 0, Monday - 1, ... Saturday - 6
+    const diff = date.getDate() - day;  // Offset to get back to Sunday
+
+    return new Date(date.getFullYear(), date.getMonth(), diff);
+}
+
+export function getStartOfCurrentWeek(): Date {
+    return getStartOfWeek(new Date());  // Current date
+}
+
+export function getStartOfLastWeek(): Date {
+    const today = new Date();
+    return getStartOfWeek(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7));
+}

@@ -95,7 +95,7 @@ interface DeviceHistory {
     eventDescription: string;
 }
 
-interface DailyDeviceSummary {
+export interface DailyDeviceSummary {
     date: string;
     dailyMileage: number;
     dailyDrivingTime: number;
