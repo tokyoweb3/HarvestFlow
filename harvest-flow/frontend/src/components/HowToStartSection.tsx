@@ -26,12 +26,12 @@ const HowToStartSection: React.FC = () => {
                 <h3 className="text-heading5 desktop:text-bodyLarge uppercase font-medium">
                   {t("homepage.how_to_start.step1.title")}
                 </h3>
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-6 text-bodySmaller">
                   <Trans
                     i18nKey="homepage.how_to_start.step1.text"
                     components={[
                       // eslint-disable-next-line react/jsx-key
-                      <p className="text-caption"></p>,
+                      <p className="text-captionSmall"></p>,
                     ]}
                   />
                 </div>
@@ -52,7 +52,7 @@ const HowToStartSection: React.FC = () => {
                   {t("homepage.how_to_start.step2.title")}
                 </h3>
                 <div className="flex flex-col gap-6">
-                  <p className="text-caption">
+                  <p className="text-bodySmaller">
                     {t("homepage.how_to_start.step2.text")}
                   </p>
                 </div>
@@ -73,7 +73,7 @@ const HowToStartSection: React.FC = () => {
                   {t("homepage.how_to_start.step3.title")}
                 </h3>
                 <div className="flex flex-col gap-6">
-                  <p className="text-caption">
+                  <p className="text-bodySmaller">
                     {t("homepage.how_to_start.step3.text")}
                   </p>
                 </div>
@@ -94,7 +94,7 @@ const HowToStartSection: React.FC = () => {
                   {t("homepage.how_to_start.step4.title")}
                 </h3>
                 <div className="flex flex-col gap-6">
-                  <p className="text-caption">
+                  <p className="text-bodySmaller">
                     {t("homepage.how_to_start.step4.text")}
                   </p>
                 </div>
