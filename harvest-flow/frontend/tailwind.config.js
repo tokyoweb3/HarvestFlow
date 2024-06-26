@@ -23,6 +23,7 @@ module.exports = {
         heading4Smaller: ["24px", "28px"],
         heading5Larger: ["22px", "32px"],
         heading5: ["22px", "28px"],
+        heading5Smaller: ["20px", "30px"],
         bodyLarge: ["18px", "26px"],
         body16: ["16px", "24px"],
         bodyJapanese: ["15px", "34px"],

@@ -6,6 +6,7 @@ import { useScreenDetector } from "@src/utils/useScreenDetector";
 import bgVideo from "../../assets/videos/pc_color_high.mp4";
 import bgVideoMobile from "../../assets/videos/sp_color_high.mp4";
 import logo from "../../assets/images/splashscreen-logo.svg";
+import mobileLogo from "../../assets/images/splashscreen-logo-mobile.svg";
 
 type IntroSplashScreenProps = {
   onVideoLoaded?: () => void;
@@ -58,7 +59,11 @@ const IntroSplashScreen: React.FC<IntroSplashScreenProps> = ({
           isDesktop && desktopVideoLoaded && "opacity-100",
         )}
       >
-        <img src={logo} alt="Harvestflow logo" className="w-full" />
+        <img
+          src={isMobile ? mobileLogo : logo}
+          alt="Harvestflow logo"
+          className="w-full"
+        />
       </div>
     </div>
   );

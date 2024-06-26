@@ -28,7 +28,7 @@ const OurProjectsSection: React.FC = () => {
                 <h4 className="text-caption desktop:text-body text-center desktop:text-left uppercase font-normal">
                   RWA-001
                 </h4>
-                <h3 className="text-heading4 desktop:text-heading4 text-center desktop:text-left uppercase font-medium">
+                <h3 className="text-heading5Smaller desktop:text-heading4 text-center desktop:text-left uppercase font-medium">
                   {t("homepage.our_projects.heading")}
                 </h3>
               </div>
@@ -61,7 +61,7 @@ const OurProjectsSection: React.FC = () => {
                 <h4 className="uppercase text-caption desktop:text-body text-center p-2 border-b border-black border-dashed">
                   {t("general.apy")}
                 </h4>
-                <div className="py-6 desktop:py-8 px-4">
+                <div className="py-4 desktop:py-8 px-4">
                   <h5 className="text-bodyLarge desktop:text-heading4 text-center uppercase">
                     8%
                   </h5>
@@ -71,7 +71,7 @@ const OurProjectsSection: React.FC = () => {
                 <h4 className="uppercase text-caption desktop:text-body text-center p-2 border-b border-black border-dashed">
                   {t("general.status")}
                 </h4>
-                <div className="py-6 desktop:py-8 px-4">
+                <div className="py-4 desktop:py-8 px-4">
                   <h5 className="text-bodyLarge desktop:text-heading4 text-center uppercase">
                     {t("homepage.our_projects.coming_soon")}
                   </h5>
@@ -81,7 +81,7 @@ const OurProjectsSection: React.FC = () => {
                 <h4 className="uppercase text-caption desktop:text-body text-center p-2 border-b border-black border-dashed">
                   {t("general.asset_type")}
                 </h4>
-                <div className="py-6 desktop:py-8 px-4 desktop:px-2">
+                <div className="py-4 desktop:py-8 px-4 desktop:px-2">
                   <h5 className="text-bodyLarge desktop:text-heading4 text-center uppercase">
                     {t("homepage.our_projects.vehicle")}
                   </h5>
