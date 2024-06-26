@@ -4,6 +4,7 @@ import type { DataTileProps } from "./DataTile";
 import DataTile from "./DataTile";
 import { DailyDeviceSummary, type DeviceDetails } from "@harvest-flow/utils";
 import { getStartOfCurrentWeek, getStartOfLastWeek } from "@src/utils";
+import RwaDataChart from "@src/components/RwaDataChart";
 
 const ExtraSmallTile: React.FC<DataTileProps> = ({ title, value }) => {
   return (
@@ -52,7 +53,12 @@ const AccountProjectRWASection: React.FC<{deviceDetails: DeviceDetails}> = ({dev
             </div>
           </div>
           <div className="w-[60%] border-r border-black flex flex-col">
-            <LargeTile title="Driving chart" value="CHART_HERE" />
+            <DataTile
+              title="Driving chart"
+              size="large"
+              wrapperClassName="flex-1"
+              customComponent={<RwaDataChart dailyStats={deviceDetails.dailySummary} />}
+            />
           </div>
         </div>
       </div>
