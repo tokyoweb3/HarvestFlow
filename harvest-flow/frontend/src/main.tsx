@@ -8,6 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
 import TagManager from "react-gtm-module";
+import LanguageDetector from "i18next-browser-languagedetector";
 
 import "./main.css";
 
@@ -17,6 +18,7 @@ const mainController = new MainController();
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
+  .use(LanguageDetector)
   .init({
     // the translations
     // (tip move them in a JSON file and import them,
@@ -260,10 +262,14 @@ i18n
         },
       },
     },
-    lng: "jp", // if you're using a language detector, do not define the lng option
-    fallbackLng: "en",
+    fallbackLng: "jp",
     interpolation: {
       escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+    },
+    supportedLngs: ["en", "jp"],
+    detection: {
+      order: ["querystring"],
+      lookupQuerystring: "lng",
     },
   });
 
