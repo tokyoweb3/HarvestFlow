@@ -35,7 +35,7 @@ const OurProjectsSection: React.FC = () => {
               <p className="text-bodySmaller">
                 {t("homepage.our_projects.text")}
               </p>
-              <div className="py-2 px-4 bg-greySuperLight border border-black">
+              <div className="py-2 px-4 bg-white desktop:bg-greySuperLight border border-black">
                 <p className="font-medium uppercase text-center whitespace-pre-line">
                   <Trans
                     i18nKey="homepage.our_projects.note"
