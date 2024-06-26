@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import ScrollToPlugin from "gsap/ScrollToPlugin";
@@ -89,6 +89,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Footer />
     </>
   );
+
+  // add lng query parameter to the URL when the language changes
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("lng", i18n.language);
+    window.history.replaceState({}, "", url.toString());
+  }, [i18n.language]);
 
   return (
     <>
