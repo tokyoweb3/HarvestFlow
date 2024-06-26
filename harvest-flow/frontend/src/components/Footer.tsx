@@ -118,11 +118,13 @@ const Footer: React.FC = () => {
       />
       <div className="w-full h-full absolute left-0 top-0 z-10 flex flex-col pt-32 text-white">
         <div className="flex flex-col justify-center gap-32 flex-1">
-          <div className="flex flex-col gap-10">
-            <h2 className="text-heading4 desktop:text-heading2 text-center uppercase font-medium tracking-[0.85rem]">
-              Join our community
+          <div className="flex flex-col gap-4 desktop:gap-10">
+            <h2 className="text-heading5Larger desktop:text-heading2 text-center uppercase font-medium tracking-widest desktop:tracking-[0.85rem]">
+              Join<span className="hidden desktop:inline-block">&nbsp;</span>
+              <br className="desktop:hidden" />
+              our community
             </h2>
-            <div className="flex justify-center items-center gap-8">
+            <div className="flex justify-center items-center gap-0 desktop:gap-8">
               <a
                 href={TWITTER_LINK}
                 target="_blank"
@@ -140,15 +142,19 @@ const Footer: React.FC = () => {
                 <DiscordIcon />
               </a>
             </div>
-            <p className="text-center text-heading5">{t("footer.claim")}</p>
+            <p className="text-center text-body16 desktop:text-heading5">
+              {t("footer.claim")}
+            </p>
           </div>
           <div className="flex items-end justify-center gap-2">
-            <p className="text-heading5 relative -top-2">Produced by</p>
+            <p className="text-body desktop:text-heading5 relative -top-2">
+              Produced by
+            </p>
             <a
               href={APAS_PORT_LINK}
               target="_blank"
               rel="noreferrer noopener"
-              className="max-w-[145px] w-full pb-[8px]"
+              className="max-w-[101px] desktop:max-w-[145px] w-full pb-[8px]"
             >
               <ApasPortLogo />
             </a>

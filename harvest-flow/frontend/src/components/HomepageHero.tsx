@@ -84,17 +84,17 @@ const HomepageHero: React.FC = () => {
         />
       )}
       <div className="w-full h-full absolute left-0 top-0 z-10">
-        <div className="container mx-auto min-h-full flex flex-col justify-center gap-12 desktop:gap-32 px-4 desktop:px-0 pt-16">
-          <div className="flex flex-col items-center justify-center max-w-[600px] mx-auto gap-10 w-full">
+        <div className="container mx-auto min-h-full flex flex-col justify-center gap-12 desktop:gap-32 px-10 desktop:px-0 pt-16">
+          <div className="flex flex-col items-center justify-center max-w-[600px] mx-auto gap-8 desktop:gap-10 w-full">
             <h1 className="sr-only">{t("homepage.hero.title")}</h1>
             <div className="w-full">
               <VectorTitle />
             </div>
-            <div className="flex flex-col gap-6">
-              <h2 className="text-heading4 text-center uppercase font-medium">
+            <div className="flex flex-col gap-4 desktop:gap-6">
+              <h2 className="text-bodyJapanese desktop:text-heading4 text-center uppercase font-medium">
                 {t("homepage.hero.subtitle")}
               </h2>
-              <h3 className="text-heading5 text-center whitespace-pre-line">
+              <h3 className="text-bodySmaller font-normal desktop:font-medium desktop:text-heading5 text-center whitespace-pre-line">
                 {t("homepage.hero.text")}
               </h3>
             </div>
