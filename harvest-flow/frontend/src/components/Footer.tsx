@@ -116,8 +116,9 @@ const Footer: React.FC = () => {
         muted
         playsInline
       />
-      <div className="w-full h-full absolute left-0 top-0 z-10 flex flex-col pt-32 text-white">
-        <div className="flex flex-col justify-center gap-32 flex-1">
+      <div className="w-full h-full absolute left-0 top-0 z-10 flex flex-col desktop:pt-32 text-white">
+        <div className="flex flex-col justify-between desktop:justify-center gap-32 flex-1 px-8 desktop:px-0">
+          <div className="h-[60px] desktop:hidden" />
           <div className="flex flex-col gap-4 desktop:gap-10">
             <h2 className="text-heading5Larger desktop:text-heading2 text-center uppercase font-medium tracking-widest desktop:tracking-[0.85rem]">
               Join<span className="hidden desktop:inline-block">&nbsp;</span>

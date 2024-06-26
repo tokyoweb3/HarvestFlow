@@ -217,7 +217,7 @@ i18n
           "homepage.social_action.text":
             "HARVEST FLOWは社会課題の解決だけではなく、関わる人たちの経済的な豊かさも両立できるソーシャルアクションをプロジェクトの中心に据えています。グローバルで大きな時価総額を持つ暗号資産を前向きに活用することで、世界とユーザーに持続可能な実りを提供します。",
           "homepage.social_action.subtitle":
-            "HARVEST FLOWが注力する\n世界をよくするキーワード",
+            "HARVEST FLOWが\n注力する世界をよくするキーワード",
           "homepage.social_action.usecase": "社会課題を解決",
           "homepage.social_action.financial": "豊かさをシェア",
           "homepage.social_action.growth": "新興国の未来",
@@ -242,7 +242,7 @@ i18n
           "partners.kunimitsu.position": "フィナンシェ代表取締役CEO",
           "partners.masakazu.name": "キクチ・マサカズ",
           "partners.masakazu.position": "Secured Finance AG 創業者 & CEO",
-          "partners.kanemoto.name": "兼元謙任",
+          "partners.kanemoto.name": "兼元 謙任",
           "partners.kanemoto.position": "一般社団法人 HEART SHAKER 代表理事",
           "partners.nagase.name": "長瀨 威志",
           "partners.nagase.position":

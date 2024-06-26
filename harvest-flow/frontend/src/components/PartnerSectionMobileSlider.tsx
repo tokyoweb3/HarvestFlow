@@ -56,6 +56,7 @@ const PartnerSectionMobileSlider: React.FC<{
           imageURL={partnerData[currentSlide].imageURL}
           onClick={handleCardClick}
         />
+        <div className="absolute border border-black left-2 top-2 w-full h-full bg-greySuperLight" />
       </div>
       <div className="flex gap-6 justify-center items-center">
         {Array(partnerData.length)
