@@ -196,7 +196,7 @@ const FAQSection: React.FC = () => {
             />
             <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full flex items-center justify-center z-10">
               <h2 className="text-white text-heading3 desktop:text-heading2 font-medium uppercase tracking-widest text-center">
-                {t("homepage.faq.title")}
+                {t("homepage.faq.title", { lng: "en" })}
               </h2>
             </div>
           </div>
