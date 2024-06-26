@@ -58,6 +58,14 @@ const RwaDataChart: React.FC<{dailyStats : DailyDeviceSummary[]}> = ({dailyStats
         },
       },
     },
+    plugins: {
+      legend: {
+        labels: {
+          usePointStyle: true,
+          pointStyle: 'circle',
+        },
+      },
+    },
   };
 
   return (
@@ -102,6 +110,7 @@ const convertData = (dataset: DailyDeviceSummary[]): ChartData<'bar' | 'line'> =
         label: 'MILEAGES',
         data: mileageData,
         borderColor: 'rgba(230, 185, 95, 1)',
+        backgroundColor: 'rgba(230, 185, 95, 1)',
         borderWidth: 3,
         fill: false,
         yAxisID: 'y-mileage',
