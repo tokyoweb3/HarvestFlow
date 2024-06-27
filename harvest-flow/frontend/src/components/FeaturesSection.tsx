@@ -84,30 +84,34 @@ const FeaturesSection: React.FC = () => {
                 className="desktop:pt-96 desktop:flex-1 desktop:overflow-y-hidden desktop:pb-16 gsap-features-text-scroll-container"
                 ref={scrollableTextWrapper}
               >
-                <div className="px-4 desktop:px-10 flex flex-col gap-10 desktop:gap-16">
+                <div className="px-4 desktop:px-10 flex flex-col gap-10 desktop:gap-[60px] pb-10 desktop:pb-0">
                   <div className="bg-white desktop:bg-transparent text-black py-10 px-8 desktop:p-0 flex gap-8">
-                    <div className="flex flex-col gap-6 desktop:w-full">
-                      <h3 className="text-heading5 desktop:text-heading4Smaller text-center desktop:text-left uppercase font-medium">
+                    <div>
+                      <h3 className="text-heading5Smaller desktop:text-heading4Smaller text-center desktop:text-left uppercase font-medium desktop:hidden mb-6 desktop:mb-0">
                         {t("homepage.features.feature1_title")}
                       </h3>
-                      <div>
-                        <img
-                          src={featureImage1}
-                          alt="background"
-                          className="ml-3 mb-3 float-right desktop:hidden max-w-[150px] desktop:max-w-full"
-                        />
-                        <p className="text-bodySmaller">
-                          {t("homepage.features.feature1_text")}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="w-[270px] shrink-0 hidden desktop:block">
-                      <img src={featureImage1} alt="background" />
+                      <img
+                        src={featureImage1}
+                        alt="background"
+                        className="ml-3 mb-1 desktop:ml-8 desktop:mb-4 float-right max-w-[140px] w-full desktop:max-w-[280px]"
+                      />
+                      <h3 className="text-heading5Smaller desktop:text-heading4Smaller text-center desktop:text-left uppercase font-medium hidden desktop:block">
+                        {t("homepage.features.feature1_title")}
+                      </h3>
+                      <p className="text-bodySmaller desktop:mt-8">
+                        {t("homepage.features.feature1_text")}
+                      </p>
+                      <h3 className="text-heading5Smaller desktop:text-heading4Smaller text-center desktop:text-left uppercase font-medium hidden desktop:block desktop:mt-[60px]">
+                        {t("homepage.features.feature2_title")}
+                      </h3>
+                      <p className="text-bodySmaller hidden desktop:block mt-8">
+                        {t("homepage.features.feature2_text")}
+                      </p>
                     </div>
                   </div>
-                  <div className="bg-white desktop:bg-transparent text-black py-10 px-8 desktop:p-0 flex gap-8">
+                  <div className="bg-white desktop:bg-transparent text-black py-10 px-8 desktop:p-0 flex gap-8 desktop:hidden">
                     <div className="flex flex-col gap-6 desktop:w-full">
-                      <h3 className="text-heading5 desktop:text-heading4Smaller text-center desktop:text-left uppercase font-medium">
+                      <h3 className="text-heading5Smaller desktop:text-heading4Smaller text-center desktop:text-left uppercase font-medium">
                         {t("homepage.features.feature2_title")}
                       </h3>
                       <div>
@@ -119,27 +123,33 @@ const FeaturesSection: React.FC = () => {
                   </div>
                   <div className="bg-white desktop:bg-transparent text-black py-10 px-8 desktop:p-0 flex gap-8">
                     <div className="flex flex-col gap-6 desktop:w-full">
-                      <h3 className="text-heading5 desktop:text-heading4Smaller text-center desktop:text-left uppercase font-medium">
-                        {t("homepage.features.feature3_title")}
-                      </h3>
                       <div>
+                        <h3 className="text-heading5Smaller desktop:text-heading4Smaller text-center desktop:text-left uppercase font-medium desktop:hidden mb-6 desktop:mb-0">
+                          {t("homepage.features.feature3_title")}
+                        </h3>
                         <img
                           src={featureImage2}
                           alt="background"
-                          className="ml-3 mb-3 float-right desktop:hidden max-w-[150px] desktop:max-w-full"
+                          className="ml-3 mb-1 desktop:ml-8 desktop:mb-4 float-right max-w-[140px] w-full desktop:max-w-[280px]"
                         />
-                        <p className="text-bodySmaller">
+                        <h3 className="text-heading5Smaller desktop:text-heading4Smaller text-center desktop:text-left uppercase font-medium hidden desktop:block">
+                          {t("homepage.features.feature3_title")}
+                        </h3>
+                        <p className="text-bodySmaller desktop:mt-8">
                           {t("homepage.features.feature3_text")}
+                        </p>
+                        <h3 className="text-heading5Smaller desktop:text-heading4Smaller text-center desktop:text-left uppercase font-medium hidden desktop:block desktop:mt-[60px]">
+                          {t("homepage.features.feature4_title")}
+                        </h3>
+                        <p className="text-bodySmaller hidden desktop:block mt-8">
+                          {t("homepage.features.feature4_text")}
                         </p>
                       </div>
                     </div>
-                    <div className="w-[270px] shrink-0 hidden desktop:block">
-                      <img src={featureImage2} alt="background" />
-                    </div>
                   </div>
-                  <div className="bg-white desktop:bg-transparent text-black py-10 px-8 desktop:p-0 flex gap-8">
+                  <div className="bg-white desktop:bg-transparent text-black py-10 px-8 desktop:p-0 flex gap-8 desktop:hidden">
                     <div className="flex flex-col gap-6 desktop:w-full">
-                      <h3 className="text-heading5 desktop:text-heading4Smaller text-center desktop:text-left uppercase font-medium">
+                      <h3 className="text-heading5Smaller desktop:text-heading4Smaller text-center desktop:text-left uppercase font-medium">
                         {t("homepage.features.feature4_title")}
                       </h3>
                       <div>
