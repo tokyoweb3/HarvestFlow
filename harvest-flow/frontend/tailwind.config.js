@@ -25,11 +25,13 @@ module.exports = {
         heading5: ["22px", "28px"],
         heading5Smaller: ["20px", "30px"],
         bodyLarge: ["18px", "26px"],
+        bodyLarge24: ["18px", "24px"],
         body16: ["16px", "24px"],
         bodyJapanese: ["15px", "34px"],
         body: ["15px", "23px"],
         bodySmaller: ["13px", "23px"],
         caption: ["12px", "14px"],
+        captionMedium: ["11px", "15px"],
         captionSmall: ["10px", "12px"],
       },
       colors: {

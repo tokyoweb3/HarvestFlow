@@ -28,7 +28,7 @@ const OurProjectsSection: React.FC = () => {
                 <h4 className="text-caption desktop:text-body text-center desktop:text-left uppercase font-normal">
                   RWA-001
                 </h4>
-                <h3 className="text-heading5Smaller desktop:text-heading4 text-center desktop:text-left uppercase font-medium">
+                <h3 className="text-heading5Smaller desktop:text-heading4 text-center desktop:text-left uppercase font-medium whitespace-pre-line">
                   {t("homepage.our_projects.heading")}
                 </h3>
               </div>

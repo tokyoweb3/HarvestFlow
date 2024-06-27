@@ -1,5 +1,5 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 import SectionHeader from "./SectionHeader";
 import FocusAreaUseCases from "@src/icons/FocusAreaUseCases";
@@ -14,7 +14,17 @@ const POSSection: React.FC = () => {
   return (
     <div className="relative z-10 desktop:h-screen border-b border-black flex flex-col desktop:flex-row pb-16 desktop:pb-0">
       <div className="w-full desktop:w-1/2 flex flex-col">
-        <SectionHeader title={t("homepage.pos.title")} />
+        <div className="flex items-center justify-center desktop:border-b desktop:border-black px-6 pt-28 pb-16 desktop:p-6">
+          <h2 className="text-heading5 desktop:text-body font-medium uppercase text-center tracking-[0.35rem] whitespace-pre-line">
+            <Trans
+              i18nKey="homepage.pos.title"
+              components={[
+                // eslint-disable-next-line react/jsx-key
+                <span className="block desktop:inline text-bodyLarge24 desktop:text-body" />,
+              ]}
+            ></Trans>
+          </h2>
+        </div>
         <div className="flex-1 flex items-center justify-center desktop:max-w-[459px] desktop:mx-auto px-4">
           <p className="text-bodySmaller text-justify">
             {t("homepage.pos.text")}
@@ -36,7 +46,7 @@ const POSSection: React.FC = () => {
                 <div className="w-[70px] h-[70px] flex items-center justify-center">
                   <FocusAreaUseCases />
                 </div>
-                <h3 className="text-caption font-normal text-center uppercase">
+                <h3 className="text-captionMedium font-normal text-center uppercase">
                   {t("homepage.social_action.usecase")}
                 </h3>
               </div>
@@ -44,7 +54,7 @@ const POSSection: React.FC = () => {
                 <div className="w-[70px] h-[70px] flex items-center justify-center">
                   <FocusAreaFinancial />
                 </div>
-                <h3 className="text-caption font-normal text-center uppercase">
+                <h3 className="text-captionMedium font-normal text-center uppercase">
                   {t("homepage.social_action.financial")}
                 </h3>
               </div>
@@ -52,7 +62,7 @@ const POSSection: React.FC = () => {
                 <div className="w-[70px] h-[70px] flex items-center justify-center">
                   <FocusAreaGrowth />
                 </div>
-                <h3 className="text-caption font-normal text-center uppercase">
+                <h3 className="text-captionMedium font-normal text-center uppercase">
                   {t("homepage.social_action.growth")}
                 </h3>
               </div>
@@ -60,7 +70,7 @@ const POSSection: React.FC = () => {
                 <div className="w-[70px] h-[70px] flex items-center justify-center">
                   <FocusAreaTransparency />
                 </div>
-                <h3 className="text-caption font-normal text-center uppercase">
+                <h3 className="text-captionMedium font-normal text-center uppercase">
                   {t("homepage.social_action.transparency")}
                 </h3>
               </div>
@@ -68,7 +78,7 @@ const POSSection: React.FC = () => {
                 <div className="w-[70px] h-[70px] flex items-center justify-center">
                   <FocusAreaCulture />
                 </div>
-                <h3 className="text-caption font-normal text-center uppercase">
+                <h3 className="text-captionMedium font-normal text-center uppercase">
                   {t("homepage.social_action.culture")}
                 </h3>
               </div>

@@ -91,7 +91,7 @@ i18n
           "faq.question6": "How can I get in touch for questions or inquiries?",
           "faq.answer6":
             "All inquiries are accepted in the HARVEST HALL <0>Discord.</0>",
-          "homepage.pos.title": "POS（Proof of Support)",
+          "homepage.pos.title": "POS<0>（Proof of Support)</0>",
           "homepage.pos.text":
             "When lending cryptocurrency to a project, you'll receive a POS (Proof of Support) as a digital certificate. This POS utilizes NFT (Non-Fungible Token) blockchain technology, ensuring both high transparency and resistance to tampering. By partnering with unique artists and brands for every project, we ensure that each certificate is one-of-a-kind and exclusively yours. Holding a POS enables your wallet to earn interest/principal and grants access to the Owner Page. You also have the option to sell it on external markets.",
           "homepage.social_action.title": "Social action",
@@ -148,10 +148,10 @@ i18n
           "homepage.hero.title": "Harvest Flow",
           "homepage.hero.subtitle": "飛び込もう。新しい世界の流れに。",
           "homepage.hero.text":
-            "受け取り利息8%の\nソーシャルアクション。\n世界と繋がる暗号資産レンディング。",
+            "受け取り利息8%のソーシャルアクション。\n世界と繋がる暗号資産レンディング。",
           "homepage.our_projects.title": "プロジェクトハイライト",
           "homepage.our_projects.heading":
-            "新興国の未来をドライブする カンボジア トゥクトゥクローン事業",
+            "新興国の未来をドライブする\nカンボジア トゥクトゥクローン事業",
           "homepage.our_projects.text":
             "初回ブロジェクトRWA-001は過去5年間のGDP成長率が7%と急速な経済成長を遂げ、500万人を超える旅行客が訪れるなど、目覚ましい発展を遂げているカンボジアでトゥクトゥクローン事業を展開する優良企業に暗号資産レンディングを行います。",
           "homepage.our_projects.note":
@@ -210,7 +210,7 @@ i18n
           "faq.question6": "質問やお問い合わせはどこでできますか？",
           "faq.answer6":
             "HARVEST HALLの<0>Discord</0>でご質問を受け付けております。",
-          "homepage.pos.title": "POS（Proof of Support、応援証明書）",
+          "homepage.pos.title": "応援証明書<0>（PROOF OF SUPPORT）</0>",
           "homepage.pos.text":
             "プロジェクトに暗号資産を貸し出すとデジタル証明書としてPOS（Proof of Support、応援証明書）が発行されます。POSは透明性・耐改ざん性の高いNFT（Non-Fungible Token、非代替性トークン）というブロックチェーン技術を採用しています。POSを保有しているウォレットは利息と元本の受け取りや、オーナーページへのアクセスをすることができます。また、NFTは外部のマーケットプレイスで自由に売買することが可能です。アーティストやブランドとコラボレーションをした特別な作品が登録されており、あなただけの唯一無二の証明書になります。",
           "homepage.social_action.title": "ソーシャルアクション",

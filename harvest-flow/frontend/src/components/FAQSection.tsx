@@ -122,7 +122,12 @@ const FAQSection: React.FC = () => {
               i18nKey="faq.answer6"
               components={[
                 // eslint-disable-next-line react/jsx-key
-                <a href="#" className="underline" />,
+                <a
+                  href="https://discord.gg/harvesthall"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline"
+                />,
               ]}
             ></Trans>
           </p>
