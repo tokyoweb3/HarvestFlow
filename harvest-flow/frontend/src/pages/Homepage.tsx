@@ -1,6 +1,4 @@
-import React, { useContext, useEffect } from "react";
-import type MainController from "@src/MainController";
-import { AppContext } from "@src/main";
+import React from "react";
 import HomepageHero from "@src/components/HomepageHero";
 import OurProjectsSection from "@src/components/OurProjectsSection";
 import AboutHarvestFlowSection from "@src/components/AboutHarvestFlowSection";
