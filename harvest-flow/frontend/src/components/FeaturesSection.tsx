@@ -5,11 +5,10 @@ import { useTranslation } from "react-i18next";
 
 import SectionHeader from "./SectionHeader";
 
-import backgroundImage from "../../assets/images/hero-bg.svg";
 import bgVideo from "../../assets/videos/pc_color_high.mp4";
 import bgVideoMobile from "../../assets/videos/sp_color_high.mp4";
-import featureImage1 from "../../assets/images/feature1.jpg";
-import featureImage2 from "../../assets/images/feature2.jpg";
+import featureImage1 from "../../assets/images/feature1.png";
+import featureImage2 from "../../assets/images/feature2.png";
 
 const FeaturesSection: React.FC = () => {
   const { t } = useTranslation();
