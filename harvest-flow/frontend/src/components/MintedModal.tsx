@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 
 import CloseIcon from "@src/icons/CloseIcon";
 
 import bgVideo from "../../assets/videos/pc_pale_high.mp4";
 import nftImage from "../../assets/images/nft-card.jpg";
+import { useNavigate } from "react-router-dom";
+import { Page } from "@src/MainController";
 
-const MintedModal = () => {
-  const [visible, setVisible] = useState(false);
+const MintedModal : React.FC<{visible : boolean, onClose: () => void }>= ({visible, onClose}) => {
+  const navigate = useNavigate();
 
   if (!visible) return null;
 
@@ -26,7 +28,7 @@ const MintedModal = () => {
         </div>
         <div className="flex-1 relative z-10 flex flex-col items-center justify-center p-6">
           <button
-            onClick={() => setVisible(false)}
+            onClick={() => onClose()}
             className="absolute top-8 right-8 z-10"
           >
             <CloseIcon />
@@ -43,7 +45,8 @@ const MintedModal = () => {
             </div>
           </div>
         </div>
-        <button className="bg-primary text-black p-6 text-center uppercase hover:cursor-pointer font-medium text-bodyLarge desktop:text-heading5 tracking-wider relative z-10">
+        <button className="bg-primary text-black p-6 text-center uppercase hover:cursor-pointer font-medium text-bodyLarge desktop:text-heading5 tracking-wider relative z-10"
+          onClick={() =>  navigate(Page.Account) }>
           Go to account page
         </button>
       </div>
