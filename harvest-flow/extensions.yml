@@ -1,7 +1,7 @@
 extensions:
   - name: "Nft contract deploy"
     type: "generic"
-    contractAddress: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"
+    contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
     startBlockHeight: 0
     abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/NftFactory.sol/NftFactory.json"
     eventSignature: "NftDeployed(address)"
@@ -9,7 +9,7 @@ extensions:
 
   - name: "Contract activate"
     type: "dynamic-evm-primitive"
-    contractAddress: "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9"
+    contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
     eventSignature: "NftDeployed(address)"
     abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/NftFactory.sol/NftFactory.json"
     targetConfig:
@@ -23,7 +23,7 @@ extensions:
 
   - name: "Nft mint"
     type: "dynamic-evm-primitive"
-    contractAddress: "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9"
+    contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
     eventSignature: "NftDeployed(address)"
     abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/NftFactory.sol/NftFactory.json"
     targetConfig:
@@ -37,7 +37,7 @@ extensions:
 
   - name: "Interest claim"
     type: "dynamic-evm-primitive"
-    contractAddress: "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9"
+    contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
     eventSignature: "NftDeployed(address)"
     abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/NftFactory.sol/NftFactory.json"
     targetConfig:
@@ -51,7 +51,7 @@ extensions:
 
   - name: "Principal redeem"
     type: "dynamic-evm-primitive"
-    contractAddress: "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9"
+    contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
     eventSignature: "NftDeployed(address)"
     abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/NftFactory.sol/NftFactory.json"
     targetConfig:
