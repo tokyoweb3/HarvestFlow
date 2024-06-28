@@ -1,9 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import type MainController from "@src/MainController";
 import { AppContext } from "@src/main";
 import type { NftContractDetails } from "@harvest-flow/utils";
 import { calculateTotalRewards, formatTime } from "@src/utils";
 import { ethers } from "ethers";
+import MintedModal from "@src/components/MintedModal";
 
 const TotalSupplyProgressBar: React.FC<{
   totalSupply: number;
@@ -92,6 +93,8 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
   );
   const [totalRewards, setTotalRewards] = React.useState<string>("0");
 
+  const [mintModalVisible, setMintModalVisible] = useState(false);
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (projectContractDetails) {
@@ -129,87 +132,94 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
         amountToBuy,
         BigInt(projectContractDetails.price),
       )
-      .then(() => {
-        refreshData();
+      .then((success) => {
+        if (success) {
+          setMintModalVisible(true);
+          refreshData();
+        }
+
       });
   };
 
   return (
-    <div>
-      <div className="w-full bg-white border border-black text-black">
-        <div className="border-b border-black py-4 px-6 flex flex-col gap-2">
-          <p className="text-bodyLarge desktop:text-body uppercase font-medium text-center">
-            Phase: Allow list
-          </p>
-          <p className="text-captionSmall text-center">Ending in {endingIn}</p>
-        </div>
-        <div className="py-6 px-10 border-b border-black flex flex-col gap-6">
-          <TotalSupplyProgressBar
-            totalSupply={Number(projectContractDetails?.supplyCap) ?? 0}
-            currentSupply={Number(projectContractDetails?.mintedAmount) ?? 0}
-          />
-          <p className="text-center uppercase">You can mint: 2 NFTs</p>
-          <div className="flex justify-center items-end gap-6 px-6">
-            <div className="flex flex-col">
-              <p className="text-caption font-medium">Price</p>
-              <p className="text-heading3 font-medium">
-                {!projectContractDetails
-                  ? "----"
-                  : Number(
-                      ethers.utils.formatEther(projectContractDetails.price),
-                    ) * amountToBuy}{" "}
-                <span className="text-body">DAI</span>
+    <>
+      <div>
+        <div className="w-full bg-white border border-black text-black">
+          <div className="border-b border-black py-4 px-6 flex flex-col gap-2">
+            <p className="text-bodyLarge desktop:text-body uppercase font-medium text-center">
+              Phase: Allow list
+            </p>
+            <p className="text-captionSmall text-center">Ending in {endingIn}</p>
+          </div>
+          <div className="py-6 px-10 border-b border-black flex flex-col gap-6">
+            <TotalSupplyProgressBar
+              totalSupply={Number(projectContractDetails?.supplyCap) ?? 0}
+              currentSupply={Number(projectContractDetails?.mintedAmount) ?? 0}
+            />
+            <p className="text-center uppercase">You can mint: 2 NFTs</p>
+            <div className="flex justify-center items-end gap-6 px-6">
+              <div className="flex flex-col">
+                <p className="text-caption font-medium">Price</p>
+                <p className="text-heading3 font-medium">
+                  {!projectContractDetails
+                    ? "----"
+                    : Number(
+                        ethers.utils.formatEther(projectContractDetails.price),
+                      ) * amountToBuy}{" "}
+                  <span className="text-body">DAI</span>
+                </p>
+              </div>
+              <AmountInput amount={amountToBuy} setAmount={setAmountToBuy} />
+            </div>
+            <div className="border-t border-b border-black divide-y divide-black divide-dashed">
+              <p className="text-center uppercase py-3">
+                Expected APR:
+                <span className="font-medium">
+                  {projectContractDetails
+                    ? Number(
+                        ethers.utils.formatEther(projectContractDetails.minYield),
+                      ) * 100
+                    : "-"}{" "}
+                  %
+                </span>
+              </p>
+              <p className="text-center uppercase py-3">
+                Redemption: <span className="font-medium">April, 2027</span>
+              </p>
+              <p className="text-center uppercase py-3">
+                Remaining Term: <span className="font-medium">24 months</span>
               </p>
             </div>
-            <AmountInput amount={amountToBuy} setAmount={setAmountToBuy} />
-          </div>
-          <div className="border-t border-b border-black divide-y divide-black divide-dashed">
-            <p className="text-center uppercase py-3">
-              Expected APR:
-              <span className="font-medium">
-                {projectContractDetails
-                  ? Number(
-                      ethers.utils.formatEther(projectContractDetails.minYield),
-                    ) * 100
-                  : "-"}{" "}
-                %
-              </span>
-            </p>
-            <p className="text-center uppercase py-3">
-              Redemption: <span className="font-medium">April, 2027</span>
-            </p>
-            <p className="text-center uppercase py-3">
-              Remaining Term: <span className="font-medium">24 months</span>
-            </p>
+            <div>
+              <p className="text-center uppercase py-3">
+                Total rewards:{" "}
+                <span className="font-medium text-heading3">{totalRewards}</span>{" "}
+                <span className="font-medium">DAI</span>
+              </p>
+            </div>
           </div>
           <div>
-            <p className="text-center uppercase py-3">
-              Total rewards:{" "}
-              <span className="font-medium text-heading3">{totalRewards}</span>{" "}
-              <span className="font-medium">DAI</span>
-            </p>
+            <button
+              className="bg-primary text-black text-heading5 font-medium text-center px-8 py-6 uppercase w-full"
+              onClick={() => buyNft(amountToBuy)}
+            >
+              Mint
+            </button>
           </div>
         </div>
-        <div>
-          <button
-            className="bg-primary text-black text-heading5 font-medium text-center px-8 py-6 uppercase w-full"
-            onClick={() => buyNft(amountToBuy)}
-          >
-            Mint
-          </button>
+        <div className="mt-4 desktop:mt-2 text-black desktop:text-white">
+          <p className="text-caption">
+            Sunt ullamco eiusmod consectetur esse. Aliqua cillum exercitation ut
+            minim laborum ea excepteur elit. Est id et sint qui duis do do nisi
+            excepteur irure sint duis amet. Officia nostrud in id et consequat
+            cillum tempor aliquip. Duis labore nulla pariatur nisi mollit dolor
+            exercitation reprehenderit sunt proident Lorem ut do. Consectetur
+            aliquip mollit consectetur occaecat commodo do.
+          </p>
         </div>
+        <MintedModal visible={mintModalVisible} onClose={() => setMintModalVisible(false)} />
       </div>
-      <div className="mt-4 desktop:mt-2 text-black desktop:text-white">
-        <p className="text-caption">
-          Sunt ullamco eiusmod consectetur esse. Aliqua cillum exercitation ut
-          minim laborum ea excepteur elit. Est id et sint qui duis do do nisi
-          excepteur irure sint duis amet. Officia nostrud in id et consequat
-          cillum tempor aliquip. Duis labore nulla pariatur nisi mollit dolor
-          exercitation reprehenderit sunt proident Lorem ut do. Consectetur
-          aliquip mollit consectetur occaecat commodo do.
-        </p>
-      </div>
-    </div>
+    </>
   );
 };
 
