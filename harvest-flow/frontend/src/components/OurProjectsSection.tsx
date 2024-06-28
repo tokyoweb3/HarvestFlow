@@ -1,5 +1,6 @@
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useScreenDetector } from "@src/utils/useScreenDetector";
 
 import SectionHeader from "./SectionHeader";
 import {
@@ -7,11 +8,13 @@ import {
   OUR_PROJECTS_REGISTER_JP,
 } from "@src/utils/links";
 
-import backgroundImage from "../../assets/images/our_projects.jpg";
+import backgroundImageDesktop from "../../assets/images/our-projects-desktop.jpg";
+import backgroundImageMobile from "../../assets/images/our-projects-mobile.jpg";
 import backgroundImageNext from "../../assets/images/our_projects_next_bg.jpg";
 
 const OurProjectsSection: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const { isMobile } = useScreenDetector();
 
   return (
     <div className="desktop:border-b desktop:border-black px-4 desktop:px-0 pb-16 desktop:pb-0 relative z-10 desktop:h-screen flex flex-col">
@@ -19,7 +22,9 @@ const OurProjectsSection: React.FC = () => {
       <div className="flex flex-col desktop:flex-row desktop:divide-x desktop:divide-black border border-black desktop:border-0 flex-1">
         <div
           className="w-full desktop:w-1/2 bg-cover bg-no-repeat bg-center min-h-[220px] desktop:min-h-[initial]"
-          style={{ backgroundImage: `url(${backgroundImage})` }}
+          style={{
+            backgroundImage: `url(${isMobile ? backgroundImageMobile : backgroundImageDesktop})`,
+          }}
         ></div>
         <div className="w-full desktop:w-1/2 flex divide-x divide-black">
           <div className="w-full desktop:w-2/3 flex flex-col desktop:pt-8 justify-end">
