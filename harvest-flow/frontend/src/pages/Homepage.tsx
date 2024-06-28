@@ -15,13 +15,6 @@ import POSSection from "@src/components/POSSection";
 import HowToStartSection from "@src/components/HowToStartSection";
 
 const Homepage: React.FC = () => {
-  const mainController: MainController = useContext(AppContext);
-
-  useEffect(() => {
-    if (!mainController.isWalletConnected()) {
-      mainController.enforceWalletConnected();
-    }
-  }, [mainController]);
 
   return (
     <Layout enableIntroAnimation>

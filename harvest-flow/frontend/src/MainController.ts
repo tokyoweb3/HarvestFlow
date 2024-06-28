@@ -44,30 +44,13 @@ class MainController {
     successMessage: string | null,
     errorMessage: string | null,
   ) => void = () => {};
-
-  private checkCallback() {
-    if (this.callback == null) {
-      console.error("Callback is not set");
-    }
-  }
-
-  async enforceWalletConnected() {
-    this.checkCallback();
-    if (!this.isWalletConnected() || !this.userAddress) {
-      await this.connectWallet({
-        mode: WalletMode.EvmInjected,
-        preferBatchedMode: false,
-      });
-    }
-  }
-
+  
   isWalletConnected = (): boolean => {
     return this.userAddress !== null;
   };
 
   async connectWallet(loginInfo: LoginInfo): Promise<string> {
     const response = await Paima.default.userWalletLogin(loginInfo);
-    console.log("connect wallet response: ", response);
     if (response.success === true) {
       this.callback(
         null,
@@ -119,7 +102,6 @@ class MainController {
           this.provider.getSigner(),
         );
         await lendingContract.publicMint(amountToBuy);
-        //this.callback(null, "NFT bought successfully", null);
         return true;
       } catch (e) {
         console.error("Error buying NFT: ", e);
