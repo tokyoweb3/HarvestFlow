@@ -17,10 +17,10 @@ const AboutHarvestFlowSection: React.FC = () => {
         </div>
         <div className="py-16 desktop:flex-1 desktop:flex desktop:flex-col desktop:justify-end">
           <div className="flex flex-col gap-6 px-4 desktop:p-10">
-            <h3 className="text-bodyLarge desktop:text-heading4 text-center desktop:text-left uppercase font-medium whitespace-pre-line">
+            <h3 className="text-bodyLarge desktop:text-heading4SmallerLH34 text-center desktop:text-left uppercase font-medium whitespace-pre-line">
               {t("homepage.about.heading")}
             </h3>
-            <div className="whitespace-pre-line">
+            <div className="whitespace-pre-line text-bodySmaller">
               {t("homepage.about.text")}
             </div>
           </div>
@@ -32,7 +32,7 @@ const AboutHarvestFlowSection: React.FC = () => {
       >
         <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full flex flex-col items-center justify-center p-10">
           <div className="h-20 hidden desktop:block"></div>
-          <h2 className="text-white text-heading3 desktop:text-heading2 font-medium uppercase tracking-widest text-center whitespace-pre-line">
+          <h2 className="text-white text-heading3 desktop:text-heading2AnimationTitle uppercase tracking-[0.85rem] text-center whitespace-pre-line font-normal">
             {t("homepage.about.title", { lng: "en" })}
           </h2>
           {/* <div className="absolute desktop:relative -bottom-10 desktop:bottom-0 h-20 flex items-center justify-center desktop:justify-end w-full">

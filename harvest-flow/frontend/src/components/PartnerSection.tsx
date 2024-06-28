@@ -50,10 +50,10 @@ export const PartnerCard: React.FC<
       ></div>
       <div className="flex flex-col justify-end gap-6 desktop:gap-20 flex-1 pb-2">
         <div className="flex flex-col gap-1 desktop:gap-2">
-          <p className="text-center uppercase text-caption desktop:text-body animate-fade min-h-[36px]">
+          <p className="text-center uppercase text-caption desktop:text-captionMedium animate-fade min-h-[20px]">
             {subtitle}
           </p>
-          <h3 className="text-bodyLarge desktop:text-heading4 uppercase font-medium text-center animate-fade">
+          <h3 className="text-bodyLarge desktop:text-heading5 uppercase font-medium text-center animate-fade">
             {title}
           </h3>
         </div>
