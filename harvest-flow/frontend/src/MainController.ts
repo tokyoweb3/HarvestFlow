@@ -12,7 +12,6 @@ import type {
 import { Web3Provider } from "@ethersproject/providers";
 import { Contract, ethers } from "ethers";
 import TokTokNftAbi from "./abi/TokTokNft";
-import { WalletMode } from "@paima/providers";
 
 // The MainController is a React component that will be used to control the state of the application
 // It will be used to check if the user has metamask installed and if they are connected to the correct network
@@ -44,7 +43,7 @@ class MainController {
     successMessage: string | null,
     errorMessage: string | null,
   ) => void = () => {};
-  
+
   isWalletConnected = (): boolean => {
     return this.userAddress !== null;
   };
