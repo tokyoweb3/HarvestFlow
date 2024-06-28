@@ -67,6 +67,7 @@
 
   body {
     @apply text-body;
+    @apply tracking-wider;
     line-break: strict;
   }
 

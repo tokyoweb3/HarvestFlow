@@ -33,12 +33,12 @@ const POSSection: React.FC = () => {
       </div>
       <div className="w-full desktop:w-1/2 flex flex-col desktop:border-l desktop:border-black">
         <SectionHeader title={t("homepage.social_action.title")} />
-        <div className="flex-1 flex flex-col gap-12 items-center justify-center desktop:max-w-[500px] desktop:mx-auto px-4">
+        <div className="flex-1 flex flex-col gap-12 items-center justify-center desktop:max-w-[571px] desktop:mx-auto px-4">
           <p className="text-bodySmaller text-justify">
             {t("homepage.social_action.text")}
           </p>
-          <div className="flex flex-col gap-8 desktop:gap-6">
-            <h2 className="text-bodyLarge desktop:text-heading4 text-center uppercase font-medium whitespace-pre-line">
+          <div className="flex flex-col gap-8 desktop:gap-6 w-full">
+            <h2 className="text-bodyLarge desktop:text-heading4SmallerLH34 text-center uppercase font-medium whitespace-pre-line">
               {t("homepage.social_action.subtitle")}
             </h2>
             <div className="flex flex-wrap desktop:flex-nowrap gap-4 justify-center">

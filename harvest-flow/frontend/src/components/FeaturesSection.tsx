@@ -62,7 +62,7 @@ const FeaturesSection: React.FC = () => {
               playsInline
             />
             <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full flex items-center justify-center">
-              <h2 className="text-white text-heading3 desktop:text-heading2 font-medium uppercase tracking-widest text-center">
+              <h2 className="text-white text-heading3 desktop:text-heading2AnimationTitle uppercase tracking-[0.85rem] text-center whitespace-pre-line font-normal">
                 {t("homepage.features.title", { lng: "en" })}
               </h2>
             </div>

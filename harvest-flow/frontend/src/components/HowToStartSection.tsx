@@ -22,7 +22,7 @@ const HowToStartSection: React.FC = () => {
               <div className="w-full h-12 desktop:h-20 bg-[#325AB4] border-l border-black border-b"></div>
               <div className="w-full h-12 desktop:h-20 bg-[#5A7ED0] border-l border-black border-b"></div>
               <div className="w-full h-12 desktop:h-20 bg-[#1C1C64] border-l border-black border-b"></div>
-              <div className="px-10 py-8 flex flex-col gap-8 border-l border-black">
+              <div className="px-10 py-8 flex flex-col gap-[30px] border-l border-black">
                 <h3 className="text-body16 desktop:text-bodyLarge uppercase font-medium">
                   {t("homepage.how_to_start.step1.title")}
                 </h3>
@@ -47,7 +47,7 @@ const HowToStartSection: React.FC = () => {
               </div>
               <div className="w-full h-12 desktop:h-20 bg-[#5A7ED0] border-b border-black"></div>
               <div className="w-full h-12 desktop:h-20 bg-[#1C1C64] border-t border-black"></div>
-              <div className="px-10 py-8 flex flex-col gap-8">
+              <div className="px-10 py-8 flex flex-col gap-[30px]">
                 <h3 className="text-body16 desktop:text-bodyLarge uppercase font-medium">
                   {t("homepage.how_to_start.step2.title")}
                 </h3>
@@ -68,7 +68,7 @@ const HowToStartSection: React.FC = () => {
                 </p>
               </div>
               <div className="w-full h-12 desktop:h-20 bg-[#1C1C64]"></div>
-              <div className="px-10 py-8 flex flex-col gap-8">
+              <div className="px-10 py-8 flex flex-col gap-[30px]">
                 <h3 className="text-body16 desktop:text-bodyLarge uppercase font-medium">
                   {t("homepage.how_to_start.step3.title")}
                 </h3>
@@ -89,7 +89,7 @@ const HowToStartSection: React.FC = () => {
                   Step 4
                 </p>
               </div>
-              <div className="px-10 py-8 flex flex-col gap-8">
+              <div className="px-10 py-8 flex flex-col gap-[30px]">
                 <h3 className="text-body16 desktop:text-bodyLarge uppercase font-medium">
                   {t("homepage.how_to_start.step4.title")}
                 </h3>

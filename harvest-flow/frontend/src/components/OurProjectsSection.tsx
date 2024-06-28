@@ -63,37 +63,37 @@ const OurProjectsSection: React.FC = () => {
             </div>
             <div className="border-t border-b border-black divide-x divide-black flex">
               <div className="w-full">
-                <h4 className="uppercase text-caption desktop:text-body text-center p-2 border-b border-black border-dashed">
+                <h4 className="uppercase text-caption desktop:text-body14 text-center p-2 border-b border-black border-dashed">
                   {t("general.apy")}
                 </h4>
                 <div className="py-4 desktop:py-8 px-4">
-                  <h5 className="text-bodyLarge desktop:text-heading4 text-center uppercase">
+                  <h5 className="text-bodyLarge desktop:text-heading4Smaller text-center uppercase">
                     8%
                   </h5>
                 </div>
               </div>
               <div className="w-full">
-                <h4 className="uppercase text-caption desktop:text-body text-center p-2 border-b border-black border-dashed">
+                <h4 className="uppercase text-caption desktop:text-body14 text-center p-2 border-b border-black border-dashed">
                   {t("general.status")}
                 </h4>
                 <div className="py-4 desktop:py-8 px-4">
-                  <h5 className="text-bodyLarge desktop:text-heading4 text-center uppercase">
+                  <h5 className="text-bodyLarge desktop:text-heading4Smaller text-center uppercase">
                     {t("homepage.our_projects.coming_soon")}
                   </h5>
                 </div>
               </div>
               <div className="w-full">
-                <h4 className="uppercase text-caption desktop:text-body text-center p-2 border-b border-black border-dashed">
+                <h4 className="uppercase text-caption desktop:text-body14 text-center p-2 border-b border-black border-dashed">
                   {t("general.asset_type")}
                 </h4>
                 <div className="py-4 desktop:py-8 px-4 desktop:px-2">
-                  <h5 className="text-bodyLarge desktop:text-heading4 text-center uppercase">
+                  <h5 className="text-bodyLarge desktop:text-heading4Smaller text-center uppercase">
                     {t("homepage.our_projects.vehicle")}
                   </h5>
                 </div>
               </div>
             </div>
-            <button className="p-4 desktop:p-8 uppercase text-center w-full text-caption desktop:text-heading5 font-medium hover:cursor-not-allowed bg-greyLight">
+            <button className="p-4 desktop:p-8 uppercase text-center w-full text-caption desktop:text-heading5SmallerLH26 font-medium hover:cursor-not-allowed bg-greyLight">
               {t("general.view_more")}
             </button>
           </div>
@@ -104,7 +104,9 @@ const OurProjectsSection: React.FC = () => {
             <p className="uppercase text-center text-heading5 desktop:text-heading4Smaller">
               {t("general.next_project")}
             </p>
-            <p className="uppercase text-center">{t("general.coming_soon")}</p>
+            <p className="uppercase text-center tracking-widest">
+              {t("general.coming_soon")}
+            </p>
           </div>
         </div>
       </div>

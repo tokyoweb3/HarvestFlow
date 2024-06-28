@@ -33,18 +33,23 @@ const FAQItem: React.FC<{
         isOpen && "bg-white",
       )}
     >
-      <div className="px-3 py-6 desktop:p-10 w-16 desktop:w-28">
-        <p className="text-body desktop:text-heading5 text-center">Q{index}</p>
+      <div className="px-3 py-6 desktop:px-10 desktop:py-7 w-16 desktop:w-28">
+        <p className="text-body desktop:text-body17 text-center">Q{index}</p>
       </div>
-      <div className="px-4 desktop:px-10 py-4 desktop:py-6 flex flex-col gap-4 flex-1">
+      <div className="px-4 desktop:px-10 py-4 desktop:py-7 flex flex-col gap-4 flex-1">
         <div className="flex justify-between flex-1 items-start gap-10">
-          <h3 className="text-body desktop:text-heading5">{question}</h3>
+          <h3
+            className="text-body desktop:text-body17"
+            onClick={() => handleQuestionToggle()}
+          >
+            {question}
+          </h3>
           <button onClick={() => handleQuestionToggle()} className="pt-[6px]">
             {isOpen ? <MinusIcon /> : <PlusIcon />}
           </button>
         </div>
         {isOpen && (
-          <div className="text-caption desktop:text-body">{answer}</div>
+          <div className="text-caption desktop:text-bodySmaller">{answer}</div>
         )}
       </div>
     </div>
@@ -200,7 +205,7 @@ const FAQSection: React.FC = () => {
               muted
             />
             <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full flex items-center justify-center z-10">
-              <h2 className="text-white text-heading3 desktop:text-heading2 font-medium uppercase tracking-widest text-center">
+              <h2 className="text-white text-heading3 desktop:text-heading2AnimationTitle uppercase tracking-[0.85rem] text-center whitespace-pre-line font-normal">
                 {t("homepage.faq.title", { lng: "en" })}
               </h2>
             </div>
