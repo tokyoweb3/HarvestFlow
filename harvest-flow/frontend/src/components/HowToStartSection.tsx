@@ -7,9 +7,9 @@ const HowToStartSection: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="relative z-10 desktop:h-screen border-b border-black flex flex-col">
+    <div className="relative z-10 desktop:h-screen desktop:border-b desktop:border-black flex flex-col">
       <SectionHeader title={t("homepage.how_to_start.title")} />
-      <div className="pb-16 flex-1 desktop:flex desktop:flex-col desktop:justify-center">
+      <div className="pb-4 desktop:pb-16 flex-1 desktop:flex desktop:flex-col desktop:justify-center">
         <div className="max-w-[1188px] px-4 desktop:px-0 w-full mx-auto overflow-x-auto">
           <div className="grid grid-cols-[65vw_65vw_65vw_65vw_5vw] desktop:grid-cols-4 grid-rows-1">
             <div className="relative">
