@@ -12,7 +12,7 @@ const POSSection: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="relative z-10 desktop:h-screen border-b border-black flex flex-col desktop:flex-row pb-16 desktop:pb-0">
+    <div className="relative z-10 desktop:border-b desktop:border-black flex flex-col desktop:flex-row">
       <div className="w-full desktop:w-1/2 flex flex-col">
         <div className="flex items-center justify-center desktop:border-b desktop:border-black px-6 pt-28 pb-16 desktop:p-6">
           <h2 className="text-heading5 desktop:text-body font-medium uppercase text-center tracking-[0.35rem] whitespace-pre-line">
@@ -33,7 +33,7 @@ const POSSection: React.FC = () => {
       </div>
       <div className="w-full desktop:w-1/2 flex flex-col desktop:border-l desktop:border-black">
         <SectionHeader title={t("homepage.social_action.title")} />
-        <div className="flex-1 flex flex-col gap-12 items-center justify-center desktop:max-w-[571px] desktop:mx-auto px-4">
+        <div className="flex-1 flex flex-col gap-12 items-center justify-center desktop:max-w-[571px] desktop:mx-auto px-4 pb-6 desktop:py-[97px]">
           <p className="text-bodySmaller text-justify">
             {t("homepage.social_action.text")}
           </p>

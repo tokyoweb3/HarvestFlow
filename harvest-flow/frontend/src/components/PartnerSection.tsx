@@ -114,9 +114,9 @@ const PartnerSection: React.FC = () => {
   ];
 
   return (
-    <div className="relative z-10 border-b border-black desktop:h-screen flex flex-col pb-16 desktop:pb-0">
+    <div className="relative z-10 border-b border-black flex flex-col pb-[140px] desktop:pb-0">
       <SectionHeader title={t("partners.title")} />
-      <div className="desktop:py-16 px-4 desktop:px-0 flex-1 flex flex-col justify-center">
+      <div className="desktop:pt-20 desktop:pb-[124px] px-4 desktop:px-0 flex-1 flex flex-col justify-center">
         <div className="max-w-[1188px] mx-auto relative z-10 px-4 desktop:px-0 w-full">
           <div className="hidden desktop:block">
             <PartnerSectionDesktopSlider partnerData={partnerData} />
