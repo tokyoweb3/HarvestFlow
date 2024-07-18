@@ -1,5 +1,7 @@
 import React from "react";
 import clsx from "clsx";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Page } from "@src/MainController";
 
 const pages = [
   {
@@ -21,6 +23,26 @@ export type ProjectTabsProps = {
 };
 
 const ProjectTabs: React.FC<ProjectTabsProps> = ({ activePage }) => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const contractAddress = searchParams.get("address") || "";
+
+  const navigateTo = (page: string) => {
+    const searchParam = "?address=" + contractAddress;
+
+    switch (page) {
+      case "overview":
+        navigate({pathname: Page.Project, search : searchParam} );
+        break;
+      case "reports":
+        navigate({pathname: Page.Reports, search : searchParam});
+        break;
+      case "qa":
+        navigate({pathname: Page.FAQ, search : searchParam});
+        break;
+    }
+  }
+
   return (
     <div className="w-full flex">
       {pages.map((page) => (
@@ -32,6 +54,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({ activePage }) => {
               ? "border-primary"
               : "border-black hover:border-primary",
           )}
+          onClick={() => navigateTo(page.page)}
         >
           <p className="text-body desktop:text-heading4 font-medium uppercase tracking-widest">
             {page.name}
