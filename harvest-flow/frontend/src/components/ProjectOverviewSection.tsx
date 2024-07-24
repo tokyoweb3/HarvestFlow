@@ -48,10 +48,7 @@ const ProjectOverviewSection: React.FC<{
     Number(projectContractDetails?.mintedAmount ?? 0);
 
   return (
-    <div className="flex flex-col gap-16 desktop:gap-32 pt-20 desktop:pt-44 relative z-10">
-      <h2 className="text-center text-heading4 desktop:text-heading2 font-medium uppercase">
-        Overview
-      </h2>
+    <div className="flex flex-col gap-16 desktop:gap-32 pt-20 desktop:pt-[150px] relative z-10">
       <div className="grid grid-cols-1 grid-rows-4 desktop:grid-rows-1 desktop:grid-cols-3 border-b border-black bg-white">
         <div className="row-span-1 desktop:col-span-1 grid grid-cols-2 grid-rows-1 desktop:grid-cols-1 desktop:grid-rows-2 divide-y divide-black">
           <LargeTile title="Scheduled yield (annualized)" value={aprString} />

@@ -137,7 +137,6 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
           setMintModalVisible(true);
           refreshData();
         }
-
       });
   };
 
@@ -149,7 +148,9 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
             <p className="text-bodyLarge desktop:text-body uppercase font-medium text-center">
               Phase: Allow list
             </p>
-            <p className="text-captionSmall text-center">Ending in {endingIn}</p>
+            <p className="text-captionSmall text-center">
+              Ending in {endingIn}
+            </p>
           </div>
           <div className="py-6 px-10 border-b border-black flex flex-col gap-6">
             <TotalSupplyProgressBar
@@ -177,7 +178,9 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
                 <span className="font-medium">
                   {projectContractDetails
                     ? Number(
-                        ethers.utils.formatEther(projectContractDetails.minYield),
+                        ethers.utils.formatEther(
+                          projectContractDetails.minYield,
+                        ),
                       ) * 100
                     : "-"}{" "}
                   %
@@ -193,7 +196,9 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
             <div>
               <p className="text-center uppercase py-3">
                 Total rewards:{" "}
-                <span className="font-medium text-heading3">{totalRewards}</span>{" "}
+                <span className="font-medium text-heading3">
+                  {totalRewards}
+                </span>{" "}
                 <span className="font-medium">DAI</span>
               </p>
             </div>
@@ -207,17 +212,11 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
             </button>
           </div>
         </div>
-        <div className="mt-4 desktop:mt-2 text-black desktop:text-white">
-          <p className="text-caption">
-            Sunt ullamco eiusmod consectetur esse. Aliqua cillum exercitation ut
-            minim laborum ea excepteur elit. Est id et sint qui duis do do nisi
-            excepteur irure sint duis amet. Officia nostrud in id et consequat
-            cillum tempor aliquip. Duis labore nulla pariatur nisi mollit dolor
-            exercitation reprehenderit sunt proident Lorem ut do. Consectetur
-            aliquip mollit consectetur occaecat commodo do.
-          </p>
-        </div>
-        <MintedModal visible={mintModalVisible} onClose={() => setMintModalVisible(false)} />
+
+        <MintedModal
+          visible={mintModalVisible}
+          onClose={() => setMintModalVisible(false)}
+        />
       </div>
     </>
   );

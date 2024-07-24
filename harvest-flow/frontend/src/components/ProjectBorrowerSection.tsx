@@ -2,47 +2,48 @@ import React from "react";
 
 const ProjectBorrowerSection: React.FC = () => {
   return (
-    <div className="flex flex-col gap-16 desktop:gap-32 pt-20 desktop:pt-44 px-4 desktop:px-0 relative z-10">
-      <h2 className="text-center text-heading4 desktop:text-heading2 font-medium uppercase">
-        Borrower
-      </h2>
-      <div className="max-w-[780px] mx-auto flex flex-col gap-10">
-        <h3 className="text-bodyLarge desktop:text-heading4 text-center desktop:text-left font-medium">
-          Impression of Cambodia and Current Situation
-        </h3>
-        <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-16 desktop:gap-[150px] pt-20 desktop:pt-[150px] relative z-10 px-4 desktop:px-0">
+      <div className="max-w-[780px] mx-auto flex flex-col gap-10 desktop:gap-10">
+        <h4 className="text-bodyLarge desktop:text-heading5Larger23_30 text-center desktop:text-left font-medium">
+          The Tuk Tuk Market and Driver Loans in Cambodia
+        </h4>
+        <div className="flex flex-col gap-6 desktop:text-body15_26">
           <p>
-            Adipisicing consequat amet dolore tempor ea consectetur labore amet.
-            Nulla ipsum dolor commodo ipsum sit non excepteur ut pariatur in
-            occaecat dolore. Veniam deserunt dolore deserunt ex. Sunt eiusmod
-            deserunt consequat sunt mollit sint non aliquip labore exercitation.
-            Veniam Lorem amet occaecat magna pariatur dolor veniam aliquip est
-            fugiat. Nisi qui quis voluptate ad consectetur nisi aliqua. Irure
-            elit eu irure deserunt qui et ad cupidatat est nisi esse
-            exercitation sit. Non adipisicing elit do officia ex ut proident
-            velit in. Deserunt irure Lorem culpa sint voluptate. Culpa ullamco
-            culpa esse et laborum pariatur dolor.
+            Tuk tuks, three-wheeled taxis modified from motorcycles or bicycles,
+            are widely used as a vital mode of transportation in major cities
+            across Cambodia. They are popular among locals and tourists alike
+            for their convenience in short-distance travel and affordable fares.
+            In the capital city of Phnom Penh alone, there are approximately
+            12,000 tuk tuks, accounting for about 20% of the city&apos;s
+            transportation and becoming an integral part of citizens&apos; daily
+            lives.
           </p>
+
           <p>
-            Laborum tempor sunt dolore reprehenderit fugiat do excepteur sunt
-            labore et nulla fugiat ea. Lorem cupidatat ex ex laboris laborum.
-            Commodo consectetur elit excepteur aliqua. Mollit eu minim magna
-            occaecat ipsum consectetur consequat aute culpa quis. Est irure est
-            velit minim. Anim Lorem quis excepteur sint qui cupidatat nulla
-            dolore ex dolore ut sint. Labore deserunt velit cillum Lorem ipsum
-            velit quis aute non commodo aliqua adipisicing. In esse anim ad ea
-            labore irure in anim.
+            Many tuk tuk drivers in Cambodia, who form the backbone of the
+            country&apos;s transportation infrastructure, come from low-income
+            backgrounds or rural areas seeking employment opportunities.
+            However, securing funds to purchase their own tuk-tuk remains a
+            major challenge. This is primarily due to the reluctance of banks
+            and major microfinance institutions to provide loans to individual
+            entrepreneurs.
           </p>
+
           <p>
-            Anim ad dolore labore mollit et adipisicing sunt elit consectetur ad
-            fugiat amet. Nisi et ea excepteur elit cupidatat ut pariatur
-            occaecat irure commodo. Amet commodo irure nisi quis veniam et sit
-            amet dolore ipsum quis quis proident do. Non fugiat et deserunt
-            adipisicing minim laborum laborum sunt aliqua minim deserunt Lorem
-            ut. Ad veniam pariatur proident qui do minim elit irure et ad. Et
-            voluptate qui Lorem qui velit duis eiusmod nostrud duis esse et ad.
-            Reprehenderit ea exercitation aliqua laborum laboris non consectetur
-            eiusmod dolor non et do.
+            While the total loan portfolio of microfinance institutions in
+            Cambodia exceeds $8 billion, most of it is directed towards small
+            and medium enterprises, making it difficult for individual drivers
+            striving for self-sufficiency to access these services.
+          </p>
+
+          <p>
+            Phnom Penh, with over 5 million annual tourists, offers tuk tuk
+            drivers an opportunity to earn up to $400, triple the average
+            monthly income, which can be a significant stepping stone for them
+            to escape poverty, provided they have the motivation to work. Many
+            drivers we interviewed expressed joy in being able to send their
+            children to school with their earnings, highlighting the
+            transformative impact of their income.
           </p>
         </div>
       </div>

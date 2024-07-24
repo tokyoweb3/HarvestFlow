@@ -16,6 +16,11 @@ import type MainController from "@src/MainController";
 import type { NftContractDetails } from "@harvest-flow/utils";
 import MobileVideoBackground from "@src/components/MobileVideoBackground";
 import DesktopVideoBackground from "@src/components/DesktopVideoBackground";
+import ProjectDriverInterviewSection from "@src/components/ProjectDriverInterviewSection";
+import ProjectPOSSection from "@src/components/ProjectPOSSection";
+import ProjectArtistCollaborationSection from "@src/components/ProjectArtistCollaborationSection";
+import ProjectAboutTheBorrowerSection from "@src/components/ProjectAboutTheBorrowerSection";
+import ProjectHowItWorksSection from "@src/components/ProjectHowItWorksSection";
 
 const Project: React.FC = () => {
   const mainController: MainController = useContext(AppContext);
@@ -42,12 +47,17 @@ const Project: React.FC = () => {
       />
       <ProjectTabsSection activePage="overview" />
       <ProjectPointsSection />
-      <ProjectStorySection />
       <ProjectOverviewSection projectContractDetails={projectContractDetails} />
       <ProjectScheduleSection />
+      <ProjectStorySection />
       <ProjectBorrowerSection />
+      <ProjectDriverInterviewSection />
+      <ProjectPOSSection />
+      <ProjectArtistCollaborationSection />
+      <ProjectAboutTheBorrowerSection />
       <ProjectVideoSection />
       <ProjectSchemeSection />
+      <ProjectHowItWorksSection />
       <ProjectLendAHandSection />
       <DesktopVideoBackground />
       <MobileVideoBackground />
