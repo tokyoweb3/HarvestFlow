@@ -4,14 +4,20 @@ import tukTukImage from "../../assets/images/tuktuk-single.jpg";
 
 const ReportsDataHouseSection: React.FC = () => {
   return (
-    <div className="flex flex-col gap-16 desktop:gap-28 relative z-10">
-      <h2 className="text-center text-heading4 desktop:text-heading2 font-medium uppercase">
-        Data house
+    <div className="flex flex-col gap-16 desktop:gap-[112px] relative z-10">
+      <h2 className="text-center text-heading4 desktop:text-heading3 font-medium uppercase tracking-[0.35rem]">
+        Data report
       </h2>
-      <div className="w-full max-w-[1187px] mx-auto flex flex-col gap-20">
-        <h3 className="text-center text-heading5 desktop:text-heading3 font-medium">
-          Monitor other vehicles in-depth data.
-        </h3>
+      <div className="w-full max-w-[1187px] mx-auto flex flex-col gap-[70px]">
+        <div className="w-full max-w-[680px] mx-auto">
+          <h3 className="text-center text-heading5 desktop:text-body16 font-medium">
+            The release status of the vehicle can be checked.
+            <br />
+            Detailed data is accessible on the Owner Page by connecting your
+            wallet holding a POS and selecting the relevant information via the
+            Account Page.
+          </h3>
+        </div>
         <div className="overflow-x-scroll">
           <div className="flex w-full divide-x divide-black">
             <div
@@ -19,22 +25,22 @@ const ReportsDataHouseSection: React.FC = () => {
               style={{ backgroundImage: `url(${tukTukImage})` }}
             ></div>
             <div className="flex-1 shrink-0 border-t border-b border-r border-black">
-              <table className="w-full">
+              <table className="w-full bg-white">
                 <thead>
                   <tr className="border-b border-black border-dashed">
-                    <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black">
+                    <th className="text-caption desktop:text-body14 uppercase text-center font-normal py-[10px] px-4 border-r border-black">
                       Asset
                     </th>
-                    <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black">
+                    <th className="text-caption desktop:text-body14 uppercase text-center font-normal py-[10px] px-4 border-r border-black">
                       DNFT ID
                     </th>
-                    <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black">
+                    <th className="text-caption desktop:text-body14 uppercase text-center font-normal py-[10px] px-4 border-r border-black">
                       Vehicle model
                     </th>
-                    <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black">
+                    <th className="text-caption desktop:text-body14 uppercase text-center font-normal py-[10px] px-4 border-r border-black">
                       Amount
                     </th>
-                    <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black">
+                    <th className="text-caption desktop:text-body14 uppercase text-center font-normal py-[10px] px-4 border-r border-black">
                       Status
                     </th>
                   </tr>

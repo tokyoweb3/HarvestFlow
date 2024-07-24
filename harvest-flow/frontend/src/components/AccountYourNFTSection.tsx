@@ -6,20 +6,21 @@ import ArrowDownIcon from "@src/icons/ArrowDownIcon";
 import type { NFTItemCardProps } from "./NFTItemCard";
 import NFTItemCard from "./NFTItemCard";
 
-import tukTukImage from "../../assets/images/tuktuk.jpg";
+import tukTukImage from "../../assets/images/nft-card-image.jpg";
+import itemImage from "../../assets/images/nft-item-image.jpg";
 import type { NftDetails } from "@harvest-flow/utils";
 import { groupBy } from "@src/utils";
 import { ethers } from "ethers/lib";
 
 const nftItemData: NFTItemCardProps[] = [
   {
-    imageURL: tukTukImage,
+    imageURL: itemImage,
     title: "Blast Testnet Special NFT",
     text: "Boost APY +0.5%",
     caption: "Coming in Vol.2 2024 Fall",
   },
   {
-    imageURL: tukTukImage,
+    imageURL: itemImage,
     title: "Blast Testnet Special NFT",
     text: "Boost APY +0.5%",
     caption: "Coming in Vol.2 2024 Fall",
@@ -41,7 +42,9 @@ const NFTList: React.FC<NFTListProps> = ({ projectName, nfts }) => {
   return (
     <div className="flex flex-col gap-10">
       <div className="flex items-center gap-2" onClick={toggleCollapse}>
-        <h3 className="text-heading4 uppercase font-medium">{projectName}</h3>
+        <h3 className="text-heading5Larger24_30 uppercase font-medium">
+          {projectName}
+        </h3>
         {/* TODO add arrowup icon */}
         {isCollapsed ? <ArrowDownIcon /> : <ArrowDownIcon />}
       </div>
@@ -51,9 +54,10 @@ const NFTList: React.FC<NFTListProps> = ({ projectName, nfts }) => {
             {nfts.map((data) => (
               <div
                 key={data.contractAddress.concat(data.tokenId.toString())}
-                className="w-[80vw] max-w-[300px] desktop:w-full desktop:max-w-[initial] shrink-0"
+                className="w-[80vw] max-w-[300px] desktop:w-full desktop:max-w-[initial] shrink-0 hover:cursor-pointer"
               >
                 <NFTCard
+                  projectName={data.projectName}
                   contractAddress={data.contractAddress}
                   tokenId={data.tokenId}
                   asset={1} // TODO: What is this?
@@ -78,18 +82,21 @@ const AccountYourNFTSection: React.FC<{ ownedNfts: NftDetails[] }> = ({
 }) => {
   const groupedNfts = groupBy(ownedNfts, (nft) => nft.contractAddress);
 
+  console.log(groupedNfts);
+
   return (
-    <div className="flex flex-col gap-14">
-      <h2 className="text-center text-heading4 desktop:text-heading3 font-medium uppercase">
-        Your NFT
+    <div className="flex flex-col gap-[60px]">
+      <h2 className="text-bodyLarge desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
+        Proof of support
       </h2>
       <div className="w-full px-4 desktop:px-0">
-        <div className="flex flex-col gap-14 desktop:gap-20">
+        <div className="flex flex-col gap-14 desktop:gap-[60px]">
           {Object.keys(groupedNfts).map((contractAddress, index) => (
             <NFTList
               key={index}
               projectName={groupedNfts[contractAddress][0].projectName}
               nfts={groupedNfts[contractAddress].map((nft) => ({
+                projectName: groupedNfts[contractAddress][0].projectName,
                 contractAddress: nft.contractAddress,
                 tokenId: nft.tokenId,
                 asset: 1, // TODO: What is this?
@@ -107,8 +114,8 @@ const AccountYourNFTSection: React.FC<{ ownedNfts: NftDetails[] }> = ({
               }))}
             />
           ))}
-          <div className="flex flex-col gap-6 desktop:gap-10">
-            <h3 className="text-heading5 desktop:text-heading4 uppercase font-medium">
+          <div className="flex flex-col gap-6 desktop:gap-[40px]">
+            <h3 className="text-heading5 desktop:text-heading5Larger24_30 uppercase font-medium">
               Items
             </h3>
             <div className="overflow-x-auto">

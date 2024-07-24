@@ -30,18 +30,29 @@ const AccountProjectNavigation: React.FC = () => {
     <ul className="flex flex-col gap-5">
       <li
         className={clsx(
-          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
+          "text-heading5SmallerLH24 font-medium uppercase account-navigation-link hover:cursor-pointer",
         )}
         onClick={() => {
           handleScrollToElement(AccountProjectNavigationLink.YourNFT);
         }}
         data-to-scrollspy-id={AccountProjectNavigationLink.YourNFT}
       >
-        Your NFT
+        Proof of support
       </li>
       <li
         className={clsx(
-          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
+          "text-heading5SmallerLH24 font-medium uppercase account-navigation-link hover:cursor-pointer",
+        )}
+        onClick={() => {
+          handleScrollToElement(AccountProjectNavigationLink.Earn);
+        }}
+        data-to-scrollspy-id={AccountProjectNavigationLink.Earn}
+      >
+        Harvest
+      </li>
+      <li
+        className={clsx(
+          "text-heading5SmallerLH24 font-medium uppercase account-navigation-link hover:cursor-pointer",
         )}
         onClick={() => {
           handleScrollToElement(AccountProjectNavigationLink.AssetOverview);
@@ -52,36 +63,14 @@ const AccountProjectNavigation: React.FC = () => {
       </li>
       <li
         className={clsx(
-          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
-        )}
-        onClick={() => {
-          handleScrollToElement(AccountProjectNavigationLink.Earn);
-        }}
-        data-to-scrollspy-id={AccountProjectNavigationLink.Earn}
-      >
-        Earn
-      </li>
-      <li
-        className={clsx(
-          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
+          "text-heading5SmallerLH24 font-medium uppercase account-navigation-link hover:cursor-pointer",
         )}
         onClick={() => {
           handleScrollToElement(AccountProjectNavigationLink.RWA);
         }}
         data-to-scrollspy-id={AccountProjectNavigationLink.RWA}
       >
-        RWA
-      </li>
-      <li
-        className={clsx(
-          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
-        )}
-        onClick={() => {
-          handleScrollToElement(AccountProjectNavigationLink.Updates);
-        }}
-        data-to-scrollspy-id={AccountProjectNavigationLink.Updates}
-      >
-        Updates
+        RWA Data
       </li>
     </ul>
   );

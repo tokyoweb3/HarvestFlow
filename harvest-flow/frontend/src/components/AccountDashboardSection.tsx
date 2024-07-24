@@ -34,7 +34,7 @@ const ExtraSmallTile: React.FC<DataTileProps> = ({
 const LargeTile: React.FC<DataTileProps> = ({ title, value }) => {
   return (
     <DataTile
-      wrapperClassName="w-full desktop:w-[30%]"
+      wrapperClassName="w-full desktop:w-[44%]"
       title={title}
       value={value}
       size="large"
@@ -67,49 +67,53 @@ const AccountDashboardSection: React.FC<{ userDetails: UserDetails }> = ({
   };
 
   return (
-    <div className="flex flex-col gap-14">
-      <h2 className="text-center text-heading4 desktop:text-heading3 font-medium uppercase">
+    <div className="flex flex-col gap-[60px]">
+      <h2 className="text-bodyLarge desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
         Dashboard
       </h2>
-      <div className="bg-white">
-        <div className="flex flex-col desktop:flex-row">
-          <LargeTile title="TOTAL EQUITY in USD" value={totalEquityString} />
-          <div className="w-full desktop:w-[20%] grid grid-cols-2 grid-rows-1 desktop:grid-cols-1 desktop:grid-rows-2">
-            <ExtraSmallTile title="Your APR" value={aprString} />
-            <ExtraSmallTile title="Lending Now" value={lendingAmountString} />
+      <div className="flex gap-[17px]">
+        <div className="bg-white border-r border-black flex-1">
+          <div className="flex flex-col desktop:flex-row">
+            <LargeTile title="TOTAL EQUITY in USD" value={totalEquityString} />
+            <div className="w-full desktop:w-[33%] grid grid-cols-2 grid-rows-1 desktop:grid-cols-1 desktop:grid-rows-2">
+              <ExtraSmallTile title="Your APR" value={aprString} />
+              <ExtraSmallTile title="Lending Now" value={lendingAmountString} />
+            </div>
+            <div className="w-full desktop:w-[33%] grid grid-cols-2 grid-rows-1 desktop:grid-cols-1 desktop:grid-rows-2">
+              <ExtraSmallTile
+                title="BOOST"
+                value="+0.5%"
+                tooltipText="Some tooltip comes here"
+              />
+              <ExtraSmallTile title="Total Yield" value={totalYieldString} />
+            </div>
           </div>
-          <div className="w-full desktop:w-[20%] grid grid-cols-2 grid-rows-1 desktop:grid-cols-1 desktop:grid-rows-2">
-            <ExtraSmallTile
-              title="BOOST"
-              value="+0.5%"
-              tooltipText="Some tooltip comes here"
-            />
-            <ExtraSmallTile title="Total Yield" value={totalYieldString} />
+          <div className="w-full grid grid-cols-2 grid-rows-2 desktop:grid-rows-1 border-b border-black">
+            <div className="">
+              <ExtraSmallTile title="POINT" value={userPointsString} />
+            </div>
+            <div className="">
+              <ExtraSmallTile
+                title="RANK"
+                value={userDetails?.rank?.toString() ?? "-"}
+              />
+            </div>
           </div>
-          <div className="w-full desktop:w-[30%] border-l border-black border-t border-r flex flex-col items-center justify-center p-6 gap-6">
-            <p className="text-body desktop:text-heading4 uppercase text-center font-normal">
+        </div>
+        <div className="flex flex-col max-w-[250px] bg-white border-b border-black">
+          <div className="w-full border-l border-black border-t border-r flex flex-col items-center justify-center p-6 gap-6 flex-1">
+            <p className="text-body desktop:text-bodyLarge24 uppercase text-center font-normal">
               Claimable Yield:
               <br /> <span className="font-medium">{claimableYieldString}</span>
             </p>
-            <p className="text-body desktop:text-heading4 uppercase text-center font-normal">
+            <p className="text-body desktop:text-bodyLarge24 uppercase text-center font-normal">
               Claimable Principle:
               <br />{" "}
               <span className="font-medium">{claimablePrincipleString}</span>
             </p>
           </div>
-        </div>
-        <div className="w-full grid grid-cols-2 grid-rows-2 desktop:grid-cols-3 desktop:grid-rows-1 border-b border-black">
-          <div className="">
-            <ExtraSmallTile title="POINT" value={userPointsString} />
-          </div>
-          <div className="">
-            <ExtraSmallTile
-              title="RANK"
-              value={userDetails?.rank?.toString() ?? "-"}
-            />
-          </div>
           <button
-            className="bg-primary flex items-center justify-center border-t desktop:border-r border-l border-black text-heading4 font-medium uppercase tracking-[0.35rem] col-span-2 desktop:col-span-1"
+            className="bg-primary flex items-center justify-center border-t desktop:border-r border-l border-black text-heading5Smaller font-medium uppercase tracking-[0.35rem] col-span-2 desktop:col-span-1 h-[115px]"
             onClick={() => harvestAll()}
           >
             Harvest

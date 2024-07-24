@@ -17,25 +17,20 @@ const updatesData = [
 
 const AccountUpdatesSection: React.FC = () => {
   return (
-    <div className="flex flex-col gap-14">
-      <div className="flex flex-col gap-6">
-        <h2 className="text-center text-heading4 desktop:text-heading3 font-medium uppercase">
-          Update
-        </h2>
-        <h3 className="text-center text-heading5 desktop:text-heading4 font-medium">
-          Updates from the project.
-        </h3>
-      </div>
+    <div className="flex flex-col gap-[60px]">
+      <h2 className="text-bodyLarge desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
+        Update
+      </h2>
       <div className="w-full border border-black divide-y divide-black divide-dashed bg-white">
         {updatesData.map((update, index) => (
           <div
             key={index}
             className="p-6 gap-6 flex items-center justify-between"
           >
-            <p className="uppercase text-caption desktop:text-body">
+            <p className="uppercase text-caption desktop:text-body16">
               {update.text}
             </p>
-            <p className="uppercase text-caption desktop:text-body">
+            <p className="uppercase text-caption desktop:text-body16">
               {update.date}
             </p>
           </div>

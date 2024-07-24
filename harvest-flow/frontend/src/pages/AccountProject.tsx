@@ -15,6 +15,8 @@ import type { DeviceDetails, NftDetails } from "@harvest-flow/utils";
 import AccountProjectNavigation, {
   AccountProjectNavigationLink,
 } from "@src/components/AccountProjectNavigation";
+import DesktopVideoBackground from "@src/components/DesktopVideoBackground";
+import MobileVideoBackground from "@src/components/MobileVideoBackground";
 
 const AccountProject: React.FC = () => {
   const mainController: MainController = useContext(AppContext);
@@ -52,15 +54,15 @@ const AccountProject: React.FC = () => {
 
   return (
     <Layout>
-      <div className="w-full max-w-[1320px] mx-auto">
-        <div className="flex gap-32 pt-32 pb-56">
+      <div className="w-full max-w-[1320px] mx-auto relative z-10">
+        <div className="flex gap-32 pt-[216px] pb-56">
           <div className="flex-1 shrink-0 relative">
             <div className="sticky top-32">
               <AccountProjectNavigation />
             </div>
           </div>
           {!isLoading && (
-            <div className="w-full max-w-[1008px] *:flex *:flex-col *:gap-24">
+            <div className="w-full max-w-[926px] *:flex *:flex-col *:gap-24">
               <ScrollSpy scrollThrottle={150}>
                 <div
                   className="gsap-section-trigger"
@@ -70,30 +72,24 @@ const AccountProject: React.FC = () => {
                 </div>
                 <div
                   className="gsap-section-trigger"
-                  id={AccountProjectNavigationLink.AssetOverview}
-                >
-                  <AccountProjectAssetOverviewSection deviceDetails={rwaData}/>
-                </div>
-                <div
-                  className="gsap-section-trigger"
                   id={AccountProjectNavigationLink.Earn}
                 >
                   <AccountProjectEarnSection tokenDetails={nftDetails} />
                 </div>
                 <div
                   className="gsap-section-trigger"
-                  id={AccountProjectNavigationLink.RWA}
+                  id={AccountProjectNavigationLink.AssetOverview}
                 >
-                  <AccountProjectRWASection deviceDetails={rwaData}/>
+                  <AccountProjectAssetOverviewSection deviceDetails={rwaData} />
                 </div>
                 <div
                   className="gsap-section-trigger"
-                  id={AccountProjectNavigationLink.Updates}
+                  id={AccountProjectNavigationLink.RWA}
                 >
-                  <AccountUpdatesSection />
+                  <AccountProjectRWASection deviceDetails={rwaData} />
                 </div>
                 <button
-                  className="bg-primary flex items-center justify-center border border-black text-heading5 font-medium uppercase tracking-widest p-10"
+                  className="bg-secondary text-white flex items-center justify-center border border-black text-heading4_28_44 font-medium uppercase tracking-widest p-10"
                   onClick={() => {
                     navigate(
                       `${Page.Project}?address=${nftDetails.contractAddress}`,
@@ -107,6 +103,8 @@ const AccountProject: React.FC = () => {
           )}
         </div>
       </div>
+      <DesktopVideoBackground />
+      <MobileVideoBackground />
     </Layout>
   );
 };

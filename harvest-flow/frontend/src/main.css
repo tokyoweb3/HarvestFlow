@@ -202,4 +202,12 @@
     @apply transition-all;
     @apply opacity-0;
   }
+
+  .nft-card-bg {
+    background: linear-gradient(
+      139deg,
+      rgba(255, 255, 255, 0.44) -6.39%,
+      rgba(255, 255, 255, 0.21) 112.17%
+    );
+  }
 }

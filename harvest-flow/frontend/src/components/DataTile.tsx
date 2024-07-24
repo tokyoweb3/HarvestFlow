@@ -29,8 +29,8 @@ const TileHeader: React.FC<TileHeaderProps> = ({ title, tooltipText }) => {
   const tooltipID = useId();
 
   return (
-    <div className="px-6 py-4 border-b border-black border-dashed flex items-center justify-center">
-      <p className="text-center uppercase text-caption desktop:text-body relative">
+    <div className="px-6 py-[10px] border-b border-black border-dashed flex items-center justify-center">
+      <p className="text-center uppercase text-caption desktop:text-caption relative">
         {title}
         {tooltipText && (
           <>
@@ -51,7 +51,7 @@ const TileHeader: React.FC<TileHeaderProps> = ({ title, tooltipText }) => {
 
 type TileValueProps = {
   value?: string;
-  size?: "xxs" | "xs" | "small" | "large";
+  size?: "xxs" | "xs" | "xs24" | "small" | "large";
 };
 
 const TileValue: React.FC<TileValueProps> = ({ value, size = "small" }) => {
@@ -73,15 +73,19 @@ const TileValue: React.FC<TileValueProps> = ({ value, size = "small" }) => {
 
   const getTextSizeFromSize = () => {
     if (size === "xxs") {
-      return "text-heading5";
+      return "text-heading5LH22";
     }
 
     if (size === "xs") {
-      return "text-heading4";
+      return "text-heading5";
+    }
+
+    if (size === "xs24") {
+      return "text-heading4Smaller";
     }
 
     if (size === "large") {
-      return "text-heading3 desktop:text-heading1";
+      return "text-heading3 desktop:text-heading2_43";
     }
 
     return "text-body desktop:text-heading3";

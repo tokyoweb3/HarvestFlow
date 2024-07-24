@@ -30,7 +30,7 @@ const AccountNavigation: React.FC = () => {
     <ul className="flex flex-col gap-5">
       <li
         className={clsx(
-          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
+          "text-heading5Smaller font-medium uppercase account-navigation-link hover:cursor-pointer",
         )}
         onClick={() => {
           handleScrollToElement(AccountNavigationLink.Dashboard);
@@ -41,7 +41,7 @@ const AccountNavigation: React.FC = () => {
       </li>
       <li
         className={clsx(
-          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
+          "text-heading5Smaller font-medium uppercase account-navigation-link hover:cursor-pointer",
         )}
         onClick={() => {
           handleScrollToElement(AccountNavigationLink.ProjectHistory);
@@ -52,7 +52,7 @@ const AccountNavigation: React.FC = () => {
       </li>
       <li
         className={clsx(
-          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
+          "text-heading5Smaller font-medium uppercase account-navigation-link hover:cursor-pointer",
         )}
         onClick={() => {
           handleScrollToElement(AccountNavigationLink.Update);
@@ -63,7 +63,7 @@ const AccountNavigation: React.FC = () => {
       </li>
       <li
         className={clsx(
-          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
+          "text-heading5Smaller font-medium uppercase account-navigation-link hover:cursor-pointer",
         )}
         onClick={() => {
           handleScrollToElement(AccountNavigationLink.YourNFT);
@@ -74,7 +74,7 @@ const AccountNavigation: React.FC = () => {
       </li>
       <li
         className={clsx(
-          "text-heading5 font-medium uppercase account-navigation-link hover:cursor-pointer",
+          "text-heading5Smaller font-medium uppercase account-navigation-link hover:cursor-pointer",
         )}
         onClick={() => {
           handleScrollToElement(AccountNavigationLink.UpcomingProjects);

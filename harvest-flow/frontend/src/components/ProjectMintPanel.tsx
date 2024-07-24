@@ -144,15 +144,15 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
     <>
       <div>
         <div className="w-full bg-white border border-black text-black">
-          <div className="border-b border-black py-4 px-6 flex flex-col gap-2">
-            <p className="text-bodyLarge desktop:text-body uppercase font-medium text-center">
+          <div className="border-b border-black pt-[16px] pb-[13px] px-6 flex flex-col gap-[4px]">
+            <p className="text-bodyLarge desktop:text-body15_18 uppercase font-medium text-center">
               Phase: Allow list
             </p>
-            <p className="text-captionSmall text-center">
+            <p className="text-captionMedium text-center">
               Ending in {endingIn}
             </p>
           </div>
-          <div className="py-6 px-10 border-b border-black flex flex-col gap-6">
+          <div className="pt-[20px] pb-[17px] px-10 border-b border-black flex flex-col gap-[22px]">
             <TotalSupplyProgressBar
               totalSupply={Number(projectContractDetails?.supplyCap) ?? 0}
               currentSupply={Number(projectContractDetails?.mintedAmount) ?? 0}
@@ -161,7 +161,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
             <div className="flex justify-center items-end gap-6 px-6">
               <div className="flex flex-col">
                 <p className="text-caption font-medium">Price</p>
-                <p className="text-heading3 font-medium">
+                <p className="text-heading3_36 font-medium">
                   {!projectContractDetails
                     ? "----"
                     : Number(
@@ -173,7 +173,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
               <AmountInput amount={amountToBuy} setAmount={setAmountToBuy} />
             </div>
             <div className="border-t border-b border-black divide-y divide-black divide-dashed">
-              <p className="text-center uppercase py-3">
+              <p className="text-center text-body15_18 uppercase py-[6px]">
                 Expected APR:
                 <span className="font-medium">
                   {projectContractDetails
@@ -186,17 +186,17 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
                   %
                 </span>
               </p>
-              <p className="text-center uppercase py-3">
+              <p className="text-center text-body15_18 uppercase py-[6px]">
                 Redemption: <span className="font-medium">April, 2027</span>
               </p>
-              <p className="text-center uppercase py-3">
+              <p className="text-center text-body15_18 uppercase py-[6px]">
                 Remaining Term: <span className="font-medium">24 months</span>
               </p>
             </div>
             <div>
               <p className="text-center uppercase py-3">
                 Total rewards:{" "}
-                <span className="font-medium text-heading3">
+                <span className="font-medium text-heading3_36">
                   {totalRewards}
                 </span>{" "}
                 <span className="font-medium">DAI</span>

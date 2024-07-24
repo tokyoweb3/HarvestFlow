@@ -3,7 +3,7 @@ import React from "react";
 import type { DataTileProps } from "./DataTile";
 import DataTile from "./DataTile";
 
-import tukTukImage from "../../assets/images/tuktuk.jpg";
+import tukTukImage from "../../assets/images/account-owner-asset-overview-image.jpg";
 import type { DeviceDetails } from "@harvest-flow/utils";
 import { getMonth } from "@src/utils";
 
@@ -36,13 +36,15 @@ const ExtraSmallTile: React.FC<DataTileProps> = ({
   );
 };
 
-const AccountProjectAssetOverviewSection: React.FC<{deviceDetails: DeviceDetails}> = ({deviceDetails}) => {
+const AccountProjectAssetOverviewSection: React.FC<{
+  deviceDetails: DeviceDetails;
+}> = ({ deviceDetails }) => {
   return (
-    <div className="flex flex-col gap-14">
-      <h2 className="text-center text-heading3 font-medium uppercase">
+    <div className="flex flex-col gap-[58px]">
+      <h2 className="text-bodyLarge desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
         Asset overview
       </h2>
-      <div className="">
+      <div className="bg-white">
         <div className="flex border-b border-r border-black">
           <div className="w-1/2 grid grid-cols-1 grid-rows-2">
             <div className="grid grid-cols-2 grid-rows-1">
@@ -51,8 +53,14 @@ const AccountProjectAssetOverviewSection: React.FC<{deviceDetails: DeviceDetails
                 style={{ backgroundImage: `url(${tukTukImage})` }}
               ></div>
               <div className="grid grid-rows-2 grid-cols-1">
-                <ExtraSmallTile title="Asset ID" value={deviceDetails.deviceId.toString()} />
-                <ExtraSmallTile title="Vehicle model" value={deviceDetails.vehicleModel} />
+                <ExtraSmallTile
+                  title="Asset ID"
+                  value={deviceDetails.deviceId.toString()}
+                />
+                <ExtraSmallTile
+                  title="Vehicle model"
+                  value={deviceDetails.vehicleModel}
+                />
               </div>
             </div>
             <div className="flex w-full">
@@ -61,8 +69,12 @@ const AccountProjectAssetOverviewSection: React.FC<{deviceDetails: DeviceDetails
                 customComponent={
                   <div className="flex flex-col items-center justify-center gap-3">
                     {deviceDetails.history.map((event, index) => (
-                      <p key={index} className="text-heading4 text-center">
-                        {new Date(event.eventTime).getFullYear()} {getMonth(event.eventTime)} / {event.eventDescription}
+                      <p
+                        key={index}
+                        className="text-heading4SmallerLH34 text-center"
+                      >
+                        {new Date(event.eventTime).getFullYear()}{" "}
+                        {getMonth(event.eventTime)} / {event.eventDescription}
                       </p>
                     ))}
                   </div>
@@ -80,23 +92,29 @@ const AccountProjectAssetOverviewSection: React.FC<{deviceDetails: DeviceDetails
                 />
               </div>
               <div className="grid grid-cols-2 grid-rows-1">
-                <ExtraSmallTile title="Mileage" value={`${deviceDetails.totalMileage} KM`} />
-                <ExtraSmallTile title="Mileage time" value={`${Math.floor(deviceDetails.totalDrivingTime/3600)} hrs`} />
+                <ExtraSmallTile
+                  title="Mileage"
+                  value={`${deviceDetails.totalMileage} KM`}
+                />
+                <ExtraSmallTile
+                  title="Mileage time"
+                  value={`${Math.floor(deviceDetails.totalDrivingTime / 3600)} hrs`}
+                />
               </div>
             </div>
             <div className="flex w-full">
               <ExtraSmallTile
                 title="Driver profile"
                 customComponent={
-                  <div className="flex gap-6">
-                    <div className="w-[110px] shrink-0">
+                  <div className="flex gap-6 items-center p-[35px]">
+                    <div className="w-[80px] shrink-0">
                       <DriverAvatar />
                     </div>
-                    <div className="flex flex-col justify-center gap-1">
-                      <p className="text-heading5">Name: K.H.</p>
-                      <p className="text-heading5">Sex: Male</p>
-                      <p className="text-heading5">Driver Since: 2020</p>
-                      <p className="text-heading5">
+                    <div className="flex flex-col justify-center gap-0">
+                      <p className="text-bodyLarge24">Name: K.H.</p>
+                      <p className="text-bodyLarge24">Sex: Male</p>
+                      <p className="text-bodyLarge24">Driver Since: 2020</p>
+                      <p className="text-bodyLarge24">
                         Location: Phnom Penh, Cambodia
                       </p>
                     </div>

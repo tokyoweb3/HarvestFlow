@@ -24,26 +24,26 @@ const ReportsProjectHistorySection: React.FC<{
   }, [projectContractAddress]);
 
   return (
-    <div className="flex flex-col gap-16 desktop:gap-32 py-20 desktop:py-44 relative z-10">
-      <h2 className="text-center text-heading4 desktop:text-heading2 font-medium uppercase">
+    <div className="flex flex-col gap-16 desktop:gap-[114px] desktop:pt-[150px] desktop:pb-[50px] relative z-10">
+      <h2 className="text-center text-heading4 desktop:text-heading3 font-medium uppercase tracking-[0.35rem]">
         Project history
       </h2>
       <div className="w-full max-w-[1187px] mx-auto flex flex-col gap-20">
         <div className="overflow-x-scroll">
           <div className="divide-x divide-black">
-            <table className="w-full border border-black">
+            <table className="w-full border border-black bg-white">
               <thead>
                 <tr className="border-b border-black border-dashed">
-                  <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black last-of-type:border-0 w-1/4">
+                  <th className="text-caption desktop:text-body14 uppercase text-center font-normal py-[15px] px-4 border-r border-black last-of-type:border-0 w-1/4">
                     Type
                   </th>
-                  <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black last-of-type:border-0 w-1/4">
+                  <th className="text-caption desktop:text-body14 uppercase text-center font-normal py-[15px] px-4 border-r border-black last-of-type:border-0 w-1/4">
                     Price
                   </th>
-                  <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black last-of-type:border-0 w-1/4">
+                  <th className="text-caption desktop:text-body14 uppercase text-center font-normal py-[15px] px-4 border-r border-black last-of-type:border-0 w-1/4">
                     Tx
                   </th>
-                  <th className="text-caption desktop:text-body uppercase text-center font-normal p-4 border-r border-black last-of-type:border-0 w-1/4">
+                  <th className="text-caption desktop:text-body14 uppercase text-center font-normal py-[15px] px-4 border-r border-black last-of-type:border-0 w-1/4">
                     Time
                   </th>
                 </tr>
