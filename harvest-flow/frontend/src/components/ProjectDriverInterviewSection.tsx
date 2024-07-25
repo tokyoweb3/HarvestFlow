@@ -13,13 +13,13 @@ const ProjectDriverInterviewSection: React.FC = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   return (
-    <div className="flex flex-col gap-[45px] relative z-10 desktop:pt-[75px]">
-      <p className="desktop:text-body15_26 w-full max-w-[780px] mx-auto">
+    <div className="flex flex-col gap-[10px] desktop:gap-[45px] relative z-10 pt-[40px] desktop:pt-[75px]">
+      <p className="text-bodySmaller desktop:text-body15_26 w-full max-w-[780px] mx-auto px-4 desktop:px-0">
         ▼{t("project.driver_interview_video")}
       </p>
       <div className="relative z-10 px-4 desktop:px-0">
         <div
-          className="max-w-[1008px] mx-auto flex flex-col gap-10 px-4 desktop:px-0 relative hover:cursor-pointer"
+          className="max-w-[1008px] mx-auto flex flex-col gap-10 relative hover:cursor-pointer"
           onClick={() => {
             setIsVideoPlaying(true);
           }}

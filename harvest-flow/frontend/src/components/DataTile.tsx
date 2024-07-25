@@ -29,8 +29,8 @@ const TileHeader: React.FC<TileHeaderProps> = ({ title, tooltipText }) => {
   const tooltipID = useId();
 
   return (
-    <div className="px-6 py-[10px] border-b border-black border-dashed flex items-center justify-center">
-      <p className="text-center uppercase text-caption desktop:text-caption relative">
+    <div className="px-3 desktop:px-6 py-4 desktop:py-[10px] border-b border-black border-dashed flex items-center justify-center">
+      <p className="text-center uppercase text-captionMedium desktop:text-caption relative">
         {title}
         {tooltipText && (
           <>

@@ -9,7 +9,7 @@ const ProjectTabsSection: React.FC<ProjectTabsSectionProps> = ({
   activePage,
 }) => {
   return (
-    <div className="pt-20 pb-32 desktop:pt-[110px] desktop:pb-[150px] relative z-10 px-4 desktop:px-0">
+    <div className="pt-[70px] pb-[90px] desktop:pt-[110px] desktop:pb-[150px] relative z-10 px-4 desktop:px-0">
       <div className="max-w-[780px] mx-auto">
         <ProjectTabs activePage={activePage} />
       </div>

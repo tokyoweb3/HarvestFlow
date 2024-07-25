@@ -217,7 +217,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
           </div>
           <div>
             <button
-              className="bg-primary text-black text-heading5 font-medium text-center px-8 py-6 uppercase w-full"
+              className="bg-primary text-black text-body17 desktop:text-heading5 font-medium text-center px-8 py-4 desktop:py-6 uppercase w-full"
               onClick={() => buyNft(amountToBuy)}
             >
               Mint

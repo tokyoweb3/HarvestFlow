@@ -9,12 +9,12 @@ const ProjectHowItWorksSection: React.FC = () => {
   const { t, i18n } = useTranslation();
 
   return (
-    <div className="max-w-[1188px] w-full mx-auto border border-black overflow-x-auto relative z-10 desktop:mt-[150px]">
+    <div className="max-w-[1188px] w-full mx-auto border border-black overflow-x-auto relative z-10 mt-[50px] desktop:mt-[150px]">
       <img
         src={howItWorksJPImage}
         alt={t("homepage.how_it_works.title")}
         className={clsx(
-          "min-h-[40vh] max-w-[inherit] desktop:min-h-[initial] desktop:max-w-full desktop:w-full",
+          "min-h-[30vh] max-w-[inherit] desktop:min-h-[initial] desktop:max-w-full desktop:w-full",
           i18n.language === "en" ? "hidden" : "block",
         )}
       />
@@ -22,7 +22,7 @@ const ProjectHowItWorksSection: React.FC = () => {
         src={howItWorksENImage}
         alt={t("homepage.how_it_works.title")}
         className={clsx(
-          "min-h-[40vh] max-w-[inherit] desktop:min-h-[initial] desktop:max-w-full desktop:w-full",
+          "min-h-[30vh] max-w-[inherit] desktop:min-h-[initial] desktop:max-w-full desktop:w-full",
           i18n.language === "jp" ? "hidden" : "block",
         )}
       />

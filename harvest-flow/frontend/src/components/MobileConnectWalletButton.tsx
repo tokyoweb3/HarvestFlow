@@ -30,7 +30,7 @@ const MobileConnectWalletButton: React.FC = () => {
             setUserAddress(result);
           });
       }}
-      className="absolute left-[10vw] right-[10vw] top-20 w-[80vw] flex items-center justify-center uppercase text-body bg-white p-4 header-connect-wallet-button font-medium desktop:hidden"
+      className="absolute left-[10vw] right-[10vw] top-16 w-[80vw] flex items-center justify-center uppercase text-bodySmaller_13_15 bg-white px-4 py-[14px] header-connect-wallet-button font-medium desktop:hidden"
     >
       {t("general.connect_wallet")}
     </button>

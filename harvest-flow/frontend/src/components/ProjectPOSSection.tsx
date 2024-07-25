@@ -7,13 +7,13 @@ const ProjectPOSSection: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col gap-16 desktop:gap-[150px] pt-20 desktop:pt-[150px] relative z-10 px-4 desktop:px-0">
+    <div className="flex flex-col gap-[60px] desktop:gap-[150px] pt-[100px] desktop:pt-[150px] relative z-10 px-4 desktop:px-0">
       <div className="max-w-[768px] mx-auto flex flex-col gap-10 desktop:gap-[71px]">
-        <div>
-          <h2 className="text-bodyLarge desktop:text-heading3_32_44 text-center uppercase font-medium tracking-[0.35rem]">
+        <div className="flex flex-col gap-[12px] desktop:gap-0">
+          <h2 className="text-heading5LH22 desktop:text-heading3_32_44 text-center uppercase font-medium tracking-[0.35rem]">
             {t("project.pos.title")}
           </h2>
-          <h3 className="text-bodyLarge desktop:text-heading4_28_44 text-center uppercase font-medium tracking-[0.35rem] whitespace-pre-line">
+          <h3 className="text-body16 desktop:text-heading4_28_44 text-center uppercase font-medium tracking-[0.35rem] whitespace-pre-line">
             {t("project.pos.subtitle")}
           </h3>
         </div>
@@ -21,7 +21,7 @@ const ProjectPOSSection: React.FC = () => {
           <img
             src={NFTCardImage}
             alt="NFT Card"
-            className="w-full max-w-[253px] desktop:max-w-[208px]"
+            className="w-full max-w-[253px] desktop:max-w-[208px] mx-auto"
           />
           <p className="text-bodySmaller whitespace-pre-line">
             {t("project.pos.text")}

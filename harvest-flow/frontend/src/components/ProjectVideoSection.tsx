@@ -10,7 +10,7 @@ const ProjectVideoSection: React.FC = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   return (
-    <div className="pt-20 desktop:pt-[100px] relative z-10 px-4 desktop:px-0">
+    <div className="pt-[57px] desktop:pt-[100px] relative z-10 px-4 desktop:px-0">
       <div
         className="max-w-[1008px] mx-auto flex flex-col gap-10 px-4 desktop:px-0 relative hover:cursor-pointer"
         onClick={() => {

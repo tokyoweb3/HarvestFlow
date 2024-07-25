@@ -29,7 +29,7 @@ const ProjectStorySection: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-16 desktop:gap-32 pt-20 desktop:pt-[93px] relative z-10 px-4 desktop:px-0">
+    <div className="flex flex-col gap-16 desktop:gap-32 pt-[84px] desktop:pt-[93px] relative z-10 px-4 desktop:px-0">
       <div className="flex flex-col gap-6">
         <div className="flex gap-8 desktop:gap-16">
           <div
@@ -39,7 +39,7 @@ const ProjectStorySection: React.FC = () => {
             key={`a${previousImageIndex}`}
           ></div>
           <div
-            className="desktop:max-w-[780px] pt-[32.5%] w-full bg-center bg-cover bg-no-repeat animate-fade"
+            className="desktop:max-w-[780px] pt-[56.25%] desktop:pt-[32.5%] w-full bg-center bg-cover bg-no-repeat animate-fade"
             style={{ backgroundImage: `url(${images[currentImageIndex]})` }}
             onClick={() => handleImageClick()}
             key={`b${currentImageIndex}`}
