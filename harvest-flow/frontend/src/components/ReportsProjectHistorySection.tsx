@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 const ReportsProjectHistorySection: React.FC<{
   projectContractAddress: string;
 }> = ({ projectContractAddress }) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const mainController: MainController = useContext(AppContext);
 
   const [nftHistory, setNftHistory] = React.useState<NftHistoryEvent[]>([]);
@@ -26,8 +26,8 @@ const ReportsProjectHistorySection: React.FC<{
   }, [projectContractAddress]);
 
   return (
-    <div className="flex flex-col gap-16 desktop:gap-[114px] desktop:pt-[150px] desktop:pb-[50px] relative z-10">
-      <h2 className="text-center text-heading4 desktop:text-heading3 font-medium uppercase tracking-[0.35rem]">
+    <div className="flex flex-col gap-[60px] desktop:gap-[114px] pt-[100px] desktop:pt-[150px] desktop:pb-[50px] relative z-10">
+      <h2 className="text-center text-heading5SmallerLH28 desktop:text-heading3 font-medium uppercase tracking-[0.35rem]">
         {t("project.history.title")}
       </h2>
       <div className="w-full max-w-[1187px] mx-auto flex flex-col gap-20">
@@ -58,20 +58,20 @@ const ReportsProjectHistorySection: React.FC<{
                       key={index}
                       className="border-b border-black border-dashed last-of-type:border-0"
                     >
-                      <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0 bg-secondary text-white w-1/4">
+                      <td className="text-body desktop:text-heading5 uppercase text-center py-[20px] px-8 desktop:p-8 border-r border-black last-of-type:border-0 bg-secondary text-white w-1/4 min-w-[55vw] desktop:min-w-[initial]">
                         {row.eventType}
                       </td>
-                      <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0 w-1/4">
+                      <td className="text-body desktop:text-heading5 uppercase text-center py-[20px] px-8 desktop:p-8 border-r border-black last-of-type:border-0 w-1/4">
                         {ethers.utils.formatEther(row.price)}
                       </td>
-                      <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0 w-1/4">
+                      <td className="text-body desktop:text-heading5 uppercase text-center py-[20px] px-8 desktop:p-8 border-r border-black last-of-type:border-0 w-1/4">
                         <a
                           href={`${CHAIN_EXPLORER_URI}/tx/${row.transactionHash}`}
                         >
                           {middleEllipsis(row.transactionHash)}
                         </a>
                       </td>
-                      <td className="text-body desktop:text-heading5 uppercase text-center p-8 border-r border-black last-of-type:border-0 w-1/4">
+                      <td className="text-body desktop:text-heading5 uppercase text-center py-[20px] px-8 desktop:p-8 border-r border-black last-of-type:border-0 w-1/4">
                         {formatTimestampForHistoryTable(row.timestamp)}
                       </td>
                     </tr>

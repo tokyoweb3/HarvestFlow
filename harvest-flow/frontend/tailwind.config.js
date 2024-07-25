@@ -50,6 +50,7 @@ module.exports = {
         body15_18: ["15px", "18px"],
         body15_15: ["15px", "15px"],
         body: ["15px", "23px"],
+        body14_24: ["14px", "24px"],
         body14: ["14px", "18px"],
         bodySmaller: ["13px", "23px"],
         bodySmaller_13_20: ["13px", "20px"],
