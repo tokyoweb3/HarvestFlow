@@ -5,7 +5,6 @@ import { Page } from "@src/MainController";
 import Homepage from "./Homepage";
 import Account from "./Account";
 import Project from "./Project";
-import DummyProjectList from "@src/components/DummyProjectList";
 import Reports from "./Reports";
 import FAQ from "./FAQ";
 import AccountProject from "./AccountProject";
@@ -17,7 +16,6 @@ const PageCoordinator: React.FC = () => {
     <Routes>
       <Route path={Page.Homepage} element={<Homepage />} />
       <Route path={Page.Project} element={<Project />} />
-      <Route path="/dummylist" element={<DummyProjectList />} />
       <Route path={Page.Reports} element={<Reports />} />
       <Route path={Page.FAQ} element={<FAQ />} />
       <Route
