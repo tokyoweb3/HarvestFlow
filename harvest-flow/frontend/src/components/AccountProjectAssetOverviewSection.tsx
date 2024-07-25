@@ -6,6 +6,7 @@ import DataTile from "./DataTile";
 import tukTukImage from "../../assets/images/account-owner-asset-overview-image.jpg";
 import type { DeviceDetails } from "@harvest-flow/utils";
 import { getMonth } from "@src/utils";
+import { useTranslation } from "react-i18next";
 
 const DriverAvatar = () => (
   <svg viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -39,10 +40,14 @@ const ExtraSmallTile: React.FC<DataTileProps> = ({
 const AccountProjectAssetOverviewSection: React.FC<{
   deviceDetails: DeviceDetails;
 }> = ({ deviceDetails }) => {
+  const { t } = useTranslation();
+
+  console.log(deviceDetails);
+
   return (
     <div className="flex flex-col gap-[58px]">
       <h2 className="text-bodyLarge desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
-        Asset overview
+        {t("owner.asset_overview.title")}
       </h2>
       <div className="bg-white">
         <div className="flex border-b border-r border-black">
@@ -54,18 +59,18 @@ const AccountProjectAssetOverviewSection: React.FC<{
               ></div>
               <div className="grid grid-rows-2 grid-cols-1">
                 <ExtraSmallTile
-                  title="Asset ID"
+                  title={t("owner.asset_overview.asset_id")}
                   value={deviceDetails.deviceId.toString()}
                 />
                 <ExtraSmallTile
-                  title="Vehicle model"
+                  title={t("owner.asset_overview.vehicle_model")}
                   value={deviceDetails.vehicleModel}
                 />
               </div>
             </div>
             <div className="flex w-full">
               <ExtraSmallTile
-                title="Drive History"
+                title={t("owner.asset_overview.history")}
                 customComponent={
                   <div className="flex flex-col items-center justify-center gap-3">
                     {deviceDetails.history.map((event, index) => (
@@ -85,37 +90,47 @@ const AccountProjectAssetOverviewSection: React.FC<{
           <div className="w-1/2 grid grid-cols-1 grid-rows-2">
             <div className="grid grid-cols-1 grid-rows-2">
               <div className="grid grid-cols-2 grid-rows-1">
-                <ExtraSmallTile title="DNFT ID" value="0x123...789" />
                 <ExtraSmallTile
-                  title="Asset type"
+                  title={t("owner.asset_overview.number_of_payments")}
+                  value="0x123...789"
+                />
+                <ExtraSmallTile
+                  title={t("owner.asset_overview.asset_type")}
                   value={deviceDetails.assetType}
                 />
               </div>
               <div className="grid grid-cols-2 grid-rows-1">
                 <ExtraSmallTile
-                  title="Mileage"
+                  title={t("owner.asset_overview.mileage")}
                   value={`${deviceDetails.totalMileage} KM`}
                 />
                 <ExtraSmallTile
-                  title="Mileage time"
+                  title={t("owner.asset_overview.mileage_time")}
                   value={`${Math.floor(deviceDetails.totalDrivingTime / 3600)} hrs`}
                 />
               </div>
             </div>
             <div className="flex w-full">
               <ExtraSmallTile
-                title="Driver profile"
+                title={t("owner.asset_overview.driver_profile")}
                 customComponent={
                   <div className="flex gap-6 items-center p-[35px]">
                     <div className="w-[80px] shrink-0">
                       <DriverAvatar />
                     </div>
                     <div className="flex flex-col justify-center gap-0">
-                      <p className="text-bodyLarge24">Name: K.H.</p>
-                      <p className="text-bodyLarge24">Sex: Male</p>
-                      <p className="text-bodyLarge24">Driver Since: 2020</p>
                       <p className="text-bodyLarge24">
-                        Location: Phnom Penh, Cambodia
+                        {t("owner.asset_overview.name")}: K.H.
+                      </p>
+                      <p className="text-bodyLarge24">
+                        {t("owner.asset_overview.sex")}: Male
+                      </p>
+                      <p className="text-bodyLarge24">
+                        {t("owner.asset_overview.driver_since")}: 2020
+                      </p>
+                      <p className="text-bodyLarge24">
+                        {t("owner.asset_overview.location")}: Phnom Penh,
+                        Cambodia
                       </p>
                     </div>
                   </div>

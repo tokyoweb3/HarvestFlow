@@ -14,6 +14,7 @@ import { NUMBER_OF_DECIMAL_PLACES } from "@src/utils/constants";
 import { ethers } from "ethers";
 import type MainController from "@src/MainController";
 import { AppContext } from "@src/main";
+import { useTranslation } from "react-i18next";
 
 const ExtraSmallTile: React.FC<DataTileProps> = ({ title, value }) => {
   return (
@@ -40,6 +41,8 @@ const LargeTile: React.FC<DataTileProps> = ({ title, value }) => {
 const AccountProjectEarnSection: React.FC<{ tokenDetails: NftDetails }> = ({
   tokenDetails,
 }) => {
+  const { t } = useTranslation();
+
   const mainController: MainController = useContext(AppContext);
   const harvest = () => {
     mainController.harvestToken(
@@ -57,23 +60,23 @@ const AccountProjectEarnSection: React.FC<{ tokenDetails: NftDetails }> = ({
       <div className="flex gap-[17px]">
         <div className="flex border-b border-black border-r bg-white flex-1">
           <LargeTile
-            title="TOTAL EQUITY in USD"
+            title={t("owner.harvest.total_equity")}
             value={`$${getEquityForNft(tokenDetails).toFixed(NUMBER_OF_DECIMAL_PLACES)}`}
           />
           <div className="w-[66%] flex flex-col">
             <div className="grid grid-cols-2 grid-rows-1 flex-1">
               <ExtraSmallTile
-                title="LENDING"
+                title={t("owner.harvest.lending")}
                 value={`${getLendingAmountForNft(tokenDetails).toFixed(NUMBER_OF_DECIMAL_PLACES)} DAI`}
               />
               <ExtraSmallTile
-                title="Total Yield"
+                title={t("owner.harvest.total_interest_claimed")}
                 value={`${getTotalYieldForNft(tokenDetails)} DAI`}
               />
             </div>
             <div className="flex w-full h-[100px]">
               <ExtraSmallTile
-                title="AVERAGE APR"
+                title={t("owner.harvest.average_apr")}
                 value={`${Number(ethers.utils.formatEther(tokenDetails.lendingData.yield)) * 100} %`}
               />
             </div>
@@ -82,7 +85,7 @@ const AccountProjectEarnSection: React.FC<{ tokenDetails: NftDetails }> = ({
         <div className="w-[265px] border-l border-black border-t border-r border-b flex flex-col bg-white">
           <div className="flex flex-col items-center justify-center px-6 py-4 gap-6 flex-1">
             <p className="uppercase text-center font-normal">
-              Claimable Yield:
+              {t("owner.harvest.claimable_interest")}
               <br />{" "}
               <span className="font-medium">
                 {getClaimableYieldForNft(tokenDetails).toFixed(
@@ -92,7 +95,7 @@ const AccountProjectEarnSection: React.FC<{ tokenDetails: NftDetails }> = ({
               </span>
             </p>
             <p className="uppercase text-center font-normal">
-              Claimable Principle:
+              {t("owner.harvest.claimable_principle")}
               <br />{" "}
               <span className="font-medium">
                 {getClaimablePrincipleForNft(tokenDetails).toFixed(

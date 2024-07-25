@@ -11,6 +11,7 @@ import itemImage from "../../assets/images/nft-item-image.jpg";
 import type { NftDetails } from "@harvest-flow/utils";
 import { groupBy } from "@src/utils";
 import { ethers } from "ethers/lib";
+import { useTranslation } from "react-i18next";
 
 const nftItemData: NFTItemCardProps[] = [
   {
@@ -80,9 +81,9 @@ const NFTList: React.FC<NFTListProps> = ({ projectName, nfts }) => {
 const AccountYourNFTSection: React.FC<{ ownedNfts: NftDetails[] }> = ({
   ownedNfts,
 }) => {
-  const groupedNfts = groupBy(ownedNfts, (nft) => nft.contractAddress);
+  const { t } = useTranslation();
 
-  console.log(groupedNfts);
+  const groupedNfts = groupBy(ownedNfts, (nft) => nft.contractAddress);
 
   return (
     <div className="flex flex-col gap-[60px]">
@@ -116,7 +117,7 @@ const AccountYourNFTSection: React.FC<{ ownedNfts: NftDetails[] }> = ({
           ))}
           <div className="flex flex-col gap-6 desktop:gap-[40px]">
             <h3 className="text-heading5 desktop:text-heading5Larger24_30 uppercase font-medium">
-              Items
+              {t("account.items")}
             </h3>
             <div className="overflow-x-auto">
               <div className="flex desktop:grid desktop:grid-cols-3 gap-6 desktop:gap-10">

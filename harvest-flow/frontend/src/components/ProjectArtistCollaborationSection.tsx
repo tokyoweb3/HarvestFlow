@@ -1,8 +1,11 @@
 import React from "react";
 
 import artistImage from "../../assets/images/project-artist-collaboration.jpg";
+import { useTranslation } from "react-i18next";
 
 const ProjectArtistCollaborationSection: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col gap-16 desktop:gap-[150px] pt-20 desktop:pt-[250px] relative z-10 px-4 desktop:px-0">
       <div className="max-w-[768px] mx-auto flex flex-col gap-10 desktop:gap-[70px]">
@@ -22,14 +25,8 @@ const ProjectArtistCollaborationSection: React.FC = () => {
                 IZUMIDA LEE
               </p>
             </div>
-            <p className="text-bodySmaller">
-              Artist
-              <br />
-              Born in Hokkaido in 1986. Izumida Lee began drawing at a young age
-              and studied art while living in the United States. In 2015, she
-              relocated to Tokyo and launched her career as an artist in 2019.
-              Her work primarily focuses on acrylic paintings, signboards,
-              advertising art, and illustrations and text for window displays.
+            <p className="text-bodySmaller whitespace-pre-line">
+              {t("project.artist_collaboration.text")}
             </p>
           </div>
         </div>

@@ -5,6 +5,7 @@ import DataTile from "./DataTile";
 import { DailyDeviceSummary, type DeviceDetails } from "@harvest-flow/utils";
 import { getStartOfCurrentWeek, getStartOfLastWeek } from "@src/utils";
 import RwaDataChart from "@src/components/RwaDataChart";
+import { useTranslation } from "react-i18next";
 
 const ExtraSmallTile: React.FC<DataTileProps> = ({ title, value }) => {
   return (
@@ -31,50 +32,52 @@ const LargeTile: React.FC<DataTileProps> = ({ title, value }) => {
 const AccountProjectRWASection: React.FC<{ deviceDetails: DeviceDetails }> = ({
   deviceDetails,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col gap-[58px]">
       <h2 className="text-bodyLarge desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
-        RWA Data
+        {t("owner.rwa_data.title")}
       </h2>
       <div className="bg-white">
         <div className="flex border-b border-black">
           <div className="w-[40%]">
             <div className="flex w-full">
               <LargeTile
-                title="Total hours worked"
+                title={t("owner.rwa_data.total_hours_worked")}
                 value={`${Math.floor(deviceDetails.totalDrivingTime / 3600)} HRS`}
               />
             </div>
             <div className="grid grid-cols-2 grid-rows-1">
               <ExtraSmallTile
-                title="This week"
+                title={t("owner.rwa_data.this_week")}
                 value={`${Math.floor(getWeeklyDrivingTime(deviceDetails.dailySummary, true) / 3600)} HRS`}
               />
               <ExtraSmallTile
-                title="Last week"
+                title={t("owner.rwa_data.last_week")}
                 value={`${Math.floor(getWeeklyDrivingTime(deviceDetails.dailySummary, false) / 3600)} HRS`}
               />
             </div>
             <div className="flex w-full">
               <LargeTile
-                title="Total mileage"
+                title={t("owner.rwa_data.total_mileage")}
                 value={`${deviceDetails.totalMileage} KM`}
               />
             </div>
             <div className="grid grid-cols-2 grid-rows-1">
               <ExtraSmallTile
-                title="This week"
+                title={t("owner.rwa_data.this_week")}
                 value={`${getWeeklyMileage(deviceDetails.dailySummary, true)} km`}
               />
               <ExtraSmallTile
-                title="Last week"
+                title={t("owner.rwa_data.last_week")}
                 value={`${getWeeklyMileage(deviceDetails.dailySummary, false)} km`}
               />
             </div>
           </div>
           <div className="w-[60%] border-r border-black flex flex-col">
             <DataTile
-              title="Driving chart"
+              title={t("owner.rwa_data.driving_chart")}
               size="large"
               wrapperClassName="flex-1"
               customComponent={

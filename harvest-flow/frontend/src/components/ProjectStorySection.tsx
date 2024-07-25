@@ -2,20 +2,15 @@ import React, { useState } from "react";
 
 import { IndicatorDot } from "./PartnerSection";
 
-import sliderImage1 from "../../assets/images/project-slider-1.jpg";
-import sliderImage2 from "../../assets/images/project-slider-2.jpg";
-import sliderImage3 from "../../assets/images/project-slider-3.jpg";
-import sliderImage4 from "../../assets/images/project-slider-4.jpg";
-import sliderImage5 from "../../assets/images/project-slider-5.jpg";
-import sliderImage6 from "../../assets/images/project-slider-6.jpg";
+import sliderImage1 from "../../assets/images/project-page-carousel-image.jpg";
 
 const images = [
   sliderImage1,
-  sliderImage2,
-  sliderImage3,
-  sliderImage4,
-  sliderImage5,
-  sliderImage6,
+  sliderImage1,
+  sliderImage1,
+  sliderImage1,
+  sliderImage1,
+  sliderImage1,
 ];
 
 const ProjectStorySection: React.FC = () => {

@@ -2,21 +2,28 @@ import React, { useContext, useEffect, useState } from "react";
 import type MainController from "@src/MainController";
 import { AppContext } from "@src/main";
 import type { NftContractDetails } from "@harvest-flow/utils";
-import { calculateTotalRewards, formatTime } from "@src/utils";
+import {
+  calculateTotalRewards,
+  formatTime,
+  formatTimeReturnJSONValues,
+} from "@src/utils";
 import { ethers } from "ethers";
 import MintedModal from "@src/components/MintedModal";
+import { useTranslation } from "react-i18next";
 
 const TotalSupplyProgressBar: React.FC<{
   totalSupply: number;
   currentSupply: number;
 }> = ({ totalSupply, currentSupply }) => {
+  const { t } = useTranslation();
+
   const percentage = (currentSupply / totalSupply) * 100;
   const roundedPercentage = Math.round(percentage);
 
   return (
     <div className="flex flex-col gap-2">
       <div className="flex justify-between">
-        <p className="text-caption font-medium">Total Supply</p>
+        <p className="text-caption font-medium">{t("project.total_supply")}</p>
         <p className="text-caption">
           <span className="font-medium">{roundedPercentage}%</span> (
           {currentSupply}/{totalSupply})
@@ -85,11 +92,13 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
   projectContractDetails,
   refreshData,
 }) => {
+  const { t } = useTranslation();
+
   const mainController: MainController = useContext(AppContext);
 
   const [amountToBuy, setAmountToBuy] = React.useState<number>(1);
   const [endingIn, setEndingIn] = React.useState<string>(
-    "- days - hours - minutes - seconds",
+    t("project.ending_in", { days: 0, hours: 0, minutes: 0, seconds: 0 }),
   );
   const [totalRewards, setTotalRewards] = React.useState<string>("0");
 
@@ -105,7 +114,8 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
         if (diff < 0) {
           setEndingIn("Ended");
         } else {
-          setEndingIn(formatTime(diff));
+          const timeRemaining = formatTimeReturnJSONValues(diff);
+          setEndingIn(t("project.ending_in", timeRemaining));
         }
       }
     }, 1000);
@@ -148,19 +158,19 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
             <p className="text-bodyLarge desktop:text-body15_18 uppercase font-medium text-center">
               Phase: Allow list
             </p>
-            <p className="text-captionMedium text-center">
-              Ending in {endingIn}
-            </p>
+            <p className="text-captionMedium text-center">{endingIn}</p>
           </div>
           <div className="pt-[20px] pb-[17px] px-10 border-b border-black flex flex-col gap-[22px]">
             <TotalSupplyProgressBar
               totalSupply={Number(projectContractDetails?.supplyCap) ?? 0}
               currentSupply={Number(projectContractDetails?.mintedAmount) ?? 0}
             />
-            <p className="text-center uppercase">You can mint: 2 NFTs</p>
+            <p className="text-center uppercase">
+              {t("project.you_can_mint")}: 2 NFTs
+            </p>
             <div className="flex justify-center items-end gap-6 px-6">
               <div className="flex flex-col">
-                <p className="text-caption font-medium">Price</p>
+                <p className="text-caption font-medium">{t("project.price")}</p>
                 <p className="text-heading3_36 font-medium">
                   {!projectContractDetails
                     ? "----"
@@ -174,7 +184,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
             </div>
             <div className="border-t border-b border-black divide-y divide-black divide-dashed">
               <p className="text-center text-body15_18 uppercase py-[6px]">
-                Expected APR:
+                {t("project.expected_apr")}:&nbsp;
                 <span className="font-medium">
                   {projectContractDetails
                     ? Number(
@@ -187,15 +197,17 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
                 </span>
               </p>
               <p className="text-center text-body15_18 uppercase py-[6px]">
-                Redemption: <span className="font-medium">April, 2027</span>
+                {t("project.redemption")}:{" "}
+                <span className="font-medium">April, 2027</span>
               </p>
               <p className="text-center text-body15_18 uppercase py-[6px]">
-                Remaining Term: <span className="font-medium">24 months</span>
+                {t("project.remaining_term")}:{" "}
+                <span className="font-medium">24 months</span>
               </p>
             </div>
             <div>
               <p className="text-center uppercase py-3">
-                Total rewards:{" "}
+                {t("project.total_interest")}{" "}
                 <span className="font-medium text-heading3_36">
                   {totalRewards}
                 </span>{" "}

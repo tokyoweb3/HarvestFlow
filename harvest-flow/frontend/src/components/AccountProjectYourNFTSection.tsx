@@ -10,6 +10,7 @@ import { getLendingAmountForNft } from "@src/utils";
 import { NUMBER_OF_DECIMAL_PLACES } from "@src/utils/constants";
 import { useNavigate } from "react-router-dom";
 import { Page } from "@src/MainController";
+import { useTranslation } from "react-i18next";
 
 const ExtraSmallTile: React.FC<DataTileProps> = ({
   title,
@@ -40,6 +41,7 @@ const AccountProjectYourNFTSection: React.FC<{ tokenDetails: NftDetails }> = ({
   tokenDetails,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="flex flex-col gap-[60px]">
@@ -58,33 +60,30 @@ const AccountProjectYourNFTSection: React.FC<{ tokenDetails: NftDetails }> = ({
         ></div>
         <div className="flex-1 flex flex-col">
           <ExtraSmallTile
-            title="Features"
+            title={t("owner.description")}
             customComponent={
               <div className="py-[30px] px-[65px]">
                 <p className="text-bodySmaller">
-                  Amet enim velit eiusmod labore adipisicing ut duis culpa
-                  cupidatat. Aute adipisicing mollit sint do laboris culpa nulla
-                  ut. Non anim incididunt incididunt ipsum officia et tempor
-                  culpa labore eiusmod laboris ea id minim.
+                  {t("owner.description.text")}
                 </p>
               </div>
             }
           />
           <div className="grid grid-cols-4 grid-rows-1">
-            <ExtraSmallTile title="Asset" value="1" />
+            <ExtraSmallTile title={t("owner.asset")} value="1" />
             <ExtraSmallTile
-              title="Term"
+              title={t("owner.term")}
               value={formatTerm(
                 new Date(tokenDetails.lendingData.lendingStart),
                 new Date(tokenDetails.lendingData.lendingEnd),
               )}
             />
             <ExtraSmallTile
-              title="Lending"
+              title={t("owner.lending")}
               value={`${getLendingAmountForNft(tokenDetails).toFixed(NUMBER_OF_DECIMAL_PLACES)} DAI`}
             />
             <ExtraSmallTile
-              title="APR"
+              title={t("owner.apr")}
               value={`${Number(ethers.utils.formatEther(tokenDetails.lendingData.yield)) * 100} %`}
             />
           </div>
@@ -96,7 +95,7 @@ const AccountProjectYourNFTSection: React.FC<{ tokenDetails: NftDetails }> = ({
               )
             }
           >
-            Go to project page
+            {t("owner.go_to_project_page")}
           </button>
         </div>
       </div>

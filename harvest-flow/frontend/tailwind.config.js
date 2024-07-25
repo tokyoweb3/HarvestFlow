@@ -22,6 +22,7 @@ module.exports = {
         heading2: ["40px", "48px"],
         heading2AnimationTitle: ["40px", "58px"],
         heading3_36: ["36px", "40px"],
+        heading3_34: ["34px", "40px"],
         heading3: ["32px", "40px"],
         heading3_32_44: ["32px", "44px"],
         heading4_28_44: ["28px", "44px"],

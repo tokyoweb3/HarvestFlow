@@ -3,7 +3,6 @@ import ScrollSpy from "react-ui-scrollspy";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import Layout from "@src/layouts/Layout";
-import AccountUpdatesSection from "@src/components/AccountUpdatesSection";
 import AccountProjectYourNFTSection from "@src/components/AccountProjectYourNFTSection";
 import AccountProjectEarnSection from "@src/components/AccountProjectEarnSection";
 import AccountProjectRWASection from "@src/components/AccountProjectRWASection";
@@ -17,8 +16,10 @@ import AccountProjectNavigation, {
 } from "@src/components/AccountProjectNavigation";
 import DesktopVideoBackground from "@src/components/DesktopVideoBackground";
 import MobileVideoBackground from "@src/components/MobileVideoBackground";
+import { useTranslation } from "react-i18next";
 
 const AccountProject: React.FC = () => {
+  const { t } = useTranslation();
   const mainController: MainController = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -96,7 +97,7 @@ const AccountProject: React.FC = () => {
                     );
                   }}
                 >
-                  Go to project page
+                  {t("owner.rwa_data.go_to_project_page")}
                 </button>
               </ScrollSpy>
             </div>

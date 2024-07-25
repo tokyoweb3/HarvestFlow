@@ -16,7 +16,7 @@ const ConnectWalletButton: React.FC = () => {
     mainController.userAddress,
   );
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const loginInfo: LoginInfo = {
     mode: WalletMode.EvmInjected,
@@ -38,7 +38,7 @@ const ConnectWalletButton: React.FC = () => {
       ) : (
         <button
           onClick={() => {
-            mainController.connectWallet(loginInfo).then((result) => {
+            mainController.connectWallet(loginInfo, i18n.language).then((result) => {
               setUserAddress(result);
             });
           }}

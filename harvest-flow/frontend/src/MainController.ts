@@ -48,12 +48,19 @@ class MainController {
     return this.userAddress !== null;
   };
 
-  async connectWallet(loginInfo: LoginInfo): Promise<string> {
+  async connectWallet(
+    loginInfo: LoginInfo,
+    locale: string = "en",
+  ): Promise<string> {
     const response = await Paima.default.userWalletLogin(loginInfo);
     if (response.success === true) {
       this.callback(
         null,
-        `Wallet connected to address: ${response.result.walletAddress}`,
+        locale === "en"
+          ? `Wallet connected to address: ${response.result.walletAddress}`
+          : locale === "jp"
+            ? `ウオレット接続します: ${response.result.walletAddress}`
+            : `Wallet connected to address: ${response.result.walletAddress}`,
         null,
       );
       this.userAddress = response.result.walletAddress;
@@ -62,7 +69,11 @@ class MainController {
     }
   }
 
-  async buyNft(contractAddress: string, amountToBuy: number, price: bigint) : Promise<boolean> {
+  async buyNft(
+    contractAddress: string,
+    amountToBuy: number,
+    price: bigint,
+  ): Promise<boolean> {
     if (!this.isWalletConnected()) {
       this.callback(null, null, "Wallet not connected");
       return false;
@@ -258,7 +269,10 @@ class MainController {
     return response.data;
   }
 
-  async getRWAData(contractAddress: string, tokenId: string): Promise<DeviceDetails> {
+  async getRWAData(
+    contractAddress: string,
+    tokenId: string,
+  ): Promise<DeviceDetails> {
     const response = await Paima.default.getRWAData(contractAddress, tokenId);
     if (!response.success) {
       throw new Error((response as FailedResult).errorMessage);

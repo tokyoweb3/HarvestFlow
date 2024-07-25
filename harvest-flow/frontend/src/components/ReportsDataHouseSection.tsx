@@ -1,21 +1,20 @@
 import React from "react";
 
 import tukTukImage from "../../assets/images/tuktuk-single.jpg";
+import { useTranslation } from "react-i18next";
 
 const ReportsDataHouseSection: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col gap-16 desktop:gap-[112px] relative z-10">
       <h2 className="text-center text-heading4 desktop:text-heading3 font-medium uppercase tracking-[0.35rem]">
-        Data report
+        {t("project.data_report.title")}
       </h2>
       <div className="w-full max-w-[1187px] mx-auto flex flex-col gap-[70px]">
         <div className="w-full max-w-[680px] mx-auto">
-          <h3 className="text-center text-heading5 desktop:text-body16 font-medium">
-            The release status of the vehicle can be checked.
-            <br />
-            Detailed data is accessible on the Owner Page by connecting your
-            wallet holding a POS and selecting the relevant information via the
-            Account Page.
+          <h3 className="text-center text-heading5 desktop:text-body16 font-medium whitespace-pre-line">
+            {t("project.data_report.text")}
           </h3>
         </div>
         <div className="overflow-x-scroll">

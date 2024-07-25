@@ -1,5 +1,5 @@
-import React from 'react';
-import { Chart } from 'react-chartjs-2';
+import React from "react";
+import { Chart } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,10 +12,14 @@ import {
   Legend,
   ChartData,
   ChartOptions,
-} from 'chart.js';
+} from "chart.js";
 import { DailyDeviceSummary } from "@harvest-flow/utils";
+import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
-const RwaDataChart: React.FC<{dailyStats : DailyDeviceSummary[]}> = ({dailyStats}) => {
+const RwaDataChart: React.FC<{ dailyStats: DailyDeviceSummary[] }> = ({
+  dailyStats,
+}) => {
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -24,30 +28,32 @@ const RwaDataChart: React.FC<{dailyStats : DailyDeviceSummary[]}> = ({dailyStats
     PointElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
   );
 
-  const data: ChartData<'bar' | 'line'> = convertData(dailyStats);
+  const { t } = useTranslation();
 
-  const options: ChartOptions<'bar' | 'line'> = {
+  const data: ChartData<"bar" | "line"> = convertData(dailyStats);
+
+  const options: ChartOptions<"bar" | "line"> = {
     scales: {
-      'y-hours': {
-        type: 'linear',
-        position: 'right',
+      "y-hours": {
+        type: "linear",
+        position: "right",
         beginAtZero: true,
         ticks: {
-          callback: function(value) {
-            return value + ' h';
+          callback: function (value) {
+            return value + " h";
           },
         },
       },
-      'y-mileage': {
-        type: 'linear',
-        position: 'left',
+      "y-mileage": {
+        type: "linear",
+        position: "left",
         beginAtZero: true,
         ticks: {
-          callback: function(value) {
-            return value + ' km';
+          callback: function (value) {
+            return value + " km";
           },
         },
       },
@@ -62,7 +68,7 @@ const RwaDataChart: React.FC<{dailyStats : DailyDeviceSummary[]}> = ({dailyStats
       legend: {
         labels: {
           usePointStyle: true,
-          pointStyle: 'circle',
+          pointStyle: "circle",
         },
       },
     },
@@ -77,9 +83,11 @@ const RwaDataChart: React.FC<{dailyStats : DailyDeviceSummary[]}> = ({dailyStats
   );
 };
 
-const convertData = (dataset: DailyDeviceSummary[]): ChartData<'bar' | 'line'> => {
+const convertData = (
+  dataset: DailyDeviceSummary[],
+): ChartData<"bar" | "line"> => {
   // Get all dates from the dataset
-  const dates = dataset.map(item => new Date(item.date).getTime());
+  const dates = dataset.map((item) => new Date(item.date).getTime());
 
   // Create a set of all dates in the range
   const startDate = new Date(Math.min(...dates));
@@ -87,42 +95,48 @@ const convertData = (dataset: DailyDeviceSummary[]): ChartData<'bar' | 'line'> =
   const allDates: string[] = [];
 
   for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-    allDates.push(d.toISOString().split('T')[0]);
+    allDates.push(d.toISOString().split("T")[0]);
   }
 
   // Map the dataset by date
-  const dataMap = new Map(dataset.map(item => [item.date, item]));
+  const dataMap = new Map(dataset.map((item) => [item.date, item]));
 
   // Create the output data structure
-  const labels = allDates.map(date => new Date(date).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-  }));
+  const labels = allDates.map((date) =>
+    new Date(date).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    }),
+  );
 
-  const mileageData = allDates.map(date => dataMap.get(date)?.dailyMileage || 0);
-  const drivingtimeData = allDates.map(date => dataMap.get(date)?.dailyDrivingTime / 3600 || 0);
+  const mileageData = allDates.map(
+    (date) => dataMap.get(date)?.dailyMileage || 0,
+  );
+  const drivingtimeData = allDates.map(
+    (date) => dataMap.get(date)?.dailyDrivingTime / 3600 || 0,
+  );
 
   return {
     labels,
     datasets: [
       {
-        type: 'line' as const,
-        label: 'MILEAGES',
+        type: "line" as const,
+        label: t("owner.rwa_data.mileages"),
         data: mileageData,
-        borderColor: 'rgba(230, 185, 95, 1)',
-        backgroundColor: 'rgba(230, 185, 95, 1)',
+        borderColor: "rgba(230, 185, 95, 1)",
+        backgroundColor: "rgba(230, 185, 95, 1)",
         borderWidth: 3,
         fill: false,
-        yAxisID: 'y-mileage',
+        yAxisID: "y-mileage",
         pointRadius: 0,
         pointHitRadius: 10,
       },
       {
-        type: 'bar' as const,
-        label: 'HOURS',
+        type: "bar" as const,
+        label: t("owner.rwa_data.hours"),
         data: drivingtimeData,
-        backgroundColor: 'rgba(53, 90, 180, 1)',
-        yAxisID: 'y-hours',
+        backgroundColor: "rgba(53, 90, 180, 1)",
+        yAxisID: "y-hours",
       },
     ],
   };

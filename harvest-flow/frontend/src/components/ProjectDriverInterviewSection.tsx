@@ -5,14 +5,17 @@ import ReactPlayer from "react-player";
 import PlayIcon from "@src/icons/PlayIcon";
 
 import tukTukImage from "../../assets/images/tuktuk.jpg";
+import { useTranslation } from "react-i18next";
 
 const ProjectDriverInterviewSection: React.FC = () => {
+  const { t } = useTranslation();
+
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   return (
     <div className="flex flex-col gap-[45px] relative z-10 desktop:pt-[75px]">
       <p className="desktop:text-body15_26 w-full max-w-[780px] mx-auto">
-        ▼Driver Interview Video
+        ▼{t("project.driver_interview_video")}
       </p>
       <div className="relative z-10 px-4 desktop:px-0">
         <div

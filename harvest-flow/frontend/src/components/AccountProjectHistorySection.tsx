@@ -5,8 +5,11 @@ import type { NftHistoryEvent } from "@harvest-flow/utils";
 import { CHAIN_EXPLORER_URI } from "@src/utils/constants";
 import { formatTimestampForHistoryTable, middleEllipsis } from "@src/utils";
 import { ethers } from "ethers/lib";
+import { useTranslation } from "react-i18next";
 
 const AccountProjectHistorySection: React.FC = () => {
+  const { t } = useTranslation();
+
   const mainController: MainController = useContext(AppContext);
 
   const [nftHistory, setNftHistory] = React.useState<NftHistoryEvent[]>([]);
@@ -21,7 +24,7 @@ const AccountProjectHistorySection: React.FC = () => {
   return (
     <div className="flex flex-col gap-[60px]">
       <h2 className="text-bodyLarge desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
-        Project History
+        {t("account.project_history")}
       </h2>
       <div className="w-full divide-x divide-black bg-white">
         <table className="w-full border border-black">

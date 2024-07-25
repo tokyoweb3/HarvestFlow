@@ -2,15 +2,15 @@ import React from "react";
 
 const updatesData = [
   {
-    text: "Enim Lorem enim aute aute officia Lorem ipsum elit pariatur officia voluptate cupidatat.",
+    text: "All vehicles has successfully released.",
     date: "Dec.24th",
   },
   {
-    text: "Occaecat minim quis dolor exercitation nostrud tempor dolore.",
+    text: "Half of the vehicles has successfully released.",
     date: "Dec.24th",
   },
   {
-    text: "Nisi consequat in Lorem incididunt velit occaecat est proident.",
+    text: "Half of the vehicles has successfully released.",
     date: "Dec.24th",
   },
 ];
