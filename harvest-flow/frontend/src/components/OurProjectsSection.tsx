@@ -1,6 +1,7 @@
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useScreenDetector } from "@src/utils/useScreenDetector";
+import { useProjects } from "@src/utils/useProjects";
 
 import SectionHeader from "./SectionHeader";
 import {
@@ -11,10 +12,23 @@ import {
 import backgroundImageDesktop from "../../assets/images/our-projects-desktop.jpg";
 import backgroundImageMobile from "../../assets/images/our-projects-mobile.jpg";
 import backgroundImageNext from "../../assets/images/our_projects_next_bg.jpg";
+import { useNavigate } from "react-router-dom";
+import { Page } from "@src/MainController";
+import clsx from "clsx";
 
 const OurProjectsSection: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { isMobile } = useScreenDetector();
+  const projects = useProjects();
+  const navigate = useNavigate();
+
+  const handleViewMoreClick = () => {
+    if (projects.length > 0) {
+      navigate(
+        `${Page.Project}?address=${projects[0].address}`,
+      );
+    }
+  }
 
   return (
     <div className="desktop:border-b desktop:border-black px-4 desktop:px-0 pb-16 desktop:pb-0 relative z-10 desktop:h-screen flex flex-col">
@@ -93,7 +107,11 @@ const OurProjectsSection: React.FC = () => {
                 </div>
               </div>
             </div>
-            <button className="p-4 desktop:p-8 uppercase text-center w-full text-caption desktop:text-heading5SmallerLH26 font-medium hover:cursor-not-allowed bg-greyLight">
+            <button className={
+              clsx("p-4 desktop:p-8 uppercase text-center w-full text-caption desktop:text-heading5SmallerLH26 font-medium bg-greyLight", projects.length > 0 ? "hover:cursor-pointer" : "hover:cursor-not-allowed")
+            }
+              onClick={handleViewMoreClick}
+            >
               {t("general.view_more")}
             </button>
           </div>
