@@ -22,7 +22,8 @@
     "compile:db": "npm run compile -w db/",
     "chain:start": "rm -rf  ./contracts/evm/ignition/deployments/chain-31337 && npx hardhat node",
     "chain:deploy": "npx hardhat ignition deploy contracts/evm/ignition/modules/deploy_factory.ts --parameters ./contracts/evm/ignition/parameters.json --network ${NETWORK:-localhost}",
-    "chain:deploy:localtest": "npx hardhat ignition deploy contracts/evm/ignition/modules/deploy_test_data.ts --parameters ./contracts/evm/ignition/parameters.json --network ${NETWORK:-localhost}"
+    "chain:deploy:localtest": "npx hardhat ignition deploy contracts/evm/ignition/modules/deploy_test_data.ts --parameters ./contracts/evm/ignition/parameters.json --network ${NETWORK:-localhost}",
+    "chain:deploy:testnet": "npx hardhat ignition deploy contracts/evm/ignition/modules/deploy_testnet_project.ts --parameters ./contracts/evm/ignition/parameters.json --network ${NETWORK:-testnet}"
   },
   "workspaces": [
     "./db",
