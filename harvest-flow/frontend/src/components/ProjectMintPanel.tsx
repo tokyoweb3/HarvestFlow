@@ -112,7 +112,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
         const diff = ending.getTime() - now.getTime();
 
         if (diff < 0) {
-          setEndingIn("Ended");
+          setEndingIn(t('project.ended'));
         } else {
           const timeRemaining = formatTimeReturnJSONValues(diff);
           setEndingIn(t("project.ending_in", timeRemaining));

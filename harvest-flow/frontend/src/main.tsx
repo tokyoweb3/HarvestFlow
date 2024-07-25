@@ -277,6 +277,7 @@ i18n
           "owner.rwa_data.hours": "hours",
           "owner.rwa_data.mileages": "mileages",
           "owner.rwa_data.go_to_project_page": "Go to project page",
+          "project.ended": "Ended",
         },
       },
       jp: {
@@ -530,6 +531,7 @@ i18n
           "owner.rwa_data.hours": "時間",
           "owner.rwa_data.mileages": "距離",
           "owner.rwa_data.go_to_project_page": "プロジェクトページへ",
+          "project.ended": "終了",
         },
       },
     },

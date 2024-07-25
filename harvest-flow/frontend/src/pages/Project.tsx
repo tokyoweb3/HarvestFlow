@@ -39,6 +39,11 @@ const Project: React.FC = () => {
     loadContractDetails();
   }, [contractAddress]);
 
+  useEffect(() => {
+    // scroll to top of page on page load
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Layout>
       <ProjectHero
