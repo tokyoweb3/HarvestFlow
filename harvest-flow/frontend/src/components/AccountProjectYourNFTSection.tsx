@@ -45,31 +45,36 @@ const AccountProjectYourNFTSection: React.FC<{ tokenDetails: NftDetails }> = ({
 
   return (
     <div className="flex flex-col gap-[60px]">
-      <div className="flex flex-col gap-[30px]">
-        <h2 className="text-bodyLarge desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
+      <div className="flex flex-col gap-[20px] desktop:gap-[30px]">
+        <h2 className="text-heading5Larger desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
           Proof of support
         </h2>
-        <h3 className="text-center text-heading5SmallerLH28 font-medium uppercase">
+        <h3 className="text-center text-bodyLarge24 desktop:text-heading5SmallerLH28 font-medium uppercase">
           {tokenDetails.projectName}
         </h3>
       </div>
+      <img
+        src={tukTukImage}
+        alt=""
+        className="mx-auto desktop:hidden max-w-[253px]"
+      />
       <div className="w-full border-b border-black border-l border-r flex bg-white">
         <div
-          className="w-[320px] bg-center bg-cover bg-no-repeat border-t border-black aspect-square"
+          className="w-[320px] bg-center bg-cover bg-no-repeat border-t border-black aspect-square hidden desktop:block"
           style={{ backgroundImage: `url(${tukTukImage})` }}
         ></div>
         <div className="flex-1 flex flex-col">
           <ExtraSmallTile
             title={t("owner.description")}
             customComponent={
-              <div className="py-[30px] px-[65px]">
-                <p className="text-bodySmaller">
+              <div className="py-[21px] px-[15px] desktop:py-[30px] desktop:px-[65px]">
+                <p className="text-caption_12_22 desktop:text-bodySmaller">
                   {t("owner.description.text")}
                 </p>
               </div>
             }
           />
-          <div className="grid grid-cols-4 grid-rows-1">
+          <div className="grid grid-cols-2 grid-rows-2 desktop:grid-cols-4 desktop:grid-rows-1">
             <ExtraSmallTile title={t("owner.asset")} value="1" />
             <ExtraSmallTile
               title={t("owner.term")}
@@ -88,7 +93,7 @@ const AccountProjectYourNFTSection: React.FC<{ tokenDetails: NftDetails }> = ({
             />
           </div>
           <button
-            className="bg-secondary text-white flex items-center justify-center border-t border-l border-black text-heading5Smaller uppercase tracking-widest p-[44px]"
+            className="bg-secondary text-white flex items-center justify-center border-t border-l border-black text-bodyLarge desktop:text-heading5Smaller uppercase tracking-widest p-[38px] desktop:p-[44px]"
             onClick={() =>
               navigate(
                 `${Page.Project}?address=${tokenDetails.contractAddress}`,

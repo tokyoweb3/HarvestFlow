@@ -43,7 +43,7 @@ const NFTList: React.FC<NFTListProps> = ({ projectName, nfts }) => {
   return (
     <div className="flex flex-col gap-10">
       <div className="flex items-center gap-2" onClick={toggleCollapse}>
-        <h3 className="text-heading5Larger24_30 uppercase font-medium">
+        <h3 className="text-bodyLarge24 desktop:text-heading5Larger24_30 uppercase font-medium">
           {projectName}
         </h3>
         {/* TODO add arrowup icon */}
@@ -51,7 +51,7 @@ const NFTList: React.FC<NFTListProps> = ({ projectName, nfts }) => {
       </div>
       {!isCollapsed && (
         <div className="overflow-x-auto">
-          <div className="flex desktop:grid desktop:grid-cols-3 gap-6 desktop:gap-10">
+          <div className="flex desktop:grid desktop:grid-cols-3 gap-10">
             {nfts.map((data) => (
               <div
                 key={data.contractAddress.concat(data.tokenId.toString())}
@@ -87,10 +87,10 @@ const AccountYourNFTSection: React.FC<{ ownedNfts: NftDetails[] }> = ({
 
   return (
     <div className="flex flex-col gap-[60px]">
-      <h2 className="text-bodyLarge desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
+      <h2 className="text-heading5Larger desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
         Proof of support
       </h2>
-      <div className="w-full px-4 desktop:px-0">
+      <div className="w-full pl-4 desktop:pl-0">
         <div className="flex flex-col gap-14 desktop:gap-[60px]">
           {Object.keys(groupedNfts).map((contractAddress, index) => (
             <NFTList
@@ -115,12 +115,12 @@ const AccountYourNFTSection: React.FC<{ ownedNfts: NftDetails[] }> = ({
               }))}
             />
           ))}
-          <div className="flex flex-col gap-6 desktop:gap-[40px]">
+          <div className="flex flex-col gap-[40px]">
             <h3 className="text-heading5 desktop:text-heading5Larger24_30 uppercase font-medium">
               {t("account.items")}
             </h3>
             <div className="overflow-x-auto">
-              <div className="flex desktop:grid desktop:grid-cols-3 gap-6 desktop:gap-10">
+              <div className="flex desktop:grid desktop:grid-cols-3 gap-10">
                 {nftItemData.map((data, index) => (
                   <div
                     key={index}

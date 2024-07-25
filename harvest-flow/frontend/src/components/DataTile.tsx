@@ -61,7 +61,7 @@ const TileValue: React.FC<TileValueProps> = ({ value, size = "small" }) => {
     }
 
     if (size === "xs") {
-      return "p-6";
+      return "p-4 desktop:p-6";
     }
 
     if (size === "large") {
@@ -73,15 +73,15 @@ const TileValue: React.FC<TileValueProps> = ({ value, size = "small" }) => {
 
   const getTextSizeFromSize = () => {
     if (size === "xxs") {
-      return "text-heading5LH22";
+      return "text-bodyLarge desktop:text-heading5LH22";
     }
 
     if (size === "xs") {
-      return "text-heading5";
+      return "text-bodyLarge desktop:text-heading5";
     }
 
     if (size === "xs24") {
-      return "text-heading4Smaller";
+      return "text-bodyLarge24 desktop:text-heading4Smaller";
     }
 
     if (size === "large") {

@@ -35,13 +35,13 @@ const AccountProjectRWASection: React.FC<{ deviceDetails: DeviceDetails }> = ({
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col gap-[58px]">
-      <h2 className="text-bodyLarge desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
+    <div className="flex flex-col gap-[50px] desktop:gap-[58px]">
+      <h2 className="text-heading5Larger desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
         {t("owner.rwa_data.title")}
       </h2>
       <div className="bg-white">
-        <div className="flex border-b border-black">
-          <div className="w-[40%]">
+        <div className="flex flex-col desktop:flex-row border-b border-black">
+          <div className="desktop:w-[40%]">
             <div className="flex w-full">
               <LargeTile
                 title={t("owner.rwa_data.total_hours_worked")}
@@ -75,7 +75,7 @@ const AccountProjectRWASection: React.FC<{ deviceDetails: DeviceDetails }> = ({
               />
             </div>
           </div>
-          <div className="w-[60%] border-r border-black flex flex-col">
+          <div className="desktop:w-[60%] border-r border-black flex flex-col">
             <DataTile
               title={t("owner.rwa_data.driving_chart")}
               size="large"
@@ -108,10 +108,13 @@ function getWeeklyMileage(
   const referenceDate = isThisWeek
     ? getStartOfCurrentWeek()
     : getStartOfLastWeek();
-  return filterDailyData(dailySummary, referenceDate).reduce(
+
+  const sum = filterDailyData(dailySummary, referenceDate).reduce(
     (acc, dailyData) => acc + dailyData.dailyMileage,
     0,
   );
+
+  return Math.round(sum * 100) / 100;
 }
 
 function getWeeklyDrivingTime(

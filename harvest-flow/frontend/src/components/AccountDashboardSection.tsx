@@ -71,10 +71,10 @@ const AccountDashboardSection: React.FC<{ userDetails: UserDetails }> = ({
 
   return (
     <div className="flex flex-col gap-[60px]">
-      <h2 className="text-bodyLarge desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
+      <h2 className="text-heading5Larger desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
         Dashboard
       </h2>
-      <div className="flex gap-[17px]">
+      <div className="flex flex-col desktop:flex-row gap-[30px] desktop:gap-[17px]">
         <div className="bg-white border-r border-black flex-1">
           <div className="flex flex-col desktop:flex-row">
             <LargeTile
@@ -100,7 +100,7 @@ const AccountDashboardSection: React.FC<{ userDetails: UserDetails }> = ({
               />
             </div>
           </div>
-          <div className="w-full grid grid-cols-2 grid-rows-2 desktop:grid-rows-1 border-b border-black">
+          <div className="w-full grid grid-cols-2 grid-rows-1 border-b border-black">
             <div className="">
               <ExtraSmallTile
                 title={t("account.point")}
@@ -115,20 +115,23 @@ const AccountDashboardSection: React.FC<{ userDetails: UserDetails }> = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-col max-w-[250px] bg-white border-b border-black w-full desktop:w-[240px]">
-          <div className="w-full border-l border-black border-t border-r flex flex-col items-center justify-center p-6 gap-6 flex-1">
+        <div className="flex flex-col px-4 desktop:px-0 desktop:max-w-[250px] w-full desktop:w-[240px]">
+          <div className="w-full border-l border-black border-t border-r flex flex-col items-center justify-center py-[21px] px-6 desktop:p-6 gap-[14px] desktop:gap-6 flex-1 bg-white">
             <p className="text-body desktop:text-bodyLarge24 uppercase text-center font-normal">
               {t("account.claimable_interest")}
-              <br /> <span className="font-medium">{claimableYieldString}</span>
+              <span className="desktop:hidden">:</span>
+              <br className="hidden desktop:block" />{" "}
+              <span className="font-medium">{claimableYieldString}</span>
             </p>
             <p className="text-body desktop:text-bodyLarge24 uppercase text-center font-normal">
               {t("account.claimable_principle")}
-              <br />{" "}
+              <span className="desktop:hidden">:</span>
+              <br className="hidden desktop:block" />{" "}
               <span className="font-medium">{claimablePrincipleString}</span>
             </p>
           </div>
           <button
-            className="bg-primary flex items-center justify-center border-t desktop:border-r border-l border-black text-heading5Smaller font-medium uppercase tracking-[0.35rem] col-span-2 desktop:col-span-1 h-[115px]"
+            className="bg-primary flex items-center justify-center border-t desktop:border-r border-l border-black border-b border-r text-heading5Smaller font-medium uppercase tracking-[0.35rem] col-span-2 desktop:col-span-1 h-[80px] desktop:h-[115px]"
             onClick={() => harvestAll()}
           >
             Harvest

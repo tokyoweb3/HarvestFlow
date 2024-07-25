@@ -23,10 +23,10 @@ const AccountProjectHistorySection: React.FC = () => {
   }, [mainController]);
   return (
     <div className="flex flex-col gap-[60px]">
-      <h2 className="text-bodyLarge desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
+      <h2 className="text-heading5Larger desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
         {t("account.project_history")}
       </h2>
-      <div className="w-full divide-x divide-black bg-white">
+      <div className="w-full divide-x divide-black bg-white overflow-x-scroll desktop:overflow-x-auto">
         <table className="w-full border border-black">
           <thead>
             <tr className="border-b border-black border-dashed">
@@ -55,16 +55,16 @@ const AccountProjectHistorySection: React.FC = () => {
                   className="border-b border-black border-dashed last-of-type:border-0"
                   key={index}
                 >
-                  <td className="text-body desktop:text-body17 uppercase text-center px-8 py-[26px] border-r border-black last-of-type:border-0 bg-secondary text-white w-1/4">
+                  <td className="text-body desktop:text-body17 uppercase text-center px-8 py-[12px] desktop:py-[26px] border-r border-black last-of-type:border-0 bg-secondary text-white w-1/4 min-w-[40vw] desktop:min-w-[initial]">
                     {row.eventType}
                   </td>
-                  <td className="text-body desktop:text-body17 uppercase text-center px-8 py-[26px] border-r border-black last-of-type:border-0 w-1/4">
+                  <td className="text-body desktop:text-body17 uppercase text-center px-8 py-[12px] desktop:py-[26px] border-r border-black last-of-type:border-0 w-1/4">
                     {ethers.utils.formatEther(row.price)} DAI
                   </td>
-                  <td className="text-body desktop:text-body17 uppercase text-center px-8 py-[26px] border-r border-black last-of-type:border-0 w-1/4">
+                  <td className="text-body desktop:text-body17 uppercase text-center px-8 py-[12px] desktop:py-[26px] border-r border-black last-of-type:border-0 w-1/4 whitespace-nowrap desktop:whitespace-normal">
                     {row.projectName}
                   </td>
-                  <td className="text-body desktop:text-body17 uppercase text-center px-8 py-[26px] border-r border-black last-of-type:border-0 w-1/4">
+                  <td className="text-body desktop:text-body17 uppercase text-center px-8 py-[12px] desktop:py-[26px] border-r border-black last-of-type:border-0 w-1/4">
                     <a
                       target="_blank"
                       rel="noreferrer"
@@ -73,7 +73,7 @@ const AccountProjectHistorySection: React.FC = () => {
                       {middleEllipsis(row.transactionHash)}
                     </a>
                   </td>
-                  <td className="text-body desktop:text-body17 uppercase text-center px-8 py-[26px] border-r border-black last-of-type:border-0 w-1/4">
+                  <td className="text-body desktop:text-body17 uppercase text-center px-8 py-[12px] desktop:py-[26px] border-r border-black last-of-type:border-0 w-1/4">
                     {formatTimestampForHistoryTable(row.timestamp)}
                   </td>
                 </tr>

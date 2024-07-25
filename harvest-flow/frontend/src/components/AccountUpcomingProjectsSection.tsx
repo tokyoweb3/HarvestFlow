@@ -15,12 +15,12 @@ const nftProjectsData: NFTProjectCardProps[] = [
 
 const AccountUpcomingProjectsSection: React.FC = () => {
   return (
-    <div className="flex flex-col gap-6 desktop:gap-[40px]">
-      <h3 className="text-heading5 desktop:text-heading5Larger24_30 uppercase font-medium">
+    <div className="flex flex-col gap-[40px] pl-4 desktop:pl-0">
+      <h3 className="text-heading5Larger desktop:text-heading5Larger24_30 uppercase font-medium">
         Upcoming projects
       </h3>
       <div className="overflow-x-auto">
-        <div className="flex desktop:grid desktop:grid-cols-3 gap-6 desktop:gap-[40px]">
+        <div className="flex desktop:grid desktop:grid-cols-3 gap-10">
           {/* {nftProjectsData.map((data, index) => (
             <div
               key={index}

@@ -31,13 +31,13 @@ const Account: React.FC = () => {
   return (
     <Layout>
       <div className="w-full max-w-[1320px] mx-auto relative z-10">
-        <div className="flex gap-32 pt-[216px] pb-56">
+        <div className="flex gap-32 pt-[110px] desktop:pt-[216px] pb-[200px] desktop:pb-[250px]">
           <div className="flex-1 shrink-0 relative hidden desktop:block">
             <div className="sticky top-32">
               <AccountNavigation />
             </div>
           </div>
-          <div className="w-full max-w-[926px] *:flex *:flex-col *:gap-[85px]">
+          <div className="w-full max-w-[926px] *:flex *:flex-col *:gap-[100px] *:desktop:gap-[85px]">
             <ScrollSpy scrollThrottle={150}>
               <div
                 className="gsap-section-trigger"

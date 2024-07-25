@@ -53,11 +53,16 @@ const AccountProject: React.FC = () => {
     }
   }, [nftDetails, rwaData]);
 
+  useEffect(() => {
+    // scroll to top of page on page load
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Layout>
       <div className="w-full max-w-[1320px] mx-auto relative z-10">
-        <div className="flex gap-32 pt-[216px] pb-56">
-          <div className="flex-1 shrink-0 relative">
+        <div className="flex gap-32 pt-[110px] desktop:pt-[216px] pb-[150px] desktop:pb-[250px]">
+          <div className="flex-1 shrink-0 relative hidden desktop:block">
             <div className="sticky top-32">
               <AccountProjectNavigation />
             </div>
@@ -89,16 +94,18 @@ const AccountProject: React.FC = () => {
                 >
                   <AccountProjectRWASection deviceDetails={rwaData} />
                 </div>
-                <button
-                  className="bg-secondary text-white flex items-center justify-center border border-black text-heading4_28_44 font-medium uppercase tracking-widest p-10"
-                  onClick={() => {
-                    navigate(
-                      `${Page.Project}?address=${nftDetails.contractAddress}`,
-                    );
-                  }}
-                >
-                  {t("owner.rwa_data.go_to_project_page")}
-                </button>
+                <div className="px-4 desktop:px-0">
+                  <button
+                    className="bg-secondary text-white flex items-center justify-center border border-black w-full text-bodyLarge desktop:text-heading4_28_44 font-medium uppercase tracking-widest p-8 desktop:p-10"
+                    onClick={() => {
+                      navigate(
+                        `${Page.Project}?address=${nftDetails.contractAddress}`,
+                      );
+                    }}
+                  >
+                    {t("owner.rwa_data.go_to_project_page")}
+                  </button>
+                </div>
               </ScrollSpy>
             </div>
           )}

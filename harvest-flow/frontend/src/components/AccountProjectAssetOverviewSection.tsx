@@ -45,99 +45,92 @@ const AccountProjectAssetOverviewSection: React.FC<{
   console.log(deviceDetails);
 
   return (
-    <div className="flex flex-col gap-[58px]">
-      <h2 className="text-bodyLarge desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
+    <div className="flex flex-col gap-[60px] desktop:gap-[58px]">
+      <h2 className="text-heading5Larger desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
         {t("owner.asset_overview.title")}
       </h2>
-      <div className="bg-white">
-        <div className="flex border-b border-r border-black">
-          <div className="w-1/2 grid grid-cols-1 grid-rows-2">
+      <div className="bg-white border-r border-b border-black">
+        <div className="grid grid-cols-1 grid-rows-2 desktop:grid-rows-1 desktop:grid-cols-2">
+          <div className="grid grid-cols-2 grid-rows-1">
+            <div
+              className="grid grid-rows-2 grid-cols-1 bg-center bg-cover bg-no-repeat border-t border-l border-black"
+              style={{ backgroundImage: `url(${tukTukImage})` }}
+            ></div>
+            <div className="grid grid-rows-2 grid-cols-1">
+              <ExtraSmallTile
+                title={t("owner.asset_overview.asset_id")}
+                value={deviceDetails.deviceId.toString()}
+              />
+              <ExtraSmallTile
+                title={t("owner.asset_overview.vehicle_model")}
+                value={deviceDetails.vehicleModel}
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 grid-rows-2">
             <div className="grid grid-cols-2 grid-rows-1">
-              <div
-                className="grid grid-rows-2 grid-cols-1 bg-center bg-cover bg-no-repeat border-t border-l border-black"
-                style={{ backgroundImage: `url(${tukTukImage})` }}
-              ></div>
-              <div className="grid grid-rows-2 grid-cols-1">
-                <ExtraSmallTile
-                  title={t("owner.asset_overview.asset_id")}
-                  value={deviceDetails.deviceId.toString()}
-                />
-                <ExtraSmallTile
-                  title={t("owner.asset_overview.vehicle_model")}
-                  value={deviceDetails.vehicleModel}
-                />
-              </div>
-            </div>
-            <div className="flex w-full">
               <ExtraSmallTile
-                title={t("owner.asset_overview.history")}
-                customComponent={
-                  <div className="flex flex-col items-center justify-center gap-3">
-                    {deviceDetails.history.map((event, index) => (
-                      <p
-                        key={index}
-                        className="text-heading4SmallerLH34 text-center"
-                      >
-                        {new Date(event.eventTime).getFullYear()}{" "}
-                        {getMonth(event.eventTime)} / {event.eventDescription}
-                      </p>
-                    ))}
-                  </div>
-                }
+                title={t("owner.asset_overview.number_of_payments")}
+                value="0x123...789"
+              />
+              <ExtraSmallTile
+                title={t("owner.asset_overview.asset_type")}
+                value={deviceDetails.assetType}
+              />
+            </div>
+            <div className="grid grid-cols-2 grid-rows-1">
+              <ExtraSmallTile
+                title={t("owner.asset_overview.mileage")}
+                value={`${deviceDetails.totalMileage} KM`}
+              />
+              <ExtraSmallTile
+                title={t("owner.asset_overview.mileage_time")}
+                value={`${Math.floor(deviceDetails.totalDrivingTime / 3600)} hrs`}
               />
             </div>
           </div>
-          <div className="w-1/2 grid grid-cols-1 grid-rows-2">
-            <div className="grid grid-cols-1 grid-rows-2">
-              <div className="grid grid-cols-2 grid-rows-1">
-                <ExtraSmallTile
-                  title={t("owner.asset_overview.number_of_payments")}
-                  value="0x123...789"
-                />
-                <ExtraSmallTile
-                  title={t("owner.asset_overview.asset_type")}
-                  value={deviceDetails.assetType}
-                />
+        </div>
+        <div className="grid grid-cols-1 grid-rows-2 desktop:grid-rows-1 desktop:grid-cols-2">
+          <ExtraSmallTile
+            title={t("owner.asset_overview.history")}
+            customComponent={
+              <div className="flex flex-col items-center justify-center gap-3">
+                {deviceDetails.history.map((event, index) => (
+                  <p
+                    key={index}
+                    className="text-bodyLarge desktop:text-heading4SmallerLH34 text-center"
+                  >
+                    {new Date(event.eventTime).getFullYear()}{" "}
+                    {getMonth(event.eventTime)} / {event.eventDescription}
+                  </p>
+                ))}
               </div>
-              <div className="grid grid-cols-2 grid-rows-1">
-                <ExtraSmallTile
-                  title={t("owner.asset_overview.mileage")}
-                  value={`${deviceDetails.totalMileage} KM`}
-                />
-                <ExtraSmallTile
-                  title={t("owner.asset_overview.mileage_time")}
-                  value={`${Math.floor(deviceDetails.totalDrivingTime / 3600)} hrs`}
-                />
+            }
+          />
+          <ExtraSmallTile
+            title={t("owner.asset_overview.driver_profile")}
+            customComponent={
+              <div className="flex gap-6 items-center p-[35px]">
+                <div className="w-[56px] desktop:w-[80px] shrink-0">
+                  <DriverAvatar />
+                </div>
+                <div className="flex flex-col justify-center gap-0">
+                  <p className="text-body16_18 desktop:text-bodyLarge24">
+                    {t("owner.asset_overview.name")}: K.H.
+                  </p>
+                  <p className="text-body16_18 desktop:text-bodyLarge24">
+                    {t("owner.asset_overview.sex")}: Male
+                  </p>
+                  <p className="text-body16_18 desktop:text-bodyLarge24">
+                    {t("owner.asset_overview.driver_since")}: 2020
+                  </p>
+                  <p className="text-body16_18 desktop:text-bodyLarge24">
+                    {t("owner.asset_overview.location")}: Phnom Penh, Cambodia
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="flex w-full">
-              <ExtraSmallTile
-                title={t("owner.asset_overview.driver_profile")}
-                customComponent={
-                  <div className="flex gap-6 items-center p-[35px]">
-                    <div className="w-[80px] shrink-0">
-                      <DriverAvatar />
-                    </div>
-                    <div className="flex flex-col justify-center gap-0">
-                      <p className="text-bodyLarge24">
-                        {t("owner.asset_overview.name")}: K.H.
-                      </p>
-                      <p className="text-bodyLarge24">
-                        {t("owner.asset_overview.sex")}: Male
-                      </p>
-                      <p className="text-bodyLarge24">
-                        {t("owner.asset_overview.driver_since")}: 2020
-                      </p>
-                      <p className="text-bodyLarge24">
-                        {t("owner.asset_overview.location")}: Phnom Penh,
-                        Cambodia
-                      </p>
-                    </div>
-                  </div>
-                }
-              />
-            </div>
-          </div>
+            }
+          />
         </div>
       </div>
     </div>
