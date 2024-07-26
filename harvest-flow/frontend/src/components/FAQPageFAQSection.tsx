@@ -2,36 +2,7 @@ import React from "react";
 
 import PlusIcon from "@src/icons/PlusIcon";
 import MinusIcon from "@src/icons/MinusIcon";
-
-const faqData = [
-  {
-    question:
-      "Dolor ullamco officia ad ex dolor consequat ex sunt excepteur id eu nulla nisi laboris.",
-    answer:
-      "Sit duis quis est officia nostrud magna. Duis sint reprehenderit eiusmod deserunt sit irure pariatur et. Ullamco laborum esse et sunt minim labore do laboris aliquip commodo cillum velit.",
-  },
-  {
-    question: "Tempor cillum esse adipisicing sit sint consequat fugiat id.",
-    answer:
-      "Minim esse magna sunt Lorem ad incididunt esse. Id deserunt ut sint id occaecat duis cillum voluptate velit. Fugiat reprehenderit culpa est consectetur sit reprehenderit deserunt ex exercitation sunt est ullamco cupidatat laborum. In anim esse adipisicing cillum. Consequat enim aliqua aliquip nulla.",
-  },
-  {
-    question:
-      "Adipisicing commodo officia excepteur consequat in do irure laborum pariatur.",
-    answer:
-      "Et commodo est officia consequat officia pariatur veniam minim dolor consectetur ut veniam est. Deserunt eiusmod duis in duis dolor. Officia elit esse labore consectetur et reprehenderit. Commodo qui dolor eu id consectetur irure qui et tempor. Duis ex sint in proident ut laborum occaecat duis consectetur dolor. Aute deserunt sit mollit esse proident nulla est incididunt irure. Sint sint consequat qui consequat dolore in ullamco duis nostrud.",
-  },
-  {
-    question: "Consectetur culpa id voluptate culpa irure mollit in.",
-    answer:
-      "Ex dolore id non tempor nisi labore laboris adipisicing consequat deserunt cupidatat voluptate esse. Sint deserunt anim cupidatat sunt labore est pariatur ad nostrud exercitation ea. In labore ea duis laborum minim deserunt ut ea commodo veniam.",
-  },
-  {
-    question: "Non officia Lorem dolore nostrud do reprehenderit.",
-    answer:
-      "Voluptate amet incididunt ea consectetur ut reprehenderit sit culpa aliqua voluptate incididunt et irure. Occaecat sit do excepteur exercitation sit cupidatat aute anim voluptate consequat elit. Eu ipsum ullamco non qui ex. Officia mollit veniam commodo id eiusmod dolore laborum officia nostrud. Nostrud nisi magna sit exercitation deserunt aliquip deserunt exercitation elit nostrud do.",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 const FAQItem: React.FC<{
   openByDefault?: boolean;
@@ -42,21 +13,26 @@ const FAQItem: React.FC<{
   const [isOpen, setIsOpen] = React.useState(openByDefault);
 
   return (
-    <div className="border border-black px-10 py-8">
-      <div className="flex gap-6 desktop:gap-10">
-        <div className="w-4 desktop:w-10">
-          <p className="text-body desktop:text-heading5">Q{index}</p>
+    <div className="border border-black px-[22px] py-[25px] desktop:px-10 desktop:py-[34px] bg-white">
+      <div className="flex gap-2 desktop:gap-10">
+        <div className="w-8 desktop:w-10">
+          <p className="text-body desktop:text-heading5SmallerLH24">Q{index}</p>
         </div>
-        <div className="flex justify-between flex-1 items-center">
-          <p className="text-body desktop:text-heading5">{question}</p>
-          <button onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <MinusIcon /> : <PlusIcon />}
-          </button>
+        <div
+          className="flex justify-between flex-1 items-center hover:cursor-pointer gap-[14px]"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <p className="text-bodySmaller_13_18 desktop:text-body17">
+            {question}
+          </p>
+          <button>{isOpen ? <MinusIcon /> : <PlusIcon />}</button>
         </div>
       </div>
       {isOpen && (
-        <div className="border-t border-black border-dashed mt-6 pt-6">
-          <p className="text-caption desktop:text-body">{answer}</p>
+        <div className="border-t border-black border-dashed mt-[15px] desktop:mt-[35px] pt-[23px] desktop:pt-[32px]">
+          <p className="text-captionMedium_11_20 desktop:text-bodySmaller">
+            {answer}
+          </p>
         </div>
       )}
     </div>
@@ -64,12 +40,40 @@ const FAQItem: React.FC<{
 };
 
 const FAQPageFAQSection: React.FC = () => {
+  const { t } = useTranslation();
+
+  const faqData = [
+    {
+      question: t("project.faq.question1.question"),
+      answer: t("project.faq.question1.answer"),
+    },
+    {
+      question: t("project.faq.question2.question"),
+      answer: t("project.faq.question2.answer"),
+    },
+    {
+      question: t("project.faq.question3.question"),
+      answer: t("project.faq.question3.answer"),
+    },
+    {
+      question: t("project.faq.question4.question"),
+      answer: t("project.faq.question4.answer"),
+    },
+    {
+      question: t("project.faq.question5.question"),
+      answer: t("project.faq.question5.answer"),
+    },
+    {
+      question: t("project.faq.question6.question"),
+      answer: t("project.faq.question6.answer"),
+    },
+  ];
   return (
-    <div className="flex flex-col gap-16 desktop:gap-32 pb-24 destkop:pb-56">
-      <h2 className="text-center text-heading4 desktop:text-heading2 font-medium uppercase">
+    <div className="flex flex-col gap-[60px] desktop:gap-[110px] destkop:pb-[50px] relative z-10">
+      <h2 className="text-center text-heading5Larger desktop:text-heading3 font-medium uppercase tracking-[0.35rem]">
         Q & A
       </h2>
-      <div className="w-full max-w-[1008px] mx-auto flex flex-col gap-6 px-4 desktop:px-0">
+      <div className="w-full max-w-[1008px] mx-auto flex flex-col gap-[14px] desktop:gap-[20px] px-4 desktop:px-0">
         {faqData.map((faq, index) => (
           <FAQItem
             key={index}

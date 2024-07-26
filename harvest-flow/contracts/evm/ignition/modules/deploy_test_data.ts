@@ -11,7 +11,7 @@ export default buildModule('TokTokNft', m => {
     cap: 1000,// @param cap_ Total cap of tokens to be issued
     payableToken: mockToken,// @param payable_token_ Address of the token used for payments
     price: BigInt(200e18),// @param price_ Price of the token in the smallest unit
-    lendingAt: Date.parse("2024-06-01") / 1000,// @param lendingAt_ Start time of the lending agreement (when claims can begin)
+    lendingAt: Date.parse("2024-08-01") / 1000,// @param lendingAt_ Start time of the lending agreement (when claims can begin)
     yield: BigInt(1e17), // 10% @param yield_ Minimum fixed interest rate scaled to the 1e18
     lendingPeriod:  60 * 60 * 24 * 365,// 1 year @param lending period
     baseURI: "",// @param uri_ Base URI for the token

@@ -33,9 +33,13 @@ const ENABLE_INTRO_ANIMATION = true;
 
 type LayoutProps = {
   children?: React.ReactNode;
+  enableIntroAnimation?: boolean;
 };
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({
+  children,
+  enableIntroAnimation = false,
+}) => {
   gsap.registerPlugin(useGSAP);
   gsap.registerPlugin(ScrollTrigger);
   gsap.registerPlugin(ScrollToPlugin);
@@ -46,7 +50,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   useGSAP(
     () => {
-      if (!ENABLE_INTRO_ANIMATION) return;
+      if (!ENABLE_INTRO_ANIMATION || !enableIntroAnimation) return;
 
       if (!introVideosLoaded) return;
 
@@ -185,12 +189,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </>
         )}
       </HeadProvider>
-      {ENABLE_INTRO_ANIMATION && (
+      {ENABLE_INTRO_ANIMATION && enableIntroAnimation && (
         <div style={{ opacity: 0 }} className="gsap-splashscreen-container">
           <IntroSplashScreen onVideoLoaded={() => setIntroVideosLoaded(true)} />
         </div>
       )}
-      {ENABLE_INTRO_ANIMATION ? (
+      {ENABLE_INTRO_ANIMATION && enableIntroAnimation ? (
         <div style={{ opacity: 0 }} className="gsap-content-container">
           {mainPageContent}
         </div>

@@ -1,6 +1,4 @@
-import React, { useContext, useEffect } from "react";
-import type MainController from "@src/MainController";
-import { AppContext } from "@src/main";
+import React from "react";
 import HomepageHero from "@src/components/HomepageHero";
 import OurProjectsSection from "@src/components/OurProjectsSection";
 import AboutHarvestFlowSection from "@src/components/AboutHarvestFlowSection";
@@ -15,16 +13,9 @@ import POSSection from "@src/components/POSSection";
 import HowToStartSection from "@src/components/HowToStartSection";
 
 const Homepage: React.FC = () => {
-  const mainController: MainController = useContext(AppContext);
-
-  useEffect(() => {
-    if (!mainController.isWalletConnected()) {
-      mainController.enforceWalletConnected();
-    }
-  }, [mainController]);
 
   return (
-    <Layout>
+    <Layout enableIntroAnimation>
       <HomepageHero />
       <OurProjectsSection />
       <AboutHarvestFlowSection />

@@ -1,6 +1,7 @@
 import * as Paima from "./paima/middleware.js";
 import type { FailedResult, LoginInfo } from "@paima/sdk/mw-core";
 import type {
+  DeviceDetails,
   NftContract,
   NftContractDetails,
   NftDetails,
@@ -11,7 +12,6 @@ import type {
 import { Web3Provider } from "@ethersproject/providers";
 import { Contract, ethers } from "ethers";
 import TokTokNftAbi from "./abi/TokTokNft";
-import { WalletMode } from "@paima/providers";
 
 // The MainController is a React component that will be used to control the state of the application
 // It will be used to check if the user has metamask installed and if they are connected to the correct network
@@ -44,35 +44,23 @@ class MainController {
     errorMessage: string | null,
   ) => void = () => {};
 
-  private checkCallback() {
-    if (this.callback == null) {
-      console.error("Callback is not set");
-    }
-  }
-
-  async enforceWalletConnected() {
-    // Temporarily disabled because of launching just the homepage
-    return;
-    this.checkCallback();
-    if (!this.isWalletConnected() || !this.userAddress) {
-      await this.connectWallet({
-        mode: WalletMode.EvmInjected,
-        preferBatchedMode: false,
-      });
-    }
-  }
-
   isWalletConnected = (): boolean => {
     return this.userAddress !== null;
   };
 
-  async connectWallet(loginInfo: LoginInfo): Promise<string> {
+  async connectWallet(
+    loginInfo: LoginInfo,
+    locale: string = "en",
+  ): Promise<string> {
     const response = await Paima.default.userWalletLogin(loginInfo);
-    console.log("connect wallet response: ", response);
     if (response.success === true) {
       this.callback(
         null,
-        `Wallet connected to address: ${response.result.walletAddress}`,
+        locale === "en"
+          ? `Wallet connected to address: ${response.result.walletAddress}`
+          : locale === "jp"
+            ? `ウオレット接続します: ${response.result.walletAddress}`
+            : `Wallet connected to address: ${response.result.walletAddress}`,
         null,
       );
       this.userAddress = response.result.walletAddress;
@@ -81,10 +69,14 @@ class MainController {
     }
   }
 
-  async buyNft(contractAddress: string, amountToBuy: number, price: bigint) {
+  async buyNft(
+    contractAddress: string,
+    amountToBuy: number,
+    price: bigint,
+  ): Promise<boolean> {
     if (!this.isWalletConnected()) {
       this.callback(null, null, "Wallet not connected");
-      return;
+      return false;
     }
 
     const amountToPay = amountToBuy * Number(ethers.utils.formatEther(price));
@@ -108,24 +100,23 @@ class MainController {
     } catch (e) {
       console.error("Error approving payment: ", e);
       this.callback(null, null, "Error approving payment");
-      return;
+      return false;
     }
 
     if (approved) {
       this.callback("Buying NFT", null, null);
       try {
-        // TODO: show some info about the NFT
         const lendingContract = new Contract(
           contractAddress,
           TokTokNftAbi,
           this.provider.getSigner(),
         );
         await lendingContract.publicMint(amountToBuy);
-        this.callback(null, "NFT bought successfully", null);
+        return true;
       } catch (e) {
         console.error("Error buying NFT: ", e);
         this.callback(null, null, "Error buying NFT");
-        return;
+        return false;
       }
     }
   }
@@ -272,6 +263,17 @@ class MainController {
 
   async getSummary(): Promise<unknown> {
     const response = await Paima.default.getSummary();
+    if (!response.success) {
+      throw new Error((response as FailedResult).errorMessage);
+    }
+    return response.data;
+  }
+
+  async getRWAData(
+    contractAddress: string,
+    tokenId: string,
+  ): Promise<DeviceDetails> {
+    const response = await Paima.default.getRWAData(contractAddress, tokenId);
     if (!response.success) {
       throw new Error((response as FailedResult).errorMessage);
     }

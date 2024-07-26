@@ -1,1 +1,4 @@
-export default {}
+export {
+  getDeviceSummary,
+  getDailyHistory,
+} from './gmsCloudApi';

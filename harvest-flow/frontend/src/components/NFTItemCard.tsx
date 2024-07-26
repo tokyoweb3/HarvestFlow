@@ -14,19 +14,19 @@ const NFTItemCard: React.FC<NFTItemCardProps> = ({
   caption,
 }) => {
   return (
-    <div className="p-4 w-full flex flex-col gap-5 border border-black bg-secondary text-white">
-      <div className="flex flex-col gap-4">
-        <p className="text-center uppercase">{title}</p>
+    <div className="pt-[16px] pb-[22px] px-[14px] w-full flex flex-col gap-[20px] border border-black bg-secondary text-white rounded-[10px]">
+      <div className="flex flex-col gap-[14px]">
+        <p className="text-center uppercase text-body15_15">{title}</p>
         <div
           className="w-full h-[300px] bg-center bg-no-repeat bg-cover"
           style={{ backgroundImage: `url(${imageURL})` }}
         />
       </div>
-      <div className="flex flex-col gap-2">
-        <p className="text-heading4 text-center uppercase font-medium tracking-wider">
+      <div className="flex flex-col gap-[14px]">
+        <p className="text-heading4Smaller text-center uppercase font-normal tracking-wider">
           {text}
         </p>
-        <p className="text-caption text-center uppercase">{caption}</p>
+        <p className="text-bodySmaller text-center uppercase">{caption}</p>
       </div>
     </div>
   );

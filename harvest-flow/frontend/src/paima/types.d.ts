@@ -1,4 +1,4 @@
-import { NftContract, NftContractDetails, NftHistoryEvent, Summary, UserDetails } from "@harvest-flow/utils";
+import { DeviceDetails, NftContract, NftContractDetails, NftHistoryEvent, Summary, UserDetails } from "@harvest-flow/utils";
 export interface GetAllNftContractsResponse {
     success: boolean;
     contracts: NftContract[];
@@ -19,4 +19,8 @@ export interface GetUserDetailsResponse {
 export interface GetSummaryResponse {
     success: boolean;
     data: Summary;
+}
+export interface GetRWADataResponse {
+    success: boolean;
+    data: DeviceDetails;
 }

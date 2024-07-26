@@ -8,6 +8,7 @@ import MobileVideoBackground from "./MobileVideoBackground";
 import { ApasPortLogo } from "./Footer";
 import CloseIcon from "@src/icons/CloseIcon";
 import { APAS_PORT_LINK, DISCORD_LINK, TWITTER_LINK } from "@src/utils/links";
+import MobileConnectWalletButton from "./MobileConnectWalletButton";
 
 import Logo from "../../assets/images/logo.svg";
 import MobileMenuLogo from "../../assets/images/mobile-menu-logo.svg";
@@ -42,6 +43,8 @@ const XIcon: React.FC = () => (
   </svg>
 );
 
+const SHOW_HEADER_ANNOUNCEMENT = false;
+
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
@@ -50,6 +53,11 @@ const Header: React.FC = () => {
   return (
     <>
       <Headroom disableInlineStyles>
+        {SHOW_HEADER_ANNOUNCEMENT && (
+          <div className="h-10 w-screen bg-secondary text-white uppercase text-center p-2 flex items-center justify-center text-caption desktop:text-body">
+            Every Friday is Harvest Time! Harvest now and get a +10% Bonus!
+          </div>
+        )}
         <header className="flex border-b border-t border-black bg-white z-20 relative">
           <a
             href="/"
@@ -105,6 +113,7 @@ const Header: React.FC = () => {
             <div className="w-4 border-t border-black" />
             <div className="w-2 border-t border-black" />
           </button>
+        <MobileConnectWalletButton />
         </header>
       </Headroom>
       <div
