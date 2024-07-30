@@ -4,5 +4,6 @@ api/src/tsoa/routes.ts
 build
 lib
 dist
+frontend/src/paima/*
 
 packaged
