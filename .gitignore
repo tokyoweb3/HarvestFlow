@@ -2,5 +2,6 @@
 /paima-engine-linux
 /.idea/
 /.env.localhost
+/.env.*
 /logs.log
 /packaged/
