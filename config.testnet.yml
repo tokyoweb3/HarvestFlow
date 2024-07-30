@@ -1,0 +1,10 @@
+# todo: delete duplicate in .env.testnet once Paima Engine migration of this feature is done
+PolygonAmoy:
+  type: evm-main
+  chainUri: 'https://polygon-amoy.blastapi.io/e88a9865-3e4a-4114-bed0-757a6405d382'
+  chainId: 80002
+  chainCurrencyName: 'MATIC'
+  chainCurrencySymbol: 'MATIC'
+  chainCurrencyDecimals: 18
+  blockTime: 2
+  paimaL2ContractAddress: '0x5FbDB2315678afecb367f032d93F642f64180aa3'

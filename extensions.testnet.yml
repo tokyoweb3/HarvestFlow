@@ -1,0 +1,69 @@
+extensions:
+  - name: "Nft contract deploy"
+    type: "generic"
+    network: "PolygonAmoy"
+    contractAddress: "0x9Db53215DaC4b43D22722CD4C0C4bCD2cC3a9CE3"
+    startBlockHeight: 0
+    abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/NftFactory.sol/NftFactory.json"
+    eventSignature: "NftDeployed(address)"
+    scheduledPrefix: "deployed"
+
+  - name: "Contract activate"
+    type: "dynamic-evm-primitive"
+    network: "PolygonAmoy"
+    contractAddress: "0x9Db53215DaC4b43D22722CD4C0C4bCD2cC3a9CE3"
+    eventSignature: "NftDeployed(address)"
+    abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/NftFactory.sol/NftFactory.json"
+    targetConfig:
+      scheduledPrefix: "activated"
+      type: "generic"
+      abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/TokTokNft.sol/TokTokNft.json"
+      eventSignature: "Activated()"
+    startBlockHeight: 0
+    dynamicFields:
+      contractAddress: nft
+
+  - name: "Nft mint"
+    type: "dynamic-evm-primitive"
+    network: "PolygonAmoy"
+    contractAddress: "0x9Db53215DaC4b43D22722CD4C0C4bCD2cC3a9CE3"
+    eventSignature: "NftDeployed(address)"
+    abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/NftFactory.sol/NftFactory.json"
+    targetConfig:
+      scheduledPrefix: "minted"
+      type: "generic"
+      abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/TokTokNft.sol/TokTokNft.json"
+      eventSignature: "Minted(address,uint256,uint256,uint256)"
+    startBlockHeight: 0
+    dynamicFields:
+      contractAddress: nft
+
+  - name: "Interest claim"
+    type: "dynamic-evm-primitive"
+    network: "PolygonAmoy"
+    contractAddress: "0x9Db53215DaC4b43D22722CD4C0C4bCD2cC3a9CE3"
+    eventSignature: "NftDeployed(address)"
+    abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/NftFactory.sol/NftFactory.json"
+    targetConfig:
+      scheduledPrefix: "claimed"
+      type: "generic"
+      abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/TokTokNft.sol/TokTokNft.json"
+      eventSignature: "Claimed(address,uint256,uint256)"
+    startBlockHeight: 0
+    dynamicFields:
+      contractAddress: nft
+
+  - name: "Principal redeem"
+    type: "dynamic-evm-primitive"
+    network: "PolygonAmoy"
+    contractAddress: "0x9Db53215DaC4b43D22722CD4C0C4bCD2cC3a9CE3"
+    eventSignature: "NftDeployed(address)"
+    abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/NftFactory.sol/NftFactory.json"
+    targetConfig:
+      scheduledPrefix: "redeemed"
+      type: "generic"
+      abiPath: "./harvest-flow/contracts/evm/abi/contracts/evm/solidity/TokTokNft.sol/TokTokNft.json"
+      eventSignature: "Redeemed(address,uint256,uint256)"
+    startBlockHeight: 0
+    dynamicFields:
+      contractAddress: nft

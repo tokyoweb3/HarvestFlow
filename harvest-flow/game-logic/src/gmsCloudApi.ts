@@ -16,6 +16,9 @@ const GMS_CLOUD_GET_DEVICE_SUMMARY_URL = GMS_CLOUD_BASE_URL + '/v3/stats/devices
 async function requestToken() {
   console.debug('Requesting access token');
 
+  if (GMS_CLOUD_CLIENT_ID == '' || GMS_CLOUD_CLIENT_SECRET == '') {
+    throw new Error('Missing GMS_CLOUD env vars');
+  }
   const authResponse = await axios.post(GMS_CLOUD_REQUEST_TOKEN_URL,
     { grant_type: 'client_credentials' },
     {

@@ -51,8 +51,8 @@ export default buildModule('TokTokNft', m => {
   contract2.dependencies.add(mockToken);
 
   //send mock token to contracts for the repayments
-  m.call(mockToken, "transfer", [contract1Address, 100_000_000_000_000_000_000_000n], { id: "Mock_token_to_contrac1" });
-  m.call(mockToken, "transfer", [contract2Address, 100_000_000_000_000_000_000_000n], { id: "Mock_token_to_contrac2" });
+  m.call(mockToken, "transfer", [contract1Address, 100_000_000_000_000_000_000_000n], { id: "Mock_token_to_contract1" });
+  m.call(mockToken, "transfer", [contract2Address, 100_000_000_000_000_000_000_000n], { id: "Mock_token_to_contract2" });
 
 
   // activate contract1

@@ -163,7 +163,8 @@
 			"DeviceDetails": {
 				"properties": {
 					"deviceId": {
-						"type": "string"
+						"type": "number",
+						"format": "double"
 					},
 					"totalMileage": {
 						"type": "number",

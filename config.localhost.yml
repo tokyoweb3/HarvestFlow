@@ -1,0 +1,10 @@
+# todo: delete duplicate in .env.testnet once Paima Engine migration of this feature is done
+Hardhat:
+  type: evm-main
+  chainUri: 'http://localhost:8545'
+  chainId: 31337
+  chainCurrencyName: 'Test Hardhat Tokens'
+  chainCurrencySymbol: 'TEST'
+  chainCurrencyDecimals: 18
+  blockTime: 2
+  paimaL2ContractAddress: '0x5FbDB2315678afecb367f032d93F642f64180aa3'
