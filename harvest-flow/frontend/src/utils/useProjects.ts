@@ -7,7 +7,10 @@ import type { NftContract } from "@harvest-flow/utils";
  * This whitelist should be in the backend in the future, but for now it's in the frontend
  */
 const frontendWhitelist = [
-  '0x303117a03305b1c67a62eeef04fb096d9b67af9f'
+  // testnet NFT
+  '0x303117a03305b1c67a62eeef04fb096d9b67af9f',
+  // localhost NFT
+  '0xCafac3dD18aC6c6e92c921884f9E4176737C052c'
 ];
 export const useProjects = () => {
   const mainController: MainController = useContext(AppContext);
