@@ -2,6 +2,8 @@ import React from "react";
 import { Chart } from "react-chartjs-2";
 import {
   Chart as ChartJS,
+  BarController,
+  LineController,
   CategoryScale,
   LinearScale,
   BarElement,
@@ -17,20 +19,22 @@ import { DailyDeviceSummary } from "@harvest-flow/utils";
 import { useTranslation } from "react-i18next";
 import { t } from "i18next";
 
+ChartJS.register(
+  BarController,
+  LineController,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend,
+);
+
 const RwaDataChart: React.FC<{ dailyStats: DailyDeviceSummary[] }> = ({
   dailyStats,
 }) => {
-  ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    LineElement,
-    PointElement,
-    Title,
-    Tooltip,
-    Legend,
-  );
-
   const { t } = useTranslation();
 
   const data: ChartData<"bar" | "line"> = convertData(dailyStats);
