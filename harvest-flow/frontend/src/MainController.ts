@@ -12,6 +12,8 @@ import type {
 import { Web3Provider } from "@ethersproject/providers";
 import { Contract, ethers } from "ethers";
 import TokTokNftAbi from "./abi/TokTokNft";
+import { WalletMode } from "@paima/providers";
+import type { Wallet } from '@paima/sdk/mw-core';
 
 // The MainController is a React component that will be used to control the state of the application
 // It will be used to check if the user has metamask installed and if they are connected to the correct network
@@ -27,6 +29,8 @@ export enum Page {
   Homepage = "/",
 }
 
+const LocalstorageWalletCacheKey = 'walletConnected';
+
 const NFT_FACTORY_CONTRACT_ADDRESS: string =
   process.env.TOKTOK_NFT_FACTORY_CONTRACT_ADDRESS;
 const PAYMENT_TOKEN_CONTRACT_ADDRESS: string =
@@ -35,7 +39,9 @@ const PAYMENT_TOKEN_CONTRACT_ADDRESS: string =
 // This is a class that will be used to control the state of the application
 // the benefit of this is that it is very easy to test its logic unlike a react component
 class MainController {
-  userAddress: string | null = null;
+  connectedWallet: Wallet | null = null;
+  connectWalletError: string | null;
+  
   private provider?: Web3Provider = undefined;
 
   callback: (
@@ -44,14 +50,36 @@ class MainController {
     errorMessage: string | null,
   ) => void = () => {};
 
+  disconnect = (): void => {
+    localStorage.removeItem(LocalstorageWalletCacheKey);
+
+    // note: it's possible to have smarter refresh logic than just reloading the page
+    //       but this is much less likely to go wrong
+    location.reload();
+  }
+
+  tryReconnect = async (): Promise<Wallet | null> => {
+    if (localStorage.getItem(LocalstorageWalletCacheKey) != null) {
+      // TODO: if you want the user to pick the wallet, see `getWalletOptions`
+      // https://docs.paimastudios.com/home/multichain-support/wallet-layer/introduction
+      return await this.connectWallet({
+        mode: WalletMode.EvmInjected,
+        preferBatchedMode: false,
+      });
+    }
+    return null;
+  }
+  
   isWalletConnected = (): boolean => {
-    return this.userAddress !== null;
+    return this.connectedWallet !== null;
   };
 
   async connectWallet(
     loginInfo: LoginInfo,
     locale: string = "en",
-  ): Promise<string> {
+  ): Promise<Wallet | null> {
+    this.connectWalletError = null;
+
     const response = await Paima.default.userWalletLogin(loginInfo);
     if (response.success === true) {
       this.callback(
@@ -63,9 +91,13 @@ class MainController {
             : `Wallet connected to address: ${response.result.walletAddress}`,
         null,
       );
-      this.userAddress = response.result.walletAddress;
+      this.connectedWallet = response.result;
       this.provider = new Web3Provider(window.ethereum);
-      return response.result.walletAddress;
+      localStorage.setItem(LocalstorageWalletCacheKey, JSON.stringify(response.result));
+      return response.result;
+    } else {
+      this.connectWalletError = response.errorMessage;
+      return null;
     }
   }
 
@@ -145,7 +177,7 @@ class MainController {
 
   async getNftHistoryForUser(): Promise<NftHistory> {
     const response = await Paima.default.getNftHistoryForUser(
-      this.userAddress!,
+      this.connectedWallet!.walletAddress,
     );
     if (!response.success) {
       throw new Error((response as FailedResult).errorMessage);
@@ -162,7 +194,7 @@ class MainController {
   }
 
   async getUserDetails(): Promise<UserDetails> {
-    const response = await Paima.default.getUserDetails(this.userAddress!);
+    const response = await Paima.default.getUserDetails(this.connectedWallet!.walletAddress);
     console.debug("Get User details response: ", response);
     if (!response.success) {
       throw new Error((response as FailedResult).errorMessage);

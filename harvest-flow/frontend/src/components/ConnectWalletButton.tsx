@@ -1,23 +1,20 @@
 import React from "react";
-import { AppContext } from "@src/main";
-import { useContext } from "react";
 import { WalletMode } from "@paima/providers";
 import type { LoginInfo } from "@paima/sdk/mw-core";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import type MainController from "@src/MainController";
 import { middleEllipsis } from "@src/utils";
 import { Page } from "@src/MainController";
+import { useSession } from "@src/utils/useSession";
 
 const ConnectWalletButton: React.FC = () => {
-  const mainController: MainController = useContext(AppContext);
-  const [userAddress, setUserAddress] = React.useState<string | null>(
-    mainController.userAddress,
-  );
+  const { userSession, initializeSession } = useSession();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
+  // TODO: if you want the user to pick the wallet, see `getWalletOptions`
+  // https://docs.paimastudios.com/home/multichain-support/wallet-layer/introduction
   const loginInfo: LoginInfo = {
     mode: WalletMode.EvmInjected,
     preferBatchedMode: false,
@@ -25,7 +22,7 @@ const ConnectWalletButton: React.FC = () => {
 
   return (
     <div>
-      {mainController.isWalletConnected() && userAddress ? (
+      {userSession != null ? (
         <div
           className="text-heading5 desktop:text-header font-medium text-black uppercase p-4 hover:cursor-pointer"
           onClick={() => {
@@ -33,14 +30,12 @@ const ConnectWalletButton: React.FC = () => {
           }}
         >
           {" "}
-          {middleEllipsis(userAddress)}
+          {middleEllipsis(userSession.walletAddress)}
         </div>
       ) : (
         <button
           onClick={() => {
-            mainController.connectWallet(loginInfo, i18n.language).then((result) => {
-              setUserAddress(result);
-            });
+            void initializeSession(loginInfo, i18n.language);
           }}
           className="text-heading5 desktop:text-header font-medium text-black uppercase p-4 hover:cursor-pointer"
         >
