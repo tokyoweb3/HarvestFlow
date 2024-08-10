@@ -8,9 +8,9 @@ import type { NftContract } from "@harvest-flow/utils";
  */
 const frontendWhitelist = [
   // testnet NFT
-  '0x303117a03305b1c67a62eeef04fb096d9b67af9f',
+  "0x303117a03305b1c67a62eeef04fb096d9b67af9f".toLowerCase(),
   // localhost NFT
-  '0xCafac3dD18aC6c6e92c921884f9E4176737C052c'
+  "0xCafac3dD18aC6c6e92c921884f9E4176737C052c".toLowerCase(),
 ];
 export const useProjects = () => {
   const mainController: MainController = useContext(AppContext);
@@ -20,7 +20,7 @@ export const useProjects = () => {
     mainController.getAllNft(false).then((projects) => {
       const filteredProjects: NftContract[] = [];
       for (const project of projects) {
-        if (!frontendWhitelist.includes(project.address)) {
+        if (!frontendWhitelist.includes(project.address.toLowerCase())) {
           console.log(`Filtered NFT ${project.address}`);
           continue;
         }

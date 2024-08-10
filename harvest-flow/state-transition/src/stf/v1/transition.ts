@@ -57,25 +57,43 @@ export const contractDeployed = async (input: ContractDeployedInput): Promise<SQ
     'function yield() public view returns (uint256)',
     'function maturity() public view returns (uint256)',
     'function publicPrice() public view returns (uint256)',
+    'function owner() public view returns (address)',
+    'function signerAddress() public view returns (address)',
+    'function isPresale() public view returns (bool)',
+    'function isPublicsale() public view returns (bool)',
   ];
 
   const contract = new ethers.Contract(input.nftAddress, abi, provider);
 
-  const [name, symbol, cap, baseURI, payableToken, lendingAt, yieldRate, maturity, price] =
-    await Promise.all([
-      contract.name(),
-      contract.symbol(),
-      contract.cap(),
-      contract.baseURI(),
-      contract.payableToken(),
-      contract.lendingAt(),
-      contract.yield(),
-      contract.maturity(), // params.lendingAt + params.lendingPeriod
-      contract.publicPrice(),
-      // lendingPeriod
-      // owner
-      // signerAddress
-    ]);
+  const [
+    name,
+    symbol,
+    cap,
+    baseURI,
+    payableToken,
+    lendingAt,
+    yieldRate,
+    maturity,
+    price,
+    owner,
+    signerAddress,
+    isPresale,
+    isPublicsale,
+  ] = await Promise.all([
+    contract.name(),
+    contract.symbol(),
+    contract.cap(),
+    contract.baseURI(),
+    contract.payableToken(),
+    contract.lendingAt(),
+    contract.yield(),
+    contract.maturity(), // params.lendingAt + params.lendingPeriod
+    contract.publicPrice(),
+    contract.owner(),
+    contract.signerAddress(),
+    contract.isPresale(),
+    contract.isPublicsale(),
+  ]);
 
   return [
     persistNewNftContract({
@@ -90,6 +108,10 @@ export const contractDeployed = async (input: ContractDeployedInput): Promise<SQ
       yieldRate: yieldRate,
       maturity: new Date(Number(maturity) * 1000),
       publicPrice: price,
+      owner,
+      signerAddress,
+      isPresale,
+      isPublicsale,
     }),
   ];
 };

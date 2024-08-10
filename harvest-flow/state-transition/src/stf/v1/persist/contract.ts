@@ -35,13 +35,17 @@ export function persistNewNftContract(params: ContractParams): SQLUpdate {
     symbol: params.symbol,
     address: params.contractAddress,
     chain_id: params.chainId,
-    lease_end: params.maturity,
+    lease_end: params.maturity, // recall: maturity = params.lendingAt + params.lendingPeriod
     lease_start: params.lendingAt,
     metadata_base_url: params.baseURI,
     min_yield: params.yieldRate,
     price: params.publicPrice,
     supply_cap: params.cap,
     accepted_token: params.payableToken,
+    owner: params.owner,
+    signer_address: params.signerAddress,
+    is_presale: params.isPresale,
+    is_publicsale: params.isPublicsale,
   };
 
   return [saveNewContract, saveNewContractParams];

@@ -59,4 +59,8 @@ export interface ContractParams {
   yieldRate: bigint;
   maturity: Date;
   publicPrice: bigint;
+  owner: string;
+  signerAddress: string;
+  isPresale: boolean;
+  isPublicsale: boolean;
 }

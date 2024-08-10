@@ -1,7 +1,6 @@
 import React from "react";
 import { ethers } from "ethers";
 import type { NftContractDetails } from "@harvest-flow/utils";
-import clsx from "clsx";
 
 import DataTile from "./DataTile";
 import type { DataTileProps } from "./DataTile";
@@ -31,7 +30,7 @@ const LargeTile: React.FC<DataTileProps> = ({ title, value }) => {
 };
 
 const ProjectOverviewSection: React.FC<{
-  projectContractDetails: NftContractDetails;
+  projectContractDetails: null | NftContractDetails;
 }> = ({ projectContractDetails }) => {
   const { t } = useTranslation();
 

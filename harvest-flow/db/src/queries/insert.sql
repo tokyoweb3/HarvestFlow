@@ -56,7 +56,11 @@ INSERT INTO contracts (name,
                        min_yield,
                        accepted_token,
                        price,
-                       metadata_base_url)
+                       metadata_base_url,
+                       owner,
+                       signer_address,
+                       is_presale,
+                       is_publicsale)
 VALUES (:name!,
         :symbol!,
         LOWER(:chain_id!),
@@ -67,4 +71,8 @@ VALUES (:name!,
         :min_yield!,
         LOWER(:accepted_token!),
         :price!,
-        :metadata_base_url!);
+        :metadata_base_url!,
+        :owner!,
+        :signer_address!,
+        :is_presale!,
+        :is_publicsale!);

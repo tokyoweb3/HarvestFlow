@@ -17,13 +17,17 @@ export interface IGetContractResult {
   activated: boolean;
   address: string;
   chain_id: string;
+  is_presale: boolean;
+  is_publicsale: boolean;
   lease_end: Date;
   lease_start: Date;
   metadata_base_url: string | null;
   min_yield: string;
   minted_amount: string;
   name: string;
+  owner: string;
   price: string;
+  signer_address: string;
   supply_cap: string;
   symbol: string;
 }

@@ -40,6 +40,10 @@ export class DetailedNftContractController extends Controller {
         price: getContractDataResult[0].price.toString(),
         metadata: getContractDataResult[0].metadata_base_url,
         activated: getContractDataResult[0].activated,
+        owner: getContractDataResult[0].owner,
+        signerAddress: getContractDataResult[0].signer_address,
+        isPresale: getContractDataResult[0].is_presale,
+        isPublicsale: getContractDataResult[0].is_publicsale,
       };
     } else {
       return null;

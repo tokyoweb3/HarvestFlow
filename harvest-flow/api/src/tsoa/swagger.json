@@ -363,6 +363,18 @@
 					"metadata": {},
 					"activated": {
 						"type": "boolean"
+					},
+					"owner": {
+						"type": "string"
+					},
+					"signerAddress": {
+						"type": "string"
+					},
+					"isPresale": {
+						"type": "boolean"
+					},
+					"isPublicsale": {
+						"type": "boolean"
 					}
 				},
 				"required": [
@@ -378,7 +390,11 @@
 					"accepted_token",
 					"price",
 					"metadata",
-					"activated"
+					"activated",
+					"owner",
+					"signerAddress",
+					"isPresale",
+					"isPublicsale"
 				],
 				"type": "object",
 				"additionalProperties": false

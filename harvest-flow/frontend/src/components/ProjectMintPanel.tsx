@@ -84,8 +84,20 @@ const AmountInput: React.FC<AmountInputProps> = ({
 };
 
 export interface ProjectMintPanelProps {
-  projectContractDetails: NftContractDetails;
+  projectContractDetails: null | NftContractDetails;
   refreshData: () => void;
+}
+
+function getPhase(details: NftContractDetails): string {
+  // TODO: should any of this be translated?
+  if (details == null) return ''; // this will be resolved when loading is done
+  if (details.isPublicsale) {
+    return "Public Sale"
+  }
+  if (details.isPresale) {
+    return "Allow list";
+  }
+  return "Ended";
 }
 
 const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
@@ -156,7 +168,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
         <div className="w-full bg-white border border-black text-black">
           <div className="border-b border-black pt-[16px] pb-[13px] px-6 flex flex-col gap-[4px]">
             <p className="text-bodyLarge desktop:text-body15_18 uppercase font-medium text-center">
-              Phase: {isPublicsale? "Public Sale" : "Allow list"}
+              Phase: {getPhase(projectContractDetails)}
             </p>
             <p className="text-captionMedium text-center">{endingIn}</p>
           </div>

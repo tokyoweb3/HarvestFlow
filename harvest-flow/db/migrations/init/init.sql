@@ -24,6 +24,10 @@ CREATE TABLE contracts (
    price UINT256 NOT NULL,
    metadata_base_url TEXT,
    activated BOOLEAN NOT NULL DEFAULT false,
+   owner TEXT NOT NULL,
+   signer_address TEXT NOT NULL,
+   is_presale BOOLEAN NOT NULL,
+   is_publicsale BOOLEAN NOT NULL,
 
    PRIMARY KEY (chain_id, address)
 );

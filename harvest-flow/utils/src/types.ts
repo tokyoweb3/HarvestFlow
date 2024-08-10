@@ -30,6 +30,9 @@ export interface NftContractDetails {
 
   activated: boolean; // see spec
 
+  owner: string;
+  signerAddress: string;
+
   isPresale: boolean;
   isPublicsale: boolean;
 }

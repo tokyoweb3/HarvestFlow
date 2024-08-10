@@ -1,5 +1,5 @@
 import * as Paima from "./paima/middleware.js";
-import type { FailedResult, LoginInfo } from "@paima/sdk/mw-core";
+import type { LoginInfo } from "@paima/sdk/mw-core";
 import type {
   DeviceDetails,
   NftContract,
@@ -14,6 +14,7 @@ import { Contract, ethers } from "ethers";
 import TokTokNftAbi from "./abi/TokTokNft";
 import { WalletMode } from "@paima/providers";
 import type { Wallet } from "@paima/sdk/mw-core";
+import type { FailedResult } from "@paima/utils";
 
 // The MainController is a React component that will be used to control the state of the application
 // It will be used to check if the user has metamask installed and if they are connected to the correct network

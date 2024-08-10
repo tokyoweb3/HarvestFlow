@@ -243,6 +243,10 @@ export interface components {
             price: string;
             metadata: unknown;
             activated: boolean;
+            owner: string;
+            signerAddress: string;
+            isPresale: boolean;
+            isPublicsale: boolean;
         };
         NftContract: {
             name: string;
