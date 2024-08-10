@@ -64,11 +64,12 @@
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.2",
     "@openzeppelin/contracts-upgradeable": "^5.0.2",
-    "erc721a-upgradeable": "^4.3.0",
     "@paima/evm-contracts": "3.1.0",
-    "@paima/node-sdk": "3.0.0",
-    "@paima/sdk": "3.0.0",
-    "erc721a": "^4.3.0"
+    "@paima/node-sdk": "4.0.0",
+    "@paima/sdk": "4.0.0",
+    "erc721a": "^4.3.0",
+    "erc721a-upgradeable": "^4.3.0",
+    "temporal-polyfill": "^0.2.5"
   },
   "overrides": {
     "@nomicfoundation/hardhat-toolbox-viem": {

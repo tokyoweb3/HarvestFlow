@@ -156,7 +156,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
         <div className="w-full bg-white border border-black text-black">
           <div className="border-b border-black pt-[16px] pb-[13px] px-6 flex flex-col gap-[4px]">
             <p className="text-bodyLarge desktop:text-body15_18 uppercase font-medium text-center">
-              Phase: Allow list
+              Phase: {isPublicsale? "Public Sale" : "Allow list"}
             </p>
             <p className="text-captionMedium text-center">{endingIn}</p>
           </div>

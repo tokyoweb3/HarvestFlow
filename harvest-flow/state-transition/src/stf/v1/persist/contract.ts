@@ -1,38 +1,32 @@
-import { SQLUpdate } from "@paima/node-sdk/db";
-import {
-  activateContract,
-  addMintedAmount,
+import type { SQLUpdate } from '@paima/node-sdk/db';
+import type {
   IActivateContractParams,
   IAddMintedAmountParams,
   ISaveNewContractParams,
-  saveNewContract
-} from "@harvest-flow/db";
-import { ContractParams } from "../types";
+} from '@harvest-flow/db';
+import { activateContract, addMintedAmount, saveNewContract } from '@harvest-flow/db';
+import type { ContractParams } from '../types';
 
-export function persistContractActivation(
-    chainId: string,
-    contractAddress: string
-): SQLUpdate {
-
-  const activateContractParams : IActivateContractParams = {
+export function persistContractActivation(chainId: string, contractAddress: string): SQLUpdate {
+  const activateContractParams: IActivateContractParams = {
     chainId: chainId,
     contractAddress: contractAddress,
-  }
+  };
 
   return [activateContract, activateContractParams];
 }
 
 export function updateMintedAmount(
-    chainId: string,
-    contractAddress: string,
-    amount: bigint
+  chainId: string,
+  contractAddress: string,
+  amount: bigint
 ): SQLUpdate {
-  const addMintedAmountParams : IAddMintedAmountParams = {
-    amount : amount.toString(),
+  const addMintedAmountParams: IAddMintedAmountParams = {
+    amount: amount.toString(),
     chainId: chainId,
     contractAddress: contractAddress,
-  }
-  return [addMintedAmount,  addMintedAmountParams];
+  };
+  return [addMintedAmount, addMintedAmountParams];
 }
 
 export function persistNewNftContract(params: ContractParams): SQLUpdate {
@@ -47,7 +41,7 @@ export function persistNewNftContract(params: ContractParams): SQLUpdate {
     min_yield: params.yieldRate,
     price: params.publicPrice,
     supply_cap: params.cap,
-    accepted_token: params.payableToken
+    accepted_token: params.payableToken,
   };
 
   return [saveNewContract, saveNewContractParams];

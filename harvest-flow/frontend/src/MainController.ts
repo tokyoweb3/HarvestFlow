@@ -13,7 +13,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { Contract, ethers } from "ethers";
 import TokTokNftAbi from "./abi/TokTokNft";
 import { WalletMode } from "@paima/providers";
-import type { Wallet } from '@paima/sdk/mw-core';
+import type { Wallet } from "@paima/sdk/mw-core";
 
 // The MainController is a React component that will be used to control the state of the application
 // It will be used to check if the user has metamask installed and if they are connected to the correct network
@@ -29,7 +29,7 @@ export enum Page {
   Homepage = "/",
 }
 
-const LocalstorageWalletCacheKey = 'walletConnected';
+const LocalstorageWalletCacheKey = "walletConnected";
 
 const NFT_FACTORY_CONTRACT_ADDRESS: string =
   process.env.TOKTOK_NFT_FACTORY_CONTRACT_ADDRESS;
@@ -41,7 +41,7 @@ const PAYMENT_TOKEN_CONTRACT_ADDRESS: string =
 class MainController {
   connectedWallet: Wallet | null = null;
   connectWalletError: string | null;
-  
+
   private provider?: Web3Provider = undefined;
 
   callback: (
@@ -56,7 +56,7 @@ class MainController {
     // note: it's possible to have smarter refresh logic than just reloading the page
     //       but this is much less likely to go wrong
     location.reload();
-  }
+  };
 
   tryReconnect = async (): Promise<Wallet | null> => {
     if (localStorage.getItem(LocalstorageWalletCacheKey) != null) {
@@ -68,8 +68,8 @@ class MainController {
       });
     }
     return null;
-  }
-  
+  };
+
   isWalletConnected = (): boolean => {
     return this.connectedWallet !== null;
   };
@@ -93,7 +93,10 @@ class MainController {
       );
       this.connectedWallet = response.result;
       this.provider = new Web3Provider(window.ethereum);
-      localStorage.setItem(LocalstorageWalletCacheKey, JSON.stringify(response.result));
+      localStorage.setItem(
+        LocalstorageWalletCacheKey,
+        JSON.stringify(response.result),
+      );
       return response.result;
     } else {
       this.connectWalletError = response.errorMessage;
@@ -153,8 +156,8 @@ class MainController {
     }
   }
 
-  async getAllNft(notEnded: boolean): Promise<NftContract[]> {
-    const response = await Paima.default.getAllNfts(notEnded);
+  async getAllNft(justActive: boolean): Promise<NftContract[]> {
+    const response = await Paima.default.getAllNfts(justActive);
     console.debug("Get All Nft response: ", response);
     if (!response.success) {
       throw new Error((response as FailedResult).errorMessage);
@@ -194,7 +197,9 @@ class MainController {
   }
 
   async getUserDetails(): Promise<UserDetails> {
-    const response = await Paima.default.getUserDetails(this.connectedWallet!.walletAddress);
+    const response = await Paima.default.getUserDetails(
+      this.connectedWallet!.walletAddress,
+    );
     console.debug("Get User details response: ", response);
     if (!response.success) {
       throw new Error((response as FailedResult).errorMessage);

@@ -1,169 +1,179 @@
-import type { FailedResult } from '@paima/sdk/mw-core';
+import type { FailedResult } from '@paima/sdk/utils';
 import { PaimaMiddlewareErrorCode } from '@paima/sdk/mw-core';
-import { NftContract, NftContractDetails, NftHistory, Summary, UserDetails } from "@harvest-flow/utils";
-import {
-    backendQueryGetAllNfts,
-    backendQueryGetDetailedNftContract,
-    backendQueryGetNftHistoryForProject,
-    backendQueryGetNftHistoryForUser, backendQueryGetRWAData,
-    backendQueryGetSummary,
-    backendQueryGetUserDetails
-} from "../helpers/query-constructors";
-import {
-    GetAllNftContractsResponse,
-    GetDetailedNftContractResponse,
-    GetNftHistoryResponse, GetRWADataResponse,
-    GetSummaryResponse,
-    GetUserDetailsResponse
-} from "../types";
-import {buildEndpointErrorFxn, MiddlewareErrorCode} from "../errors";
+import type { NftHistoryEvent } from '@harvest-flow/utils';
+import type {
+  GetAllNftContractsResponse,
+  GetDetailedNftContractResponse,
+  GetNftHistoryResponse,
+  GetRWADataResponse,
+  GetSummaryResponse,
+  GetUserDetailsResponse,
+} from '../types';
+import { buildEndpointErrorFxn, MiddlewareErrorCode } from '../errors';
+import { getGameRestClient } from '../client';
 
-async function getAllNfts(notEnded : boolean): Promise<GetAllNftContractsResponse | FailedResult> {
+async function getAllNfts(justActive: boolean): Promise<GetAllNftContractsResponse | FailedResult> {
+  const errorFxn = buildEndpointErrorFxn('getAllNfts');
 
-    const errorFxn = buildEndpointErrorFxn('getAllNfts');
-
-    let response: Response;
-    try {
-        const query = backendQueryGetAllNfts(notEnded);
-        response = await fetch(query);
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+  try {
+    const { data, error } = await getGameRestClient().GET('/all_nft', {
+      params: { query: { justActive } },
+    });
+    if (error != null) {
+      return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, error);
     }
-
-    try {
-        const contracts =  (await response.json()) as NftContract[];
-        return {success: true, contracts : contracts};
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.INVALID_RESPONSE_FROM_BACKEND, err);
-    }
+    return {
+      success: true,
+      contracts: data,
+    };
+  } catch (err) {
+    return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+  }
 }
 
-async function getDetailedNftContract(contractAddress: string): Promise<GetDetailedNftContractResponse | FailedResult> {
-    const errorFxn = buildEndpointErrorFxn('getDetailedNftContract');
-    let response: Response;
+async function getDetailedNftContract(
+  contractAddress: string
+): Promise<GetDetailedNftContractResponse | FailedResult> {
+  const errorFxn = buildEndpointErrorFxn('getDetailedNftContract');
 
-    try {
-        const query = backendQueryGetDetailedNftContract(contractAddress);
-        response = await fetch(query);
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+  try {
+    const { data, error } = await getGameRestClient().GET('/nft_details', {
+      params: { query: { contractAddress } },
+    });
+    if (data == null) {
+      return errorFxn(
+        MiddlewareErrorCode.CONTRACT_NOT_FOUND,
+        `Contract with address ${contractAddress} is not found`
+      );
+    }
+    if (error != null) {
+      return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, error);
     }
 
-    if(response.status === 204) {
-        return errorFxn(MiddlewareErrorCode.CONTRACT_NOT_FOUND, `Contract with address ${contractAddress} is not found`);
-    }
-
-    try {
-        const contractDetails = (await response.json()) as NftContractDetails;
-        return {success: true, contract: contractDetails};
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.INVALID_RESPONSE_FROM_BACKEND, err);
-    }
+    return {
+      success: true,
+      contract: data,
+    };
+  } catch (err) {
+    return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+  }
 }
 
-async function getNftHistoryForUser(userAddress: string): Promise<GetNftHistoryResponse | FailedResult> {
-    const errorFxn = buildEndpointErrorFxn('getUserNftHistory');
-    let response: Response;
+async function getNftHistoryForUser(
+  userAddress: string
+): Promise<GetNftHistoryResponse | FailedResult> {
+  const errorFxn = buildEndpointErrorFxn('getUserNftHistory');
 
-    try {
-        const query = backendQueryGetNftHistoryForUser(userAddress);
-        response = await fetch(query);
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+  try {
+    const { data, error } = await getGameRestClient().GET('/nft_history/user', {
+      params: { query: { userAddress } },
+    });
+    if (error != null) {
+      return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, error);
     }
 
-    try {
-        const nftHistory = (await response.json()) as NftHistory;
-        return {success: true, address: nftHistory.address, history: nftHistory.history};
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.INVALID_RESPONSE_FROM_BACKEND, err);
-    }
-
+    return {
+      success: true,
+      address: data.address,
+      history: data.history as NftHistoryEvent[],
+    };
+  } catch (err) {
+    return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+  }
 }
 
-async function getHistoryForProject(contractAddress: string): Promise<GetNftHistoryResponse | FailedResult> {
-    const errorFxn = buildEndpointErrorFxn('getProjectHistory');
-    let response: Response;
+async function getHistoryForProject(
+  contractAddress: string
+): Promise<GetNftHistoryResponse | FailedResult> {
+  const errorFxn = buildEndpointErrorFxn('getProjectHistory');
 
-    try {
-        const query = backendQueryGetNftHistoryForProject(contractAddress);
-        response = await fetch(query);
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+  try {
+    const { data, error } = await getGameRestClient().GET('/nft_history/project', {
+      params: { query: { contractAddress } },
+    });
+    if (error != null) {
+      return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, error);
     }
 
-    try {
-        const nftHistory = (await response.json()) as NftHistory;
-        return {success: true, address: nftHistory.address, history: nftHistory.history};
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.INVALID_RESPONSE_FROM_BACKEND, err);
-    }
-
+    return {
+      success: true,
+      address: data.address,
+      history: data.history as NftHistoryEvent[],
+    };
+  } catch (err) {
+    return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+  }
 }
 
 async function getUserDetails(userAddress: string): Promise<GetUserDetailsResponse | FailedResult> {
-    const errorFxn = buildEndpointErrorFxn('getUserDetails');
-    let response: Response;
+  const errorFxn = buildEndpointErrorFxn('getUserDetails');
 
-    try {
-        const query = backendQueryGetUserDetails(userAddress);
-        response = await fetch(query);
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+  try {
+    const { data, error } = await getGameRestClient().GET('/user_details', {
+      params: { query: { userAddress } },
+    });
+    if (error != null) {
+      return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, error);
     }
 
-    try {
-        const userDetails = (await response.json()) as UserDetails;
-        return {success: true, data: userDetails};
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.INVALID_RESPONSE_FROM_BACKEND, err);
-    }
+    return {
+      success: true,
+      data,
+    };
+  } catch (err) {
+    return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+  }
 }
 
 async function getSummary(): Promise<GetSummaryResponse | FailedResult> {
-    const errorFxn = buildEndpointErrorFxn('getSummary');
-    let response: Response;
+  const errorFxn = buildEndpointErrorFxn('getSummary');
 
-    try {
-        const query = backendQueryGetSummary();
-        response = await fetch(query);
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+  try {
+    const { data, error } = await getGameRestClient().GET('/summary', {
+      params: { query: undefined },
+    });
+    if (error != null) {
+      return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, error);
     }
 
-    try {
-        const summary = (await response.json()) as Summary;
-        return {success: true, data: summary};
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.INVALID_RESPONSE_FROM_BACKEND, err);
-    }
+    return {
+      success: true,
+      data,
+    };
+  } catch (err) {
+    return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+  }
 }
 
-async function getRWAData(contractAddress: string, tokenId: string) : Promise<GetRWADataResponse | FailedResult> {
-    const errorFxn = buildEndpointErrorFxn('getRWAData');
-    let response: Response;
+async function getRWAData(
+  contractAddress: string,
+  tokenId: string
+): Promise<GetRWADataResponse | FailedResult> {
+  const errorFxn = buildEndpointErrorFxn('getRWAData');
 
-    try {
-        const query = backendQueryGetRWAData(contractAddress, tokenId);
-        response = await fetch(query);
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+  try {
+    const { data, error } = await getGameRestClient().GET('/rwaData', {
+      params: { query: { contractAddress, tokenId } },
+    });
+    if (error != null) {
+      return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, error);
     }
 
-    try {
-        const rwaData = (await response.json());
-        return {success: true, data: rwaData};
-    } catch (err) {
-        return errorFxn(PaimaMiddlewareErrorCode.INVALID_RESPONSE_FROM_BACKEND, err);
-    }
+    return {
+      success: true,
+      data,
+    };
+  } catch (err) {
+    return errorFxn(PaimaMiddlewareErrorCode.ERROR_QUERYING_BACKEND_ENDPOINT, err);
+  }
 }
 
 export const queryEndpoints = {
-    getAllNfts,
-    getDetailedNftContract,
-    getNftHistoryForUser,
-    getHistoryForProject,
-    getUserDetails,
-    getSummary,
-    getRWAData
-}
+  getAllNfts,
+  getDetailedNftContract,
+  getNftHistoryForUser,
+  getHistoryForProject,
+  getUserDetails,
+  getSummary,
+  getRWAData,
+};

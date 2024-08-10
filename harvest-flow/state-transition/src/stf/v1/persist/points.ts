@@ -1,15 +1,11 @@
-import {SQLUpdate} from "@paima/node-sdk/db";
-import {addPoints} from "@harvest-flow/db";
+import type { SQLUpdate } from '@paima/node-sdk/db';
+import { addPoints } from '@harvest-flow/db';
 
-export function addUserPoints(
-    userAddress: string,
-    amount: number
-): SQLUpdate {
+export function addUserPoints(userAddress: string, amount: number): SQLUpdate {
+  const addUserPointsParams = {
+    user_address: userAddress,
+    amount: amount,
+  };
 
-    const addUserPointsParams = {
-        user_address: userAddress,
-        amount: amount,
-    };
-
-    return [addPoints, addUserPointsParams];
+  return [addPoints, addUserPointsParams];
 }
