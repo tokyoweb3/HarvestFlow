@@ -6,10 +6,12 @@ import {
   calculateTotalRewards,
   formatTime,
   formatTimeReturnJSONValues,
+  getMonthDifference,
 } from "@src/utils";
 import { ethers } from "ethers";
 import MintedModal from "@src/components/MintedModal";
 import { useTranslation } from "react-i18next";
+import clsx from "clsx";
 
 const TotalSupplyProgressBar: React.FC<{
   totalSupply: number;
@@ -43,6 +45,16 @@ interface AmountInputProps {
   amount: number;
   maxAmount?: number;
   setAmount: (amount: number) => void;
+}
+
+function getTokenTicker(addr?: string): string {
+  if (addr == null) return ''; // temporary while loading
+  return 'DAI'; // TODO: fetch this
+}
+function getLeaseEndString(leaseEnd?: number): string {
+  if (leaseEnd == null) return ''; // it's still loading
+  const formattedDate = new Date(leaseEnd).toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+  return formattedDate;
 }
 
 const AmountInput: React.FC<AmountInputProps> = ({
@@ -91,13 +103,23 @@ export interface ProjectMintPanelProps {
 function getPhase(details: NftContractDetails): string {
   // TODO: should any of this be translated?
   if (details == null) return ''; // this will be resolved when loading is done
+  const now = new Date().getTime();
+  if (now > details.leaseEnd) {
+    return "Ended";
+  }
+  if (now > details.leaseStart) {
+    return "Lease ongoing";
+  }
+  
   if (details.isPublicsale) {
     return "Public Sale"
   }
   if (details.isPresale) {
     return "Allow list";
   }
-  return "Ended";
+  // TODO: not sure what to show in this scenario
+  // This is when the sale is over, but the lease hasn't started yet
+  return "Processing";
 }
 
 const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
@@ -120,13 +142,22 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
     const interval = setInterval(() => {
       if (projectContractDetails) {
         const now = new Date();
-        const ending = new Date(projectContractDetails.leaseEnd);
-        const diff = ending.getTime() - now.getTime();
+        
+        // TODO: do we want to show a countdown until leaseStart?
+        const starting = new Date(projectContractDetails.leaseStart);
+        const timeToStart = starting.getTime() - now.getTime();
+        if (timeToStart > 0) {
+          const timeRemaining = formatTimeReturnJSONValues(timeToStart);
+          setEndingIn(t("project.ending_in", timeRemaining));
+        }
 
-        if (diff < 0) {
+        const ending = new Date(projectContractDetails.leaseEnd);
+        const timeToEnd = ending.getTime() - now.getTime();
+
+        if (timeToEnd < 0) {
           setEndingIn(t('project.ended'));
         } else {
-          const timeRemaining = formatTimeReturnJSONValues(diff);
+          const timeRemaining = formatTimeReturnJSONValues(timeToEnd);
           setEndingIn(t("project.ending_in", timeRemaining));
         }
       }
@@ -144,6 +175,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
   }, [projectContractDetails, amountToBuy]);
 
   const buyNft = (amountToBuy: number) => {
+    if (projectContractDetails == null) return;
     if (!mainController.isWalletConnected()) {
       console.error("Wallet is not connected");
     }
@@ -162,6 +194,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
       });
   };
 
+  const mintDisabled = projectContractDetails == null || new Date().getTime() > (projectContractDetails?.leaseStart);
   return (
     <>
       <div>
@@ -189,7 +222,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
                     : Number(
                         ethers.utils.formatEther(projectContractDetails.price),
                       ) * amountToBuy}{" "}
-                  <span className="text-body">DAI</span>
+                  <span className="text-body">{getTokenTicker(projectContractDetails?.accepted_token)}</span>
                 </p>
               </div>
               <AmountInput amount={amountToBuy} setAmount={setAmountToBuy} />
@@ -210,11 +243,15 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
               </p>
               <p className="text-center text-body15_18 uppercase py-[6px]">
                 {t("project.redemption")}:{" "}
-                <span className="font-medium">April, 2027</span>
+                <span className="font-medium">{getLeaseEndString(projectContractDetails?.leaseEnd)}</span>
               </p>
               <p className="text-center text-body15_18 uppercase py-[6px]">
                 {t("project.remaining_term")}:{" "}
-                <span className="font-medium">24 months</span>
+                
+                <span className="font-medium">{getMonthDifference(
+                  projectContractDetails?.leaseStart,
+                  projectContractDetails?.leaseEnd,
+                )} Months</span>
               </p>
             </div>
             <div>
@@ -223,13 +260,14 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
                 <span className="font-medium text-heading3_36">
                   {totalRewards}
                 </span>{" "}
-                <span className="font-medium">DAI</span>
+                <span className="font-medium">{getTokenTicker(projectContractDetails?.accepted_token)}</span>
               </p>
             </div>
           </div>
           <div>
             <button
-              className="bg-primary text-black text-body17 desktop:text-heading5 font-medium text-center px-8 py-4 desktop:py-6 uppercase w-full"
+              disabled={mintDisabled}
+              className={clsx("bg-primary text-black text-body17 desktop:text-heading5 font-medium text-center px-8 py-4 desktop:py-6 uppercase w-full", mintDisabled ? "hover:cursor-not-allowed" : "hover:cursor-pointer")}
               onClick={() => buyNft(amountToBuy)}
             >
               Mint
