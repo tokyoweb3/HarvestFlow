@@ -22,6 +22,7 @@ module.exports = {
       "os": require.resolve("os-browserify"),
       "url": require.resolve("url"),
       "zlib": require.resolve("browserify-zlib"),
+      "path": require.resolve("path-browserify"),
       "assert": require.resolve("assert/"),
       "fs" : false,
     },

@@ -1,11 +1,10 @@
 import React from "react";
 import { ethers } from "ethers";
 import type { NftContractDetails } from "@harvest-flow/utils";
-import clsx from "clsx";
 
 import DataTile from "./DataTile";
 import type { DataTileProps } from "./DataTile";
-import { getMonthDifference } from "@src/utils";
+import { currentPrice, getMonthDifference } from "@src/utils";
 import { useTranslation } from "react-i18next";
 
 const SmallTile: React.FC<DataTileProps> = ({ title, value }) => {
@@ -31,7 +30,7 @@ const LargeTile: React.FC<DataTileProps> = ({ title, value }) => {
 };
 
 const ProjectOverviewSection: React.FC<{
-  projectContractDetails: NftContractDetails;
+  projectContractDetails: null | NftContractDetails;
 }> = ({ projectContractDetails }) => {
   const { t } = useTranslation();
 
@@ -40,12 +39,24 @@ const ProjectOverviewSection: React.FC<{
     projectContractDetails?.leaseStart,
     projectContractDetails?.leaseEnd,
   );
-  const totalLendingAmount =
-    Number(ethers.utils.formatEther(projectContractDetails?.price ?? 0)) *
-    Number(projectContractDetails?.supplyCap ?? 0);
-  const unitPrice = Number(
-    ethers.utils.formatEther(projectContractDetails?.price ?? 0),
-  );
+
+  const priceInfo = (() => {
+    if (projectContractDetails == null) return { totalLendingAmount: 0, unitPrice: 0 };
+
+    const price = currentPrice(projectContractDetails);
+
+    // TODO: this is not quite accurate, since the price can change during the mint
+    // but you can't know how well the mint will do ahead of time
+    // so this is an okay approximation
+    const totalLendingAmount =
+      Number(ethers.utils.formatEther(price ?? 0)) *
+      Number(projectContractDetails?.supplyCap ?? 0);
+    const unitPrice = Number(
+      ethers.utils.formatEther(price ?? 0),
+    );
+    return { totalLendingAmount, unitPrice };
+  })();
+  
   const remainingUnits =
     Number(projectContractDetails?.supplyCap ?? 0) -
     Number(projectContractDetails?.mintedAmount ?? 0);
@@ -63,11 +74,11 @@ const ProjectOverviewSection: React.FC<{
         <div className="row-span-3 desktop:col-span-2 grid grid-cols-3 grid-rows-3">
           <SmallTile
             title={t("project.table.max_lending")}
-            value={`${totalLendingAmount} dai`}
+            value={`${priceInfo.totalLendingAmount} dai`}
           />
           <SmallTile
             title={t("project.table.amount_per_share")}
-            value={`${unitPrice} dai`}
+            value={`${priceInfo.unitPrice} dai`}
           />
           <SmallTile
             title={t("project.table.total_shares")}

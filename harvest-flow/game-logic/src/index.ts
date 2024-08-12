@@ -1,4 +1,1 @@
-export {
-  getDeviceSummary,
-  getDailyHistory,
-} from './gmsCloudApi';
+export { getDeviceSummary, getDailyHistory } from './gmsCloudApi';

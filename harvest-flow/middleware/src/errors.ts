@@ -27,4 +27,4 @@ export function buildEndpointErrorFxn(endpointName: string): EndpointErrorFxn {
   return buildAbstractEndpointErrorFxn(errorMessageFxn, endpointName);
 }
 
-export default {}
+export default {};

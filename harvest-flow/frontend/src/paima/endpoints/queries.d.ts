@@ -1,6 +1,6 @@
-import type { FailedResult } from '@paima/sdk/mw-core';
-import { GetAllNftContractsResponse, GetDetailedNftContractResponse, GetNftHistoryResponse, GetRWADataResponse, GetSummaryResponse, GetUserDetailsResponse } from "../types";
-declare function getAllNfts(notEnded: boolean): Promise<GetAllNftContractsResponse | FailedResult>;
+import type { FailedResult } from '@paima/sdk/utils';
+import type { GetAllNftContractsResponse, GetDetailedNftContractResponse, GetNftHistoryResponse, GetRWADataResponse, GetSummaryResponse, GetUserDetailsResponse } from '../types';
+declare function getAllNfts(justActive: boolean): Promise<GetAllNftContractsResponse | FailedResult>;
 declare function getDetailedNftContract(contractAddress: string): Promise<GetDetailedNftContractResponse | FailedResult>;
 declare function getNftHistoryForUser(userAddress: string): Promise<GetNftHistoryResponse | FailedResult>;
 declare function getHistoryForProject(contractAddress: string): Promise<GetNftHistoryResponse | FailedResult>;

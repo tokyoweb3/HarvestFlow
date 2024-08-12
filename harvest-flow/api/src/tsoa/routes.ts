@@ -45,6 +45,37 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "FailedResult": {
+        "dataType": "refObject",
+        "properties": {
+            "success": {"dataType":"enum","enums":[false],"required":true},
+            "errorMessage": {"dataType":"string","required":true},
+            "errorCode": {"dataType":"double"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "InternalServerErrorResult": {
+        "dataType": "refAlias",
+        "type": {"ref":"FailedResult","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "FieldErrors": {
+        "dataType": "refObject",
+        "properties": {
+        },
+        "additionalProperties": {"dataType":"nestedObjectLiteral","nestedProperties":{"value":{"dataType":"any"},"message":{"dataType":"string","required":true}}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ValidateErrorResult": {
+        "dataType": "refObject",
+        "properties": {
+            "message": {"dataType":"enum","enums":["Validation Failed"],"required":true},
+            "details": {"ref":"FieldErrors"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Summary": {
         "dataType": "refObject",
         "properties": {
@@ -120,9 +151,14 @@ const models: TsoaRoute.Models = {
             "leaseEnd": {"dataType":"double","required":true},
             "minYield": {"dataType":"string","required":true},
             "accepted_token": {"dataType":"string","required":true},
-            "price": {"dataType":"string","required":true},
+            "presalePrice": {"dataType":"string","required":true},
+            "publicsalePrice": {"dataType":"string","required":true},
             "metadata": {"dataType":"any","required":true},
             "activated": {"dataType":"boolean","required":true},
+            "owner": {"dataType":"string","required":true},
+            "signerAddress": {"dataType":"string","required":true},
+            "isPresale": {"dataType":"boolean","required":true},
+            "isPublicsale": {"dataType":"boolean","required":true},
         },
         "additionalProperties": false,
     },
@@ -159,9 +195,9 @@ export function RegisterRoutes(app: Router) {
     
         app.get('/user_details',
             ...(fetchMiddlewares<RequestHandler>(UserDetailsController)),
-            ...(fetchMiddlewares<RequestHandler>(UserDetailsController.prototype.get)),
+            ...(fetchMiddlewares<RequestHandler>(UserDetailsController.prototype.getUserDetails)),
 
-            async function UserDetailsController_get(request: ExRequest, response: ExResponse, next: any) {
+            async function UserDetailsController_getUserDetails(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     userAddress: {"in":"query","name":"userAddress","required":true,"dataType":"string"},
             };
@@ -175,7 +211,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new UserDetailsController();
 
               await templateService.apiHandler({
-                methodName: 'get',
+                methodName: 'getUserDetails',
                 controller,
                 response,
                 next,
@@ -189,9 +225,9 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/summary',
             ...(fetchMiddlewares<RequestHandler>(SummaryController)),
-            ...(fetchMiddlewares<RequestHandler>(SummaryController.prototype.get)),
+            ...(fetchMiddlewares<RequestHandler>(SummaryController.prototype.getSummary)),
 
-            async function SummaryController_get(request: ExRequest, response: ExResponse, next: any) {
+            async function SummaryController_getSummary(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
             };
 
@@ -204,7 +240,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new SummaryController();
 
               await templateService.apiHandler({
-                methodName: 'get',
+                methodName: 'getSummary',
                 controller,
                 response,
                 next,
@@ -218,9 +254,9 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/rwaData',
             ...(fetchMiddlewares<RequestHandler>(RWADataController)),
-            ...(fetchMiddlewares<RequestHandler>(RWADataController.prototype.get)),
+            ...(fetchMiddlewares<RequestHandler>(RWADataController.prototype.getRwaData)),
 
-            async function RWADataController_get(request: ExRequest, response: ExResponse, next: any) {
+            async function RWADataController_getRwaData(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     contractAddress: {"in":"query","name":"contractAddress","required":true,"dataType":"string"},
                     tokenId: {"in":"query","name":"tokenId","required":true,"dataType":"string"},
@@ -235,7 +271,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new RWADataController();
 
               await templateService.apiHandler({
-                methodName: 'get',
+                methodName: 'getRwaData',
                 controller,
                 response,
                 next,
@@ -309,9 +345,9 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/nft',
             ...(fetchMiddlewares<RequestHandler>(ClaimableController)),
-            ...(fetchMiddlewares<RequestHandler>(ClaimableController.prototype.get)),
+            ...(fetchMiddlewares<RequestHandler>(ClaimableController.prototype.getTokenDetails)),
 
-            async function ClaimableController_get(request: ExRequest, response: ExResponse, next: any) {
+            async function ClaimableController_getTokenDetails(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     contractAddress: {"in":"query","name":"contractAddress","required":true,"dataType":"string"},
                     tokenId: {"in":"query","name":"tokenId","required":true,"dataType":"string"},
@@ -326,7 +362,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new ClaimableController();
 
               await templateService.apiHandler({
-                methodName: 'get',
+                methodName: 'getTokenDetails',
                 controller,
                 response,
                 next,
@@ -340,9 +376,9 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/nft_details',
             ...(fetchMiddlewares<RequestHandler>(DetailedNftContractController)),
-            ...(fetchMiddlewares<RequestHandler>(DetailedNftContractController.prototype.get)),
+            ...(fetchMiddlewares<RequestHandler>(DetailedNftContractController.prototype.getProjectDetails)),
 
-            async function DetailedNftContractController_get(request: ExRequest, response: ExResponse, next: any) {
+            async function DetailedNftContractController_getProjectDetails(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     contractAddress: {"in":"query","name":"contractAddress","required":true,"dataType":"string"},
             };
@@ -356,7 +392,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new DetailedNftContractController();
 
               await templateService.apiHandler({
-                methodName: 'get',
+                methodName: 'getProjectDetails',
                 controller,
                 response,
                 next,
@@ -370,9 +406,9 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/all_nft',
             ...(fetchMiddlewares<RequestHandler>(AllNftContractController)),
-            ...(fetchMiddlewares<RequestHandler>(AllNftContractController.prototype.get)),
+            ...(fetchMiddlewares<RequestHandler>(AllNftContractController.prototype.getAllNfts)),
 
-            async function AllNftContractController_get(request: ExRequest, response: ExResponse, next: any) {
+            async function AllNftContractController_getAllNfts(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     justActive: {"default":true,"in":"query","name":"justActive","dataType":"boolean"},
             };
@@ -386,7 +422,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new AllNftContractController();
 
               await templateService.apiHandler({
-                methodName: 'get',
+                methodName: 'getAllNfts',
                 controller,
                 response,
                 next,

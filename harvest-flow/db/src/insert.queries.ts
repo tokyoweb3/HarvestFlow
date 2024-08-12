@@ -9,7 +9,7 @@ export type NumberOrString = number | string;
 export interface IInsertTokenParams {
   chainId: string;
   contract_address: string;
-  owner_address: string;
+  minter_address: string;
   token_id: bigint;
 }
 
@@ -22,7 +22,7 @@ export interface IInsertTokenQuery {
   result: IInsertTokenResult;
 }
 
-const insertTokenIR: any = {"usedParamSet":{"chainId":true,"contract_address":true,"token_id":true,"owner_address":true},"params":[{"name":"chainId","required":true,"transform":{"type":"scalar"},"locs":[{"a":110,"b":118}]},{"name":"contract_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":132,"b":149}]},{"name":"token_id","required":true,"transform":{"type":"scalar"},"locs":[{"a":157,"b":166}]},{"name":"owner_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":179,"b":193}]}],"statement":"INSERT INTO tokens (\n    chain_id,\n    contract_address,\n    token_id,\n    owner_address\n) VALUES (\n    LOWER(:chainId!),\n    LOWER(:contract_address!),\n    :token_id!,\n    LOWER(:owner_address!)\n)"};
+const insertTokenIR: any = {"usedParamSet":{"chainId":true,"contract_address":true,"token_id":true,"minter_address":true},"params":[{"name":"chainId","required":true,"transform":{"type":"scalar"},"locs":[{"a":111,"b":119}]},{"name":"contract_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":133,"b":150}]},{"name":"token_id","required":true,"transform":{"type":"scalar"},"locs":[{"a":158,"b":167}]},{"name":"minter_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":180,"b":195}]}],"statement":"INSERT INTO tokens (\n    chain_id,\n    contract_address,\n    token_id,\n    minter_address\n) VALUES (\n    LOWER(:chainId!),\n    LOWER(:contract_address!),\n    :token_id!,\n    LOWER(:minter_address!)\n)"};
 
 /**
  * Query generated from SQL:
@@ -31,12 +31,12 @@ const insertTokenIR: any = {"usedParamSet":{"chainId":true,"contract_address":tr
  *     chain_id,
  *     contract_address,
  *     token_id,
- *     owner_address
+ *     minter_address
  * ) VALUES (
  *     LOWER(:chainId!),
  *     LOWER(:contract_address!),
  *     :token_id!,
- *     LOWER(:owner_address!)
+ *     LOWER(:minter_address!)
  * )
  * ```
  */
@@ -48,9 +48,11 @@ export interface ISaveTransactionParams {
   amount: bigint;
   chainId: string;
   contract_address: string;
+  evm_tx_hash: string;
+  owner_address: string;
+  paima_tx_hash: string;
   timestamp: DateOrString;
   token_id: bigint;
-  tx_hash: string;
   type: string;
 }
 
@@ -63,7 +65,7 @@ export interface ISaveTransactionQuery {
   result: ISaveTransactionResult;
 }
 
-const saveTransactionIR: any = {"usedParamSet":{"type":true,"chainId":true,"contract_address":true,"token_id":true,"amount":true,"timestamp":true,"tx_hash":true},"params":[{"name":"type","required":true,"transform":{"type":"scalar"},"locs":[{"a":150,"b":155}]},{"name":"chainId","required":true,"transform":{"type":"scalar"},"locs":[{"a":168,"b":176}]},{"name":"contract_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":190,"b":207}]},{"name":"token_id","required":true,"transform":{"type":"scalar"},"locs":[{"a":215,"b":224}]},{"name":"amount","required":true,"transform":{"type":"scalar"},"locs":[{"a":231,"b":238}]},{"name":"timestamp","required":true,"transform":{"type":"scalar"},"locs":[{"a":245,"b":255}]},{"name":"tx_hash","required":true,"transform":{"type":"scalar"},"locs":[{"a":262,"b":270}]}],"statement":"INSERT INTO transaction_history (\n    type,\n    chain_id,\n    contract_address,\n    token_id,\n    amount,\n    timestamp,\n    tx_hash\n )  VALUES (\n    :type!,\n    LOWER(:chainId!),\n    LOWER(:contract_address!),\n    :token_id!,\n    :amount!,\n    :timestamp!,\n    :tx_hash!\n )"};
+const saveTransactionIR: any = {"usedParamSet":{"type":true,"chainId":true,"owner_address":true,"contract_address":true,"token_id":true,"amount":true,"timestamp":true,"evm_tx_hash":true,"paima_tx_hash":true},"params":[{"name":"type","required":true,"transform":{"type":"scalar"},"locs":[{"a":192,"b":197}]},{"name":"chainId","required":true,"transform":{"type":"scalar"},"locs":[{"a":210,"b":218}]},{"name":"owner_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":232,"b":246}]},{"name":"contract_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":260,"b":277}]},{"name":"token_id","required":true,"transform":{"type":"scalar"},"locs":[{"a":285,"b":294}]},{"name":"amount","required":true,"transform":{"type":"scalar"},"locs":[{"a":301,"b":308}]},{"name":"timestamp","required":true,"transform":{"type":"scalar"},"locs":[{"a":315,"b":325}]},{"name":"evm_tx_hash","required":true,"transform":{"type":"scalar"},"locs":[{"a":332,"b":344}]},{"name":"paima_tx_hash","required":true,"transform":{"type":"scalar"},"locs":[{"a":351,"b":365}]}],"statement":"INSERT INTO transaction_history (\n    type,\n    chain_id,\n    owner_address,\n    contract_address,\n    token_id,\n    amount,\n    timestamp,\n    evm_tx_hash,\n    paima_tx_hash\n )  VALUES (\n    :type!,\n    LOWER(:chainId!),\n    LOWER(:owner_address!),\n    LOWER(:contract_address!),\n    :token_id!,\n    :amount!,\n    :timestamp!,\n    :evm_tx_hash!,\n    :paima_tx_hash!\n )"};
 
 /**
  * Query generated from SQL:
@@ -71,19 +73,23 @@ const saveTransactionIR: any = {"usedParamSet":{"type":true,"chainId":true,"cont
  * INSERT INTO transaction_history (
  *     type,
  *     chain_id,
+ *     owner_address,
  *     contract_address,
  *     token_id,
  *     amount,
  *     timestamp,
- *     tx_hash
+ *     evm_tx_hash,
+ *     paima_tx_hash
  *  )  VALUES (
  *     :type!,
  *     LOWER(:chainId!),
+ *     LOWER(:owner_address!),
  *     LOWER(:contract_address!),
  *     :token_id!,
  *     :amount!,
  *     :timestamp!,
- *     :tx_hash!
+ *     :evm_tx_hash!,
+ *     :paima_tx_hash!
  *  )
  * ```
  */
@@ -124,12 +130,17 @@ export interface ISaveNewContractParams {
   accepted_token: string;
   address: string;
   chain_id: string;
+  is_presale: boolean;
+  is_publicsale: boolean;
   lease_end: DateOrString;
   lease_start: DateOrString;
   metadata_base_url: string;
   min_yield: bigint;
   name: string;
-  price: bigint;
+  owner: string;
+  presale_price: bigint;
+  publicsale_price: bigint;
+  signer_address: string;
   supply_cap: bigint;
   symbol: string;
 }
@@ -143,7 +154,7 @@ export interface ISaveNewContractQuery {
   result: ISaveNewContractResult;
 }
 
-const saveNewContractIR: any = {"usedParamSet":{"name":true,"symbol":true,"chain_id":true,"address":true,"supply_cap":true,"lease_start":true,"lease_end":true,"min_yield":true,"accepted_token":true,"price":true,"metadata_base_url":true},"params":[{"name":"name","required":true,"transform":{"type":"scalar"},"locs":[{"a":383,"b":388}]},{"name":"symbol","required":true,"transform":{"type":"scalar"},"locs":[{"a":399,"b":406}]},{"name":"chain_id","required":true,"transform":{"type":"scalar"},"locs":[{"a":423,"b":432}]},{"name":"address","required":true,"transform":{"type":"scalar"},"locs":[{"a":450,"b":458}]},{"name":"supply_cap","required":true,"transform":{"type":"scalar"},"locs":[{"a":470,"b":481}]},{"name":"lease_start","required":true,"transform":{"type":"scalar"},"locs":[{"a":492,"b":504}]},{"name":"lease_end","required":true,"transform":{"type":"scalar"},"locs":[{"a":515,"b":525}]},{"name":"min_yield","required":true,"transform":{"type":"scalar"},"locs":[{"a":536,"b":546}]},{"name":"accepted_token","required":true,"transform":{"type":"scalar"},"locs":[{"a":563,"b":578}]},{"name":"price","required":true,"transform":{"type":"scalar"},"locs":[{"a":590,"b":596}]},{"name":"metadata_base_url","required":true,"transform":{"type":"scalar"},"locs":[{"a":607,"b":625}]}],"statement":"INSERT INTO contracts (name,\n                       symbol,\n                       chain_id,\n                       address,\n                       supply_cap,\n                       lease_start,\n                       lease_end,\n                       min_yield,\n                       accepted_token,\n                       price,\n                       metadata_base_url)\nVALUES (:name!,\n        :symbol!,\n        LOWER(:chain_id!),\n        LOWER(:address!),\n        :supply_cap!,\n        :lease_start!,\n        :lease_end!,\n        :min_yield!,\n        LOWER(:accepted_token!),\n        :price!,\n        :metadata_base_url!)"};
+const saveNewContractIR: any = {"usedParamSet":{"name":true,"symbol":true,"chain_id":true,"address":true,"supply_cap":true,"lease_start":true,"lease_end":true,"min_yield":true,"accepted_token":true,"presale_price":true,"publicsale_price":true,"metadata_base_url":true,"owner":true,"signer_address":true,"is_presale":true,"is_publicsale":true},"params":[{"name":"name","required":true,"transform":{"type":"scalar"},"locs":[{"a":574,"b":579}]},{"name":"symbol","required":true,"transform":{"type":"scalar"},"locs":[{"a":590,"b":597}]},{"name":"chain_id","required":true,"transform":{"type":"scalar"},"locs":[{"a":614,"b":623}]},{"name":"address","required":true,"transform":{"type":"scalar"},"locs":[{"a":641,"b":649}]},{"name":"supply_cap","required":true,"transform":{"type":"scalar"},"locs":[{"a":661,"b":672}]},{"name":"lease_start","required":true,"transform":{"type":"scalar"},"locs":[{"a":683,"b":695}]},{"name":"lease_end","required":true,"transform":{"type":"scalar"},"locs":[{"a":706,"b":716}]},{"name":"min_yield","required":true,"transform":{"type":"scalar"},"locs":[{"a":727,"b":737}]},{"name":"accepted_token","required":true,"transform":{"type":"scalar"},"locs":[{"a":754,"b":769}]},{"name":"presale_price","required":true,"transform":{"type":"scalar"},"locs":[{"a":781,"b":795}]},{"name":"publicsale_price","required":true,"transform":{"type":"scalar"},"locs":[{"a":806,"b":823}]},{"name":"metadata_base_url","required":true,"transform":{"type":"scalar"},"locs":[{"a":834,"b":852}]},{"name":"owner","required":true,"transform":{"type":"scalar"},"locs":[{"a":863,"b":869}]},{"name":"signer_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":880,"b":895}]},{"name":"is_presale","required":true,"transform":{"type":"scalar"},"locs":[{"a":906,"b":917}]},{"name":"is_publicsale","required":true,"transform":{"type":"scalar"},"locs":[{"a":928,"b":942}]}],"statement":"INSERT INTO contracts (name,\n                       symbol,\n                       chain_id,\n                       address,\n                       supply_cap,\n                       lease_start,\n                       lease_end,\n                       min_yield,\n                       accepted_token,\n                       presale_price,\n                       publicsale_price,\n                       metadata_base_url,\n                       owner,\n                       signer_address,\n                       is_presale,\n                       is_publicsale)\nVALUES (:name!,\n        :symbol!,\n        LOWER(:chain_id!),\n        LOWER(:address!),\n        :supply_cap!,\n        :lease_start!,\n        :lease_end!,\n        :min_yield!,\n        LOWER(:accepted_token!),\n        :presale_price!,\n        :publicsale_price!,\n        :metadata_base_url!,\n        :owner!,\n        :signer_address!,\n        :is_presale!,\n        :is_publicsale!)"};
 
 /**
  * Query generated from SQL:
@@ -157,8 +168,13 @@ const saveNewContractIR: any = {"usedParamSet":{"name":true,"symbol":true,"chain
  *                        lease_end,
  *                        min_yield,
  *                        accepted_token,
- *                        price,
- *                        metadata_base_url)
+ *                        presale_price,
+ *                        publicsale_price,
+ *                        metadata_base_url,
+ *                        owner,
+ *                        signer_address,
+ *                        is_presale,
+ *                        is_publicsale)
  * VALUES (:name!,
  *         :symbol!,
  *         LOWER(:chain_id!),
@@ -168,8 +184,13 @@ const saveNewContractIR: any = {"usedParamSet":{"name":true,"symbol":true,"chain
  *         :lease_end!,
  *         :min_yield!,
  *         LOWER(:accepted_token!),
- *         :price!,
- *         :metadata_base_url!)
+ *         :presale_price!,
+ *         :publicsale_price!,
+ *         :metadata_base_url!,
+ *         :owner!,
+ *         :signer_address!,
+ *         :is_presale!,
+ *         :is_publicsale!)
  * ```
  */
 export const saveNewContract = new PreparedQuery<ISaveNewContractParams,ISaveNewContractResult>(saveNewContractIR);
