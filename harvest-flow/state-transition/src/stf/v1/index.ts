@@ -6,12 +6,17 @@ import type { BlockHeader, STFSubmittedData } from '@paima/sdk/utils';
 import parse, { isInvalid } from './parser';
 import { PARSER_KEYS } from './constants';
 import {
+  baseUriChanged,
   calculateDailyPoints,
   contractActivated,
   contractDeployed,
   interestClaimed,
   nftMinted,
+  presalePriceChanged,
+  presaleStatusChanged,
   principalRedeemed,
+  publicsalePriceChanged,
+  publicsaleStatusChanged,
 } from './transition';
 
 export default async function (
@@ -32,36 +37,75 @@ export default async function (
 
   switch (expanded.input) {
     case PARSER_KEYS.contractDeployed:
-      return contractDeployed(expanded);
+      return contractDeployed(expanded, inputData.caip2!, blockHeader);
     case PARSER_KEYS.contractActivated:
       return contractActivated(
         expanded,
+        inputData.caip2!,
         await getContractAddressForEvent(dbConn, inputData.extensionName!)
       );
     case PARSER_KEYS.nftMinted:
       return nftMinted(
         expanded,
+        inputData.caip2!,
         await getContractAddressForEvent(dbConn, inputData.extensionName!),
         inputData.scheduledTxHash ?? '',
+        inputData.txHash,
         blockHeader,
         dbConn
       );
     case PARSER_KEYS.claimed:
       return interestClaimed(
         expanded,
+        inputData.caip2!,
         await getContractAddressForEvent(dbConn, inputData.extensionName!),
         inputData.scheduledTxHash ?? '',
+        inputData.txHash,
         blockHeader
       );
     case PARSER_KEYS.redeemed:
       return principalRedeemed(
         expanded,
+        inputData.caip2!,
         await getContractAddressForEvent(dbConn, inputData.extensionName!),
         inputData.scheduledTxHash ?? '',
+        inputData.txHash,
         blockHeader
       );
     case PARSER_KEYS.calcPoints:
       return calculateDailyPoints(expanded, dbConn, blockHeader);
+    case PARSER_KEYS.baseUri:
+      return baseUriChanged(
+        expanded,
+        inputData.caip2!,
+        await getContractAddressForEvent(dbConn, inputData.extensionName!)
+      );
+    case PARSER_KEYS.presaleStatus:
+      return presaleStatusChanged(
+        expanded,
+        inputData.caip2!,
+        await getContractAddressForEvent(dbConn, inputData.extensionName!)
+      );
+    case PARSER_KEYS.presalePrice:
+      return presalePriceChanged(
+        expanded,
+        inputData.caip2!,
+        await getContractAddressForEvent(dbConn, inputData.extensionName!)
+      );
+    case PARSER_KEYS.publicsaleStatus:
+      return publicsaleStatusChanged(
+        expanded,
+        inputData.caip2!,
+        await getContractAddressForEvent(dbConn, inputData.extensionName!)
+      );
+    case PARSER_KEYS.publicsalePrice:
+      return publicsalePriceChanged(
+        expanded,
+        inputData.caip2!,
+        await getContractAddressForEvent(dbConn, inputData.extensionName!)
+      );
+    case PARSER_KEYS.unused:
+      return [];
     default:
       return [];
   }

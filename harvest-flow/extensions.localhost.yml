@@ -102,3 +102,4 @@ extensions:
     startBlockHeight: 0
     dynamicFields:
       contractAddress: nft
+# TODO: add BonusToken-related events once that is implemented

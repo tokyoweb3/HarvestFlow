@@ -4,7 +4,13 @@ export type ManualParsedSubmittedInput =
   | ContractDeployedInput
   | NftMintedInput
   | ClaimedInput
-  | RedeemedInput;
+  | RedeemedInput
+  | BaseUriInput
+  | PresaleStatusInput
+  | PresalePriceInput
+  | PublicsaleStatusInput
+  | PublicsalePriceInput
+  | UnusedInput;
 
 export type ParsedSubmittedInput = ParsedSubmittedInputRaw | ManualParsedSubmittedInput;
 
@@ -47,6 +53,33 @@ export interface RedeemedInput {
   amount: bigint;
 }
 
+export interface BaseUriInput {
+  input: 'baseUri';
+  newBaseURI: string;
+}
+export interface PresaleStatusInput {
+  input: 'presaleStatus';
+  newValue: boolean;
+}
+export interface PresalePriceInput {
+  input: 'presalePrice';
+  oldPrice: string;
+  newPrice: string;
+}
+export interface PublicsaleStatusInput {
+  input: 'publicsaleStatus';
+  newValue: boolean;
+}
+export interface PublicsalePriceInput {
+  input: 'publicsalePrice';
+  oldPrice: string;
+  newPrice: string;
+}
+
+export interface UnusedInput {
+  input: 'unused';
+}
+
 export interface ContractParams {
   chainId: string;
   contractAddress: string;
@@ -58,7 +91,8 @@ export interface ContractParams {
   lendingAt: Date;
   yieldRate: bigint;
   maturity: Date;
-  publicPrice: bigint;
+  presalePrice: bigint;
+  publicsalePrice: bigint;
   owner: string;
   signerAddress: string;
   isPresale: boolean;

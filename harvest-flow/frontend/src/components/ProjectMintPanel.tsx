@@ -4,6 +4,7 @@ import { AppContext } from "@src/main";
 import type { NftContractDetails } from "@harvest-flow/utils";
 import {
   calculateTotalRewards,
+  currentPrice,
   formatTime,
   formatTimeReturnJSONValues,
   getMonthDifference,
@@ -149,6 +150,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
         if (timeToStart > 0) {
           const timeRemaining = formatTimeReturnJSONValues(timeToStart);
           setEndingIn(t("project.ending_in", timeRemaining));
+          return;
         }
 
         const ending = new Date(projectContractDetails.leaseEnd);
@@ -156,9 +158,11 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
 
         if (timeToEnd < 0) {
           setEndingIn(t('project.ended'));
+          return;
         } else {
           const timeRemaining = formatTimeReturnJSONValues(timeToEnd);
           setEndingIn(t("project.ending_in", timeRemaining));
+          return;
         }
       }
     }, 1000);
@@ -184,7 +188,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
       .buyNft(
         projectContractDetails.address,
         amountToBuy,
-        BigInt(projectContractDetails.price),
+        BigInt(currentPrice(projectContractDetails)),
       )
       .then((success) => {
         if (success) {
@@ -220,7 +224,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
                   {!projectContractDetails
                     ? "----"
                     : Number(
-                        ethers.utils.formatEther(projectContractDetails.price),
+                        ethers.utils.formatEther(currentPrice(projectContractDetails)),
                       ) * amountToBuy}{" "}
                   <span className="text-body">{getTokenTicker(projectContractDetails?.accepted_token)}</span>
                 </p>

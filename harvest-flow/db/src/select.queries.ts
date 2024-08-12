@@ -26,7 +26,8 @@ export interface IGetContractResult {
   minted_amount: string;
   name: string;
   owner: string;
-  price: string;
+  presale_price: string;
+  publicsale_price: string;
   signer_address: string;
   supply_cap: string;
   symbol: string;
@@ -102,9 +103,11 @@ export interface IGetHistoryForContractResult {
   amount: string | null;
   chain_id: string;
   contract_address: string;
+  evm_tx_hash: string;
+  owner_address: string;
+  paima_tx_hash: string;
   timestamp: Date;
   token_id: string;
-  tx_hash: string;
   type: string;
 }
 
@@ -136,9 +139,9 @@ export interface IGetHistoryForUserParams {
 export interface IGetHistoryForUserResult {
   amount: string | null;
   contract_address: string;
+  evm_tx_hash: string;
   name: string;
   timestamp: Date;
-  tx_hash: string;
   type: string;
 }
 
@@ -148,7 +151,7 @@ export interface IGetHistoryForUserQuery {
   result: IGetHistoryForUserResult;
 }
 
-const getHistoryForUserIR: any = {"usedParamSet":{"owner_address":true},"params":[{"name":"owner_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":598,"b":611}]}],"statement":"SELECT transaction_history.contract_address,\n       transaction_history.type,\n       transaction_history.amount,\n       transaction_history.timestamp,\n       transaction_history.tx_hash,\n       contracts.name\nFROM transaction_history\n    INNER JOIN tokens ON transaction_history.chain_id = tokens.chain_id AND transaction_history.contract_address = tokens.contract_address AND transaction_history.token_id = tokens.token_id\n    INNER JOIN contracts ON transaction_history.chain_id = contracts.chain_id AND transaction_history.contract_address = contracts.address\nWHERE tokens.owner_address = LOWER(:owner_address)"};
+const getHistoryForUserIR: any = {"usedParamSet":{"owner_address":true},"params":[{"name":"owner_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":615,"b":628}]}],"statement":"SELECT transaction_history.contract_address,\n       transaction_history.type,\n       transaction_history.amount,\n       transaction_history.timestamp,\n       transaction_history.evm_tx_hash,\n       contracts.name\nFROM transaction_history\n    INNER JOIN tokens ON transaction_history.chain_id = tokens.chain_id AND transaction_history.contract_address = tokens.contract_address AND transaction_history.token_id = tokens.token_id\n    INNER JOIN contracts ON transaction_history.chain_id = contracts.chain_id AND transaction_history.contract_address = contracts.address\nWHERE transaction_history.owner_address = LOWER(:owner_address)"};
 
 /**
  * Query generated from SQL:
@@ -157,12 +160,12 @@ const getHistoryForUserIR: any = {"usedParamSet":{"owner_address":true},"params"
  *        transaction_history.type,
  *        transaction_history.amount,
  *        transaction_history.timestamp,
- *        transaction_history.tx_hash,
+ *        transaction_history.evm_tx_hash,
  *        contracts.name
  * FROM transaction_history
  *     INNER JOIN tokens ON transaction_history.chain_id = tokens.chain_id AND transaction_history.contract_address = tokens.contract_address AND transaction_history.token_id = tokens.token_id
  *     INNER JOIN contracts ON transaction_history.chain_id = contracts.chain_id AND transaction_history.contract_address = contracts.address
- * WHERE tokens.owner_address = LOWER(:owner_address)
+ * WHERE transaction_history.owner_address = LOWER(:owner_address)
  * ```
  */
 export const getHistoryForUser = new PreparedQuery<IGetHistoryForUserParams,IGetHistoryForUserResult>(getHistoryForUserIR);
@@ -177,12 +180,14 @@ export interface IGetTokenDetailsParams {
 
 /** 'GetTokenDetails' return type */
 export interface IGetTokenDetailsResult {
+  amount: string;
   lease_end: Date;
   lease_start: Date;
   metadata_base_url: string | null;
   min_yield: string;
   name: string;
-  price: string;
+  presale_price: string;
+  publicsale_price: string;
   redeemed: boolean;
   yield_claimed: string;
 }
@@ -193,7 +198,7 @@ export interface IGetTokenDetailsQuery {
   result: IGetTokenDetailsResult;
 }
 
-const getTokenDetailsIR: any = {"usedParamSet":{"chain_id":true,"contract_address":true,"token_id":true},"params":[{"name":"chain_id","required":false,"transform":{"type":"scalar"},"locs":[{"a":369,"b":377}]},{"name":"contract_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":415,"b":431}]},{"name":"token_id","required":false,"transform":{"type":"scalar"},"locs":[{"a":456,"b":464}]}],"statement":"SELECT tokens.yield_claimed,\n       tokens.redeemed,\n       contracts.name,\n       contracts.lease_start,\n       contracts.lease_end,\n       contracts.min_yield,\n       contracts.price,\n       contracts.metadata_base_url\nFROM tokens\n   INNER JOIN contracts ON tokens.chain_id = contracts.chain_id AND tokens.contract_address = contracts.address\nWHERE tokens.chain_id = :chain_id AND tokens.contract_address = LOWER(:contract_address) AND tokens.token_id = :token_id"};
+const getTokenDetailsIR: any = {"usedParamSet":{"chain_id":true,"contract_address":true,"token_id":true},"params":[{"name":"chain_id","required":false,"transform":{"type":"scalar"},"locs":[{"a":653,"b":661}]},{"name":"contract_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":699,"b":715}]},{"name":"token_id","required":false,"transform":{"type":"scalar"},"locs":[{"a":740,"b":748}]}],"statement":"SELECT tokens.yield_claimed,\n       tokens.redeemed,\n       contracts.name,\n       contracts.lease_start,\n       contracts.lease_end,\n       contracts.min_yield,\n       contracts.presale_price,\n       contracts.publicsale_price,\n       contracts.metadata_base_url,\n       h.amount as \"amount!\"\nFROM tokens\n   INNER JOIN contracts ON tokens.chain_id = contracts.chain_id AND tokens.contract_address = contracts.address\n   INNER JOIN transaction_history h\n        ON tokens.chain_id = h.chain_id AND\n           tokens.contract_address = h.contract_address AND\n           tokens.token_id = h.token_id AND\n           h.type = 'mint'\nWHERE tokens.chain_id = :chain_id AND tokens.contract_address = LOWER(:contract_address) AND tokens.token_id = :token_id"};
 
 /**
  * Query generated from SQL:
@@ -204,10 +209,17 @@ const getTokenDetailsIR: any = {"usedParamSet":{"chain_id":true,"contract_addres
  *        contracts.lease_start,
  *        contracts.lease_end,
  *        contracts.min_yield,
- *        contracts.price,
- *        contracts.metadata_base_url
+ *        contracts.presale_price,
+ *        contracts.publicsale_price,
+ *        contracts.metadata_base_url,
+ *        h.amount as "amount!"
  * FROM tokens
  *    INNER JOIN contracts ON tokens.chain_id = contracts.chain_id AND tokens.contract_address = contracts.address
+ *    INNER JOIN transaction_history h
+ *         ON tokens.chain_id = h.chain_id AND
+ *            tokens.contract_address = h.contract_address AND
+ *            tokens.token_id = h.token_id AND
+ *            h.type = 'mint'
  * WHERE tokens.chain_id = :chain_id AND tokens.contract_address = LOWER(:contract_address) AND tokens.token_id = :token_id
  * ```
  */
@@ -221,6 +233,7 @@ export interface IGetUserTokensParams {
 
 /** 'GetUserTokens' return type */
 export interface IGetUserTokensResult {
+  amount: string;
   chain_id: string;
   contract_address: string;
   lease_end: Date;
@@ -228,7 +241,8 @@ export interface IGetUserTokensResult {
   metadata_base_url: string | null;
   min_yield: string;
   name: string;
-  price: string;
+  presale_price: string;
+  publicsale_price: string;
   redeemed: boolean;
   token_id: string;
   yield_claimed: string;
@@ -240,7 +254,7 @@ export interface IGetUserTokensQuery {
   result: IGetUserTokensResult;
 }
 
-const getUserTokensIR: any = {"usedParamSet":{"owner_address":true},"params":[{"name":"owner_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":461,"b":474}]}],"statement":"SELECT tokens.chain_id,\n       tokens.contract_address,\n       tokens.token_id,\n       tokens.yield_claimed,\n       tokens.redeemed,\n       contracts.name,\n       contracts.lease_start,\n       contracts.lease_end,\n       contracts.min_yield,\n       contracts.price,\n       contracts.metadata_base_url\nFROM tokens\n    INNER JOIN contracts ON tokens.chain_id = contracts.chain_id AND tokens.contract_address = contracts.address\nWHERE tokens.owner_address = LOWER(:owner_address)"};
+const getUserTokensIR: any = {"usedParamSet":{"owner_address":true},"params":[{"name":"owner_address","required":false,"transform":{"type":"scalar"},"locs":[{"a":1171,"b":1184}]}],"statement":"SELECT tokens.chain_id,\n       tokens.contract_address,\n       tokens.token_id,\n       tokens.yield_claimed,\n       tokens.redeemed,\n       contracts.name,\n       contracts.lease_start,\n       contracts.lease_end,\n       contracts.min_yield,\n       contracts.presale_price,\n       contracts.publicsale_price,\n       contracts.metadata_base_url,\n       h.amount as \"amount!\"\nFROM cde_erc721_data\nJOIN cde_dynamic_primitive_config\n    ON cde_dynamic_primitive_config.cde_name = cde_erc721_data.cde_name\nJOIN chain_data_extensions\n    ON cde_dynamic_primitive_config.cde_name = chain_data_extensions.cde_name\nJOIN tokens\n    ON LOWER(cde_dynamic_primitive_config.config->>'contractAddress') = tokens.contract_address\n    AND tokens.chain_id = chain_data_extensions.cde_caip2\n    AND tokens.token_id::TEXT = cde_erc721_data.token_id\nJOIN contracts\n    ON tokens.chain_id = contracts.chain_id AND tokens.contract_address = contracts.address\nINNER JOIN transaction_history h\n    ON tokens.chain_id = h.chain_id AND\n        tokens.contract_address = h.contract_address AND\n        tokens.token_id = h.token_id AND\n        h.type = 'mint'\nWHERE cde_erc721_data.nft_owner = LOWER(:owner_address)"};
 
 /**
  * Query generated from SQL:
@@ -254,11 +268,27 @@ const getUserTokensIR: any = {"usedParamSet":{"owner_address":true},"params":[{"
  *        contracts.lease_start,
  *        contracts.lease_end,
  *        contracts.min_yield,
- *        contracts.price,
- *        contracts.metadata_base_url
- * FROM tokens
- *     INNER JOIN contracts ON tokens.chain_id = contracts.chain_id AND tokens.contract_address = contracts.address
- * WHERE tokens.owner_address = LOWER(:owner_address)
+ *        contracts.presale_price,
+ *        contracts.publicsale_price,
+ *        contracts.metadata_base_url,
+ *        h.amount as "amount!"
+ * FROM cde_erc721_data
+ * JOIN cde_dynamic_primitive_config
+ *     ON cde_dynamic_primitive_config.cde_name = cde_erc721_data.cde_name
+ * JOIN chain_data_extensions
+ *     ON cde_dynamic_primitive_config.cde_name = chain_data_extensions.cde_name
+ * JOIN tokens
+ *     ON LOWER(cde_dynamic_primitive_config.config->>'contractAddress') = tokens.contract_address
+ *     AND tokens.chain_id = chain_data_extensions.cde_caip2
+ *     AND tokens.token_id::TEXT = cde_erc721_data.token_id
+ * JOIN contracts
+ *     ON tokens.chain_id = contracts.chain_id AND tokens.contract_address = contracts.address
+ * INNER JOIN transaction_history h
+ *     ON tokens.chain_id = h.chain_id AND
+ *         tokens.contract_address = h.contract_address AND
+ *         tokens.token_id = h.token_id AND
+ *         h.type = 'mint'
+ * WHERE cde_erc721_data.nft_owner = LOWER(:owner_address)
  * ```
  */
 export const getUserTokens = new PreparedQuery<IGetUserTokensParams,IGetUserTokensResult>(getUserTokensIR);
@@ -342,10 +372,10 @@ export type IGetActiveTokensByUsersAndContractParams = void;
 
 /** 'GetActiveTokensByUsersAndContract' return type */
 export interface IGetActiveTokensByUsersAndContractResult {
+  amount: string;
   lease_end: Date;
   lease_start: Date;
-  owner_address: string;
-  price: string;
+  nft_owner: string;
   token_ids: bigintArray | null;
 }
 
@@ -355,29 +385,38 @@ export interface IGetActiveTokensByUsersAndContractQuery {
   result: IGetActiveTokensByUsersAndContractResult;
 }
 
-const getActiveTokensByUsersAndContractIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT\n    t.owner_address,\n    c.price,\n    c.lease_start,\n    c.lease_end,\n    ARRAY_AGG(t.token_id) AS token_ids\nFROM\n    tokens t\n        JOIN\n    contracts c\n    ON\n        t.chain_id = c.chain_id AND\n        t.contract_address = c.address\nWHERE\n    t.redeemed = false\nGROUP BY\n    t.owner_address,\n    c.price,\n    c.lease_start,\n    c.lease_end"};
+const getActiveTokensByUsersAndContractIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT\n    cde_erc721_data.nft_owner,\n    c.lease_start,\n    c.lease_end,\n    h.amount as \"amount!\",\n    ARRAY_AGG(t.token_id) AS token_ids\nFROM cde_erc721_data\nJOIN cde_dynamic_primitive_config\n    ON cde_dynamic_primitive_config.cde_name = cde_erc721_data.cde_name\nJOIN chain_data_extensions\n    ON cde_dynamic_primitive_config.cde_name = chain_data_extensions.cde_name\nJOIN tokens t\n    ON LOWER(cde_dynamic_primitive_config.config->>'contractAddress') = t.contract_address\n    AND t.chain_id = chain_data_extensions.cde_caip2\n    AND t.token_id::TEXT = cde_erc721_data.token_id\nJOIN contracts c\n    ON t.chain_id = c.chain_id AND t.contract_address = c.address\nINNER JOIN transaction_history h\n    ON t.chain_id = h.chain_id AND\n        t.contract_address = h.contract_address AND\n        t.token_id = h.token_id AND\n        h.type = 'mint'\nWHERE\n    t.redeemed = false\nGROUP BY\n    cde_erc721_data.nft_owner,\n    h.amount,\n    c.lease_start,\n    c.lease_end"};
 
 /**
  * Query generated from SQL:
  * ```
  * SELECT
- *     t.owner_address,
- *     c.price,
+ *     cde_erc721_data.nft_owner,
  *     c.lease_start,
  *     c.lease_end,
+ *     h.amount as "amount!",
  *     ARRAY_AGG(t.token_id) AS token_ids
- * FROM
- *     tokens t
- *         JOIN
- *     contracts c
- *     ON
- *         t.chain_id = c.chain_id AND
- *         t.contract_address = c.address
+ * FROM cde_erc721_data
+ * JOIN cde_dynamic_primitive_config
+ *     ON cde_dynamic_primitive_config.cde_name = cde_erc721_data.cde_name
+ * JOIN chain_data_extensions
+ *     ON cde_dynamic_primitive_config.cde_name = chain_data_extensions.cde_name
+ * JOIN tokens t
+ *     ON LOWER(cde_dynamic_primitive_config.config->>'contractAddress') = t.contract_address
+ *     AND t.chain_id = chain_data_extensions.cde_caip2
+ *     AND t.token_id::TEXT = cde_erc721_data.token_id
+ * JOIN contracts c
+ *     ON t.chain_id = c.chain_id AND t.contract_address = c.address
+ * INNER JOIN transaction_history h
+ *     ON t.chain_id = h.chain_id AND
+ *         t.contract_address = h.contract_address AND
+ *         t.token_id = h.token_id AND
+ *         h.type = 'mint'
  * WHERE
  *     t.redeemed = false
  * GROUP BY
- *     t.owner_address,
- *     c.price,
+ *     cde_erc721_data.nft_owner,
+ *     h.amount,
  *     c.lease_start,
  *     c.lease_end
  * ```
@@ -399,15 +438,14 @@ export interface IGetTotalLoanedQuery {
   result: IGetTotalLoanedResult;
 }
 
-const getTotalLoanedIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT SUM(c.price) AS total_token_prices\nFROM tokens t\n   JOIN contracts c\n   ON t.chain_id = c.chain_id AND t.contract_address = c.address"};
+const getTotalLoanedIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT SUM(h.amount) AS total_token_prices\nFROM transaction_history h\nWHERE h.type = 'mint'"};
 
 /**
  * Query generated from SQL:
  * ```
- * SELECT SUM(c.price) AS total_token_prices
- * FROM tokens t
- *    JOIN contracts c
- *    ON t.chain_id = c.chain_id AND t.contract_address = c.address
+ * SELECT SUM(h.amount) AS total_token_prices
+ * FROM transaction_history h
+ * WHERE h.type = 'mint'
  * ```
  */
 export const getTotalLoaned = new PreparedQuery<IGetTotalLoanedParams,IGetTotalLoanedResult>(getTotalLoanedIR);
@@ -427,15 +465,19 @@ export interface IGetTotalRepaidQuery {
   result: IGetTotalRepaidResult;
 }
 
-const getTotalRepaidIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT SUM(t.yield_claimed + CASE WHEN t.redeemed THEN c.price ELSE 0 END) AS total_repaid_amount\nFROM tokens t\n    JOIN contracts c\n    ON t.chain_id = c.chain_id AND t.contract_address = c.address"};
+const getTotalRepaidIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT SUM(t.yield_claimed + CASE WHEN t.redeemed THEN h.amount ELSE 0 END) AS total_repaid_amount\nFROM tokens t\n    JOIN transaction_history h\n    ON\n        t.chain_id = h.chain_id AND\n        t.contract_address = h.contract_address AND\n        t.token_id = h.token_id AND\n        h.type = 'mint'"};
 
 /**
  * Query generated from SQL:
  * ```
- * SELECT SUM(t.yield_claimed + CASE WHEN t.redeemed THEN c.price ELSE 0 END) AS total_repaid_amount
+ * SELECT SUM(t.yield_claimed + CASE WHEN t.redeemed THEN h.amount ELSE 0 END) AS total_repaid_amount
  * FROM tokens t
- *     JOIN contracts c
- *     ON t.chain_id = c.chain_id AND t.contract_address = c.address
+ *     JOIN transaction_history h
+ *     ON
+ *         t.chain_id = h.chain_id AND
+ *         t.contract_address = h.contract_address AND
+ *         t.token_id = h.token_id AND
+ *         h.type = 'mint'
  * ```
  */
 export const getTotalRepaid = new PreparedQuery<IGetTotalRepaidParams,IGetTotalRepaidResult>(getTotalRepaidIR);
@@ -455,13 +497,13 @@ export interface IGetOwnersCountQuery {
   result: IGetOwnersCountResult;
 }
 
-const getOwnersCountIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT COUNT(DISTINCT owner_address) AS total_unique_owners\nFROM tokens"};
+const getOwnersCountIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT COUNT(DISTINCT nft_owner) AS total_unique_owners\nFROM cde_erc721_data"};
 
 /**
  * Query generated from SQL:
  * ```
- * SELECT COUNT(DISTINCT owner_address) AS total_unique_owners
- * FROM tokens
+ * SELECT COUNT(DISTINCT nft_owner) AS total_unique_owners
+ * FROM cde_erc721_data
  * ```
  */
 export const getOwnersCount = new PreparedQuery<IGetOwnersCountParams,IGetOwnersCountResult>(getOwnersCountIR);

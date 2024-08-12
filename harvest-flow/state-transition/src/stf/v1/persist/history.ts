@@ -6,20 +6,24 @@ import type { NftHistoryEventType } from '@harvest-flow/utils';
 export function saveEventToHistory(
   eventType: NftHistoryEventType,
   chainId: string,
+  ownerAddress: string,
   contractAddress: string,
   tokenId: bigint,
   amount: bigint,
   timestamp: Date,
-  txHash: string
+  evmTxHash: string,
+  paimaTxHash: string
 ): SQLUpdate {
   const persistTransactionParams: ISaveTransactionParams = {
     type: eventType,
     amount: amount,
     chainId: chainId,
+    owner_address: ownerAddress,
     contract_address: contractAddress,
     token_id: tokenId,
     timestamp: timestamp,
-    tx_hash: txHash,
+    evm_tx_hash: evmTxHash,
+    paima_tx_hash: paimaTxHash,
   };
 
   return [saveTransaction, persistTransactionParams];

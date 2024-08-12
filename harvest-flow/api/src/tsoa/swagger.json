@@ -357,7 +357,10 @@
 					"accepted_token": {
 						"type": "string"
 					},
-					"price": {
+					"presalePrice": {
+						"type": "string"
+					},
+					"publicsalePrice": {
 						"type": "string"
 					},
 					"metadata": {},
@@ -388,7 +391,8 @@
 					"leaseEnd",
 					"minYield",
 					"accepted_token",
-					"price",
+					"presalePrice",
+					"publicsalePrice",
 					"metadata",
 					"activated",
 					"owner",

@@ -24,7 +24,8 @@ export interface NftContractDetails {
   minYield: string; // min fixed interest rate scaled by 1e18
 
   accepted_token: string; // Dai only for now
-  price: string; // price to purchase the NFT
+  presalePrice: string; // price to purchase the NFT
+  publicsalePrice: string; // price to purchase the NFT
 
   metadata: any; // cached data from IPFS
 

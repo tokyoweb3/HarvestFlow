@@ -35,7 +35,7 @@ export class UserDetailsController extends Controller {
           contractAddress: tokenDetails.contract_address,
           projectName: tokenDetails.name,
           lendingData: {
-            principle: tokenDetails.price,
+            principle: tokenDetails.amount,
             lendingStart: Date.parse(tokenDetails.lease_start.toISOString()),
             lendingEnd: Date.parse(tokenDetails.lease_end.toISOString()),
             yield: tokenDetails.min_yield,

@@ -10,12 +10,12 @@ export function persistTokenOwnership(
   chainId: string,
   contractAddress: string,
   tokenId: bigint,
-  owner: string
+  minter: string
 ): SQLUpdate {
   const persistTokenOwnershipParams: IInsertTokenParams = {
     chainId: chainId,
     contract_address: contractAddress,
-    owner_address: owner,
+    minter_address: minter,
     token_id: tokenId,
   };
 

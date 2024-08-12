@@ -1,6 +1,7 @@
 import type { ParserRecord } from '@paima/sdk/concise';
 import { PaimaParser } from '@paima/sdk/concise';
 import type {
+  BaseUriInput,
   CalcPointsInput,
   ClaimedInput,
   ContractActivatedInput,
@@ -10,6 +11,10 @@ import type {
   NftMintedInput,
   ParsedSubmittedInput,
   ParsedSubmittedInputRaw,
+  PresalePriceInput,
+  PresaleStatusInput,
+  PublicsalePriceInput,
+  PublicsaleStatusInput,
   RedeemedInput,
 } from './types';
 import { PARSER_KEYS, PARSER_PREFIXES } from './constants';
@@ -40,6 +45,11 @@ const parserCommands: Partial<
 function manualParse(input: string): undefined | ManualParsedSubmittedInput {
   const parts = input.split('|');
 
+  if (parts[0]?.startsWith('unused')) {
+    return {
+      input: 'unused',
+    };
+  }
   if (parts.length !== 2) return;
 
   const manuallyParsedPrefixes: string[] = [
@@ -47,6 +57,11 @@ function manualParse(input: string): undefined | ManualParsedSubmittedInput {
     PARSER_PREFIXES[PARSER_KEYS.nftMinted],
     PARSER_PREFIXES[PARSER_KEYS.claimed],
     PARSER_PREFIXES[PARSER_KEYS.redeemed],
+    PARSER_PREFIXES[PARSER_KEYS.baseUri],
+    PARSER_PREFIXES[PARSER_KEYS.presaleStatus],
+    PARSER_PREFIXES[PARSER_KEYS.presalePrice],
+    PARSER_PREFIXES[PARSER_KEYS.publicsaleStatus],
+    PARSER_PREFIXES[PARSER_KEYS.publicsalePrice],
   ];
   if (!manuallyParsedPrefixes.includes(parts[0])) return;
 
@@ -62,6 +77,16 @@ function manualParse(input: string): undefined | ManualParsedSubmittedInput {
         return parseClaimed(parsed);
       case PARSER_PREFIXES[PARSER_KEYS.redeemed]:
         return parseRedeemed(parsed);
+      case PARSER_PREFIXES[PARSER_KEYS.baseUri]:
+        return parseBaseURI(parsed);
+      case PARSER_PREFIXES[PARSER_KEYS.presaleStatus]:
+        return parsePresaleStatus(parsed);
+      case PARSER_PREFIXES[PARSER_KEYS.presalePrice]:
+        return parsePresalePrice(parsed);
+      case PARSER_PREFIXES[PARSER_KEYS.publicsaleStatus]:
+        return parsePublicsaleStatus(parsed);
+      case PARSER_PREFIXES[PARSER_KEYS.publicsalePrice]:
+        return parsePublicsalePrice(parsed);
 
       default:
         return;
@@ -162,6 +187,73 @@ function parseRedeemed(jsonData: any): RedeemedInput | undefined {
     receiver: jsonData.receiver,
     tokenId: BigInt(jsonData.tokenId),
     amount: BigInt(jsonData.amount),
+  };
+}
+
+function parseBaseURI(jsonData: any): BaseUriInput | undefined {
+  if (!Object.hasOwn(jsonData, 'newBaseURI') || typeof jsonData.newBaseURI !== 'string') {
+    return;
+  }
+
+  return {
+    input: PARSER_KEYS.baseUri,
+    newBaseURI: jsonData.newBaseURI,
+  };
+}
+
+function parsePresaleStatus(jsonData: any): PresaleStatusInput | undefined {
+  if (!Object.hasOwn(jsonData, 'newValue') || typeof jsonData.newValue !== 'boolean') {
+    return;
+  }
+
+  return {
+    input: PARSER_KEYS.presaleStatus,
+    newValue: jsonData.newValue,
+  };
+}
+
+function parsePresalePrice(jsonData: any): PresalePriceInput | undefined {
+  if (
+    !Object.hasOwn(jsonData, 'oldPrice') ||
+    typeof jsonData.oldPrice !== 'string' ||
+    !Object.hasOwn(jsonData, 'newPrice') ||
+    typeof jsonData.newPrice !== 'string'
+  ) {
+    return;
+  }
+
+  return {
+    input: PARSER_KEYS.presalePrice,
+    oldPrice: jsonData.oldPrice,
+    newPrice: jsonData.newPrice,
+  };
+}
+
+function parsePublicsaleStatus(jsonData: any): PublicsaleStatusInput | undefined {
+  if (!Object.hasOwn(jsonData, 'newValue') || typeof jsonData.newValue !== 'boolean') {
+    return;
+  }
+
+  return {
+    input: PARSER_KEYS.publicsaleStatus,
+    newValue: jsonData.newValue,
+  };
+}
+
+function parsePublicsalePrice(jsonData: any): PublicsalePriceInput | undefined {
+  if (
+    !Object.hasOwn(jsonData, 'oldPrice') ||
+    typeof jsonData.oldPrice !== 'string' ||
+    !Object.hasOwn(jsonData, 'newPrice') ||
+    typeof jsonData.newPrice !== 'string'
+  ) {
+    return;
+  }
+
+  return {
+    input: PARSER_KEYS.publicsalePrice,
+    oldPrice: jsonData.oldPrice,
+    newPrice: jsonData.newPrice,
   };
 }
 

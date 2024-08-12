@@ -93,6 +93,18 @@ export function formatTimestampForHistoryTable(timestamp: number): string {
   return `${month}.${day}${daySuffix(day)} ${hours}:${minutes}:${seconds}`;
 }
 
+export function currentPrice(
+  projectContractDetails: NftContractDetails,
+): string {
+  if (projectContractDetails.isPresale) {
+    return projectContractDetails.presalePrice;
+  }
+  if (projectContractDetails.isPublicsale) {
+    return projectContractDetails.publicsalePrice;
+  }
+  // if the same is over, we just assume the publicsale Price is still valid
+  return projectContractDetails.publicsalePrice;
+}
 export function calculateTotalRewards(
   nftDetails: NftContractDetails,
   amountToBuy: number,
@@ -102,7 +114,7 @@ export function calculateTotalRewards(
 
   const rewardPerNft =
     // TODO: this is wrong if the token doesn't have 18 decimal places
-    Number(ethers.utils.formatEther(nftDetails.price)) *
+    Number(ethers.utils.formatEther(currentPrice(nftDetails))) *
     Number(ethers.utils.formatEther(nftDetails.minYield));
 
   const totalRewards = amountToBuy * rewardPerNft;

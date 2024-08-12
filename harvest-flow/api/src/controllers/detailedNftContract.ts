@@ -5,7 +5,7 @@ import { getContract, requirePool } from '@harvest-flow/db';
 import { StatusCodes } from 'http-status-codes';
 import type { InternalServerErrorResult, ValidateErrorResult } from '@paima/sdk/utils';
 
-const chainId = process.env.CHAIN_ID;
+const chainId = `eip155:${process.env.CHAIN_ID}`;
 
 @Route('nft_details')
 export class DetailedNftContractController extends Controller {
@@ -37,7 +37,8 @@ export class DetailedNftContractController extends Controller {
         leaseEnd: Date.parse(getContractDataResult[0].lease_end.toISOString()),
         minYield: getContractDataResult[0].min_yield.toString(),
         accepted_token: getContractDataResult[0].accepted_token,
-        price: getContractDataResult[0].price.toString(),
+        presalePrice: getContractDataResult[0].presale_price.toString(),
+        publicsalePrice: getContractDataResult[0].publicsale_price.toString(),
         metadata: getContractDataResult[0].metadata_base_url,
         activated: getContractDataResult[0].activated,
         owner: getContractDataResult[0].owner,

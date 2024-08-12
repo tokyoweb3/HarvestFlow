@@ -1,3 +1,4 @@
+-- recall: migrations need to be repackaged with `npm run pack` when changed
 -- todo: replace https://github.com/PaimaStudios/paima-engine/issues/414
 WITH new_ticks AS (
   INSERT INTO scheduled_data (block_height, input_data )

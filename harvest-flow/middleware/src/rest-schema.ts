@@ -240,7 +240,8 @@ export interface components {
             leaseEnd: number;
             minYield: string;
             accepted_token: string;
-            price: string;
+            presalePrice: string;
+            publicsalePrice: string;
             metadata: unknown;
             activated: boolean;
             owner: string;

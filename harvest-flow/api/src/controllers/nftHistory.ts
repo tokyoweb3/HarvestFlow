@@ -6,7 +6,7 @@ import { getHistoryForContract, getHistoryForUser, requirePool } from '@harvest-
 import { StatusCodes } from 'http-status-codes';
 import type { InternalServerErrorResult, ValidateErrorResult } from '@paima/sdk/utils';
 
-const chainId = process.env.CHAIN_ID;
+const chainId = `eip155:${process.env.CHAIN_ID}`;
 
 @Route('nft_history')
 export class NftHistoryController extends Controller {
@@ -26,7 +26,7 @@ export class NftHistoryController extends Controller {
         eventType: ToNftHistoryEventType(history.type),
         price: history.amount ?? undefined,
         projectName: history.name,
-        transactionHash: history.tx_hash,
+        transactionHash: history.evm_tx_hash,
         timestamp: Date.parse(history.timestamp.toISOString()),
       };
     });
@@ -50,7 +50,7 @@ export class NftHistoryController extends Controller {
       return {
         eventType: ToNftHistoryEventType(history.type),
         price: history.amount ?? undefined,
-        transactionHash: history.tx_hash,
+        transactionHash: history.evm_tx_hash,
         timestamp: Date.parse(history.timestamp.toISOString()),
       };
     });

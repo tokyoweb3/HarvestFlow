@@ -5,12 +5,12 @@ INSERT INTO tokens (
     chain_id,
     contract_address,
     token_id,
-    owner_address
+    minter_address
 ) VALUES (
     LOWER(:chainId!),
     LOWER(:contract_address!),
     :token_id!,
-    LOWER(:owner_address!)
+    LOWER(:minter_address!)
 );
 
 /*
@@ -20,19 +20,23 @@ INSERT INTO tokens (
  INSERT INTO transaction_history (
     type,
     chain_id,
+    owner_address,
     contract_address,
     token_id,
     amount,
     timestamp,
-    tx_hash
+    evm_tx_hash,
+    paima_tx_hash
  )  VALUES (
     :type!,
     LOWER(:chainId!),
+    LOWER(:owner_address!),
     LOWER(:contract_address!),
     :token_id!,
     :amount!,
     :timestamp!,
-    :tx_hash!
+    :evm_tx_hash!,
+    :paima_tx_hash!
  );
 
 /*
@@ -55,7 +59,8 @@ INSERT INTO contracts (name,
                        lease_end,
                        min_yield,
                        accepted_token,
-                       price,
+                       presale_price,
+                       publicsale_price,
                        metadata_base_url,
                        owner,
                        signer_address,
@@ -70,7 +75,8 @@ VALUES (:name!,
         :lease_end!,
         :min_yield!,
         LOWER(:accepted_token!),
-        :price!,
+        :presale_price!,
+        :publicsale_price!,
         :metadata_base_url!,
         :owner!,
         :signer_address!,

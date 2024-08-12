@@ -5,7 +5,7 @@ import { getTokenDetails, requirePool } from '@harvest-flow/db';
 import { StatusCodes } from 'http-status-codes';
 import type { InternalServerErrorResult, ValidateErrorResult } from '@paima/sdk/utils';
 
-const chainId = process.env.CHAIN_ID;
+const chainId = `eip155:${process.env.CHAIN_ID}`;
 
 @Route('nft')
 export class ClaimableController extends Controller {
@@ -29,7 +29,7 @@ export class ClaimableController extends Controller {
         contractAddress: contractAddress,
         projectName: getTokenDetailsResult[0].name,
         lendingData: {
-          principle: getTokenDetailsResult[0].price,
+          principle: getTokenDetailsResult[0].amount,
           lendingStart: Date.parse(getTokenDetailsResult[0].lease_start.toISOString()),
           lendingEnd: Date.parse(getTokenDetailsResult[0].lease_end.toISOString()),
           yield: getTokenDetailsResult[0].min_yield,

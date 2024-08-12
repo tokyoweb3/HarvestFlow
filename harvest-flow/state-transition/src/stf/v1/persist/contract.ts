@@ -3,8 +3,22 @@ import type {
   IActivateContractParams,
   IAddMintedAmountParams,
   ISaveNewContractParams,
+  ISetBaseUriParams,
+  ISetPresalePriceParams,
+  ISetPresaleStatusParams,
+  ISetPublicsalePriceParams,
+  ISetPublicsaleStatusParams,
 } from '@harvest-flow/db';
-import { activateContract, addMintedAmount, saveNewContract } from '@harvest-flow/db';
+import {
+  activateContract,
+  setBaseUri,
+  setPresalePrice,
+  setPresaleStatus,
+  setPublicsalePrice,
+  setPublicsaleStatus,
+  addMintedAmount,
+  saveNewContract,
+} from '@harvest-flow/db';
 import type { ContractParams } from '../types';
 
 export function persistContractActivation(chainId: string, contractAddress: string): SQLUpdate {
@@ -14,6 +28,72 @@ export function persistContractActivation(chainId: string, contractAddress: stri
   };
 
   return [activateContract, activateContractParams];
+}
+
+export function persistBaseUriChanged(
+  chainId: string,
+  contractAddress: string,
+  newUri: string
+): SQLUpdate {
+  const params: ISetBaseUriParams = {
+    chainId: chainId,
+    contractAddress: contractAddress,
+    base_uri: newUri,
+  };
+
+  return [setBaseUri, params];
+}
+export function persistPresaleStatusChanged(
+  chainId: string,
+  contractAddress: string,
+  newStatus: boolean
+): SQLUpdate {
+  const params: ISetPresaleStatusParams = {
+    chainId: chainId,
+    contractAddress: contractAddress,
+    status: newStatus,
+  };
+
+  return [setPresaleStatus, params];
+}
+export function persistPresalePriceChanged(
+  chainId: string,
+  contractAddress: string,
+  newPrice: string
+): SQLUpdate {
+  const params: ISetPresalePriceParams = {
+    chainId: chainId,
+    contractAddress: contractAddress,
+    price: BigInt(newPrice),
+  };
+
+  return [setPresalePrice, params];
+}
+export function persistPublicsaleStatusChanged(
+  chainId: string,
+  contractAddress: string,
+  newStatus: boolean
+): SQLUpdate {
+  const params: ISetPublicsaleStatusParams = {
+    chainId: chainId,
+    contractAddress: contractAddress,
+    status: newStatus,
+  };
+
+  return [setPublicsaleStatus, params];
+}
+export function persistPublicsalePriceChanged(
+  chainId: string,
+  contractAddress: string,
+  newPrice: string
+): SQLUpdate {
+  const params: ISetPublicsalePriceParams = {
+    chainId: chainId,
+    contractAddress: contractAddress,
+    price: BigInt(newPrice),
+  };
+
+  return [setPublicsalePrice, params];
 }
 
 export function updateMintedAmount(
@@ -39,7 +119,8 @@ export function persistNewNftContract(params: ContractParams): SQLUpdate {
     lease_start: params.lendingAt,
     metadata_base_url: params.baseURI,
     min_yield: params.yieldRate,
-    price: params.publicPrice,
+    presale_price: params.presalePrice,
+    publicsale_price: params.publicsalePrice,
     supply_cap: params.cap,
     accepted_token: params.payableToken,
     owner: params.owner,

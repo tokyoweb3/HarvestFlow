@@ -6,7 +6,7 @@
   },
   "private": true,
   "scripts": {
-    "initialize": "npm ci && cp .env.example ../.env.localhost && cp extensions.yml ../extensions.yml",
+    "initialize": "npm ci && cp .env.example ../.env.localhost && cp extensions.yml ../extensions.localhost.yml",
     "pack": "sh scripts/pack.sh",
     "pack:middleware": "npm run build -w middleware/",
     "build": "npx tsc --build tsconfig.build.json",
@@ -65,8 +65,8 @@
     "@openzeppelin/contracts": "^5.0.2",
     "@openzeppelin/contracts-upgradeable": "^5.0.2",
     "@paima/evm-contracts": "3.1.0",
-    "@paima/node-sdk": "4.0.0",
-    "@paima/sdk": "4.0.0",
+    "@paima/node-sdk": "5.0.0",
+    "@paima/sdk": "5.0.0",
     "erc721a": "^4.3.0",
     "erc721a-upgradeable": "^4.3.0",
     "temporal-polyfill": "^0.2.5"
