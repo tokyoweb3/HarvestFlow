@@ -1,7 +1,16 @@
 import { buildModule } from '@nomicfoundation/hardhat-ignition/modules';
 
-const factoryContractAddress = '0x004e062a1B77e7887db4f6E648773271Cf733ABA'; // Set the factory contract address here
-const paymentTokenAddress = '0x5Fd03dD7Cb1171cc120fD86f3162283F9426E126'; // if you have a specific token address, you can set it here
+/**
+ * Set the factory contract address here
+ * Update every time you want to redeploy from scratch
+ */
+const factoryContractAddress = '0x597466EDDA366197f5Ec12a63B971B8B6D5E46Fd';
+/**
+ * if you have a specific token address, you can set it here
+ * you need to update this every time you deploy to a new network
+ */
+const paymentTokenAddress = '0x3a61DFFBAb948aAF692e2Fc1295C119f79638b96'; // Polygon Amoy mockERC20
+
 const testAccountAddress = '0xC7894CC334A5D21a833CDe21B53d7Fd76B5D882D'; // if you want to send some tokens to your test account, you can set it here
 
 export default buildModule('TokTokNftTestNet', m => {
@@ -47,5 +56,12 @@ export default buildModule('TokTokNftTestNet', m => {
 
   contract1.dependencies.add(paymentToken);
 
-  return { nftContract1 };
+  // activate contract1
+  const activate1 = m.call(nftContract1, 'activate', []);
+  const publicSale1 = m.call(nftContract1, 'setPublicsale', [true]);
+
+  activate1.dependencies.add(nftContract1);
+  publicSale1.dependencies.add(activate1);
+
+  return { factory };
 });

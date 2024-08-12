@@ -1,10 +1,10 @@
 defaults: &default_dynamic_settings
   type: "dynamic-evm-primitive"
   network: "PolygonAmoy"
-  contractAddress: "" # todo
+  contractAddress: "0x597466EDDA366197f5Ec12a63B971B8B6D5E46Fd"
   eventSignature: "NftDeployed(address)"
   abiPath: "./NftFactory.json"
-  startBlockHeight: 1 # todo
+  startBlockHeight: 10614000
   dynamicFields:
     contractAddress: nft
 
@@ -12,8 +12,8 @@ extensions:
   - name: "Nft contract deploy"
     type: "generic"
     network: "PolygonAmoy"
-    contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
-    startBlockHeight: 0
+    contractAddress: "0x597466EDDA366197f5Ec12a63B971B8B6D5E46Fd"
+    startBlockHeight: 10614000
     abiPath: "./NftFactory.json"
     eventSignature: "NftDeployed(address)"
     scheduledPrefix: "deployed"
@@ -93,12 +93,12 @@ extensions:
   - name: "dynamic NFT ownership"
     type: "dynamic-evm-primitive"
     network: "PolygonAmoy"
-    contractAddress: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+    contractAddress: "0x597466EDDA366197f5Ec12a63B971B8B6D5E46Fd"
     eventSignature: "NftDeployed(address)"
     abiPath: "./NftFactory.json"
     targetConfig:
       type: "erc721"
       scheduledPrefix: "unused" # https://github.com/PaimaStudios/paima-engine/issues/242#issuecomment-2282689670
-    startBlockHeight: 0
+    startBlockHeight: 10614000
     dynamicFields:
       contractAddress: nft
