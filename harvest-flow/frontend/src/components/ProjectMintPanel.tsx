@@ -1,3 +1,4 @@
+import * as Paima from "../paima/middleware.js";
 import React, { useContext, useEffect, useState } from "react";
 import type MainController from "@src/MainController";
 import { AppContext } from "@src/main";
@@ -13,6 +14,7 @@ import { ethers } from "ethers";
 import MintedModal from "@src/components/MintedModal";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
+import type { FailedResult } from "@paima/utils";
 
 const TotalSupplyProgressBar: React.FC<{
   totalSupply: number;
@@ -63,15 +65,17 @@ const AmountInput: React.FC<AmountInputProps> = ({
   maxAmount,
   setAmount,
 }) => {
+
+  const reachedMax = maxAmount != null && amount >= maxAmount;
+  const reachedMin = amount === 0;
   return (
     <div className="pb-2">
       <div className="border border-black flex divide-x divide-black">
         <button
           className="p-1 w-6 h-6 flex items-center justify-center"
+          disabled={reachedMin}
           onClick={() => {
-            if (amount > 0) {
-              setAmount(amount - 1);
-            }
+            setAmount(amount - 1);
           }}
         >
           —
@@ -81,12 +85,9 @@ const AmountInput: React.FC<AmountInputProps> = ({
         </div>
         <button
           className="p-1 w-6 h-6 flex items-center justify-center"
+          disabled={reachedMax}
           onClick={() => {
-            if (maxAmount && amount < maxAmount) {
-              setAmount(amount + 1);
-            } else if (!maxAmount) {
-              setAmount(amount + 1);
-            }
+            setAmount(amount + 1);
           }}
         >
           +
@@ -131,6 +132,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
 
   const mainController: MainController = useContext(AppContext);
 
+  const [persaleMintable, setPresaleMintable] = React.useState<{ signature: string; amountLeft: number, maxAmount: number } | null>(null);
   const [amountToBuy, setAmountToBuy] = React.useState<number>(1);
   const [endingIn, setEndingIn] = React.useState<string>(
     t("project.ending_in", { days: 0, hours: 0, minutes: 0, seconds: 0 }),
@@ -138,6 +140,27 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
   const [totalRewards, setTotalRewards] = React.useState<string>("0");
 
   const [mintModalVisible, setMintModalVisible] = useState(false);
+
+  useEffect(() => {
+    async function fetchData(): Promise<void> {
+      if (projectContractDetails == null || !projectContractDetails.isPresale || mainController?.connectedWallet?.walletAddress == null) {
+        return;
+      }
+      const response = await Paima.default.getPresaleData(projectContractDetails.address, mainController.connectedWallet.walletAddress);
+      if (!response.success) {
+        console.error((response as FailedResult).errorMessage);
+        return; // TODO: not sure if/how this failure should be shown on the UI
+      }
+      if (response.result.buyable == null) return;
+
+      setPresaleMintable({
+        amountLeft: response.result.buyable.amount - response.result.amountBought,
+        maxAmount: response.result.buyable.amount,
+        signature: response.result.buyable.signature,
+      });
+    }
+    fetchData();
+  }, [projectContractDetails, mainController?.connectedWallet?.walletAddress]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -184,21 +207,59 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
       console.error("Wallet is not connected");
     }
 
-    mainController
-      .buyNft(
-        projectContractDetails.address,
-        amountToBuy,
-        BigInt(currentPrice(projectContractDetails)),
-      )
-      .then((success) => {
-        if (success) {
-          setMintModalVisible(true);
-          refreshData();
-        }
-      });
+    if (projectContractDetails.isPresale) {
+      mainController
+        .buyPremint(
+          projectContractDetails.address,
+          amountToBuy,
+          BigInt(currentPrice(projectContractDetails)),
+          persaleMintable.maxAmount,
+          persaleMintable.signature
+        )
+        .then((success) => {
+          if (success) {
+            setMintModalVisible(true);
+            refreshData();
+          }
+        });
+    }
+    if (projectContractDetails.isPublicsale) {
+      mainController
+        .buyNft(
+          projectContractDetails.address,
+          amountToBuy,
+          BigInt(currentPrice(projectContractDetails)),
+        )
+        .then((success) => {
+          if (success) {
+            setMintModalVisible(true);
+            refreshData();
+          }
+        });
+    }
   };
 
   const mintDisabled = projectContractDetails == null || new Date().getTime() > (projectContractDetails?.leaseStart);
+
+  const [maxMintable, setMaxMintable] = React.useState(0);
+  React.useEffect(() => {
+    if (projectContractDetails == null) return;
+    if (new Date().getTime() > projectContractDetails.leaseStart) {
+      setMaxMintable(0);
+      return;
+    }
+    const supplyMax = (Number(projectContractDetails?.supplyCap) ?? 0) - (Number(projectContractDetails?.mintedAmount) ?? 0);
+    if (projectContractDetails?.isPresale && persaleMintable?.amountLeft != null) {
+      setMaxMintable(Math.min(supplyMax, persaleMintable.amountLeft));
+      return;
+    }
+    setMaxMintable(supplyMax);
+  }, [projectContractDetails, persaleMintable?.amountLeft]);
+  React.useEffect(() => {
+    if (maxMintable < amountToBuy) {
+      setAmountToBuy(maxMintable);
+    }
+  }, [amountToBuy, maxMintable]);
   return (
     <>
       <div>
@@ -215,7 +276,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
               currentSupply={Number(projectContractDetails?.mintedAmount) ?? 0}
             />
             <p className="text-center uppercase">
-              {t("project.you_can_mint")}: 2 NFTs
+              {t("project.you_can_mint")}: {projectContractDetails?.isPresale ? `${maxMintable} NFTs` : "any amount"}
             </p>
             <div className="flex justify-center items-end gap-6 px-6">
               <div className="flex flex-col">
@@ -229,7 +290,7 @@ const ProjectMintPanel: React.FC<ProjectMintPanelProps> = ({
                   <span className="text-body">{getTokenTicker(projectContractDetails?.accepted_token)}</span>
                 </p>
               </div>
-              <AmountInput amount={amountToBuy} setAmount={setAmountToBuy} />
+              <AmountInput amount={amountToBuy} maxAmount={maxMintable} setAmount={setAmountToBuy} />
             </div>
             <div className="border-t border-b border-black divide-y divide-black divide-dashed">
               <p className="text-center text-body15_18 uppercase py-[6px]">

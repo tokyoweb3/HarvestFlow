@@ -32,6 +32,7 @@ export {
   getTotalLoaned,
   getTotalRepaid,
   getOwnersCount,
+  getTotalMinted,
   IGetContractParams,
   IGetContractResult,
   IGetContractsListResult,
@@ -53,6 +54,8 @@ export {
   IGetTotalLoanedResult,
   IGetTotalRepaidResult,
   IGetOwnersCountResult,
+  IGetTotalMintedParams,
+  IGetTotalMintedResult,
 } from './select.queries.js';
 
 export {

@@ -182,6 +182,58 @@ class MainController {
     }
   }
 
+  async buyPremint(
+    contractAddress: string,
+    amountToBuy: number,
+    price: bigint,
+    maxAmount: number,
+    signature: string,
+  ): Promise<boolean> {
+    if (!this.isWalletConnected()) {
+      this.callback(null, null, "Wallet not connected");
+      return false;
+    }
+
+    const amountToPay = amountToBuy * Number(ethers.utils.formatEther(price));
+    // get approval for the contract
+    this.callback("Approving payment", null, null);
+    const paymentTokenContract = new Contract(
+      PAYMENT_TOKEN_CONTRACT_ADDRESS,
+      [
+        "function approve(address _spender, uint256 _value) public returns (bool success)",
+      ],
+      this.provider.getSigner(),
+    );
+
+    let approved = false;
+
+    const amountToApprove = ethers.utils.parseEther(amountToPay.toString());
+
+    try {
+      await paymentTokenContract.approve(contractAddress, amountToApprove);
+      approved = true;
+    } catch (e) {
+      this.callbackWithContext(e, "Error approving payment");
+      return false;
+    }
+
+    if (approved) {
+      this.callback("Buying NFT", null, null);
+      try {
+        const lendingContract = new Contract(
+          contractAddress,
+          TokTokNftAbi,
+          this.provider.getSigner(),
+        );
+        await lendingContract.preMint(amountToBuy, maxAmount, signature);
+        return true;
+      } catch (e) {
+        this.callbackWithContext(e, "Error buying NFT");
+        return false;
+      }
+    }
+  }
+
   async getAllNft(justActive: boolean): Promise<NftContract[]> {
     const response = await Paima.default.getAllNfts(justActive);
     console.debug("Get All Nft response: ", response);

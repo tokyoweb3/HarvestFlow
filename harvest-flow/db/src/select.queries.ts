@@ -509,3 +509,33 @@ const getOwnersCountIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT
 export const getOwnersCount = new PreparedQuery<IGetOwnersCountParams,IGetOwnersCountResult>(getOwnersCountIR);
 
 
+/** 'GetTotalMinted' parameters type */
+export interface IGetTotalMintedParams {
+  contract_address: string;
+  minter_address: string;
+}
+
+/** 'GetTotalMinted' return type */
+export interface IGetTotalMintedResult {
+  total_minted: string | null;
+}
+
+/** 'GetTotalMinted' query type */
+export interface IGetTotalMintedQuery {
+  params: IGetTotalMintedParams;
+  result: IGetTotalMintedResult;
+}
+
+const getTotalMintedIR: any = {"usedParamSet":{"minter_address":true,"contract_address":true},"params":[{"name":"minter_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":74,"b":89}]},{"name":"contract_address","required":true,"transform":{"type":"scalar"},"locs":[{"a":121,"b":138}]}],"statement":"SELECT COUNT(*) AS total_minted\nFROM tokens\nWHERE tokens.minter_address = :minter_address! AND tokens.contract_address = :contract_address!"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT COUNT(*) AS total_minted
+ * FROM tokens
+ * WHERE tokens.minter_address = :minter_address! AND tokens.contract_address = :contract_address!
+ * ```
+ */
+export const getTotalMinted = new PreparedQuery<IGetTotalMintedParams,IGetTotalMintedResult>(getTotalMintedIR);
+
+

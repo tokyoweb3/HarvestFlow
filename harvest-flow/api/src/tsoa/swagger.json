@@ -268,6 +268,38 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"SignatureInfo": {
+				"properties": {
+					"signature": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"signature",
+					"amount"
+				],
+				"type": "object"
+			},
+			"PresaleParticipation": {
+				"properties": {
+					"buyable": {
+						"$ref": "#/components/schemas/SignatureInfo"
+					},
+					"amountBought": {
+						"type": "number",
+						"format": "double",
+						"description": "recall: you don't have to purchase the full whitelist amount at once\n        so we have to keep track of how much was been bought so far so they can buy the rest later"
+					}
+				},
+				"required": [
+					"amountBought"
+				],
+				"type": "object"
+			},
 			"NftHistoryEventType": {
 				"enum": [
 					"contract_created",
@@ -402,6 +434,23 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"NftContractDetailsResponse": {
+				"properties": {
+					"details": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/NftContractDetails"
+							}
+						],
+						"nullable": true
+					}
+				},
+				"required": [
+					"details"
+				],
+				"type": "object",
+				"description": "Wrap in a type to get around this issue\nhttps://github.com/openapi-ts/openapi-typescript/issues/1695"
 			},
 			"NftContract": {
 				"properties": {
@@ -611,6 +660,68 @@
 				]
 			}
 		},
+		"/presale": {
+			"get": {
+				"operationId": "ForAddress",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PresaleParticipation"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalServerErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "contractAddress",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "userAddress",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/nft_history/user": {
 			"get": {
 				"operationId": "GetUserHistory",
@@ -764,12 +875,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"allOf": [
-										{
-											"$ref": "#/components/schemas/NftContractDetails"
-										}
-									],
-									"nullable": true
+									"$ref": "#/components/schemas/NftContractDetailsResponse"
 								}
 							}
 						}

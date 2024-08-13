@@ -9,6 +9,8 @@ import { SummaryController } from './../controllers/summary';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { RWADataController } from './../controllers/rwaData';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { PresaleController } from './../controllers/presaleAllowlist';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { NftHistoryController } from './../controllers/nftHistory';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ClaimableController } from './../controllers/nftDetails';
@@ -119,6 +121,16 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SignatureInfo": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"signature":{"dataType":"string","required":true},"amount":{"dataType":"double","required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PresaleParticipation": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"buyable":{"ref":"SignatureInfo"},"amountBought":{"dataType":"double","required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "NftHistoryEventType": {
         "dataType": "refEnum",
         "enums": ["contract_created","mint","activate","claim","redeem"],
@@ -161,6 +173,11 @@ const models: TsoaRoute.Models = {
             "isPublicsale": {"dataType":"boolean","required":true},
         },
         "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "NftContractDetailsResponse": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"details":{"dataType":"union","subSchemas":[{"ref":"NftContractDetails"},{"dataType":"enum","enums":[null]}],"required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "NftContract": {
@@ -272,6 +289,37 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'getRwaData',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/presale',
+            ...(fetchMiddlewares<RequestHandler>(PresaleController)),
+            ...(fetchMiddlewares<RequestHandler>(PresaleController.prototype.forAddress)),
+
+            async function PresaleController_forAddress(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    contractAddress: {"in":"query","name":"contractAddress","required":true,"dataType":"string"},
+                    userAddress: {"in":"query","name":"userAddress","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new PresaleController();
+
+              await templateService.apiHandler({
+                methodName: 'forAddress',
                 controller,
                 response,
                 next,

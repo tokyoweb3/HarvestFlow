@@ -155,3 +155,8 @@ FROM tokens t
 /* @name getOwnersCount */
 SELECT COUNT(DISTINCT nft_owner) AS total_unique_owners
 FROM cde_erc721_data;
+
+/* @name getTotalMinted */
+SELECT COUNT(*) AS total_minted
+FROM tokens
+WHERE tokens.minter_address = :minter_address! AND tokens.contract_address = :contract_address!;
