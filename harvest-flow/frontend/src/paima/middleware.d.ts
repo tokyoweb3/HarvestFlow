@@ -7,6 +7,7 @@ declare const endpoints: {
     getUserDetails: (userAddress: string) => Promise<import("./types").GetUserDetailsResponse | import("@paima/utils").FailedResult>;
     getSummary: () => Promise<import("./types").GetSummaryResponse | import("@paima/utils").FailedResult>;
     getRWAData: (contractAddress: string, tokenId: string) => Promise<import("./types").GetRWADataResponse | import("@paima/utils").FailedResult>;
+    getPresaleData: (contractAddress: string, userAddress: string) => Promise<import("@paima/utils").Result<import("@harvest-flow/utils").PresaleParticipation>>;
     exportLogs: () => string;
     pushLog: (message: any, ...optionalParams: any[]) => void;
     getLatestProcessedBlockHeight: () => Promise<import("@paima/utils").Result<number>>;

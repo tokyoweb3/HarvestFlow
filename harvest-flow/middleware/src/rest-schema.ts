@@ -52,6 +52,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/presale": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ForAddress"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/nft_history/user": {
         parameters: {
             query?: never;
@@ -213,6 +229,20 @@ export interface components {
             history: components["schemas"]["DeviceHistory"][];
             dailySummary: components["schemas"]["DailyDeviceSummary"][];
         };
+        SignatureInfo: {
+            signature: string;
+            /** Format: double */
+            amount: number;
+        };
+        PresaleParticipation: {
+            buyable?: components["schemas"]["SignatureInfo"];
+            /**
+             * Format: double
+             * @description recall: you don't have to purchase the full whitelist amount at once
+             *             so we have to keep track of how much was been bought so far so they can buy the rest later
+             */
+            amountBought: number;
+        };
         /** @enum {string} */
         NftHistoryEventType: "contract_created" | "mint" | "activate" | "claim" | "redeem";
         NftHistoryEvent: {
@@ -248,6 +278,11 @@ export interface components {
             signerAddress: string;
             isPresale: boolean;
             isPublicsale: boolean;
+        };
+        /** @description Wrap in a type to get around this issue
+         *     https://github.com/openapi-ts/openapi-typescript/issues/1695 */
+        NftContractDetailsResponse: {
+            details: components["schemas"]["NftContractDetails"] | null;
         };
         NftContract: {
             name: string;
@@ -361,6 +396,45 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DeviceDetails"];
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidateErrorResult"];
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InternalServerErrorResult"];
+                };
+            };
+        };
+    };
+    ForAddress: {
+        parameters: {
+            query: {
+                contractAddress: string;
+                userAddress: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PresaleParticipation"];
                 };
             };
             422: {
@@ -497,7 +571,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["NftContractDetails"] | null;
+                    "application/json": components["schemas"]["NftContractDetailsResponse"];
                 };
             };
             204: {

@@ -1,6 +1,6 @@
 import { Get, Query, Route, Response } from 'tsoa';
 import { Controller } from '@tsoa/runtime';
-import type { NftContractDetails } from '@harvest-flow/utils';
+import type { NftContractDetailsResponse } from '@harvest-flow/utils';
 import { getContract, requirePool } from '@harvest-flow/db';
 import { StatusCodes } from 'http-status-codes';
 import type { InternalServerErrorResult, ValidateErrorResult } from '@paima/sdk/utils';
@@ -15,7 +15,7 @@ export class DetailedNftContractController extends Controller {
   @Get()
   public async getProjectDetails(
     @Query() contractAddress: string
-  ): Promise<NftContractDetails | null> {
+  ): Promise<NftContractDetailsResponse> {
     const pool = requirePool();
 
     const contractAddressLc = contractAddress.toLowerCase();
@@ -27,27 +27,29 @@ export class DetailedNftContractController extends Controller {
 
     if (getContractDataResult.length !== 0) {
       return {
-        name: getContractDataResult[0].name,
-        symbol: getContractDataResult[0].symbol,
-        chainId: getContractDataResult[0].chain_id,
-        address: getContractDataResult[0].address,
-        supplyCap: getContractDataResult[0].supply_cap.toString(),
-        mintedAmount: getContractDataResult[0].minted_amount.toString(),
-        leaseStart: Date.parse(getContractDataResult[0].lease_start.toISOString()),
-        leaseEnd: Date.parse(getContractDataResult[0].lease_end.toISOString()),
-        minYield: getContractDataResult[0].min_yield.toString(),
-        accepted_token: getContractDataResult[0].accepted_token,
-        presalePrice: getContractDataResult[0].presale_price.toString(),
-        publicsalePrice: getContractDataResult[0].publicsale_price.toString(),
-        metadata: getContractDataResult[0].metadata_base_url,
-        activated: getContractDataResult[0].activated,
-        owner: getContractDataResult[0].owner,
-        signerAddress: getContractDataResult[0].signer_address,
-        isPresale: getContractDataResult[0].is_presale,
-        isPublicsale: getContractDataResult[0].is_publicsale,
+        details: {
+          name: getContractDataResult[0].name,
+          symbol: getContractDataResult[0].symbol,
+          chainId: getContractDataResult[0].chain_id,
+          address: getContractDataResult[0].address,
+          supplyCap: getContractDataResult[0].supply_cap.toString(),
+          mintedAmount: getContractDataResult[0].minted_amount.toString(),
+          leaseStart: Date.parse(getContractDataResult[0].lease_start.toISOString()),
+          leaseEnd: Date.parse(getContractDataResult[0].lease_end.toISOString()),
+          minYield: getContractDataResult[0].min_yield.toString(),
+          accepted_token: getContractDataResult[0].accepted_token,
+          presalePrice: getContractDataResult[0].presale_price.toString(),
+          publicsalePrice: getContractDataResult[0].publicsale_price.toString(),
+          metadata: getContractDataResult[0].metadata_base_url,
+          activated: getContractDataResult[0].activated,
+          owner: getContractDataResult[0].owner,
+          signerAddress: getContractDataResult[0].signer_address,
+          isPresale: getContractDataResult[0].is_presale,
+          isPublicsale: getContractDataResult[0].is_publicsale,
+        },
       };
     } else {
-      return null;
+      return { details: null };
     }
   }
 }

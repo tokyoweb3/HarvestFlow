@@ -388,7 +388,6 @@ async function getDailyPointsByUsers(
     const pointsForHold = Number(ethers.formatEther(token.amount)) * 0.5;
 
     const getTokenIds = (() => {
-      console.log(token.token_ids);
       if (token.token_ids == null) return [];
       // this shouldn't happen, but for some reason the database returns "{1,2,3}"
       if (typeof token.token_ids === 'string') {
@@ -397,7 +396,6 @@ async function getDailyPointsByUsers(
       return token.token_ids;
     })();
 
-    console.log(getTokenIds.length, pointsForHold, currentPeriod, lendingPeriod);
     const points = (getTokenIds.length * pointsForHold * currentPeriod) / lendingPeriod;
     if (usersPoints.has(token.nft_owner)) {
       usersPoints.set(token.nft_owner, usersPoints.get(token.nft_owner)! + points);

@@ -15,8 +15,8 @@ export default buildModule('TokTokNft', m => {
     cap: 1000, // @param cap_ Total cap of tokens to be issued
     payableToken: mockToken, // @param payable_token_ Address of the token used for payments
     price: BigInt(200e18), // @param price_ Price of the token in the smallest unit
-    lendingAt: (testTime + 10 * 60 * 1000) / 1000, // @param lendingAt_ Start time of the lending agreement (when claims can begin)
-    yield: BigInt(1e17), // 10% @param yield_ Minimum fixed interest rate scaled to the 1e18
+    lendingAt: (testTime + 2 * 60 * 1000) / 1000, // @param lendingAt_ Start time of the lending agreement (when claims can begin)
+    yield: BigInt(100 * 1e17), // 1000% @param yield_ Minimum fixed interest rate scaled to the 1e18
     // lendingPeriod: 60 * 60 * 24 * 365, // 1 year @param lending period
     lendingPeriod: 60 * 2,
     baseURI: '', // @param uri_ Base URI for the token
@@ -31,7 +31,7 @@ export default buildModule('TokTokNft', m => {
     payableToken: mockToken, // @param payable_token_ Address of the token used for payments
     price: BigInt(400e18), // @param price_ Price of the token in the smallest unit
     lendingAt: Math.floor((testTime + 2 * 60 * 1000) / 1000) + 90, // @param lendingAt_ Start time of the lending agreement (when claims can begin)
-    yield: BigInt(4e17), // 10% @param yield_ Minimum fixed interest rate scaled to the 1e18
+    yield: BigInt(4e17), // 40% @param yield_ Minimum fixed interest rate scaled to the 1e18
     lendingPeriod: 60, // 1 year @param lending period
     baseURI: '', // @param uri_ Base URI for the token
     owner: m.getAccount(0), // @param owner_ Owner of the contract
