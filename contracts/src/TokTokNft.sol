@@ -501,7 +501,7 @@ contract TokTokNft is ERC721AUpgradeable, ERC2981Upgradeable, Ownable2StepUpgrad
         returns (uint256 totalClaimable, uint256 totalNotYetClaimed, uint256 needPayableTokenAmount)
     {
         // Annual yield of payment tokens scaled to the 1e18
-        uint256 annualYieldScaled = publicPrice * yield * totalSupply();
+        uint256 annualYieldScaled = publicPrice * yield * totalSupply() / 1e18;
 
         // Proportion of time interval, scaled to the 1e18
         uint256 proportionOfIntervalScaled = ((Math.min(until, maturity) - lendingAt) * 1e18) / year;
