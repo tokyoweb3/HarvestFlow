@@ -1,7 +1,7 @@
 // Returns a ellipsis version of a string with the ellipsis being in the middle
 // eg. `0X97819177AF742660E6D8612F5E7882E538C7D9C9` will become `0x9781917..D9C9`
-import { NftContractDetails, NftDetails } from "@harvest-flow/utils";
-import { YEAR_IN_S } from "@src/utils/constants";
+import type { NftContractDetails, NftDetails } from "@harvest-flow/utils";
+import { YEAR_IN_MS } from "@src/utils/constants";
 import { ethers } from "ethers";
 
 export function middleEllipsis(address: string, length: number = 15) {
@@ -93,33 +93,50 @@ export function formatTimestampForHistoryTable(timestamp: number): string {
   return `${month}.${day}${daySuffix(day)} ${hours}:${minutes}:${seconds}`;
 }
 
+export function currentPrice(
+  projectContractDetails: NftContractDetails,
+): string {
+  if (projectContractDetails.isPresale) {
+    return projectContractDetails.presalePrice;
+  }
+  if (projectContractDetails.isPublicsale) {
+    return projectContractDetails.publicsalePrice;
+  }
+  // if the same is over, we just assume the publicsale Price is still valid
+  return projectContractDetails.publicsalePrice;
+}
 export function calculateTotalRewards(
   nftDetails: NftContractDetails,
   amountToBuy: number,
 ): number {
-  const timeLeft = nftDetails.leaseEnd - Date.now();
-  return (
-    (amountToBuy *
-      Number(ethers.utils.formatEther(nftDetails.price)) *
-      Number(ethers.utils.formatEther(nftDetails.minYield)) *
-      timeLeft) /
-    YEAR_IN_S /
-    1000
-  );
+  // lendingAt
+  const timeLeft = nftDetails.leaseEnd - nftDetails.leaseStart;
+
+  const rewardPerNft =
+    // TODO: this is wrong if the token doesn't have 18 decimal places
+    Number(ethers.utils.formatEther(currentPrice(nftDetails))) *
+    Number(ethers.utils.formatEther(nftDetails.minYield));
+
+  const totalRewards = amountToBuy * rewardPerNft;
+
+  const forYear =
+    timeLeft > YEAR_IN_MS
+      ? totalRewards
+      : totalRewards * (timeLeft / YEAR_IN_MS);
+  return forYear;
 }
 
 export function getTotalYieldForNft(nft: NftDetails): number {
   if (Date.now() < nft.lendingData.lendingStart) return 0;
   const annualYield =
     (BigInt(nft.lendingData.principle) * BigInt(nft.lendingData.yield)) /
-    BigInt(1e18);
+    BigInt(1e18); // TODO: this is wrong if the token doesn't have 18 decimal places
 
   // Proportion of time interval from the beginning of lending period until now to a year, scaled to the 1e18
   const proportionOfIntervalTotalScaled =
     (Math.min(Date.now(), nft.lendingData.lendingEnd) -
       nft.lendingData.lendingStart) /
-    1000 /
-    YEAR_IN_S;
+    YEAR_IN_MS;
 
   // Scale the claimable interest to the payable token's decimals and subtract already claimed amount
   return (

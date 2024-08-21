@@ -15,7 +15,7 @@ const nftProjectsData: NFTProjectCardProps[] = [
 
 const AccountUpcomingProjectsSection: React.FC = () => {
   return (
-    <div className="flex flex-col gap-[40px] pl-4 desktop:pl-0">
+    <div className="font-functionPro flex flex-col gap-[40px] pl-4 desktop:pl-0">
       <h3 className="text-heading5Larger desktop:text-heading5Larger24_30 uppercase font-medium">
         Upcoming projects
       </h3>

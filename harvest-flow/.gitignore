@@ -30,6 +30,7 @@ snapshots
 .env
 .env.mainnet
 .env.testnet
+.env.*
 
 # Frontend
 build.zip

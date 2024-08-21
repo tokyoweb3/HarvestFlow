@@ -1,7 +1,7 @@
 import React from "react";
 import Headroom from "react-headroom";
 import clsx from "clsx";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 import ConnectWalletButton from "@src/components/ConnectWalletButton";
 import MobileVideoBackground from "./MobileVideoBackground";
@@ -12,6 +12,11 @@ import MobileConnectWalletButton from "./MobileConnectWalletButton";
 
 import Logo from "../../assets/images/logo.svg";
 import MobileMenuLogo from "../../assets/images/mobile-menu-logo.svg";
+
+import {
+  OUR_PROJECTS_REGISTER_EN,
+  OUR_PROJECTS_REGISTER_JP,
+} from "@src/utils/links";
 
 const DiscordIcon: React.FC = () => (
   <svg
@@ -70,6 +75,21 @@ const Header: React.FC = () => {
             />
           </a>
           <div className="hidden desktop:flex border-l border-r border-black divide-x divide-black">
+            <Trans
+              i18nKey="homepage.our_projects.btn"
+              components={[
+                <a
+                  href={
+                    i18n.language === "en"
+                      ? OUR_PROJECTS_REGISTER_EN
+                      : OUR_PROJECTS_REGISTER_JP
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center p-4 hover:cursor-pointer"
+                />,
+              ]}
+            ></Trans>
             <a
               href={TWITTER_LINK}
               target="_blank"
@@ -113,7 +133,7 @@ const Header: React.FC = () => {
             <div className="w-4 border-t border-black" />
             <div className="w-2 border-t border-black" />
           </button>
-        <MobileConnectWalletButton />
+          <MobileConnectWalletButton />
         </header>
       </Headroom>
       <div
@@ -123,7 +143,7 @@ const Header: React.FC = () => {
         )}
       >
         <MobileVideoBackground />
-        <div className="flex flex-col items-center justify-center gap-16 relative z-30 px-14 py-20 w-full h-full">
+        <div className="flex flex-col items-center justify-center gap-16 relative z-30 py-20 w-full h-full">
           <button
             onClick={() => setMenuOpen(false)}
             className="absolute top-4 right-4"
@@ -164,6 +184,21 @@ const Header: React.FC = () => {
                 <DiscordIcon />
               </a>
             </div>
+            <Trans
+              i18nKey="homepage.our_projects.btn"
+              components={[
+                <a
+                  href={
+                    i18n.language === "en"
+                      ? OUR_PROJECTS_REGISTER_EN
+                      : OUR_PROJECTS_REGISTER_JP
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center whitespace-pre-line text-center"
+                />,
+              ]}
+            ></Trans>
           </div>
           <div className="flex items-end justify-center gap-2 w-full">
             <p className="text-heading5 relative -top-2">Produced by</p>

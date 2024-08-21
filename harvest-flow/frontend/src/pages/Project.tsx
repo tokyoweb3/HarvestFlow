@@ -21,6 +21,7 @@ import ProjectPOSSection from "@src/components/ProjectPOSSection";
 import ProjectArtistCollaborationSection from "@src/components/ProjectArtistCollaborationSection";
 import ProjectAboutTheBorrowerSection from "@src/components/ProjectAboutTheBorrowerSection";
 import ProjectHowItWorksSection from "@src/components/ProjectHowItWorksSection";
+import Pagetop from "@src/components/Pagetop";
 
 const Project: React.FC = () => {
   const mainController: MainController = useContext(AppContext);
@@ -63,9 +64,12 @@ const Project: React.FC = () => {
       <ProjectVideoSection />
       <ProjectSchemeSection />
       <ProjectHowItWorksSection />
+      {/* 
       <ProjectLendAHandSection />
+    */}
       <DesktopVideoBackground />
       <MobileVideoBackground />
+      <Pagetop />
     </Layout>
   );
 };

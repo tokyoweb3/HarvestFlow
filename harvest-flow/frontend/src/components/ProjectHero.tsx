@@ -27,7 +27,7 @@ const ProjectHero: React.FC<ProjectMintPanelProps> = ({
         <div className="flex flex-col desktop:flex-row desktop:justify-between desktop:items-end gap-[58px] desktop:gap-10">
           <div className="w-full desktop:w-full flex-1">
             <div className="flex flex-col gap-[18px] desktop:gap-3">
-              <h2 className="text-heading4SmallerLH34 desktop:text-heading3_34 font-normal desktop:font-medium uppercase">
+              <h2 className="font-functionPro text-heading4SmallerLH34 desktop:text-heading3_34 font-normal desktop:font-medium uppercase">
                 RWA 001
               </h2>
               <h1 className="text-heading4SmallerLH34 desktop:text-heading1Smaller font-normal desktop:font-medium uppercase whitespace-pre-line">

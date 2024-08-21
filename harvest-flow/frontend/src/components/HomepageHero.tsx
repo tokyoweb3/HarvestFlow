@@ -1,10 +1,18 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
+//import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 import { useScreenDetector } from "@src/utils/useScreenDetector";
 
 import bgVideo from "../../assets/videos/pc_color_high.mp4";
 import bgVideoMobile from "../../assets/videos/sp_color_high.mp4";
+import bgVideoPoster from "../../assets/videos/pc_color_high.jpg";
+import bgVideoMobilePoster from "../../assets/videos/sp_color_high.jpg";
+
+import {
+  OUR_PROJECTS_REGISTER_EN,
+  OUR_PROJECTS_REGISTER_JP,
+} from "@src/utils/links";
 
 const VectorTitle = () => {
   return (
@@ -58,7 +66,7 @@ const VectorTitle = () => {
 };
 
 const HomepageHero: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isMobile, isDesktop } = useScreenDetector();
 
   return (
@@ -66,6 +74,7 @@ const HomepageHero: React.FC = () => {
       {isDesktop && (
         <video
           src={bgVideo}
+          poster={bgVideoPoster}
           className="w-full h-full object-cover relative z-0 hidden animate-fade desktop:block"
           autoPlay
           loop
@@ -76,6 +85,7 @@ const HomepageHero: React.FC = () => {
       {isMobile && (
         <video
           src={bgVideoMobile}
+          poster={bgVideoMobilePoster}
           className="w-full h-full object-cover relative z-0 block animate-fade desktop:hidden"
           autoPlay
           loop
@@ -85,7 +95,7 @@ const HomepageHero: React.FC = () => {
       )}
       <div className="w-full h-full absolute left-0 top-0 z-10">
         <div className="container mx-auto min-h-full flex flex-col justify-center gap-12 desktop:gap-32 px-10 desktop:px-0 pt-16">
-          <div className="flex flex-col items-center justify-center max-w-[600px] mx-auto gap-8 desktop:gap-[60px] w-full">
+          <div className="flex flex-col items-center justify-center max-w-[700px] mx-auto gap-8 desktop:gap-[60px] w-full">
             <h1 className="sr-only">{t("homepage.hero.title")}</h1>
             <div className="w-full">
               <VectorTitle />
@@ -97,6 +107,23 @@ const HomepageHero: React.FC = () => {
               <h3 className="text-bodySmaller font-normal desktop:text-heading5 text-center whitespace-pre-line">
                 {t("homepage.hero.text")}
               </h3>
+              <p className="mt-2 uppercase text-center w-full text-caption desktop:text-heading5SmallerLH26 font-medium ">
+                <Trans
+                  i18nKey="homepage.our_projects.btn"
+                  components={[
+                    <a
+                      href={
+                        i18n.language === "en"
+                          ? OUR_PROJECTS_REGISTER_EN
+                          : OUR_PROJECTS_REGISTER_JP
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block p-4 desktop:p-8 hover:opacity-50 whitespace-pre-line bg-white text-black"
+                    />,
+                  ]}
+                ></Trans>
+              </p>
             </div>
           </div>
         </div>

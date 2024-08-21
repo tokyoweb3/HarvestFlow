@@ -9,7 +9,7 @@ const ProjectHowItWorksSection: React.FC = () => {
   const { t, i18n } = useTranslation();
 
   return (
-    <div className="max-w-[1188px] w-full mx-auto border border-black overflow-x-auto relative z-10 mt-[50px] desktop:mt-[150px]">
+    <div className="max-w-[1188px] w-full mx-auto border border-black overflow-x-auto relative z-10 mt-[50px] desktop:mt-[150px] desktop:mb-[64px]">
       <img
         src={howItWorksJPImage}
         alt={t("homepage.how_it_works.title")}

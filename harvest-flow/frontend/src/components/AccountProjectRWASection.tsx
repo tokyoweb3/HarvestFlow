@@ -35,7 +35,7 @@ const AccountProjectRWASection: React.FC<{ deviceDetails: DeviceDetails }> = ({
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col gap-[50px] desktop:gap-[58px]">
+    <div className="font-functionPro flex flex-col gap-[50px] desktop:gap-[58px]">
       <h2 className="text-heading5Larger desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
         {t("owner.rwa_data.title")}
       </h2>

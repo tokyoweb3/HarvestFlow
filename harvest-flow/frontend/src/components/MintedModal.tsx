@@ -3,6 +3,7 @@ import React from "react";
 import CloseIcon from "@src/icons/CloseIcon";
 
 import bgVideo from "../../assets/videos/pc_pale_high.mp4";
+import bgVideoPoster from "../../assets/videos/pc_pale_high.jpg";
 import nftImage from "../../assets/images/nft-card-image.jpg";
 import { useNavigate } from "react-router-dom";
 import { Page } from "@src/MainController";

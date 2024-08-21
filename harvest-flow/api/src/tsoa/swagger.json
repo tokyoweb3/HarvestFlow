@@ -98,6 +98,69 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"FailedResult": {
+				"properties": {
+					"success": {
+						"type": "boolean",
+						"enum": [
+							false
+						],
+						"nullable": false
+					},
+					"errorMessage": {
+						"type": "string"
+					},
+					"errorCode": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"success",
+					"errorMessage"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InternalServerErrorResult": {
+				"$ref": "#/components/schemas/FailedResult"
+			},
+			"FieldErrors": {
+				"description": "comes from the `tsoa` package, but we don't want it as a dependency just for this type",
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {
+					"properties": {
+						"value": {},
+						"message": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"message"
+					],
+					"type": "object"
+				}
+			},
+			"ValidateErrorResult": {
+				"properties": {
+					"message": {
+						"type": "string",
+						"enum": [
+							"Validation Failed"
+						],
+						"nullable": false
+					},
+					"details": {
+						"$ref": "#/components/schemas/FieldErrors"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Summary": {
 				"properties": {
 					"totalLoaned": {
@@ -205,6 +268,38 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"SignatureInfo": {
+				"properties": {
+					"signature": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"signature",
+					"amount"
+				],
+				"type": "object"
+			},
+			"PresaleParticipation": {
+				"properties": {
+					"buyable": {
+						"$ref": "#/components/schemas/SignatureInfo"
+					},
+					"amountBought": {
+						"type": "number",
+						"format": "double",
+						"description": "recall: you don't have to purchase the full whitelist amount at once\n        so we have to keep track of how much was been bought so far so they can buy the rest later"
+					}
+				},
+				"required": [
+					"amountBought"
+				],
+				"type": "object"
+			},
 			"NftHistoryEventType": {
 				"enum": [
 					"contract_created",
@@ -294,11 +389,26 @@
 					"accepted_token": {
 						"type": "string"
 					},
-					"price": {
+					"presalePrice": {
+						"type": "string"
+					},
+					"publicsalePrice": {
 						"type": "string"
 					},
 					"metadata": {},
 					"activated": {
+						"type": "boolean"
+					},
+					"owner": {
+						"type": "string"
+					},
+					"signerAddress": {
+						"type": "string"
+					},
+					"isPresale": {
+						"type": "boolean"
+					},
+					"isPublicsale": {
 						"type": "boolean"
 					}
 				},
@@ -313,12 +423,34 @@
 					"leaseEnd",
 					"minYield",
 					"accepted_token",
-					"price",
+					"presalePrice",
+					"publicsalePrice",
 					"metadata",
-					"activated"
+					"activated",
+					"owner",
+					"signerAddress",
+					"isPresale",
+					"isPublicsale"
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"NftContractDetailsResponse": {
+				"properties": {
+					"details": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/NftContractDetails"
+							}
+						],
+						"nullable": true
+					}
+				},
+				"required": [
+					"details"
+				],
+				"type": "object",
+				"description": "Wrap in a type to get around this issue\nhttps://github.com/openapi-ts/openapi-typescript/issues/1695"
 			},
 			"NftContract": {
 				"properties": {
@@ -369,7 +501,7 @@
 	"paths": {
 		"/user_details": {
 			"get": {
-				"operationId": "Get",
+				"operationId": "GetUserDetails",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -377,6 +509,32 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/UserDetails"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalServerErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
 								}
 							}
 						}
@@ -397,7 +555,7 @@
 		},
 		"/summary": {
 			"get": {
-				"operationId": "Get",
+				"operationId": "GetSummary",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -405,6 +563,32 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/Summary"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalServerErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
 								}
 							}
 						}
@@ -416,7 +600,7 @@
 		},
 		"/rwaData": {
 			"get": {
-				"operationId": "Get",
+				"operationId": "GetRwaData",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -424,6 +608,32 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/DeviceDetails"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalServerErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
 								}
 							}
 						}
@@ -450,6 +660,68 @@
 				]
 			}
 		},
+		"/presale": {
+			"get": {
+				"operationId": "ForAddress",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PresaleParticipation"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalServerErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "contractAddress",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "userAddress",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/nft_history/user": {
 			"get": {
 				"operationId": "GetUserHistory",
@@ -460,6 +732,32 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/NftHistory"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalServerErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
 								}
 							}
 						}
@@ -508,7 +806,7 @@
 		},
 		"/nft": {
 			"get": {
-				"operationId": "Get",
+				"operationId": "GetTokenDetails",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -516,6 +814,32 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/NftDetails"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalServerErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
 								}
 							}
 						}
@@ -544,19 +868,57 @@
 		},
 		"/nft_details": {
 			"get": {
-				"operationId": "Get",
+				"operationId": "GetProjectDetails",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"allOf": [
-										{
-											"$ref": "#/components/schemas/NftContractDetails"
-										}
+									"$ref": "#/components/schemas/NftContractDetailsResponse"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "number",
+									"enum": [
+										null
 									],
 									"nullable": true
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalServerErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
 								}
 							}
 						}
@@ -577,7 +939,7 @@
 		},
 		"/all_nft": {
 			"get": {
-				"operationId": "Get",
+				"operationId": "GetAllNfts",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -588,6 +950,32 @@
 										"$ref": "#/components/schemas/NftContract"
 									},
 									"type": "array"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalServerErrorResult"
+								},
+								"examples": {
+									"Example 1": {}
 								}
 							}
 						}

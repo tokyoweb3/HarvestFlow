@@ -1,5 +1,5 @@
 import * as Paima from "./paima/middleware.js";
-import type { FailedResult, LoginInfo } from "@paima/sdk/mw-core";
+import type { LoginInfo } from "@paima/sdk/mw-core";
 import type {
   DeviceDetails,
   NftContract,
@@ -12,6 +12,13 @@ import type {
 import { Web3Provider } from "@ethersproject/providers";
 import { Contract, ethers } from "ethers";
 import TokTokNftAbi from "./abi/TokTokNft";
+import { WalletMode } from "@paima/providers";
+import type { Wallet } from "@paima/sdk/mw-core";
+import type { FailedResult } from "@paima/utils";
+import {
+  getParsedEthersError,
+  RETURN_VALUE_ERROR_CODES,
+} from "@enzoferey/ethers-error-parser";
 
 // The MainController is a React component that will be used to control the state of the application
 // It will be used to check if the user has metamask installed and if they are connected to the correct network
@@ -24,8 +31,12 @@ export enum Page {
   Project = "/project",
   Reports = "/reports",
   FAQ = "/faq",
+  PrivacyPolicy = "/privacy-policy",
+  UserTerm = "/terms",
   Homepage = "/",
 }
+
+const LocalstorageWalletCacheKey = "walletConnected";
 
 const NFT_FACTORY_CONTRACT_ADDRESS: string =
   process.env.TOKTOK_NFT_FACTORY_CONTRACT_ADDRESS;
@@ -35,7 +46,9 @@ const PAYMENT_TOKEN_CONTRACT_ADDRESS: string =
 // This is a class that will be used to control the state of the application
 // the benefit of this is that it is very easy to test its logic unlike a react component
 class MainController {
-  userAddress: string | null = null;
+  connectedWallet: Wallet | null = null;
+  connectWalletError: string | null;
+
   private provider?: Web3Provider = undefined;
 
   callback: (
@@ -44,14 +57,36 @@ class MainController {
     errorMessage: string | null,
   ) => void = () => {};
 
+  disconnect = (): void => {
+    localStorage.removeItem(LocalstorageWalletCacheKey);
+
+    // note: it's possible to have smarter refresh logic than just reloading the page
+    //       but this is much less likely to go wrong
+    location.reload();
+  };
+
+  tryReconnect = async (): Promise<Wallet | null> => {
+    if (localStorage.getItem(LocalstorageWalletCacheKey) != null) {
+      // TODO: if you want the user to pick the wallet, see `getWalletOptions`
+      // https://docs.paimastudios.com/home/multichain-support/wallet-layer/introduction
+      return await this.connectWallet({
+        mode: WalletMode.EvmInjected,
+        preferBatchedMode: false,
+      });
+    }
+    return null;
+  };
+
   isWalletConnected = (): boolean => {
-    return this.userAddress !== null;
+    return this.connectedWallet !== null;
   };
 
   async connectWallet(
     loginInfo: LoginInfo,
     locale: string = "en",
-  ): Promise<string> {
+  ): Promise<Wallet | null> {
+    this.connectWalletError = null;
+
     const response = await Paima.default.userWalletLogin(loginInfo);
     if (response.success === true) {
       this.callback(
@@ -59,14 +94,44 @@ class MainController {
         locale === "en"
           ? `Wallet connected to address: ${response.result.walletAddress}`
           : locale === "jp"
-            ? `ウオレット接続します: ${response.result.walletAddress}`
+            ? `ウォレット接続します: ${response.result.walletAddress}`
             : `Wallet connected to address: ${response.result.walletAddress}`,
         null,
       );
-      this.userAddress = response.result.walletAddress;
+      this.connectedWallet = response.result;
       this.provider = new Web3Provider(window.ethereum);
-      return response.result.walletAddress;
+      localStorage.setItem(
+        LocalstorageWalletCacheKey,
+        JSON.stringify(response.result),
+      );
+      return response.result;
+    } else {
+      this.connectWalletError = response.errorMessage;
+      return null;
     }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  callbackWithContext(err: any, defaultMsg: string): void {
+    console.error(`${defaultMsg}: `, err);
+
+    try {
+      const result = getParsedEthersError(err);
+      if (result.errorCode === RETURN_VALUE_ERROR_CODES.UNKNOWN_ERROR) {
+        if ("reason" in err) {
+          const regex = /'([A-Za-z0-9_]+)\(/;
+          const match = err.reason.match(regex);
+          if (match) {
+            this.callback(null, null, `${defaultMsg}: ${match[1]}`);
+            return;
+          }
+        }
+        this.callback(null, null, defaultMsg);
+        return;
+      }
+      this.callback(null, null, `${defaultMsg}: ${result.context}`);
+    } catch (e) {} // eslint-disable-line no-empty
+    this.callback(null, null, defaultMsg);
   }
 
   async buyNft(
@@ -98,8 +163,7 @@ class MainController {
       await paymentTokenContract.approve(contractAddress, amountToApprove);
       approved = true;
     } catch (e) {
-      console.error("Error approving payment: ", e);
-      this.callback(null, null, "Error approving payment");
+      this.callbackWithContext(e, "Error approving payment");
       return false;
     }
 
@@ -114,15 +178,66 @@ class MainController {
         await lendingContract.publicMint(amountToBuy);
         return true;
       } catch (e) {
-        console.error("Error buying NFT: ", e);
-        this.callback(null, null, "Error buying NFT");
+        this.callbackWithContext(e, "Error buying NFT");
         return false;
       }
     }
   }
 
-  async getAllNft(notEnded: boolean): Promise<NftContract[]> {
-    const response = await Paima.default.getAllNfts(notEnded);
+  async buyPremint(
+    contractAddress: string,
+    amountToBuy: number,
+    price: bigint,
+    maxAmount: number,
+    signature: string,
+  ): Promise<boolean> {
+    if (!this.isWalletConnected()) {
+      this.callback(null, null, "Wallet not connected");
+      return false;
+    }
+
+    const amountToPay = amountToBuy * Number(ethers.utils.formatEther(price));
+    // get approval for the contract
+    this.callback("Approving payment", null, null);
+    const paymentTokenContract = new Contract(
+      PAYMENT_TOKEN_CONTRACT_ADDRESS,
+      [
+        "function approve(address _spender, uint256 _value) public returns (bool success)",
+      ],
+      this.provider.getSigner(),
+    );
+
+    let approved = false;
+
+    const amountToApprove = ethers.utils.parseEther(amountToPay.toString());
+
+    try {
+      await paymentTokenContract.approve(contractAddress, amountToApprove);
+      approved = true;
+    } catch (e) {
+      this.callbackWithContext(e, "Error approving payment");
+      return false;
+    }
+
+    if (approved) {
+      this.callback("Buying NFT", null, null);
+      try {
+        const lendingContract = new Contract(
+          contractAddress,
+          TokTokNftAbi,
+          this.provider.getSigner(),
+        );
+        await lendingContract.preMint(amountToBuy, maxAmount, signature);
+        return true;
+      } catch (e) {
+        this.callbackWithContext(e, "Error buying NFT");
+        return false;
+      }
+    }
+  }
+
+  async getAllNft(justActive: boolean): Promise<NftContract[]> {
+    const response = await Paima.default.getAllNfts(justActive);
     console.debug("Get All Nft response: ", response);
     if (!response.success) {
       throw new Error((response as FailedResult).errorMessage);
@@ -145,7 +260,7 @@ class MainController {
 
   async getNftHistoryForUser(): Promise<NftHistory> {
     const response = await Paima.default.getNftHistoryForUser(
-      this.userAddress!,
+      this.connectedWallet!.walletAddress,
     );
     if (!response.success) {
       throw new Error((response as FailedResult).errorMessage);
@@ -162,7 +277,9 @@ class MainController {
   }
 
   async getUserDetails(): Promise<UserDetails> {
-    const response = await Paima.default.getUserDetails(this.userAddress!);
+    const response = await Paima.default.getUserDetails(
+      this.connectedWallet!.walletAddress,
+    );
     console.debug("Get User details response: ", response);
     if (!response.success) {
       throw new Error((response as FailedResult).errorMessage);
@@ -176,9 +293,8 @@ class MainController {
       await contract.claim(tokenId);
       this.callback(null, "Interest claimed successfully", null);
     } catch (e) {
-      console.error("Error claiming interest: ", e);
-      this.callback(null, null, "Error claiming interest");
-      return;
+      this.callbackWithContext(e, "Error claiming interest");
+      return false;
     }
   }
 
@@ -188,8 +304,7 @@ class MainController {
       await contract.redeem(tokenId);
       this.callback(null, "Redeemed token successfully", null);
     } catch (e) {
-      console.error("Error in token redeem: ", e);
-      this.callback(null, null, "Error in token redeem");
+      this.callbackWithContext(e, "Error in token redeem");
       return;
     }
   }
@@ -255,8 +370,7 @@ class MainController {
       await factoryContract.claimAll(addresses, tokenIds);
       this.callback(null, "Harvested all successfully", null);
     } catch (e) {
-      console.error("Error harvesting all: ", e);
-      this.callback(null, null, "Error harvesting all");
+      this.callbackWithContext(e, "Error harvesting all");
       return;
     }
   }

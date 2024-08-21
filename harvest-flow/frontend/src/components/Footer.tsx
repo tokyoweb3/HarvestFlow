@@ -4,13 +4,19 @@ import { useTranslation } from "react-i18next";
 import {
   APAS_PORT_CONTACT_LINK_EN,
   APAS_PORT_CONTACT_LINK_JP,
+  PRIVACYPOLICY_LINK_EN,
+  PRIVACYPOLICY_LINK_JP,
+  TERMS_LINK_EN,
+  TERMS_LINK_JP,
   APAS_PORT_LINK,
   DISCORD_LINK,
   TWITTER_LINK,
 } from "@src/utils/links";
 
 import bgVideo from "../../assets/videos/pc_color_high.mp4";
+import bgVideoPoster from "../../assets/videos/pc_color_high.jpg";
 import bgVideoMobile from "../../assets/videos/sp_color_high.mp4";
+import bgVideoMobilePoster from "../../assets/videos/sp_color_high.jpg";
 
 const XIcon: React.FC = () => (
   <svg
@@ -102,6 +108,7 @@ const Footer: React.FC = () => {
     <footer className="relative w-screen h-screen">
       <video
         src={bgVideo}
+        poster={bgVideoPoster}
         className="w-full h-full object-cover relative z-0 hidden desktop:block"
         autoPlay
         loop
@@ -110,6 +117,7 @@ const Footer: React.FC = () => {
       />
       <video
         src={bgVideoMobile}
+        poster={bgVideoMobilePoster}
         className="w-full h-full object-cover relative z-0 block desktop:hidden"
         autoPlay
         loop
@@ -165,12 +173,39 @@ const Footer: React.FC = () => {
           <div className="flex flex-col desktop:flex-row justify-between items-center p-6 gap-4">
             <ul className="flex gap-4 desktop:gap-10">
               <li>
-                <a href="mailto:info@harvestflow.io" className="uppercase">
+                <a
+                  href="https://harvestflow.deform.cc/contact/"
+                  target="_blank"
+                  className="uppercase"
+                >
                   Contact
                 </a>
               </li>
               <li>
-                <p className="uppercase">Privacy policy</p>
+                <p className="uppercase">
+                  <a
+                    href={
+                      i18n.language === "en"
+                        ? PRIVACYPOLICY_LINK_EN
+                        : PRIVACYPOLICY_LINK_JP
+                    }
+                    className="uppercase"
+                  >
+                    Privacy policy
+                  </a>
+                </p>
+              </li>
+              <li>
+                <p className="uppercase">
+                  <a
+                    href={
+                      i18n.language === "en" ? TERMS_LINK_EN : TERMS_LINK_JP
+                    }
+                    className="uppercase"
+                  >
+                    Terms
+                  </a>
+                </p>
               </li>
             </ul>
             <p>Copyright © Apas Port Co., Ltd. all rights reserved.</p>

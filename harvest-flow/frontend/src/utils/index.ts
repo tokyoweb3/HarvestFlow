@@ -6,8 +6,6 @@ export const formatDate = (dateISO: string | Date): string => {
   return format(date, "yyyy-MM-dd, HH:mm:ss");
 };
 
-
-
 export function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -29,4 +27,4 @@ export const blocksToTime = (blocks: number): string => {
 
 export const blocksToSeconds = (blocks: number): number => blocks * BLOCK_TIME;
 
-export * from "./utils"
+export * from "./utils";

@@ -6,20 +6,23 @@
   "types": "build/index.d.ts",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "sh scripts/build.sh",
+    "compile:client-schema": "openapi-typescript ../api/src/tsoa/swagger.json -o ./src/rest-schema.ts",
+    "compile:client": "npm run build -w ../api/ && npm run compile:client-schema",
+    "build": "npm run compile:client && sh scripts/build.sh",
     "lint": "prettier --write '**/*.ts'"
   },
   "keywords": [],
   "author": "PaimaStudios",
   "dependencies": {
     "@harvest-flow/game-logic": "1.0.0",
-    "@harvest-flow/utils": "1.0.0"
+    "@harvest-flow/utils": "1.0.0",
+    "openapi-fetch": "^0.10.6"
   },
   "devDependencies": {
     "dotenv": "^16.3.1",
     "esbuild": "^0.19.11",
     "esbuild-plugin-d.ts": "^1.2.2",
-    "esbuild-plugin-polyfill-node": "^0.3.0"
+    "esbuild-plugin-polyfill-node": "^0.3.0",
+    "openapi-typescript": "^7.3.0"
   }
 }

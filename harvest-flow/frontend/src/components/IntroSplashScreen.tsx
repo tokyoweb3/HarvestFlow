@@ -5,6 +5,8 @@ import { useScreenDetector } from "@src/utils/useScreenDetector";
 
 import bgVideo from "../../assets/videos/pc_color_high.mp4";
 import bgVideoMobile from "../../assets/videos/sp_color_high.mp4";
+import bgVideoPoster from "../../assets/videos/pc_color_high.jpg";
+import bgVideoMobilePoster from "../../assets/videos/sp_color_high.jpg";
 import logo from "../../assets/images/splashscreen-logo.svg";
 import mobileLogo from "../../assets/images/splashscreen-logo-mobile.svg";
 

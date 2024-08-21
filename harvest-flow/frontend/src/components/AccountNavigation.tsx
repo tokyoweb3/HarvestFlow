@@ -27,7 +27,7 @@ const AccountNavigation: React.FC = () => {
   };
 
   return (
-    <ul className="flex flex-col gap-5">
+    <ul className="font-functionPro flex flex-col gap-5">
       <li
         className={clsx(
           "text-heading5Smaller font-medium uppercase account-navigation-link hover:cursor-pointer",

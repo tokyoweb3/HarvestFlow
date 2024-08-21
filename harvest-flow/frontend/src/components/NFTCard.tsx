@@ -42,7 +42,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 
   return (
     <div
-      className="p-[13px] w-full flex flex-col gap-2 border border-black nft-card-bg rounded-[10px]"
+      className="pt-11.5% px-[17%] w-full flex flex-col gap-2 rounded-[10px]"
       onClick={() => {
         navigate(
           `${Page.AccountProject}?address=${contractAddress}&tokenId=${tokenId}`,
@@ -50,7 +50,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
       }}
     >
       <div className="flex flex-col">
-        <div className="flex flex-col p-[12px] bg-white border border-black border-b-0 text-bodySmaller_13_15 uppercase">
+        <div className="flex flex-col text-[10px] leading-[1.2em] uppercase">
           <div className="flex items-end justify-between">
             <p>{projectName}</p>
             <p>&nbsp;#{tokenId}</p>
@@ -62,7 +62,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
             </p>
           </div>
           <div className="flex items-between justify-between">
-            <img src={baseLogo} alt="Base" className="max-w-[66px] mt-[8px]" />
+            {/*<img src={baseLogo} alt="Base" className="max-w-[66px] mt-[8px]" />*/}
             <p>
               Harvest: <span className="font-medium">{earned} DAI</span>
             </p>

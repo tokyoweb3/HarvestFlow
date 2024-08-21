@@ -11,6 +11,7 @@ import { AppContext } from "@src/main";
 import type { NftContractDetails } from "@harvest-flow/utils";
 import DesktopVideoBackground from "@src/components/DesktopVideoBackground";
 import MobileVideoBackground from "@src/components/MobileVideoBackground";
+import Pagetop from "@src/components/Pagetop";
 
 const FAQ: React.FC = () => {
   const mainController: MainController = useContext(AppContext);
@@ -37,9 +38,12 @@ const FAQ: React.FC = () => {
       />
       <ProjectTabsSection activePage="qa" />
       <FAQPageFAQSection />
+      {/* 
       <ProjectLendAHandSection />
+    */}
       <DesktopVideoBackground />
       <MobileVideoBackground />
+      <Pagetop />
     </Layout>
   );
 };

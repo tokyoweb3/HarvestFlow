@@ -53,7 +53,7 @@ const AccountProjectEarnSection: React.FC<{ tokenDetails: NftDetails }> = ({
   };
 
   return (
-    <div className="flex flex-col gap-[60px] desktop:gap-[58px]">
+    <div className="font-functionPro flex flex-col gap-[60px] desktop:gap-[58px]">
       <h2 className="text-heading5Larger desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
         Harvest
       </h2>
@@ -109,8 +109,8 @@ const AccountProjectEarnSection: React.FC<{ tokenDetails: NftDetails }> = ({
               </p>
             </div>
             <button
-              className="p-[32px] desktop:p-[37px] bg-primary flex items-center justify-center flex-1 shrink-0 border-t border-black text-heading5SmallerLH26 font-medium uppercase tracking-[0.35rem] h-[80px] desktop:h-[100px]"
-              onClick={harvest}
+              className="p-[32px] desktop:p-[37px] bg-primary flex items-center justify-center flex-1 shrink-0 border-t border-black text-heading5SmallerLH26 font-medium uppercase tracking-[0.35rem] h-[80px] desktop:h-[100px] button-disabled"
+              //onClick={harvest}
             >
               Harvest
             </button>

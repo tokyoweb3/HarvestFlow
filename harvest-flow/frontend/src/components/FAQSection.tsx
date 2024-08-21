@@ -10,20 +10,20 @@ import MinusIcon from "@src/icons/MinusIcon";
 import PlusIcon from "@src/icons/PlusIcon";
 
 import bgVideo from "../../assets/videos/pc_color_high.mp4";
+import bgVideoPoster from "../../assets/videos/pc_color_high.jpg";
 import clsx from "clsx";
 
 const FAQItem: React.FC<{
   question: string;
   answer: string | ReactElement;
   index: number;
-  openByDefault?: boolean;
-}> = ({ question, answer, index, openByDefault }) => {
-  const [isOpen, setIsOpen] = React.useState(openByDefault);
-
+  isOpen: boolean;
+  toggleOpen: () => void;
+}> = ({ question, answer, index, isOpen, toggleOpen }) => {
   const handleQuestionToggle = () => {
     ScrollTrigger.refresh();
     ScrollTrigger.update();
-    setIsOpen(!isOpen);
+    toggleOpen();
   };
 
   return (
@@ -36,15 +36,13 @@ const FAQItem: React.FC<{
       <div className="px-3 py-6 desktop:px-10 desktop:py-7 w-16 desktop:w-28">
         <p className="text-body desktop:text-body17 text-center">Q{index}</p>
       </div>
-      <div className="px-4 desktop:px-10 py-4 desktop:py-7 flex flex-col gap-4 flex-1">
+      <div
+        className="px-4 desktop:px-10 py-4 desktop:py-7 flex flex-col gap-4 flex-1 cursor-pointer"
+        onClick={handleQuestionToggle}
+      >
         <div className="flex justify-between flex-1 items-start gap-10">
-          <h3
-            className="text-body desktop:text-body17"
-            onClick={() => handleQuestionToggle()}
-          >
-            {question}
-          </h3>
-          <button onClick={() => handleQuestionToggle()} className="pt-[6px]">
+          <h3 className="text-body desktop:text-body17">{question}</h3>
+          <button className="pt-[6px]">
             {isOpen ? <MinusIcon /> : <PlusIcon />}
           </button>
         </div>
@@ -58,6 +56,11 @@ const FAQItem: React.FC<{
 
 const FAQSection: React.FC = () => {
   const { t } = useTranslation();
+  const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+
+  const toggleOpen = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
   const container = useRef();
   const scrollableTextWrapper = useRef<HTMLDivElement>();
@@ -122,9 +125,17 @@ const FAQSection: React.FC = () => {
       question: t("faq.question6"),
       answer: (
         <>
+          <p>{t("faq.answer6")}</p>
+        </>
+      ),
+    },
+    {
+      question: t("faq.question7"),
+      answer: (
+        <>
           <p>
             <Trans
-              i18nKey="faq.answer6"
+              i18nKey="faq.answer7"
               components={[
                 // eslint-disable-next-line react/jsx-key
                 <a
@@ -166,7 +177,11 @@ const FAQSection: React.FC = () => {
         scrollTrigger: {
           trigger: ".gsap-faq-inner",
           start: "top top",
-          end: `+=${scrollableTextWrapper.current.scrollHeight + window.innerHeight - 160}px`,
+          end: `+=${
+            scrollableTextWrapper.current.scrollHeight +
+            window.innerHeight -
+            160
+          }px`,
           scrub: true,
         },
       });
@@ -188,9 +203,11 @@ const FAQSection: React.FC = () => {
                 {faqData.map((faqItem, index) => (
                   <FAQItem
                     key={index}
-                    index={index + 1}
                     question={faqItem.question}
                     answer={faqItem.answer}
+                    index={index + 1}
+                    isOpen={openIndex === index + 1}
+                    toggleOpen={() => toggleOpen(index + 1)}
                   />
                 ))}
               </div>
@@ -199,13 +216,14 @@ const FAQSection: React.FC = () => {
           <div className="hidden desktop:block w-1/2 bg-cover bg-no-repeat bg-center relative">
             <video
               src={bgVideo}
+              poster={bgVideoPoster}
               className="w-full h-full object-cover"
               autoPlay
               loop
               muted
             />
             <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full flex items-center justify-center z-10">
-              <h2 className="text-white text-heading3 desktop:text-heading2AnimationTitle uppercase tracking-[0.85rem] text-center whitespace-pre-line font-normal">
+              <h2 className="text-white text-heading3 desktop:text-heading2AnimationTitle uppercase tracking-[0.85rem] text-center whitespace-pre-line  font-normal font-functionPro">
                 {t("homepage.faq.title", { lng: "en" })}
               </h2>
             </div>

@@ -24,12 +24,12 @@ SELECT transaction_history.contract_address,
        transaction_history.type,
        transaction_history.amount,
        transaction_history.timestamp,
-       transaction_history.tx_hash,
+       transaction_history.evm_tx_hash,
        contracts.name
 FROM transaction_history
     INNER JOIN tokens ON transaction_history.chain_id = tokens.chain_id AND transaction_history.contract_address = tokens.contract_address AND transaction_history.token_id = tokens.token_id
     INNER JOIN contracts ON transaction_history.chain_id = contracts.chain_id AND transaction_history.contract_address = contracts.address
-WHERE tokens.owner_address = LOWER(:owner_address);
+WHERE transaction_history.owner_address = LOWER(:owner_address);
 
 /* @name getTokenDetails */
 SELECT tokens.yield_claimed,
@@ -38,10 +38,17 @@ SELECT tokens.yield_claimed,
        contracts.lease_start,
        contracts.lease_end,
        contracts.min_yield,
-       contracts.price,
-       contracts.metadata_base_url
+       contracts.presale_price,
+       contracts.publicsale_price,
+       contracts.metadata_base_url,
+       h.amount as "amount!"
 FROM tokens
    INNER JOIN contracts ON tokens.chain_id = contracts.chain_id AND tokens.contract_address = contracts.address
+   INNER JOIN transaction_history h
+        ON tokens.chain_id = h.chain_id AND
+           tokens.contract_address = h.contract_address AND
+           tokens.token_id = h.token_id AND
+           h.type = 'mint'
 WHERE tokens.chain_id = :chain_id AND tokens.contract_address = LOWER(:contract_address) AND tokens.token_id = :token_id;
 
 /* @name getUserTokens */
@@ -54,11 +61,27 @@ SELECT tokens.chain_id,
        contracts.lease_start,
        contracts.lease_end,
        contracts.min_yield,
-       contracts.price,
-       contracts.metadata_base_url
-FROM tokens
-    INNER JOIN contracts ON tokens.chain_id = contracts.chain_id AND tokens.contract_address = contracts.address
-WHERE tokens.owner_address = LOWER(:owner_address);
+       contracts.presale_price,
+       contracts.publicsale_price,
+       contracts.metadata_base_url,
+       h.amount as "amount!"
+FROM cde_erc721_data
+JOIN cde_dynamic_primitive_config
+    ON cde_dynamic_primitive_config.cde_name = cde_erc721_data.cde_name
+JOIN chain_data_extensions
+    ON cde_dynamic_primitive_config.cde_name = chain_data_extensions.cde_name
+JOIN tokens
+    ON LOWER(cde_dynamic_primitive_config.config->>'contractAddress') = tokens.contract_address
+    AND tokens.chain_id = chain_data_extensions.cde_caip2
+    AND tokens.token_id::TEXT = cde_erc721_data.token_id
+JOIN contracts
+    ON tokens.chain_id = contracts.chain_id AND tokens.contract_address = contracts.address
+INNER JOIN transaction_history h
+    ON tokens.chain_id = h.chain_id AND
+        tokens.contract_address = h.contract_address AND
+        tokens.token_id = h.token_id AND
+        h.type = 'mint'
+WHERE cde_erc721_data.nft_owner = LOWER(:owner_address);
 
 /* @name getUserPoints */
 SELECT balance
@@ -85,44 +108,55 @@ WHERE
 
 /* @name getActiveTokensByUsersAndContract */
 SELECT
-    t.owner_address,
-    c.price,
+    cde_erc721_data.nft_owner,
     c.lease_start,
     c.lease_end,
+    h.amount as "amount!",
     ARRAY_AGG(t.token_id) AS token_ids
-FROM
-    tokens t
-        JOIN
-    contracts c
-    ON
-        t.chain_id = c.chain_id AND
-        t.contract_address = c.address
+FROM cde_erc721_data
+JOIN cde_dynamic_primitive_config
+    ON cde_dynamic_primitive_config.cde_name = cde_erc721_data.cde_name
+JOIN chain_data_extensions
+    ON cde_dynamic_primitive_config.cde_name = chain_data_extensions.cde_name
+JOIN tokens t
+    ON LOWER(cde_dynamic_primitive_config.config->>'contractAddress') = t.contract_address
+    AND t.chain_id = chain_data_extensions.cde_caip2
+    AND t.token_id::TEXT = cde_erc721_data.token_id
+JOIN contracts c
+    ON t.chain_id = c.chain_id AND t.contract_address = c.address
+INNER JOIN transaction_history h
+    ON t.chain_id = h.chain_id AND
+        t.contract_address = h.contract_address AND
+        t.token_id = h.token_id AND
+        h.type = 'mint'
 WHERE
     t.redeemed = false
 GROUP BY
-    t.owner_address,
-    c.price,
+    cde_erc721_data.nft_owner,
+    h.amount,
     c.lease_start,
     c.lease_end;
 
 /* @name getTotalLoaned */
-SELECT SUM(c.price) AS total_token_prices
-FROM tokens t
-   JOIN contracts c
-   ON t.chain_id = c.chain_id AND t.contract_address = c.address;
+SELECT SUM(h.amount) AS total_token_prices
+FROM transaction_history h
+WHERE h.type = 'mint';
 
 /* @name getTotalRepaid */
-SELECT SUM(t.yield_claimed + CASE WHEN t.redeemed THEN c.price ELSE 0 END) AS total_repaid_amount
+SELECT SUM(t.yield_claimed + CASE WHEN t.redeemed THEN h.amount ELSE 0 END) AS total_repaid_amount
 FROM tokens t
-    JOIN contracts c
-    ON t.chain_id = c.chain_id AND t.contract_address = c.address;
+    JOIN transaction_history h
+    ON
+        t.chain_id = h.chain_id AND
+        t.contract_address = h.contract_address AND
+        t.token_id = h.token_id AND
+        h.type = 'mint';
 
 /* @name getOwnersCount */
-SELECT COUNT(DISTINCT owner_address) AS total_unique_owners
-FROM tokens;
+SELECT COUNT(DISTINCT nft_owner) AS total_unique_owners
+FROM cde_erc721_data;
 
-
-
-
-
-
+/* @name getTotalMinted */
+SELECT COUNT(*) AS total_minted
+FROM tokens
+WHERE tokens.minter_address = :minter_address! AND tokens.contract_address = :contract_address!;

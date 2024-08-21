@@ -29,7 +29,7 @@ import msIcon144x144 from "../../assets/favicon/ms-icon-144x144.png";
 import ogImageEN from "../../assets/images/og-en.png";
 import ogImageJP from "../../assets/images/og-jp.png";
 
-const ENABLE_INTRO_ANIMATION = true;
+const ENABLE_INTRO_ANIMATION = false;
 
 type LayoutProps = {
   children?: React.ReactNode;

@@ -12,6 +12,7 @@ import type MainController from "@src/MainController";
 import { AppContext } from "@src/main";
 import DesktopVideoBackground from "@src/components/DesktopVideoBackground";
 import MobileVideoBackground from "@src/components/MobileVideoBackground";
+import Pagetop from "@src/components/Pagetop";
 
 const Reports: React.FC = () => {
   const mainController: MainController = useContext(AppContext);
@@ -39,9 +40,9 @@ const Reports: React.FC = () => {
       <ProjectTabsSection activePage="reports" />
       <ReportsDataHouseSection />
       <ReportsProjectHistorySection projectContractAddress={contractAddress} />
-      <ProjectLendAHandSection />
       <DesktopVideoBackground />
       <MobileVideoBackground />
+      <Pagetop />
     </Layout>
   );
 };

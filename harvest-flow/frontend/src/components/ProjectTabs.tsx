@@ -14,7 +14,7 @@ const pages = [
   },
   {
     page: "qa",
-    name: "Q & A",
+    name: "FAQ",
   },
 ];
 
@@ -32,16 +32,16 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({ activePage }) => {
 
     switch (page) {
       case "overview":
-        navigate({pathname: Page.Project, search : searchParam} );
+        navigate({ pathname: Page.Project, search: searchParam });
         break;
       case "reports":
-        navigate({pathname: Page.Reports, search : searchParam});
+        navigate({ pathname: Page.Reports, search: searchParam });
         break;
       case "qa":
-        navigate({pathname: Page.FAQ, search : searchParam});
+        navigate({ pathname: Page.FAQ, search: searchParam });
         break;
     }
-  }
+  };
 
   return (
     <div className="w-full flex">
@@ -56,7 +56,7 @@ const ProjectTabs: React.FC<ProjectTabsProps> = ({ activePage }) => {
           )}
           onClick={() => navigateTo(page.page)}
         >
-          <p className="text-body desktop:text-heading4 font-medium uppercase tracking-widest">
+          <p className="font-functionPro tracking-[0.2em] text-body desktop:text-heading4 font-medium uppercase tracking-widest">
             {page.name}
           </p>
         </div>

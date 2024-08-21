@@ -95,7 +95,10 @@ const HowToStartSection: React.FC = () => {
                 </h3>
                 <div className="flex flex-col gap-6">
                   <p className="text-bodySmaller">
-                    {t("homepage.how_to_start.step4.text")}
+                    <Trans
+                      i18nKey="homepage.how_to_start.step4.text"
+                      components={[<span className="lowercase" />]}
+                    ></Trans>
                   </p>
                 </div>
               </div>

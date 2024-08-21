@@ -45,7 +45,7 @@ const AccountProjectAssetOverviewSection: React.FC<{
   console.log(deviceDetails);
 
   return (
-    <div className="flex flex-col gap-[60px] desktop:gap-[58px]">
+    <div className="font-functionPro flex flex-col gap-[60px] desktop:gap-[58px]">
       <h2 className="text-heading5Larger desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
         {t("owner.asset_overview.title")}
       </h2>

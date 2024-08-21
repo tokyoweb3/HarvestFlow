@@ -24,11 +24,9 @@ const OurProjectsSection: React.FC = () => {
 
   const handleViewMoreClick = () => {
     if (projects.length > 0) {
-      navigate(
-        `${Page.Project}?address=${projects[0].address}`,
-      );
+      navigate(`${Page.Project}?address=${projects[0].address}`);
     }
-  }
+  };
 
   return (
     <div className="desktop:border-b desktop:border-black px-4 desktop:px-0 pb-16 desktop:pb-0 relative z-10 desktop:h-screen flex flex-col">
@@ -54,34 +52,14 @@ const OurProjectsSection: React.FC = () => {
               <p className="text-bodySmaller">
                 {t("homepage.our_projects.text")}
               </p>
-              <div className="py-2 px-4 bg-white desktop:bg-greySuperLight border border-black">
-                <p className="font-medium uppercase text-center whitespace-pre-line">
-                  <Trans
-                    i18nKey="homepage.our_projects.note"
-                    components={[
-                      // eslint-disable-next-line react/jsx-key
-                      <a
-                        href={
-                          i18n.language === "en"
-                            ? OUR_PROJECTS_REGISTER_EN
-                            : OUR_PROJECTS_REGISTER_JP
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline"
-                      />,
-                    ]}
-                  ></Trans>
-                </p>
-              </div>
             </div>
-            <div className="border-t border-b border-black divide-x divide-black flex">
+            <div className="border-t border-b border-black divide-x divide-black flex font-[500]">
               <div className="w-full">
                 <h4 className="uppercase text-caption desktop:text-body14 text-center p-2 border-b border-black border-dashed">
                   {t("general.apy")}
                 </h4>
                 <div className="py-4 desktop:py-8 px-4">
-                  <h5 className="text-bodyLarge desktop:text-heading4Smaller text-center uppercase">
+                  <h5 className="text-center uppercase font-functionPro text-[36px]">
                     8%
                   </h5>
                 </div>
@@ -91,7 +69,7 @@ const OurProjectsSection: React.FC = () => {
                   {t("general.status")}
                 </h4>
                 <div className="py-4 desktop:py-8 px-4">
-                  <h5 className="text-bodyLarge desktop:text-heading4Smaller text-center uppercase">
+                  <h5 className="text-bodyLarge desktop:text-heading3Smaller text-center uppercase">
                     {t("homepage.our_projects.coming_soon")}
                   </h5>
                 </div>
@@ -107,9 +85,13 @@ const OurProjectsSection: React.FC = () => {
                 </div>
               </div>
             </div>
-            <button className={
-              clsx("p-4 desktop:p-8 uppercase text-center w-full text-caption desktop:text-heading5SmallerLH26 font-medium bg-greyLight", projects.length > 0 ? "hover:cursor-pointer" : "hover:cursor-not-allowed")
-            }
+            <button
+              className={clsx(
+                "p-4 desktop:p-8 uppercase text-center w-full text-caption desktop:text-heading5SmallerLH26 font-medium bg-[#E6B95F]",
+                projects.length > 0
+                  ? "hover:cursor-pointer"
+                  : "hover:cursor-not-allowed",
+              )}
               onClick={handleViewMoreClick}
             >
               {t("general.view_more")}
@@ -119,10 +101,10 @@ const OurProjectsSection: React.FC = () => {
             className="hidden desktop:flex w-1/3 flex-col gap-4 items-center justify-center p-8 bg-center bg-cover bg-no-repeat text-white"
             style={{ backgroundImage: `url(${backgroundImageNext})` }}
           >
-            <p className="uppercase text-center text-heading5 desktop:text-heading4Smaller">
+            <p className="uppercase text-center text-heading5 desktop:text-heading4Smaller font-functionPro font-normal">
               {t("general.next_project")}
             </p>
-            <p className="uppercase text-center tracking-widest">
+            <p className="uppercase text-center tracking-widest font-functionPro font-normal">
               {t("general.coming_soon")}
             </p>
           </div>

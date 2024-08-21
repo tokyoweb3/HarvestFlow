@@ -24,7 +24,7 @@ const ReportsDataHouseSection: React.FC = () => {
               style={{ backgroundImage: `url(${tukTukImage})` }}
             ></div>
             <div className="flex-1 shrink-0 border-t border-b border-r border-black">
-              <table className="w-full bg-white">
+              <table className="font-functionPro w-full bg-white">
                 <thead>
                   <tr className="border-b border-black border-dashed">
                     <th className="text-caption desktop:text-body14 uppercase text-center font-normal py-[10px] px-4 border-r border-black">

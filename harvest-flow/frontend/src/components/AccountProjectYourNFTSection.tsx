@@ -58,7 +58,7 @@ const AccountProjectYourNFTSection: React.FC<{ tokenDetails: NftDetails }> = ({
         alt=""
         className="mx-auto desktop:hidden max-w-[253px]"
       />
-      <div className="w-full border-b border-black border-l border-r flex bg-white">
+      <div className="w-full flex">
         <div
           className="w-[320px] bg-center bg-cover bg-no-repeat border-t border-black aspect-square hidden desktop:block"
           style={{ backgroundImage: `url(${tukTukImage})` }}

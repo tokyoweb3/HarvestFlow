@@ -6,7 +6,8 @@
   },
   "private": true,
   "scripts": {
-    "initialize": "npm ci && cp .env.example ../.env.localhost && cp extensions.yml ../extensions.yml",
+    "gen:signatures": "ts-node ./scripts/gen-signatures",
+    "initialize": "npm ci && cp .env.example ../.env.localhost && cp extensions.yml ../extensions.localhost.yml",
     "pack": "sh scripts/pack.sh",
     "pack:middleware": "npm run build -w middleware/",
     "build": "npx tsc --build tsconfig.build.json",
@@ -37,7 +38,7 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-ignition-viem": "^0.15.5",
     "@nomicfoundation/hardhat-toolbox-viem": "^3.0.0",
-    "@paima/build-utils": "2.3.0",
+    "@paima/build-utils": "3.0.0",
     "@types/eslint": "^8.56.2",
     "@types/eslint-plugin-prettier": "^3.1.3",
     "@types/jest": "^29.5.11",
@@ -64,11 +65,12 @@
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.2",
     "@openzeppelin/contracts-upgradeable": "^5.0.2",
-    "erc721a-upgradeable": "^4.3.0",
     "@paima/evm-contracts": "3.1.0",
-    "@paima/node-sdk": "3.0.0",
-    "@paima/sdk": "3.0.0",
-    "erc721a": "^4.3.0"
+    "@paima/node-sdk": "5.0.0",
+    "@paima/sdk": "5.0.0",
+    "erc721a": "^4.3.0",
+    "erc721a-upgradeable": "^4.3.0",
+    "temporal-polyfill": "^0.2.5"
   },
   "overrides": {
     "@nomicfoundation/hardhat-toolbox-viem": {

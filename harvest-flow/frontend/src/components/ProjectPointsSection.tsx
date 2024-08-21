@@ -9,13 +9,13 @@ const ProjectPointsSection: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col gap-[60px] desktop:gap-[112px] relative z-10 max-w-[1080px] mx-auto">
+    <div className="flex flex-col gap-[30px] desktop:gap-[64px] relative z-10 max-w-[1280px] mx-auto">
       <h2 className="text-center text-heading5SmallerLH24 desktop:text-heading3 font-medium uppercase">
         {t("project.overview.title")}
       </h2>
       <div className="flex border border-black divide-x divide-black overflow-x-scroll desktop:overflow-x-auto">
         <div className="flex-1 flex flex-col gap-[19px] desktop:gap-[23px] pt-[21px] pb-[32px] px-[25px] desktop:p-8 bg-white min-w-[66vw] desktop:min-w-[initial]">
-          <h3 className="text-center text-bodyLarge24 desktop:text-heading4Smaller font-medium uppercase">
+          <h3 className="font-functionPro text-center text-bodyLarge24 desktop:text-heading4Smaller font-medium uppercase">
             Key point 1
           </h3>
           <div className="flex flex-col gap-[15px] desktop:gap-[18px] items-center">
@@ -30,7 +30,7 @@ const ProjectPointsSection: React.FC = () => {
           </div>
         </div>
         <div className="flex-1 flex flex-col gap-[19px] desktop:gap-[23px] pt-[21px] pb-[32px] px-[25px] desktop:p-8 bg-white min-w-[66vw] desktop:min-w-[initial]">
-          <h3 className="text-center text-bodyLarge24 desktop:text-heading4Smaller font-medium uppercase">
+          <h3 className="font-functionPro text-center text-bodyLarge24 desktop:text-heading4Smaller font-medium uppercase">
             Key point 2
           </h3>
           <div className="flex flex-col gap-[15px] desktop:gap-[18px] items-center">
@@ -45,7 +45,7 @@ const ProjectPointsSection: React.FC = () => {
           </div>
         </div>
         <div className="flex-1 flex flex-col gap-[19px] desktop:gap-[23px] pt-[21px] pb-[32px] px-[25px] desktop:p-8 bg-white min-w-[66vw] desktop:min-w-[initial]">
-          <h3 className="text-center text-bodyLarge24 desktop:text-heading4Smaller font-medium uppercase">
+          <h3 className="font-functionPro text-center text-bodyLarge24 desktop:text-heading4Smaller font-medium uppercase">
             Key point 3
           </h3>
           <div className="flex flex-col gap-[15px] desktop:gap-[18px] items-center">

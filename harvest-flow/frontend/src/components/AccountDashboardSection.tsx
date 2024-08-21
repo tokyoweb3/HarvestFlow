@@ -70,7 +70,7 @@ const AccountDashboardSection: React.FC<{ userDetails: UserDetails }> = ({
   };
 
   return (
-    <div className="flex flex-col gap-[60px]">
+    <div className="font-functionPro flex flex-col gap-[60px]">
       <h2 className="text-heading5Larger desktop:text-heading4_30_30 text-center uppercase font-medium tracking-[0.35rem]">
         Dashboard
       </h2>
@@ -131,8 +131,8 @@ const AccountDashboardSection: React.FC<{ userDetails: UserDetails }> = ({
             </p>
           </div>
           <button
-            className="bg-primary flex items-center justify-center border-t desktop:border-r border-l border-black border-b border-r text-heading5Smaller font-medium uppercase tracking-[0.35rem] col-span-2 desktop:col-span-1 h-[80px] desktop:h-[115px]"
-            onClick={() => harvestAll()}
+            className="bg-primary flex items-center justify-center border-t desktop:border-r border-l border-black border-b border-r text-heading5Smaller font-medium uppercase tracking-[0.35rem] col-span-2 desktop:col-span-1 h-[80px] desktop:h-[115px] button-disabled"
+            //onClick={() => harvestAll()}
           >
             Harvest
           </button>

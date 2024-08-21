@@ -1,27 +1,26 @@
-import React from "react";
-
+import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import PlusIcon from "@src/icons/PlusIcon";
 import MinusIcon from "@src/icons/MinusIcon";
-import { useTranslation } from "react-i18next";
 
 const FAQItem: React.FC<{
   openByDefault?: boolean;
   question: string;
-  answer: string;
+  answer: React.ReactNode;
   index: number;
 }> = ({ question, answer, index, openByDefault = false }) => {
   const [isOpen, setIsOpen] = React.useState(openByDefault);
 
   return (
-    <div className="border border-black px-[22px] py-[25px] desktop:px-10 desktop:py-[34px] bg-white">
+    <div
+      className="border border-black px-[22px] py-[25px] desktop:px-10 desktop:py-[34px] bg-white hover:cursor-pointer"
+      onClick={() => setIsOpen(!isOpen)}
+    >
       <div className="flex gap-2 desktop:gap-10">
         <div className="w-8 desktop:w-10">
           <p className="text-body desktop:text-heading5SmallerLH24">Q{index}</p>
         </div>
-        <div
-          className="flex justify-between flex-1 items-center hover:cursor-pointer gap-[14px]"
-          onClick={() => setIsOpen(!isOpen)}
-        >
+        <div className="flex justify-between flex-1 items-center gap-[14px]">
           <p className="text-bodySmaller_13_18 desktop:text-body17">
             {question}
           </p>
@@ -40,46 +39,58 @@ const FAQItem: React.FC<{
 };
 
 const FAQPageFAQSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [faqData, setFaqData] = React.useState<
+    { question: string; answer: React.ReactNode }[]
+  >([]);
 
-  const faqData = [
-    {
-      question: t("project.faq.question1.question"),
-      answer: t("project.faq.question1.answer"),
-    },
-    {
-      question: t("project.faq.question2.question"),
-      answer: t("project.faq.question2.answer"),
-    },
-    {
-      question: t("project.faq.question3.question"),
-      answer: t("project.faq.question3.answer"),
-    },
-    {
-      question: t("project.faq.question4.question"),
-      answer: t("project.faq.question4.answer"),
-    },
-    {
-      question: t("project.faq.question5.question"),
-      answer: t("project.faq.question5.answer"),
-    },
-    {
-      question: t("project.faq.question6.question"),
-      answer: t("project.faq.question6.answer"),
-    },
-  ];
+  useEffect(() => {
+    setFaqData([]);
+
+    const isEnglish =
+      i18n.language === "en" || window.location.search.includes("lng=en");
+    const faqCount = isEnglish ? 12 : 12;
+
+    const generatedFaqData = Array.from({ length: faqCount }, (_, index) => {
+      const questionKey = `project.faq.question${index + 1}.question`;
+      const answerKey = `project.faq.question${index + 1}.answer`;
+
+      const questionText = t(questionKey);
+      const answerText = t(answerKey);
+
+      if (questionText === questionKey || answerText === answerKey) {
+        return null;
+      }
+
+      const formattedAnswer =
+        index + 1 === 5 ? (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: answerText,
+            }}
+          />
+        ) : (
+          answerText
+        );
+
+      return { question: questionText, answer: formattedAnswer };
+    }).filter(Boolean);
+
+    setFaqData(generatedFaqData);
+  }, [i18n.language, t]);
+
   return (
-    <div className="flex flex-col gap-[60px] desktop:gap-[110px] destkop:pb-[50px] relative z-10">
-      <h2 className="text-center text-heading5Larger desktop:text-heading3 font-medium uppercase tracking-[0.35rem]">
-        Q & A
+    <div className="flex flex-col gap-[60px] desktop:gap-[110px] pb-[50px] relative z-10">
+      <h2 className="font-functionPro text-center text-heading5Larger desktop:text-heading3 font-medium uppercase tracking-[0.35rem]">
+        FAQ
       </h2>
       <div className="w-full max-w-[1008px] mx-auto flex flex-col gap-[14px] desktop:gap-[20px] px-4 desktop:px-0">
         {faqData.map((faq, index) => (
           <FAQItem
             key={index}
             openByDefault={index === 0}
-            question={faq.question}
-            answer={faq.answer}
+            question={faq!.question}
+            answer={faq!.answer}
             index={index + 1}
           />
         ))}

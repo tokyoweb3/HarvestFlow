@@ -57,6 +57,7 @@ const Account: React.FC = () => {
               >
                 <AccountUpdatesSection />
               </div>
+
               {userDetails && (
                 <div
                   className="gsap-section-trigger"
@@ -65,6 +66,7 @@ const Account: React.FC = () => {
                   <AccountYourNFTSection ownedNfts={userDetails.ownedNfts} />
                 </div>
               )}
+
               <div
                 className="gsap-section-trigger"
                 id={AccountNavigationLink.UpcomingProjects}
