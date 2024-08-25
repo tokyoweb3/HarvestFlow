@@ -5,6 +5,7 @@ import NFTCard from "./NFTCard";
 import ArrowDownIcon from "@src/icons/ArrowDownIcon";
 import type { NFTItemCardProps } from "./NFTItemCard";
 import NFTItemCard from "./NFTItemCard";
+import NFTMetadata from "../../assets/metadata/0x9d6d53b5bc498200503bc7abcbdec2b8a009460a/metadata.json";
 
 import tukTukImage from "../../assets/images/nft-card-image.jpg";
 import itemImage from "../../assets/images/nft-item-image.jpg";
@@ -84,6 +85,7 @@ const AccountYourNFTSection: React.FC<{ ownedNfts: NftDetails[] }> = ({
   const { t } = useTranslation();
 
   const groupedNfts = groupBy(ownedNfts, (nft) => nft.contractAddress);
+  const nftMetadata = Array.isArray(NFTMetadata) ? NFTMetadata : [NFTMetadata];
 
   return (
     <div className="flex flex-col gap-[60px]">
@@ -101,7 +103,7 @@ const AccountYourNFTSection: React.FC<{ ownedNfts: NftDetails[] }> = ({
                 contractAddress: nft.contractAddress,
                 tokenId: nft.tokenId,
                 asset: 1, // TODO: What is this?
-                imageURL: tukTukImage, // TODO: change this to the actual image
+                imageURL: nftMetadata[Number(nft.tokenId) - 1]?.image || tukTukImage, // TODO: change this to the fetched image
                 investment: Number(
                   ethers.utils.formatEther(nft.lendingData.principle),
                 ),
